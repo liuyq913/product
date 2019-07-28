@@ -1,5 +1,7 @@
 package com.btjf.mapper.file;
 
+import com.btjf.model.file.File;
+import com.btjf.model.file.FileExample;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

@@ -52,11 +52,11 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-	
+
 	<session-config>
 		<session-timeout>5</session-timeout>
 	</session-config>
-	
+
 	<error-page>
 		<error-code>403</error-code>
 		<location>/commons/403.html</location>
@@ -69,7 +69,7 @@
 		<error-code>500</error-code>
 		<location>/commons/500.html</location>
 	</error-page>
-	
+
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
