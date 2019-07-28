@@ -29,13 +29,15 @@ public class SystemController {
      * @return
      */
     @RequestMapping(value = "/data", method = RequestMethod.POST)
-    public XaResult<List<String>> data(@ApiParam("数据类型 1 材料类别  2材料单位  3产品类型 4工种") Integer type) {
+    public XaResult<List<String>> data(@ApiParam("数据类型 1 材料类别  2材料单位  3产品类型") Integer type) {
         if(type == null){
             return XaResult.error("数据类型为空");
         }
         List<String> list = dictionaryService.getList(type);
         return XaResult.success(list);
     }
+
+
 
 
 
