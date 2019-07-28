@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * Created by Administrator on 2018/7/3 0003.
  */
 @Api(value = "LoginController", description = "登录", position = 1)
-@RequestMapping(value = "/api/evaluate/")
+@RequestMapping(value = "/user/")
 @RestController("loginController")
 public class LoginController {
 
@@ -25,14 +25,15 @@ public class LoginController {
      * @return
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public XaResult<String> login(@ApiParam("登录名") String name,
-                                    @ApiParam("密码") String pwd) {
-        if(StringUtils.isEmpty(name)){
+    public XaResult<String> login(@ApiParam("登录名") String loginName,
+                                    @ApiParam("密码") String loginPwd) {
+        if(StringUtils.isEmpty(loginName)){
             return XaResult.error("用户名不能为空");
         }
-        if(StringUtils.isEmpty(pwd)){
+        if(StringUtils.isEmpty(loginPwd)){
             return XaResult.error("密码不能为空");
         }
+
 
         if(user !=null){
             return XaResult.success();
