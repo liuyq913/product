@@ -44,6 +44,9 @@ public class PmController {
         return XaResult.success(rows);
     }
 
-    //@RequestMapping(value="addOrUpdate" method= "")
+   /* @RequestMapping(value="addOrUpdate",  method = RequestMethod.GET)
+    public XaResult<Integer> addOrUpdate(){
+
+    }*/
 
 }

@@ -1,8 +1,7 @@
 package com.btjf.service.pm;
 
-import com.btjf.application.util.XaResult;
 import com.btjf.common.page.Page;
-import com.btjf.mapper.mp.PmMapper;
+import com.btjf.mapper.pm.PmMapper;
 import com.btjf.model.pm.Pm;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -19,7 +18,6 @@ public class PmService {
 
     @Resource
     private PmMapper pmMapper;
-
 
     public Page<Pm> findListPage(String pmNo, String name, String type, Page page) {
         PageHelper.startPage(page.getPage(), page.getRp());
