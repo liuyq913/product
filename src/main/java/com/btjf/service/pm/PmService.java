@@ -30,4 +30,28 @@ public class PmService {
     public Integer deleteByID(List<Integer> integers) {
         return pmMapper.deleteByID(integers);
     }
+
+    public Pm getByID(Integer id){
+        if(id == null) return null;
+        Pm pm = pmMapper.selectByPrimaryKey(id);
+        return pm;
+    }
+
+    public List<Pm> findList(String pmNo, String name, String type){
+        List<Pm> pmList = pmMapper.findList(pmNo, name, type);
+        return pmList;
+    }
+
+    public Integer updateByID(Pm pm){
+        pmMapper.updateByPrimaryKeySelective(pm);
+        return pm.getId();
+    }
+    public Integer insert(Pm pm){
+        pmMapper.insertSelective(pm);
+        return pm.getId();
+    }
+
+    public Integer saveList(List<Pm> pmList){
+       return pmMapper.saveList(pmList);
+    }
 }
