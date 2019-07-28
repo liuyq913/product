@@ -238,4 +238,8 @@
       value = #{value,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id = "getList" resultType="java.lang.String">
+    select value from t_dictionary where type = #{type,jdbcType=INTEGER}
+  </select>
 </mapper>

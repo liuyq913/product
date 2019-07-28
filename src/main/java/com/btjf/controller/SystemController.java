@@ -1,12 +1,14 @@
-package com.btjf.cntroller;
+package com.btjf.controller;
 
 import com.btjf.application.util.XaResult;
+import com.btjf.service.dictionary.DictionaryService;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 
@@ -18,6 +20,9 @@ import java.util.List;
 @RestController("systemController")
 public class SystemController {
 
+    @Resource
+    private DictionaryService dictionaryService;
+
     /**
      * 获取数据
      *
@@ -25,9 +30,11 @@ public class SystemController {
      */
     @RequestMapping(value = "/data", method = RequestMethod.POST)
     public XaResult<List<String>> data(@ApiParam("数据类型 1 材料类别  2材料单位  3产品类型 4工种") Integer type) {
-
-
-        return XaResult.success();
+        if(type == null){
+            return XaResult.error("数据类型为空");
+        }
+        List<String> list = dictionaryService.getList(type);
+        return XaResult.success(list);
     }
 
 

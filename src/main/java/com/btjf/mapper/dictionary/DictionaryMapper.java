@@ -93,4 +93,11 @@ public interface DictionaryMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(Dictionary record);
+
+    /**
+     * 获取数据
+     * @param type
+     * @return
+     */
+    List<String> getList(@Param("type")Integer type);
 }

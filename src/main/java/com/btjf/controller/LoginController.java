@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by Administrator on 2018/7/3 0003.
  */
 @Api(value = "LoginController", description = "登录", position = 1)
-@RequestMapping(value = "/api/evaluate/")
+@RequestMapping(value = "/user/")
 @RestController("loginController")
 public class LoginController {
 
