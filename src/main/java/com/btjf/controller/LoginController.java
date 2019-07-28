@@ -1,4 +1,5 @@
-package com.btjf.cntroller;
+package com.btjf.controller;
+
 
 import com.btjf.application.util.XaResult;
 import com.wordnik.swagger.annotations.Api;
@@ -7,8 +8,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
 
 
 /**
@@ -26,16 +25,12 @@ public class LoginController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public XaResult<String> login(@ApiParam("登录名") String name,
-                                    @ApiParam("密码") String pwd) {
+                                  @ApiParam("密码") String pwd) {
         if(StringUtils.isEmpty(name)){
             return XaResult.error("用户名不能为空");
         }
         if(StringUtils.isEmpty(pwd)){
             return XaResult.error("密码不能为空");
-        }
-
-        if(user !=null){
-            return XaResult.success();
         }
         return XaResult.error("用户名或密码错误");
     }
