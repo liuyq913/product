@@ -1,4 +1,4 @@
-package com.btjf.mapper.mp;
+package com.btjf.mapper.pm;
 
 import com.btjf.model.pm.Pm;
 import com.btjf.model.pm.PmExample;

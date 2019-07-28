@@ -40,5 +40,4 @@
 
 	<import resource="classpath:applicationContext-db.xml" />
 
-
 </beans>

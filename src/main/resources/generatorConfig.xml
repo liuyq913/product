@@ -16,7 +16,7 @@
 			<property name="suppressDate" value="true" />
 		</commentGenerator>
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-						connectionURL="jdbc:mysql://localhost:3306/amir?setUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=UTC"
+						connectionURL="jdbc:mysql://localhost:3306/product?setUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=UTC"
 						userId="root"
 						password="root"/>
 		<javaTypeResolver>
@@ -24,18 +24,18 @@
 		</javaTypeResolver>
 
 
-		<javaModelGenerator targetPackage="com.btjf.model.pm" targetProject="src/main/java">
+		<javaModelGenerator targetPackage="com.btjf.model.sys" targetProject="src/main/java">
 			<property name="enableSubPackages" value="true" />
 			<property name="trimStrings" value="true" />
 		</javaModelGenerator>
-		<sqlMapGenerator targetPackage="com.btjf.dao.pm" targetProject="src/main/java">
+		<sqlMapGenerator targetPackage="com.btjf.mapper.sys" targetProject="src/main/java">
 			<property name="enableSubPackages" value="true" />
 		</sqlMapGenerator>
-		<javaClientGenerator targetPackage="com.btjf.dao.pm" targetProject="src/main/java" type="XMLMAPPER">
+		<javaClientGenerator targetPackage="com.btjf.mapper.sys" targetProject="src/main/java" type="XMLMAPPER">
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 
-		<table tableName="t_pm" domainObjectName="Pm">
+		<table tableName="t_sysuserrole" domainObjectName="SysUserRole">
 		<property name="useActualColumnNames" value="true"/>
 		<generatedKey column="FID" sqlStatement="MySql" identity="true"/>
 		<columnRenamingRule searchString="^F" replaceString="" />
