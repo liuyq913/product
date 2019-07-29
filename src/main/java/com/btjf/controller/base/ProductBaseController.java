@@ -2,12 +2,15 @@ package com.btjf.controller.base;
 
 import com.btjf.business.common.exception.BusinessException;
 import com.btjf.constant.SysConstant;
+import com.btjf.interceptor.LoginInfoCache;
+import com.btjf.interceptor.LoginInterceptor;
 import com.btjf.model.sys.SysUser;
 import com.btjf.util.RdStringUtil;
 import org.apache.log4j.Logger;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -21,6 +24,9 @@ public abstract class ProductBaseController {
             .getLogger(ProductBaseController.class);
 
 
+    @Resource
+    private LoginInfoCache loginInfoCache;
+
     /**
      * 获取当前登录的角色ID
      *
@@ -29,7 +35,8 @@ public abstract class ProductBaseController {
     public SysUser getLoginUser() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
                 .getRequestAttributes()).getRequest();
-        SysUser sysUser = (SysUser) request.getAttribute(SysConstant.LOGINUSER);
+        String secretKey = request.getHeader(LoginInterceptor.SECRETKEY);
+        SysUser sysUser = (SysUser) loginInfoCache.get(secretKey);
         if (null == sysUser) {
             throw new BusinessException("请登录之后重试");
         } else {

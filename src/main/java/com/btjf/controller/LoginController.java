@@ -2,6 +2,9 @@ package com.btjf.controller;
 
 
 import com.btjf.application.util.XaResult;
+import com.btjf.common.utils.JSONUtils;
+import com.btjf.common.utils.MD5Utils;
+import com.btjf.interceptor.LoginInfoCache;
 import com.btjf.model.sys.SysRole;
 import com.btjf.model.sys.SysUser;
 import com.btjf.model.sys.Sysdept;
@@ -33,7 +36,8 @@ public class LoginController {
     private SysDeptService sysDeptService;
     @Resource
     private SysRoleService sysRoleService;
-
+    @Resource
+    private LoginInfoCache loginInfoCache;
 
     /**
      * 登录
@@ -63,7 +67,10 @@ public class LoginController {
             userInfoVo.setRoleName(sysRole!= null?sysRole.getName():null);
         }
         //TODO 缺一个 用户信息加密
-
+        String json = JSONUtils.toJSON(sysUser);
+        String key = MD5Utils.ecodeByMD5(json);
+        loginInfoCache.add(key, sysUser);
+        userInfoVo.setSecretKey(key);
         return XaResult.success(userInfoVo);
     }
 
