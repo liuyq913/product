@@ -1,6 +1,5 @@
 package com.btjf.controller.base;
 
-import com.btjf.application.components.controller.BaseController;
 import com.btjf.business.common.exception.BusinessException;
 import com.btjf.constant.SysConstant;
 import com.btjf.model.sys.SysUser;
@@ -17,7 +16,7 @@ import java.util.List;
 /**
  * Created by liuyq on 2019/7/28.
  */
-public abstract class ProductBaseController extends BaseController {
+public abstract class ProductBaseController {
     private static final Logger LOGGER = Logger
             .getLogger(ProductBaseController.class);
 
