@@ -95,9 +95,12 @@ public interface PmMapper {
      */
     int updateByPrimaryKey(Pm record);
 
+
     List<Pm> findList(@Param("pmNo") String pmNo, @Param("name") String name,@Param("type") String type);
 
     Integer deleteByID(@Param("integers") List<Integer> integers);
 
     Integer saveList(@Param("pmList") List<Pm> pmList);
+
+    Pm getByNO(@Param("no") String pmNo);
 }

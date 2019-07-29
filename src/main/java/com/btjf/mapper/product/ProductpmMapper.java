@@ -2,8 +2,9 @@ package com.btjf.mapper.product;
 
 import com.btjf.model.product.Productpm;
 import com.btjf.model.product.ProductpmExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface ProductpmMapper {
     /**
@@ -93,4 +94,6 @@ public interface ProductpmMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(Productpm record);
+
+    List<Productpm> findList(@Param("productNo") String productNo, @Param("pmNo") String pmNo, @Param("status") int status);
 }
