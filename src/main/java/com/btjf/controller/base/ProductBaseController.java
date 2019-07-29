@@ -3,8 +3,8 @@ package com.btjf.controller.base;
 import com.btjf.application.components.controller.BaseController;
 import com.btjf.business.common.exception.BusinessException;
 import com.btjf.constant.SysConstant;
-import com.btjf.model.sys.SysUser;
 import com.btjf.util.RdStringUtil;
+import com.btjf.vo.UserInfoVo;
 import org.apache.log4j.Logger;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -27,10 +27,10 @@ public abstract class ProductBaseController extends BaseController {
      *
      * @return
      */
-    public SysUser getLoginUser() {
+    public UserInfoVo getLoginUser() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
                 .getRequestAttributes()).getRequest();
-        SysUser sysUser = (SysUser) request.getAttribute(SysConstant.LOGINUSER);
+        UserInfoVo sysUser = (UserInfoVo) request.getSession().getAttribute(SysConstant.LOGINUSER);
         if (null == sysUser) {
             throw new BusinessException("请登录之后重试");
         } else {

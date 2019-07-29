@@ -6,8 +6,8 @@ import com.btjf.application.util.XaResult;
 import com.btjf.common.page.Page;
 import com.btjf.controller.base.ProductBaseController;
 import com.btjf.model.pm.Pm;
-import com.btjf.model.sys.SysUser;
 import com.btjf.service.pm.PmService;
+import com.btjf.vo.UserInfoVo;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.apache.log4j.Logger;
@@ -26,10 +26,10 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/pm")
 @Api(value = "PmControllerProduct", description = "材料管理", position = 1)
-public class PmControllerProduct extends ProductBaseController {
+public class PmController extends ProductBaseController {
 
     private static final Logger LOGGER = Logger
-            .getLogger(PmControllerProduct.class);
+            .getLogger(PmController.class);
 
     @Resource
     private PmService pmService;
@@ -57,13 +57,13 @@ public class PmControllerProduct extends ProductBaseController {
         return XaResult.success(rows);
     }
 
-    @RequestMapping(value = "addOrUpdate", method = RequestMethod.GET)
+    @RequestMapping(value = "/addOrUpdate", method = RequestMethod.GET)
     public XaResult<Integer> addOrUpdate(@ApiParam("id") Integer id, @ApiParam("编号") String pmNo, @ApiParam("名称")
             String name, @ApiParam("类型") String type, @ApiParam("单位") String unit,
                                          @ApiParam("备注") String remark) {
         LOGGER.info(getRequestParams());
 
-        SysUser sysUser = getLoginUser();
+        UserInfoVo sysUser = getLoginUser();
 
         if(null != id){ //更新
             Pm pm = pmService.getByID(id);
@@ -88,7 +88,6 @@ public class PmControllerProduct extends ProductBaseController {
         }
 
         return XaResult.success(id);
-
     }
 
 }
