@@ -87,17 +87,17 @@ public class ProductPmController extends ProductBaseController{
     }
 
 
-    @RequestMapping(value = "/updateOrAdd", method = RequestMethod.POST)
-    public XaResult<Productpm> updateOrAdd(Integer id,String productNo, String pmNo, String pmName , String num ,
+    @RequestMapping(value = "/addOrUpdate", method = RequestMethod.POST)
+    public XaResult<Productpm> updateOrAdd(Integer id, String productNo, String pmNo, String pmName , String num ,
                                            String unit, String unitNum, String type, String remark, int status){
-        getLoginUser();
+      /*  getLoginUser();
         LOGGER.info(getRequestParamsAndUrl());
 
         if(null == pmService.getByNo(pmNo)) {
             return XaResult.error("物料编号填写错误，请修改");
         }
 
-        if()
+       // if()
 
         if(status != 0 || status != 1){ return XaResult.error("是否确认类型错误");}
 
@@ -105,7 +105,8 @@ public class ProductPmController extends ProductBaseController{
 
         }else{
 
-        }
+        }*/
+      return null;
     }
 
 

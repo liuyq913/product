@@ -8,7 +8,6 @@ import com.btjf.common.utils.DateUtil;
 import com.btjf.controller.base.ProductBaseController;
 import com.btjf.model.pm.Pm;
 import com.btjf.service.pm.PmService;
-import com.btjf.vo.UserInfoVo;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.apache.log4j.Logger;
@@ -65,13 +64,13 @@ public class PmController extends ProductBaseController {
         return XaResult.success(rows);
     }
 
-    @RequestMapping(value = "/addOrUpdate", method = RequestMethod.GET)
+    @RequestMapping(value = "/addOrUpdate", method = RequestMethod.POST)
     public XaResult<Integer> addOrUpdate(@ApiParam("id") Integer id, @ApiParam("编号") String pmNo, @ApiParam("名称")
             String name, @ApiParam("类型") String type, @ApiParam("单位") String unit,
                                          @ApiParam("备注") String remark) {
         LOGGER.info(getRequestParamsAndUrl());
 
-        UserInfoVo sysUser = getLoginUser();
+        //SysUser sysUser = getLoginUser();
 
         if (null != id) { //更新
             Pm pm = pmService.getByID(id);
@@ -81,7 +80,7 @@ public class PmController extends ProductBaseController {
             pm.setType(type);
             pm.setUnit(unit);
             pm.setRemark(remark);
-            pm.setOperator(sysUser.getUserName());
+           // pm.setOperator(sysUser.getUserName());
             id = pmService.updateByID(pm);
         } else {
             Pm pm = new Pm();
@@ -91,7 +90,7 @@ public class PmController extends ProductBaseController {
             pm.setType(type);
             pm.setUnit(unit);
             pm.setRemark(remark);
-            pm.setOperator(sysUser.getUserName());
+          //  pm.setOperator(sysUser.getUserName());
             id = pmService.insert(pm);
         }
 

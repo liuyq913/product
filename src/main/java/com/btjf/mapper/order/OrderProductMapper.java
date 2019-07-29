@@ -1,7 +1,7 @@
-package com.btjf.mapper.Order;
+package com.btjf.mapper.order;
 
-import com.btjf.model.Order.OrderProduct;
-import com.btjf.model.Order.OrderProductExample;
+import com.btjf.model.order.OrderProduct;
+import com.btjf.model.order.OrderProductExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 

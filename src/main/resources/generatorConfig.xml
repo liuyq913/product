@@ -24,20 +24,20 @@
 		</javaTypeResolver>
 
 
-		<javaModelGenerator targetPackage="com.btjf.model.pm" targetProject="src/main/java">
+		<javaModelGenerator targetPackage="com.btjf.model.order" targetProject="src/main/java">
 			<property name="enableSubPackages" value="true" />
 			<property name="trimStrings" value="true" />
 		</javaModelGenerator>
-		<sqlMapGenerator targetPackage="com.btjf.mapper.pm" targetProject="src/main/java">
+		<sqlMapGenerator targetPackage="com.btjf.mapper.order" targetProject="src/main/java">
 			<property name="enableSubPackages" value="true" />
 		</sqlMapGenerator>
-		<javaClientGenerator targetPackage="com.btjf.mapper.pm" targetProject="src/main/java" type="XMLMAPPER">
+		<javaClientGenerator targetPackage="com.btjf.mapper.order" targetProject="src/main/java" type="XMLMAPPER">
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 
-		<table tableName="t_pm" domainObjectName="Pm">
+		<table tableName="t_order" domainObjectName="Order">
 		<property name="useActualColumnNames" value="true"/>
-		<generatedKey column="FID" sqlStatement="MySql" identity="true"/>
+		<generatedKey column="id" sqlStatement="MySql" identity="true"/>
 		<columnRenamingRule searchString="^F" replaceString="" />
 		</table>
 
@@ -114,7 +114,7 @@
 		<!--</table>-->
 
 		<!--order-->
-		<!--<table tableName="t_Order" domainObjectName="Order">-->
+		<!--<table tableName="t_Order" domainObjectName="order">-->
 			<!--<property name="useActualColumnNames" value="true"/>-->
 			<!--<generatedKey column="Fid" sqlStatement="MySql" identity="true"/>-->
 			<!--<columnRenamingRule searchString="^F" replaceString="" />-->

@@ -2,7 +2,9 @@ package com.btjf.controller;
 
 
 import com.btjf.application.util.XaResult;
-import com.btjf.constant.SysConstant;
+import com.btjf.common.utils.JSONUtils;
+import com.btjf.common.utils.MD5Utils;
+import com.btjf.interceptor.LoginInfoCache;
 import com.btjf.model.sys.SysRole;
 import com.btjf.model.sys.SysUser;
 import com.btjf.model.sys.Sysdept;
@@ -18,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -36,7 +36,8 @@ public class LoginController {
     private SysDeptService sysDeptService;
     @Resource
     private SysRoleService sysRoleService;
-
+    @Resource
+    private LoginInfoCache loginInfoCache;
 
     /**
      * 登录
@@ -45,7 +46,7 @@ public class LoginController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public XaResult<UserInfoVo> login(@ApiParam("登录名") String loginName,
-                                      @ApiParam("密码") String loginPwd, HttpServletRequest request, HttpServletResponse httpServletResponse) {
+                                      @ApiParam("密码") String loginPwd) {
         if(StringUtils.isEmpty(loginName)){
             return XaResult.error("用户名不能为空");
         }
@@ -66,7 +67,10 @@ public class LoginController {
             userInfoVo.setRoleName(sysRole!= null?sysRole.getName():null);
         }
         //TODO 缺一个 用户信息加密
-        request.getSession().setAttribute(SysConstant.LOGINUSER, userInfoVo);
+        String json = JSONUtils.toJSON(sysUser);
+        String key = MD5Utils.ecodeByMD5(json);
+        loginInfoCache.add(key, sysUser);
+        userInfoVo.setSecretKey(key);
         return XaResult.success(userInfoVo);
     }
 

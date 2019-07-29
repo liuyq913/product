@@ -1,4 +1,4 @@
-package com.btjf.model.Order;
+package com.btjf.model.order;
 
 import java.io.Serializable;
 import java.util.Date;

@@ -2,9 +2,10 @@ package com.btjf.controller.base;
 
 import com.btjf.application.util.XaResult;
 import com.btjf.business.common.exception.BusinessException;
-import com.btjf.constant.SysConstant;
+import com.btjf.interceptor.LoginInfoCache;
+import com.btjf.interceptor.LoginInterceptor;
+import com.btjf.model.sys.SysUser;
 import com.btjf.util.RdStringUtil;
-import com.btjf.vo.UserInfoVo;
 import org.apache.log4j.Logger;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.validation.BindException;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -26,15 +28,19 @@ public abstract class ProductBaseController {
             .getLogger(ProductBaseController.class);
 
 
+    @Resource
+    private LoginInfoCache loginInfoCache;
+
     /**
      * 获取当前登录的角色ID
      *
      * @return
      */
-    public UserInfoVo getLoginUser() {
+    public SysUser getLoginUser() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
                 .getRequestAttributes()).getRequest();
-        UserInfoVo sysUser = (UserInfoVo) request.getSession().getAttribute(SysConstant.LOGINUSER);
+        String secretKey = request.getHeader(LoginInterceptor.SECRETKEY);
+        SysUser sysUser = (SysUser) loginInfoCache.get(secretKey);
         if (null == sysUser) {
             throw new BusinessException("请登录之后重试");
         } else {
