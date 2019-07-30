@@ -488,7 +488,7 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM t_pm
-        WHERE 1=1
+        WHERE
         pmNo = #{no} and isDelete = 0
     </select>
 

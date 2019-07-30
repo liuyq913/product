@@ -21,7 +21,7 @@ public class SysUserService {
         criteria.andLoginNameEqualTo(loginName);
         criteria.andLoginPwdEqualTo(loginPwd);
         List<SysUser> list = sysUserMapper.selectByExample(sysUserExample);
-        return (list == null || list.size() > 0)? null:list.get(0);
+        return (list == null || list.size() <= 0)? null:list.get(0);
     }
 
 }

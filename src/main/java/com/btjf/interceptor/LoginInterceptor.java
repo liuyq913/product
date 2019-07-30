@@ -24,7 +24,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     private Logger logger = LoggerFactory.getLogger(LoginInterceptor.class);
 
-    public static final String SECRETKEY = "SecretKey";
+    public static final String SECRETKEY = "secretKey";
 
 	@Resource
 	private LoginInfoCache loginInfoCache;

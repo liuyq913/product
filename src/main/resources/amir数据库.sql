@@ -49,7 +49,35 @@ CREATE TABLE t_SysDept(
 	deptName varchar(50),
 	deptOrder int
 	);
-	
+
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('经理室', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('人事部', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('劳资部', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('出货部', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('后勤部', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('验货部', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('外加工部', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('质检部-成品检验', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('外协质检', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('行政部', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('技术部', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('生产部', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('采购部', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('下料车间', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('一车间', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('二车间', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('信息中心', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('后道车间-车工', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('后道车间-中辅工', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('后道车间-大辅工', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('包装车间', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('财务部', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('仓库', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('样品间', NULL);
+
+update t_SysDept set deptOrder = id;
+
+
 ##后台登录账号
 CREATE TABLE t_SysUser(
 	id int primary key auto_increment,
@@ -59,6 +87,9 @@ CREATE TABLE t_SysUser(
 	loginPwd varchar(100) NULL,
 	userName varchar(50) NULL
 	);
+INSERT INTO `product`.`t_SysUser` (`deptId`, `roleId`, `loginName`, `loginPwd`, `userName`) VALUES ('1', '1', 'admin', '123456', '我说了算');
+
+
 ##角色
 CREATE TABLE t_SysRole(
   id int(11) primary key AUTO_INCREMENT,
@@ -66,6 +97,7 @@ CREATE TABLE t_SysRole(
   description varchar(255) DEFAULT NULL,
   roleOrder int
 );
+INSERT INTO `product`.`t_SysRole` (`name`, `description`, `roleOrder`) VALUES ('管理员权限', NULL, '1');
 
 ##用户角色表
 CREATE TABLE t_SysUserRole(
@@ -108,6 +140,9 @@ CREATE TABLE t_PM(
   material varchar(100)  DEFAULT '' COMMENT '材质',
   call varchar(100)  DEFAULT '' COMMENT '称呼'
 );
+INSERT INTO `product`.`t_PM` (`pmNo`, `name`, `type`, `num`, `unit`, `remark`, `operator`, `createTime`, `lastModifyTime`, `isDelete`) VALUES ('TEST1', '测试1', '辅料', '20', '双', 'SSS', '1', '2019-07-30 21:41:53', NULL, '0');
+INSERT INTO `product`.`t_PM` (`pmNo`, `name`, `type`, `num`, `unit`, `remark`, `operator`, `createTime`, `lastModifyTime`, `isDelete`) VALUES ('DDD0', '002', '包装材料类', '0', '个', NULL, '1', '2019-07-30 21:57:22', NULL, '0');
+
 
 ##产品   原型中看不出产品信息
 CREATE TABLE t_Product(
@@ -162,6 +197,10 @@ CREATE TABLE t_PMIn(
 	lastModifyTime datetime,
 	isDelete int NOT NULL
 );
+
+INSERT INTO `product`.`t_PMIn` (`pmId`, `pmNo`, `pmName`, `type`, `unit`, `remark`, `supplier`, `inDate`, `num`, `perNum`, `backNum`, `operator`, `createTime`, `lastModifyTime`, `isDelete`) VALUES ('1', 'TEST1', '测试1', '辅料', '10', 'AAA', '！！！！', '2019-07-30', '10', '0', '10', '1', '2019-07-30 21:43:13', NULL, '0');
+INSERT INTO `product`.`t_PMIn` (`pmId`, `pmNo`, `pmName`, `type`, `unit`, `remark`, `supplier`, `inDate`, `num`, `perNum`, `backNum`, `operator`, `createTime`, `lastModifyTime`, `isDelete`) VALUES ('1', 'TEST1', '测试1', '辅料', '10', 'AAA', '！！！！', '2019-07-31', '10', '10', '20', '1', '2019-07-30 21:43:13', NULL, '0');
+
 
 ##领料单  耗料上限出库  好像可以直接用订单做主表
 CREATE TABLE t_PMout_Bill(
