@@ -148,6 +148,7 @@ CREATE TABLE t_PMIn(
 	unit varchar(30) NOT NULL comment '单位 双、套、箱、只、件、米、SF、并、张、KG、个、卷、跟、片、m2、颗、付、顶、条、块',
 	remark varchar(200) comment '备注',
 	supplier varchar(200) comment '供应商',
+  inDate  date NULL COMMENT '入库时间',
 	num int comment '入库数量',
 	perNum int comment '入库前数量',
 	backNum int comment '入库后数量',
@@ -155,7 +156,8 @@ CREATE TABLE t_PMIn(
 	createTime datetime,
 	lastModifyTime datetime,
 	isDelete int NOT NULL
-);	
+);
+
 ##领料单  耗料上限出库  好像可以直接用订单做主表
 CREATE TABLE t_PMout_Bill(
 	id int(11) primary key AUTO_INCREMENT,
