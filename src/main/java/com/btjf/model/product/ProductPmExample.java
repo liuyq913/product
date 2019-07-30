@@ -1226,6 +1226,66 @@ public class ProductPmExample {
             return (Criteria) this;
         }
 
+        public Criteria andSequenceIsNull() {
+            addCriterion("sequence is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSequenceIsNotNull() {
+            addCriterion("sequence is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSequenceEqualTo(Integer value) {
+            addCriterion("sequence =", value, "sequence");
+            return (Criteria) this;
+        }
+
+        public Criteria andSequenceNotEqualTo(Integer value) {
+            addCriterion("sequence <>", value, "sequence");
+            return (Criteria) this;
+        }
+
+        public Criteria andSequenceGreaterThan(Integer value) {
+            addCriterion("sequence >", value, "sequence");
+            return (Criteria) this;
+        }
+
+        public Criteria andSequenceGreaterThanOrEqualTo(Integer value) {
+            addCriterion("sequence >=", value, "sequence");
+            return (Criteria) this;
+        }
+
+        public Criteria andSequenceLessThan(Integer value) {
+            addCriterion("sequence <", value, "sequence");
+            return (Criteria) this;
+        }
+
+        public Criteria andSequenceLessThanOrEqualTo(Integer value) {
+            addCriterion("sequence <=", value, "sequence");
+            return (Criteria) this;
+        }
+
+        public Criteria andSequenceIn(List<Integer> values) {
+            addCriterion("sequence in", values, "sequence");
+            return (Criteria) this;
+        }
+
+        public Criteria andSequenceNotIn(List<Integer> values) {
+            addCriterion("sequence not in", values, "sequence");
+            return (Criteria) this;
+        }
+
+        public Criteria andSequenceBetween(Integer value1, Integer value2) {
+            addCriterion("sequence between", value1, value2, "sequence");
+            return (Criteria) this;
+        }
+
+        public Criteria andSequenceNotBetween(Integer value1, Integer value2) {
+            addCriterion("sequence not between", value1, value2, "sequence");
+            return (Criteria) this;
+        }
+
         public Criteria andProductNoLikeInsensitive(String value) {
             addCriterion("upper(productNo) like", value.toUpperCase(), "productNo");
             return (Criteria) this;

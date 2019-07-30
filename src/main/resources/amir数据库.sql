@@ -102,7 +102,11 @@ CREATE TABLE t_PM(
 	operator varchar(100) NOT NULL comment '添加人',
 	createTime datetime,
 	lastModifyTime datetime,
-	isDelete int NOT NULL
+	isDelete int NOT NULL,
+	colour varchar(100)  DEFAULT '' COMMENT '颜色',
+  norms varchar(100)  DEFAULT '' COMMENT '规格',
+  material varchar(100)  DEFAULT '' COMMENT '材质',
+  call varchar(100)  DEFAULT '' COMMENT '称呼'
 );
 
 ##产品   原型中看不出产品信息
@@ -136,7 +140,8 @@ CREATE TABLE t_ProductPM(
 	operator varchar(100) NOT NULL comment '添加人',
 	createTime datetime,
 	lastModifyTime datetime,
-	isDelete int NOT NULL
+	isDelete int NOT NULL,
+	sequence int(11) NOT NULL COMMENT '序号'
 );
 ##材料入库单
 CREATE TABLE t_PMIn(

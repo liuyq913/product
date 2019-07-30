@@ -39,7 +39,7 @@ public class PmInControllerProduct extends ProductBaseController {
                                            Integer pageSize, Integer currentPage) {
         LOGGER.info(getRequestParamsAndUrl());
 
-        Page<Pm> listPage = pmService.findListPage(pmNo, name, type, AppPageHelper.appInit(currentPage, pageSize));
+        Page<Pm> listPage = pmService.findListPage(null, AppPageHelper.appInit(currentPage, pageSize));
         XaResult<List<Pm>> result = AppXaResultHelper.success(listPage, listPage.getRows());
         return null;
     }

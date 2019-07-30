@@ -7,9 +7,12 @@ import com.btjf.common.page.Page;
 import com.btjf.common.utils.DateUtil;
 import com.btjf.controller.base.ProductBaseController;
 import com.btjf.model.pm.Pm;
+import com.btjf.model.pm.PmRequstPojo;
+import com.btjf.model.sys.SysUser;
 import com.btjf.service.pm.PmService;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
+import org.apache.ibatis.annotations.Param;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -42,12 +45,21 @@ public class PmController extends ProductBaseController {
     private PmService pmService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public XaResult<List<Pm>> findList(@ApiParam("编号") String pmNo, @ApiParam("名称") String name
+    public XaResult<List<Pm>> findList(@ApiParam("编号") String pmNo, @Param("name") String name ,@ApiParam("颜色") String colour, @ApiParam("规格")
+                                      String norms, @Param("材质") String material, @Param("称呼") String call
             , @ApiParam("类型") String type, Integer pageSize, Integer currentPage) {
          getLoginUser();
         LOGGER.info(getRequestParamsAndUrl());
 
-        Page<Pm> listPage = pmService.findListPage(pmNo, name, type, AppPageHelper.appInit(currentPage, pageSize));
+        PmRequstPojo pmRequstPojo = new PmRequstPojo();
+        pmRequstPojo.setPmNo(pmNo);
+        pmRequstPojo.setName(name);
+        pmRequstPojo.setType(type);
+        pmRequstPojo.setCall(call);
+        pmRequstPojo.setColour(colour);
+        pmRequstPojo.setMaterial(material);
+        pmRequstPojo.setNorms(norms);
+        Page<Pm> listPage = pmService.findListPage(pmRequstPojo, AppPageHelper.appInit(currentPage, pageSize));
         XaResult<List<Pm>> result = AppXaResultHelper.success(listPage, listPage.getRows());
         return result;
     }
@@ -70,7 +82,7 @@ public class PmController extends ProductBaseController {
                                          @ApiParam("备注") String remark) {
         LOGGER.info(getRequestParamsAndUrl());
 
-        //SysUser sysUser = getLoginUser();
+        SysUser sysUser = getLoginUser();
 
         if (null != id) { //更新
             Pm pm = pmService.getByID(id);
@@ -80,17 +92,21 @@ public class PmController extends ProductBaseController {
             pm.setType(type);
             pm.setUnit(unit);
             pm.setRemark(remark);
-           // pm.setOperator(sysUser.getUserName());
+            pm.setOperator(sysUser.getUserName());
             id = pmService.updateByID(pm);
         } else {
             Pm pm = new Pm();
             pm.setLastModifyTime(new Date());
+            if(null != pmService.getByNo(pmNo)){
+                return XaResult.error("已有相同物料编号，请修改");
+            }
             pm.setPmNo(pmNo);
             pm.setName(name);
             pm.setType(type);
             pm.setUnit(unit);
             pm.setRemark(remark);
-          //  pm.setOperator(sysUser.getUserName());
+            pm.setCreateTime(new Date());
+            pm.setOperator(sysUser.getUserName());
             id = pmService.insert(pm);
         }
 
@@ -107,11 +123,20 @@ public class PmController extends ProductBaseController {
      */
     @RequestMapping(value = "/export", method = RequestMethod.GET)
     public void exportPm(@ApiParam("编号") String pmNo, @ApiParam("名称") String name
-            , @ApiParam("类型") String type, HttpServletResponse response) {
+            , @ApiParam("类型") String type, HttpServletResponse response, @ApiParam("颜色") String colour, @ApiParam("规格")
+                                     String norms, @Param("材质") String material, @Param("称呼") String call) {
         getLoginUser();
         LOGGER.info(getRequestParamsAndUrl());
 
-        List<Pm> pms = pmService.findList(pmNo, name, type);
+        PmRequstPojo pmRequstPojo = new PmRequstPojo();
+        pmRequstPojo.setPmNo(pmNo);
+        pmRequstPojo.setName(name);
+        pmRequstPojo.setType(type);
+        pmRequstPojo.setCall(call);
+        pmRequstPojo.setColour(colour);
+        pmRequstPojo.setMaterial(material);
+        pmRequstPojo.setNorms(norms);
+        List<Pm> pms = pmService.findList(pmRequstPojo);
 
 
         Workbook wb = new XSSFWorkbook();

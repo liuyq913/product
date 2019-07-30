@@ -98,4 +98,6 @@ public interface ProductPmMapper {
     List<ProductPm> findList(@Param("productNo") String productNo, @Param("pmNo") String pmNo, @Param("status") int status);
 
     ProductPm selectByNo(@Param("productNo") String productNo);
+
+    List<ProductPm> findListByProductNo(@Param("productNo") String productNo);
 }

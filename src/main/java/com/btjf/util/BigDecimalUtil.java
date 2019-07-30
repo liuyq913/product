@@ -9,6 +9,9 @@ public class BigDecimalUtil {
 
 	private static int DEF_DIV_SCALE = 10; // 默认精确的小数位
 
+	private static int DIV_SCALE_TWO = 2; // 默认精确的小数位
+
+
 	/**
 	 * 提供精确的加法运算。
 	 * @param params 参数数组
@@ -81,7 +84,7 @@ public class BigDecimalUtil {
 	 * @return 两个参数的商
 	 */
 	public static double div(double v1, double v2) {
-		return div(v1, v2, DEF_DIV_SCALE);
+		return div(v1, v2, DIV_SCALE_TWO);
 	}
 
 	/**

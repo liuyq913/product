@@ -25,6 +25,8 @@ public class InsertTask<T> extends RecursiveTask<Integer> {
 
     private Class clazz; //domo
 
+    private Boolean isCover = false;
+
 
     public InsertTask(List<T> list, Class clazz) {
         this.entryList = list;
@@ -82,7 +84,7 @@ public class InsertTask<T> extends RecursiveTask<Integer> {
      */
     private void insert(List<T> list) {
         if (this.clazz == PmService.class) {
-            SpringBeanUtil.getBean(PmService.class).saveList((List<Pm>) list);
+            SpringBeanUtil.getBean(PmService.class).saveList((List<Pm>) list, isCover);
         }
     }
 }
