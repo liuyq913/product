@@ -307,7 +307,7 @@ CREATE TABLE t_Emp(
 	sex int comment '性别 1男 2女',
 	workId int comment '工种ID',
 	type int comment '类别 1计件工 2固定工',
-	native varchar(100) comment '籍贯',
+	nativeSource varchar(100) comment '籍贯',
 	Nation varchar(50) comment '名族',
 	birthday varchar(30) comment '出生日期',
 	idCard varchar(30) comment '身份证号',

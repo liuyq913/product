@@ -1,8 +1,8 @@
 package com.btjf.service.productpm;
 
 import com.btjf.common.page.Page;
-import com.btjf.mapper.product.ProductpmMapper;
-import com.btjf.model.product.Productpm;
+import com.btjf.mapper.product.ProductPmMapper;
+import com.btjf.model.product.ProductPm;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -19,12 +19,12 @@ import java.util.List;
 public class ProductPmService {
 
     @Resource
-    private ProductpmMapper productpmMapper;
+    private ProductPmMapper productpmMapper;
 
 
-    public Page<Productpm> findListPage(String productNo, String pmNo, int status, Page page) {
+    public Page<ProductPm> findListPage(String productNo, String pmNo, int status, Page page) {
         PageHelper.startPage(page.getPage(), page.getRp());
-        List<Productpm> productpms = productpmMapper.findList(productNo, pmNo, status);
+        List<ProductPm> productpms = productpmMapper.findList(productNo, pmNo, status);
         PageInfo pageInfo = new PageInfo(productpms);
         pageInfo.setList(productpms);
         return new Page<>(pageInfo);
@@ -34,7 +34,7 @@ public class ProductPmService {
     public Integer updateStatue(List<Integer> ids){
         try {
             ids.stream().forEach(t ->{
-                Productpm productpm = new Productpm();
+                ProductPm productpm = new ProductPm();
                 productpm.setId(t);
                 productpm.setLastModifyTime(new Date());
                 productpm.setStatus(1);
@@ -53,7 +53,7 @@ public class ProductPmService {
     public Integer delete(List<Integer> ids){
         try {
             ids.stream().forEach(t ->{
-                Productpm productpm = new Productpm();
+                ProductPm productpm = new ProductPm();
                 productpm.setId(t);
                 productpm.setLastModifyTime(new Date());
                 productpm.setIsDelete(1);
@@ -66,7 +66,11 @@ public class ProductPmService {
         return ids.size();
     }
 
-    public Productpm getByID(Integer id) {
+    public ProductPm getByID(Integer id) {
         return productpmMapper.selectByPrimaryKey(id);
+    }
+
+    public ProductPm getByNo(String productNo) {
+        return productpmMapper.selectByNo(productNo);
     }
 }

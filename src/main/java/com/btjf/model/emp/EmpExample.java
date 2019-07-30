@@ -626,73 +626,73 @@ public class EmpExample {
             return (Criteria) this;
         }
 
-        public Criteria andNativeIsNull() {
-            addCriterion("native is null");
+        public Criteria andNativeSourceIsNull() {
+            addCriterion("nativeSource is null");
             return (Criteria) this;
         }
 
-        public Criteria andNativeIsNotNull() {
-            addCriterion("native is not null");
+        public Criteria andNativeSourceIsNotNull() {
+            addCriterion("nativeSource is not null");
             return (Criteria) this;
         }
 
-        public Criteria andNativeEqualTo(String value) {
-            addCriterion("native =", value, "native");
+        public Criteria andNativeSourceEqualTo(String value) {
+            addCriterion("nativeSource =", value, "nativeSource");
             return (Criteria) this;
         }
 
-        public Criteria andNativeNotEqualTo(String value) {
-            addCriterion("native <>", value, "native");
+        public Criteria andNativeSourceNotEqualTo(String value) {
+            addCriterion("nativeSource <>", value, "nativeSource");
             return (Criteria) this;
         }
 
-        public Criteria andNativeGreaterThan(String value) {
-            addCriterion("native >", value, "native");
+        public Criteria andNativeSourceGreaterThan(String value) {
+            addCriterion("nativeSource >", value, "nativeSource");
             return (Criteria) this;
         }
 
-        public Criteria andNativeGreaterThanOrEqualTo(String value) {
-            addCriterion("native >=", value, "native");
+        public Criteria andNativeSourceGreaterThanOrEqualTo(String value) {
+            addCriterion("nativeSource >=", value, "nativeSource");
             return (Criteria) this;
         }
 
-        public Criteria andNativeLessThan(String value) {
-            addCriterion("native <", value, "native");
+        public Criteria andNativeSourceLessThan(String value) {
+            addCriterion("nativeSource <", value, "nativeSource");
             return (Criteria) this;
         }
 
-        public Criteria andNativeLessThanOrEqualTo(String value) {
-            addCriterion("native <=", value, "native");
+        public Criteria andNativeSourceLessThanOrEqualTo(String value) {
+            addCriterion("nativeSource <=", value, "nativeSource");
             return (Criteria) this;
         }
 
-        public Criteria andNativeLike(String value) {
-            addCriterion("native like", value, "native");
+        public Criteria andNativeSourceLike(String value) {
+            addCriterion("nativeSource like", value, "nativeSource");
             return (Criteria) this;
         }
 
-        public Criteria andNativeNotLike(String value) {
-            addCriterion("native not like", value, "native");
+        public Criteria andNativeSourceNotLike(String value) {
+            addCriterion("nativeSource not like", value, "nativeSource");
             return (Criteria) this;
         }
 
-        public Criteria andNativeIn(List<String> values) {
-            addCriterion("native in", values, "native");
+        public Criteria andNativeSourceIn(List<String> values) {
+            addCriterion("nativeSource in", values, "nativeSource");
             return (Criteria) this;
         }
 
-        public Criteria andNativeNotIn(List<String> values) {
-            addCriterion("native not in", values, "native");
+        public Criteria andNativeSourceNotIn(List<String> values) {
+            addCriterion("nativeSource not in", values, "nativeSource");
             return (Criteria) this;
         }
 
-        public Criteria andNativeBetween(String value1, String value2) {
-            addCriterion("native between", value1, value2, "native");
+        public Criteria andNativeSourceBetween(String value1, String value2) {
+            addCriterion("nativeSource between", value1, value2, "nativeSource");
             return (Criteria) this;
         }
 
-        public Criteria andNativeNotBetween(String value1, String value2) {
-            addCriterion("native not between", value1, value2, "native");
+        public Criteria andNativeSourceNotBetween(String value1, String value2) {
+            addCriterion("nativeSource not between", value1, value2, "nativeSource");
             return (Criteria) this;
         }
 
@@ -2261,8 +2261,8 @@ public class EmpExample {
             return (Criteria) this;
         }
 
-        public Criteria andNativeLikeInsensitive(String value) {
-            addCriterion("upper(native) like", value.toUpperCase(), "native");
+        public Criteria andNativeSourceLikeInsensitive(String value) {
+            addCriterion("upper(nativeSource) like", value.toUpperCase(), "nativeSource");
             return (Criteria) this;
         }
 
