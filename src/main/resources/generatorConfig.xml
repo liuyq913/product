@@ -2,7 +2,7 @@
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
 <generatorConfiguration>
 	<!--<classPathEntry location="D:\mysql-connector-java-5.1.28-bin.jar" />-->
-	<classPathEntry location="D:\repository\mysql\mysql-connector-java\5.1.27\mysql-connector-java-5.1.27.jar" />
+	<classPathEntry location="C:\tool\libs\mysql\mysql-connector-java\5.1.38\mysql-connector-java-5.1.38.jar" />
 	<!--<classPathEntry location="C:\Users\admin\.m2\repository\mysql\mysql-connector-java\5.1.38\mysql-connector-java-5.1.38.jar" />-->
 
 	<context id="beitaijinfu" targetRuntime="MyBatis3">
@@ -18,26 +18,27 @@
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
 						connectionURL="jdbc:mysql://localhost:3306/product?setUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=UTC"
 						userId="root"
-						password=""/>
+						password="root"/>
 		<javaTypeResolver>
 			<property name="forceBigDecimals" value="false"/>
 		</javaTypeResolver>
 
 
-		<javaModelGenerator targetPackage="com.btjf.model.pm" targetProject="src/main/java">
+		<javaModelGenerator targetPackage="com.btjf.model.emp" targetProject="src/main/java">
 			<property name="enableSubPackages" value="true" />
 			<property name="trimStrings" value="true" />
 		</javaModelGenerator>
-		<sqlMapGenerator targetPackage="com.btjf.mapper.pm" targetProject="src/main/java">
+		<sqlMapGenerator targetPackage="com.btjf.mapper.emp" targetProject="src/main/java">
 			<property name="enableSubPackages" value="true" />
 		</sqlMapGenerator>
-		<javaClientGenerator targetPackage="com.btjf.mapper.pm" targetProject="src/main/java" type="XMLMAPPER">
+		<javaClientGenerator targetPackage="com.btjf.mapper.emp" targetProject="src/main/java" type="XMLMAPPER">
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 
-		<table tableName="t_PMIn" domainObjectName="PmIn">
+		<table tableName="t_emp_work" domainObjectName="EmpWork">
 		<property name="useActualColumnNames" value="true"/>
 		<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+		<columnRenamingRule searchString="^F" replaceString="" />
 		</table>
 
 		<!--customer-->
@@ -113,7 +114,7 @@
 		<!--</table>-->
 
 		<!--order-->
-		<!--<table tableName="t_Order" domainObjectName="Order">-->
+		<!--<table tableName="t_Order" domainObjectName="order">-->
 			<!--<property name="useActualColumnNames" value="true"/>-->
 			<!--<generatedKey column="Fid" sqlStatement="MySql" identity="true"/>-->
 			<!--<columnRenamingRule searchString="^F" replaceString="" />-->

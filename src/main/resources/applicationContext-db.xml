@@ -92,7 +92,7 @@
 		</property>
 		<property name="mapperLocations">
 			<list>
-				<value>classpath*:com/btjf/mapper/*/*.xml</value>
+				<value>classpath*:com/btjf/mapper/**/*.xml</value>
 			</list>
 		</property>
 	</bean>

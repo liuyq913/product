@@ -1,6 +1,5 @@
 package com.btjf.model.pm;
 
-
 import java.io.Serializable;
 import java.util.Date;
 
