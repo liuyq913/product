@@ -7,6 +7,7 @@ import com.btjf.common.page.Page;
 import com.btjf.controller.base.ProductBaseController;
 import com.btjf.model.pm.Pm;
 import com.btjf.model.sys.SysUser;
+import com.btjf.service.pm.PmInService;
 import com.btjf.service.pm.PmService;
 import com.btjf.vo.PmInVo;
 import com.wordnik.swagger.annotations.Api;
@@ -24,14 +25,14 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/pm/in")
-@Api(value = "PmInControllerProduct", description = "材料管理", position = 1)
-public class PmInControllerProduct extends ProductBaseController {
+@Api(value = "PmInController", description = "材料管理", position = 1)
+public class PmInController extends ProductBaseController {
 
     private static final Logger LOGGER = Logger
-            .getLogger(PmInControllerProduct.class);
+            .getLogger(PmInController.class);
 
     @Resource
-    private PmService pmService;
+    private PmInService pmInService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public XaResult<List<PmInVo>> findList(@ApiParam("编号") String pmNo, @ApiParam("名称") String name
@@ -39,9 +40,9 @@ public class PmInControllerProduct extends ProductBaseController {
                                            Integer pageSize, Integer currentPage) {
         LOGGER.info(getRequestParamsAndUrl());
 
-        Page<Pm> listPage = pmService.findListPage(pmNo, name, type, AppPageHelper.appInit(currentPage, pageSize));
-        XaResult<List<Pm>> result = AppXaResultHelper.success(listPage, listPage.getRows());
-        return null;
+        Page<PmInVo> listPage = pmInService.findListPage(pmNo, name, type,startDate,endDate, AppPageHelper.appInit(currentPage, pageSize));
+        XaResult<List<PmInVo>> result = AppXaResultHelper.success(listPage, listPage.getRows());
+        return result;
     }
 
     @RequestMapping(value = "add", method = RequestMethod.POST)

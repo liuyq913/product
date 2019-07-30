@@ -455,22 +455,22 @@
             aa.remark
     from t_PM p left JOIN
     (select a.pmId,max(a.inDate) inDate from t_PMIn a GROUP BY a.pmId )i on p.id = i.pmId
-    INNER JOIN t_PMIn aa on i.inDate = aa.inDate
+    LEFT JOIN t_PMIn aa on i.inDate = aa.inDate
     where 1=1
     <if test="pmNo != null">
       and p.pmNo LIKE '%${pmNo}%'
     </if>
     <if test="name != null">
-      and p.pmName LIKE '%${name}%'
+      and p.name LIKE '%${name}%'
     </if>
     <if test="type != null">
-      and p.type = ${type}
+      and p.type = #{type,jdbcType=VARCHAR}
     </if>
     <if test="startDate != null">
-      and p.inDate &gt;= ${startDate}
+      and i.inDate &gt;= #{startDate}
     </if>
     <if test="endDate != null">
-      and p.inDate &lt;= ${endDate}
+      and i.inDate &lt;= #{endDate}
     </if>
 
 

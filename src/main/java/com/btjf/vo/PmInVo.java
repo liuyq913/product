@@ -24,6 +24,8 @@ public class PmInVo {
 
     private String inDate;
 
+    private Boolean allowIn = Boolean.TRUE;
+
     public Integer getId() {
         return id;
     }
@@ -86,5 +88,13 @@ public class PmInVo {
 
     public void setInDate(Date inDate) {
         this.inDate =  DateUtil.dateToString(inDate, new SimpleDateFormat("yyyy/MM/dd"));
+    }
+
+    public Boolean getAllowIn() {
+        return allowIn;
+    }
+
+    public void setAllowIn(Boolean allowIn) {
+        this.allowIn = allowIn;
     }
 }
