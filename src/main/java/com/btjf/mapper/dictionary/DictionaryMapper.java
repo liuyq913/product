@@ -2,8 +2,9 @@ package com.btjf.mapper.dictionary;
 
 import com.btjf.model.dictionary.Dictionary;
 import com.btjf.model.dictionary.DictionaryExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface DictionaryMapper {
     /**

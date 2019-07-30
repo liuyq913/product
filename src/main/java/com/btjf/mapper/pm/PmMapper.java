@@ -100,4 +100,6 @@ public interface PmMapper {
     Integer deleteByID(@Param("integers") List<Integer> integers);
 
     Integer saveList(@Param("pmList") List<Pm> pmList);
+
+    Pm getByNO(@Param("no") String pmNo);
 }

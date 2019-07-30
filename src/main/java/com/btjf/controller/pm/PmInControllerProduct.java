@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,7 +37,7 @@ public class PmInControllerProduct extends ProductBaseController {
     public XaResult<List<PmInVo>> findList(@ApiParam("编号") String pmNo, @ApiParam("名称") String name
             , @ApiParam("类型") String type, @ApiParam("起始时间") String startDate, @ApiParam("截止时间") String endDate,
                                            Integer pageSize, Integer currentPage) {
-        LOGGER.info(getRequestParams());
+        LOGGER.info(getRequestParamsAndUrl());
 
         Page<Pm> listPage = pmService.findListPage(pmNo, name, type, AppPageHelper.appInit(currentPage, pageSize));
         XaResult<List<Pm>> result = AppXaResultHelper.success(listPage, listPage.getRows());
@@ -49,7 +47,7 @@ public class PmInControllerProduct extends ProductBaseController {
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public XaResult<Integer> add(@ApiParam("id") Integer id, @ApiParam("入库数量") Integer num, @ApiParam("供应单位")
             String supplier, @ApiParam("入库日期") String date,@ApiParam("备注") String remark) {
-        LOGGER.info(getRequestParams());
+        LOGGER.info(getRequestParamsAndUrl());
 
         SysUser sysUser = getLoginUser();
 
@@ -60,7 +58,7 @@ public class PmInControllerProduct extends ProductBaseController {
 
     @RequestMapping(value = "query", method = RequestMethod.GET)
     public XaResult<Pm> query(@ApiParam("材料编号") Integer pmNo) {
-        LOGGER.info(getRequestParams());
+        LOGGER.info(getRequestParamsAndUrl());
 
 
 
@@ -71,7 +69,7 @@ public class PmInControllerProduct extends ProductBaseController {
     @RequestMapping(value = "export", method = RequestMethod.GET)
     public XaResult<Pm> export(@ApiParam("编号") String pmNo, @ApiParam("名称") String name
             , @ApiParam("类型") String type, @ApiParam("起始时间") String startDate, @ApiParam("截止时间") String endDate) {
-        LOGGER.info(getRequestParams());
+        LOGGER.info(getRequestParamsAndUrl());
 
 
 

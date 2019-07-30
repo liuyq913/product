@@ -16,17 +16,19 @@ public class UserInfoVo implements Serializable {
     private String roleName;
     private String loginName;
     private String userName;
-    private String SecretKey;
+    private String secretKey;
 
     public UserInfoVo() {
     }
 
     public UserInfoVo(SysUser sysUser) {
-        this.id = sysUser.getId();
-        this.deptId = sysUser.getDeptId();
-        this.roleId = sysUser.getRoleId();
-        this.loginName = sysUser.getLoginName();
-        this.userName = sysUser.getUserName();
+        if(sysUser !=null) {
+            this.id = sysUser.getId();
+            this.deptId = sysUser.getDeptId();
+            this.roleId = sysUser.getRoleId();
+            this.loginName = sysUser.getLoginName();
+            this.userName = sysUser.getUserName();
+        }
     }
 
     public Integer getId() {
@@ -86,10 +88,10 @@ public class UserInfoVo implements Serializable {
     }
 
     public String getSecretKey() {
-        return SecretKey;
+        return secretKey;
     }
 
     public void setSecretKey(String secretKey) {
-        SecretKey = secretKey;
+        this.secretKey = secretKey;
     }
 }

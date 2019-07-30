@@ -54,4 +54,10 @@ public class PmService {
     public Integer saveList(List<Pm> pmList){
        return pmMapper.saveList(pmList);
     }
+
+
+    public Pm getByNo(String no){
+        if(no == null) return null;
+        return pmMapper.getByNO(no);
+    }
 }

@@ -13,9 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 权限过滤器
@@ -27,7 +24,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     private Logger logger = LoggerFactory.getLogger(LoginInterceptor.class);
 
-    public static final String SECRETKEY = "SecretKey";
+    public static final String SECRETKEY = "secretKey";
 
 	@Resource
 	private LoginInfoCache loginInfoCache;
