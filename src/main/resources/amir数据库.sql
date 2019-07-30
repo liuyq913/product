@@ -136,6 +136,9 @@ CREATE TABLE t_PM(
 	lastModifyTime datetime,
 	isDelete int NOT NULL
 );
+INSERT INTO `product`.`t_PM` (`pmNo`, `name`, `type`, `num`, `unit`, `remark`, `operator`, `createTime`, `lastModifyTime`, `isDelete`) VALUES ('TEST1', '测试1', '辅料', '20', '双', 'SSS', '1', '2019-07-30 21:41:53', NULL, '0');
+INSERT INTO `product`.`t_PM` (`pmNo`, `name`, `type`, `num`, `unit`, `remark`, `operator`, `createTime`, `lastModifyTime`, `isDelete`) VALUES ('DDD0', '002', '包装材料类', '0', '个', NULL, '1', '2019-07-30 21:57:22', NULL, '0');
+
 
 ##产品   原型中看不出产品信息
 CREATE TABLE t_Product(
@@ -189,6 +192,10 @@ CREATE TABLE t_PMIn(
 	lastModifyTime datetime,
 	isDelete int NOT NULL
 );
+
+INSERT INTO `product`.`t_PMIn` (`pmId`, `pmNo`, `pmName`, `type`, `unit`, `remark`, `supplier`, `inDate`, `num`, `perNum`, `backNum`, `operator`, `createTime`, `lastModifyTime`, `isDelete`) VALUES ('1', 'TEST1', '测试1', '辅料', '10', 'AAA', '！！！！', '2019-07-30', '10', '0', '10', '1', '2019-07-30 21:43:13', NULL, '0');
+INSERT INTO `product`.`t_PMIn` (`pmId`, `pmNo`, `pmName`, `type`, `unit`, `remark`, `supplier`, `inDate`, `num`, `perNum`, `backNum`, `operator`, `createTime`, `lastModifyTime`, `isDelete`) VALUES ('1', 'TEST1', '测试1', '辅料', '10', 'AAA', '！！！！', '2019-07-31', '10', '10', '20', '1', '2019-07-30 21:43:13', NULL, '0');
+
 
 ##领料单  耗料上限出库  好像可以直接用订单做主表
 CREATE TABLE t_PMout_Bill(
