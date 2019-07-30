@@ -67,7 +67,7 @@
 		</encoder>
 	</appender>
 
-	<root level="INFO">
+	<root level="DEBUG">
 		<!-- 生产环境［不］配置此Appender -->
 		<appender-ref ref="STDOUT" />
 		<!-- 生产环境需要配置此Appender -->

@@ -49,7 +49,35 @@ CREATE TABLE t_SysDept(
 	deptName varchar(50),
 	deptOrder int
 	);
-	
+
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('经理室', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('人事部', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('劳资部', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('出货部', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('后勤部', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('验货部', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('外加工部', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('质检部-成品检验', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('外协质检', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('行政部', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('技术部', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('生产部', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('采购部', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('下料车间', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('一车间', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('二车间', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('信息中心', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('后道车间-车工', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('后道车间-中辅工', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('后道车间-大辅工', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('包装车间', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('财务部', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('仓库', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('样品间', NULL);
+
+update t_SysDept set deptOrder = id;
+
+
 ##后台登录账号
 CREATE TABLE t_SysUser(
 	id int primary key auto_increment,
@@ -59,6 +87,9 @@ CREATE TABLE t_SysUser(
 	loginPwd varchar(100) NULL,
 	userName varchar(50) NULL
 	);
+INSERT INTO `product`.`t_SysUser` (`deptId`, `roleId`, `loginName`, `loginPwd`, `userName`) VALUES ('1', '1', 'admin', '123456', '我说了算');
+
+
 ##角色
 CREATE TABLE t_SysRole(
   id int(11) primary key AUTO_INCREMENT,
@@ -66,6 +97,7 @@ CREATE TABLE t_SysRole(
   description varchar(255) DEFAULT NULL,
   roleOrder int
 );
+INSERT INTO `product`.`t_SysRole` (`name`, `description`, `roleOrder`) VALUES ('管理员权限', NULL, '1');
 
 ##用户角色表
 CREATE TABLE t_SysUserRole(
@@ -309,7 +341,7 @@ CREATE TABLE t_Emp(
 	sex int comment '性别 1男 2女',
 	workId int comment '工种ID',
 	type int comment '类别 1计件工 2固定工',
-	native varchar(100) comment '籍贯',
+	nativeSource varchar(100) comment '籍贯',
 	Nation varchar(50) comment '名族',
 	birthday varchar(30) comment '出生日期',
 	idCard varchar(30) comment '身份证号',
