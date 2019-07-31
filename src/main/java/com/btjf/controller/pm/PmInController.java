@@ -86,7 +86,11 @@ public class PmInController extends ProductBaseController {
         pmIn.setCreateTime(new Date());
         pmIn.setIsDelete(0);
         pmInService.create(pmIn);
-
+        Pm pm1 = new Pm();
+        pm1.setId(pm.getId());
+        pm1.setNum(pm.getNum() + num);
+        pm.setLastModifyTime(new Date());
+        pmService.updateByID(pm1);
         return XaResult.success();
 
     }
