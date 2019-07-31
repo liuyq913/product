@@ -63,6 +63,9 @@ public class PmInController extends ProductBaseController {
         }
         SysUser sysUser = getLoginUser();
         Pm pm = pmService.getByID(id);
+        if (pm == null){
+            return XaResult.error("该材料不存在");
+        }
         PmIn pmIn = new PmIn();
         pmIn.setPmId(pm.getId());
         pmIn.setPmNo(pm.getPmNo());
@@ -100,7 +103,7 @@ public class PmInController extends ProductBaseController {
     public XaResult<Pm> export(@ApiParam("编号") String pmNo, @ApiParam("名称") String name
             , @ApiParam("类型") String type, @ApiParam("起始时间") String startDate, @ApiParam("截止时间") String endDate) {
         LOGGER.info(getRequestParamsAndUrl());
-
+        List<PmInVo> list = pmInService.findList(pmNo, name, type, startDate, endDate);
 
 
         return XaResult.success();
