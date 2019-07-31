@@ -5,11 +5,6 @@ import com.btjf.model.pm.Pm;
 import com.btjf.model.pm.PmIn;
 import com.btjf.service.pm.PmInService;
 import com.btjf.service.pm.PmService;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.springframework.data.annotation.Transient;
@@ -20,9 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -44,7 +38,7 @@ public class PmInExcelHandler extends BaseExcelHandler{
     private PmService pmService;
 
     @Override
-    public List<String> execute(MultipartFile file)throws Exception {
+    public List<String> execute(MultipartFile file, Boolean isCover, String operator)throws Exception {
         return checkLayout(file, fields);
     }
 

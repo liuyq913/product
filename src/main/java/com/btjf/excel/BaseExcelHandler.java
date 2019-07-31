@@ -1,9 +1,6 @@
 package com.btjf.excel;
 
 
-import com.btjf.business.common.exception.BusinessException;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -23,7 +20,7 @@ import java.util.List;
  */
 public abstract class BaseExcelHandler {
 
-    public abstract  List<String> execute(MultipartFile file)throws Exception;
+    public abstract  List<String> execute(MultipartFile file, Boolean isCover, String operator)throws Exception;
 
     public  List<String> checkLayout(MultipartFile file, List<String> fields) throws Exception{
 

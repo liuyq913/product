@@ -14,11 +14,14 @@ public class ExcelHandlerHelper {
     @Resource
     private PmInExcelHandler pmInExcelHandlerl;
 
+    @Resource
+    private PmExcelHandler pmExcelHandler;
+
     public BaseExcelHandler getHandler(Integer type) throws BusinessException {
         switch (type){
             case 1:
                 //材料导入
-                break;
+                return pmExcelHandler;
             case 2:
                 //入库导入
                 return pmInExcelHandlerl;
@@ -27,6 +30,5 @@ public class ExcelHandlerHelper {
                 throw new BusinessException("文件类型不存在");
         }
 
-        return null;
     }
 }

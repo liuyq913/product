@@ -16,4 +16,8 @@ public class DictionaryService {
 
         return dictionaryMapper.getList(type);
     }
+
+    public List<String> getListByNameAndType(String name, Integer type){
+        return dictionaryMapper.getListByNameAndType(name, type);
+    }
 }

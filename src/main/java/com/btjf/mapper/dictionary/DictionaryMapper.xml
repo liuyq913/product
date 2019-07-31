@@ -240,4 +240,8 @@
   <select id="getList" resultType="java.lang.String">
     select value from t_dictionary where type = #{type,jdbcType=INTEGER}
   </select>
+
+  <select id="getListByNameAndType" resultType="java.lang.String">
+    select value from t_dictionary where type = #{type,jdbcType=INTEGER} and value = #{name, jdbcType=VARCHAR}
+  </select>
 </mapper>

@@ -33,6 +33,14 @@ public class InsertTask<T> extends RecursiveTask<Integer> {
         this.clazz = clazz;
     }
 
+    public Boolean getCover() {
+        return isCover;
+    }
+
+    public void setCover(Boolean cover) {
+        isCover = cover;
+    }
+
     /**
      * 拆分insert   不用事务，导入
      *

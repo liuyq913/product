@@ -14,7 +14,7 @@ public class PmRequstPojo implements Serializable{
    private String colour;
    private String norms;
    private String material;
-   private String call;
+   private String callStr;
    private String type;
 
    public String getPmNo() {
@@ -57,12 +57,12 @@ public class PmRequstPojo implements Serializable{
       this.material = material;
    }
 
-   public String getCall() {
-      return call;
+   public String getCallStr() {
+      return callStr;
    }
 
-   public void setCall(String call) {
-      this.call = call;
+   public void setCallStr(String callStr) {
+      this.callStr = callStr;
    }
 
    public String getType() {
