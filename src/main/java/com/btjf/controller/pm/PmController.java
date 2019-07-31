@@ -1,5 +1,6 @@
 package com.btjf.controller.pm;
 
+import com.alibaba.dubbo.common.utils.StringUtils;
 import com.btjf.application.components.page.AppPageHelper;
 import com.btjf.application.components.xaresult.AppXaResultHelper;
 import com.btjf.application.util.XaResult;
@@ -10,6 +11,7 @@ import com.btjf.model.pm.Pm;
 import com.btjf.model.pm.PmRequstPojo;
 import com.btjf.model.sys.SysUser;
 import com.btjf.service.pm.PmService;
+import com.google.common.collect.Lists;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.apache.ibatis.annotations.Param;
@@ -71,34 +73,60 @@ public class PmController extends ProductBaseController {
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public XaResult<Integer> deleteByID(@ApiParam("id数组") Integer[] ids) {
+    public XaResult<Integer> deleteByID(@ApiParam("id数组") String[] ids) {
          getLoginUser();
         LOGGER.info(getRequestParamsAndUrl());
 
         if (null == ids || Arrays.asList(ids).size() <= 0) {
             return XaResult.error("请选择要删除的记录");
         }
-        int rows = pmService.deleteByID(Arrays.asList(ids));
+        List<Integer> integers = Lists.newArrayList();
+        Arrays.asList(ids).stream().forEach( t -> {
+            integers.add(new Integer(t));
+        });
+        int rows = pmService.deleteByID(integers);
         return XaResult.success(rows);
     }
 
     @RequestMapping(value = "/addOrUpdate", method = RequestMethod.POST)
     public XaResult<Integer> addOrUpdate(@ApiParam("id") Integer id, @ApiParam("编号") String pmNo, @ApiParam("名称")
-            String name, @ApiParam("类型") String type, @ApiParam("单位") String unit,
+                String name, @ApiParam("颜色") String color, @ApiParam("规格")
+            String norms, @Param("材质") String material, @Param("称呼") String call, @ApiParam("类型") String type, @ApiParam("单位") String unit,
                                          @ApiParam("备注") String remark) {
         LOGGER.info(getRequestParamsAndUrl());
 
         SysUser sysUser = getLoginUser();
-
+        StringBuffer nameStr = new StringBuffer();
+        if(!StringUtils.isEmpty(color)){
+            nameStr.append(color).append("-");
+        }
+        if(!StringUtils.isEmpty(norms)){
+            nameStr.append(norms).append("-");
+        }
+        if(!StringUtils.isEmpty(material)){
+            nameStr.append(material).append("-");
+        }
+        if(!StringUtils.isEmpty(call)){
+            nameStr.append(call).append("-");
+        }
+        if(nameStr.toString().endsWith("-")) {
+            name = nameStr.toString().substring(0, nameStr.toString().length() - 1);
+        }else{
+            name = nameStr.toString();
+        }
         if (null != id) { //更新
             Pm pm = pmService.getByID(id);
             pm.setLastModifyTime(new Date());
             pm.setPmNo(pmNo);
-            pm.setName(name);
             pm.setType(type);
             pm.setUnit(unit);
             pm.setRemark(remark);
+            pm.setCallStr(call);
+            pm.setColour(color);
+            pm.setNorms(norms);
+            pm.setMaterial(material);
             pm.setOperator(sysUser.getUserName());
+
             id = pmService.updateByID(pm);
         } else {
             Pm pm = new Pm();
@@ -110,6 +138,10 @@ public class PmController extends ProductBaseController {
             pm.setName(name);
             pm.setType(type);
             pm.setUnit(unit);
+            pm.setCallStr(call);
+            pm.setColour(color);
+            pm.setNorms(norms);
+            pm.setMaterial(material);
             pm.setRemark(remark);
             pm.setCreateTime(new Date());
             pm.setOperator(sysUser.getUserName());
@@ -119,7 +151,7 @@ public class PmController extends ProductBaseController {
         return XaResult.success(id);
     }
 
-    @RequestMapping(value = "/detail", method = RequestMethod.POST)
+    @RequestMapping(value = "/detail", method = RequestMethod.GET)
     public  XaResult<Pm> getDetail(@ApiParam("id") Integer id){
         getLoginUser();
         LOGGER.info(getRequestParamsAndUrl());
