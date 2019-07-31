@@ -181,6 +181,11 @@ public class PmExcelHandler extends BaseExcelHandler {
     }
 
     @Override
+    protected void insert() {
+
+    }
+
+    @Override
     protected void create(XSSFRow row) throws Exception {
 
     }
