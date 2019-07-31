@@ -26,6 +26,8 @@ public class PmInVo {
 
     private Boolean allowIn = Boolean.TRUE;
 
+    private String supplier;
+
     public Integer getId() {
         return id;
     }
@@ -96,5 +98,13 @@ public class PmInVo {
 
     public void setAllowIn(Boolean allowIn) {
         this.allowIn = allowIn;
+    }
+
+    public String getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(String supplier) {
+        this.supplier = supplier;
     }
 }

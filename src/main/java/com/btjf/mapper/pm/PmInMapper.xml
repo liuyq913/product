@@ -452,7 +452,8 @@
             p.num,
             p.unit,
             i.inDate,
-            aa.remark
+            aa.remark,
+            aa.supplier
     from t_PM p left JOIN
     (select a.pmId,max(a.inDate) inDate from t_PMIn a GROUP BY a.pmId )i on p.id = i.pmId
     LEFT JOIN t_PMIn aa on i.inDate = aa.inDate

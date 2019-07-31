@@ -12,7 +12,11 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.springframework.data.annotation.Transient;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -26,11 +30,13 @@ import java.util.stream.Stream;
  * Created by yj on 2019/7/31.
  */
 @Component
+//@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
 public class PmInExcelHandler extends BaseExcelHandler{
 
-    private final static List<String> fields = Stream.of("物料编号", "物料名称", "物料类别",
+    public final static List<String> fields = Stream.of("物料编号", "物料名称", "物料类别",
             "供应单位", "初始库或入库数量", "物料单位", "备注").collect(Collectors.toList());
 
+    private List<PmIn> pmInList = new ArrayList<>();
 
     @Resource
     private PmInService pmInService;
@@ -40,6 +46,28 @@ public class PmInExcelHandler extends BaseExcelHandler{
     @Override
     public List<String> execute(MultipartFile file)throws Exception {
         return checkLayout(file, fields);
+    }
+
+    @Override
+    protected void insert() {
+        if(pmInList != null && pmInList.size() >0){
+            for(int i=0; i< pmInList.size(); i++){
+                PmIn pmIn = pmInList.get(i);
+                Pm pm = pmService.getByNo(pmIn.getPmNo());
+                pmIn.setPmId(pm.getId());
+                pmIn.setPerNum(pm.getNum());
+                pmIn.setBackNum(pm.getNum() + pmIn.getNum());
+                pmIn.setOperator("系统导入");
+                pmIn.setCreateTime(new Date());
+                pmIn.setIsDelete(0);
+                pmInService.create(pmIn);
+                Pm pm1 = new Pm();
+                pm1.setId(pm.getId());
+                pm1.setNum(pm.getNum() + pmIn.getNum());
+                pm.setLastModifyTime(new Date());
+                pmService.updateByID(pm1);
+            }
+        }
     }
 
     @Override
@@ -72,19 +100,7 @@ public class PmInExcelHandler extends BaseExcelHandler{
                         break;
             }
         }
-        Pm pm = pmService.getByNo(pmIn.getPmNo());
-        pmIn.setPmId(pm.getId());
-        pmIn.setPerNum(pm.getNum());
-        pmIn.setBackNum(pm.getNum() + pmIn.getNum());
-        pmIn.setOperator("系统导入");
-        pmIn.setCreateTime(new Date());
-        pmIn.setIsDelete(0);
-        pmInService.create(pmIn);
-        Pm pm1 = new Pm();
-        pm1.setId(pm.getId());
-        pm1.setNum(pm.getNum() + pmIn.getNum());
-        pm.setLastModifyTime(new Date());
-        pmService.updateByID(pm1);
+        pmInList.add(pmIn);
     }
 
     private String getCellValue(XSSFCell cell, int i) {
