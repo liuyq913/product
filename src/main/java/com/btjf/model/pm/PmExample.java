@@ -1125,73 +1125,73 @@ public class PmExample {
             return (Criteria) this;
         }
 
-        public Criteria andCallIsNull() {
-            addCriterion("call is null");
+        public Criteria andCallStrIsNull() {
+            addCriterion("callStr is null");
             return (Criteria) this;
         }
 
-        public Criteria andCallIsNotNull() {
-            addCriterion("call is not null");
+        public Criteria andCallStrIsNotNull() {
+            addCriterion("callStr is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCallEqualTo(String value) {
-            addCriterion("call =", value, "call");
+        public Criteria andCallStrEqualTo(String value) {
+            addCriterion("callStr =", value, "callStr");
             return (Criteria) this;
         }
 
-        public Criteria andCallNotEqualTo(String value) {
-            addCriterion("call <>", value, "call");
+        public Criteria andCallStrNotEqualTo(String value) {
+            addCriterion("callStr <>", value, "callStr");
             return (Criteria) this;
         }
 
-        public Criteria andCallGreaterThan(String value) {
-            addCriterion("call >", value, "call");
+        public Criteria andCallStrGreaterThan(String value) {
+            addCriterion("callStr >", value, "callStr");
             return (Criteria) this;
         }
 
-        public Criteria andCallGreaterThanOrEqualTo(String value) {
-            addCriterion("call >=", value, "call");
+        public Criteria andCallStrGreaterThanOrEqualTo(String value) {
+            addCriterion("callStr >=", value, "callStr");
             return (Criteria) this;
         }
 
-        public Criteria andCallLessThan(String value) {
-            addCriterion("call <", value, "call");
+        public Criteria andCallStrLessThan(String value) {
+            addCriterion("callStr <", value, "callStr");
             return (Criteria) this;
         }
 
-        public Criteria andCallLessThanOrEqualTo(String value) {
-            addCriterion("call <=", value, "call");
+        public Criteria andCallStrLessThanOrEqualTo(String value) {
+            addCriterion("callStr <=", value, "callStr");
             return (Criteria) this;
         }
 
-        public Criteria andCallLike(String value) {
-            addCriterion("call like", value, "call");
+        public Criteria andCallStrLike(String value) {
+            addCriterion("callStr like", value, "callStr");
             return (Criteria) this;
         }
 
-        public Criteria andCallNotLike(String value) {
-            addCriterion("call not like", value, "call");
+        public Criteria andCallStrNotLike(String value) {
+            addCriterion("callStr not like", value, "callStr");
             return (Criteria) this;
         }
 
-        public Criteria andCallIn(List<String> values) {
-            addCriterion("call in", values, "call");
+        public Criteria andCallStrIn(List<String> values) {
+            addCriterion("callStr in", values, "callStr");
             return (Criteria) this;
         }
 
-        public Criteria andCallNotIn(List<String> values) {
-            addCriterion("call not in", values, "call");
+        public Criteria andCallStrNotIn(List<String> values) {
+            addCriterion("callStr not in", values, "callStr");
             return (Criteria) this;
         }
 
-        public Criteria andCallBetween(String value1, String value2) {
-            addCriterion("call between", value1, value2, "call");
+        public Criteria andCallStrBetween(String value1, String value2) {
+            addCriterion("callStr between", value1, value2, "callStr");
             return (Criteria) this;
         }
 
-        public Criteria andCallNotBetween(String value1, String value2) {
-            addCriterion("call not between", value1, value2, "call");
+        public Criteria andCallStrNotBetween(String value1, String value2) {
+            addCriterion("callStr not between", value1, value2, "callStr");
             return (Criteria) this;
         }
 
@@ -1240,8 +1240,8 @@ public class PmExample {
             return (Criteria) this;
         }
 
-        public Criteria andCallLikeInsensitive(String value) {
-            addCriterion("upper(call) like", value.toUpperCase(), "call");
+        public Criteria andCallStrLikeInsensitive(String value) {
+            addCriterion("upper(callStr) like", value.toUpperCase(), "callStr");
             return (Criteria) this;
         }
     }

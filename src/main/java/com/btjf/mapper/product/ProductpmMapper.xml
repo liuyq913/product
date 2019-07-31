@@ -465,10 +465,10 @@
         WHERE
         1=1
         <if test="productNo != null">
-            AND productNo LIKE #{productNo,jdbcType=VARCHAR},
+            AND productNo LIKE '%${productNo}%'
         </if>
         <if test="pmNo != null">
-            AND pmNo LIKE #{pmNo,jdbcType=VARCHAR},
+            AND pmNo LIKE '%${pmNo}%'
         </if>
         <if test="status != null">
             AND status = #{status}

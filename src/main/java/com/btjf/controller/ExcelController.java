@@ -1,10 +1,9 @@
 package com.btjf.controller;
 
 import com.btjf.application.util.XaResult;
+import com.btjf.controller.base.ProductBaseController;
 import com.btjf.excel.ExcelHandlerHelper;
-import com.btjf.service.dictionary.DictionaryService;
 import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +19,7 @@ import java.util.List;
 @Api(value = "ExcelController", description = "Excel文件导入", position = 1)
 @RequestMapping(value = "/excel")
 @RestController("excelController")
-public class ExcelController {
+public class ExcelController extends ProductBaseController{
 
     @Resource
     private ExcelHandlerHelper excelHandlerHelper;
@@ -32,18 +31,16 @@ public class ExcelController {
      * @return
      */
     @RequestMapping(value = "/import", method = RequestMethod.POST)
-    public XaResult<List<String>> importExcel(MultipartFile file, Integer fileType) {
+    public XaResult<List<String>> importExcel(MultipartFile file, Integer fileType, Boolean isCover) throws Exception {
         if(fileType == null){
             return XaResult.error("数据类型为空");
         }
         if (file == null || file.isEmpty()) {
             return XaResult.error("请选择上传的文件");
         } else {
-            excelHandlerHelper.getHandler(fileType).execute(file);
+            return XaResult.success(excelHandlerHelper.getHandler(fileType).execute(file, isCover, getLoginUser().getUserName()));
         }
-        return XaResult.success();
     }
-
 
 
 

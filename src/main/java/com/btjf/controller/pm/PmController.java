@@ -55,11 +55,17 @@ public class PmController extends ProductBaseController {
         pmRequstPojo.setPmNo(pmNo);
         pmRequstPojo.setName(name);
         pmRequstPojo.setType(type);
-        pmRequstPojo.setCall(call);
+        pmRequstPojo.setCallStr(call);
         pmRequstPojo.setColour(colour);
         pmRequstPojo.setMaterial(material);
         pmRequstPojo.setNorms(norms);
         Page<Pm> listPage = pmService.findListPage(pmRequstPojo, AppPageHelper.appInit(currentPage, pageSize));
+        List<Pm> pms = listPage.getRows();
+        pms.stream().filter(t -> t!=null).forEach(t -> {
+            if(t.getCreateTime()!= null){
+                t.setCreateTimeStr(DateUtil.dateToString(t.getCreateTime(), DateUtil.ymdFormat));
+            }
+        });
         XaResult<List<Pm>> result = AppXaResultHelper.success(listPage, listPage.getRows());
         return result;
     }
@@ -113,6 +119,17 @@ public class PmController extends ProductBaseController {
         return XaResult.success(id);
     }
 
+    @RequestMapping(value = "/detail", method = RequestMethod.POST)
+    public  XaResult<Pm> getDetail(@ApiParam("id") Integer id){
+        getLoginUser();
+        LOGGER.info(getRequestParamsAndUrl());
+        if(id == null) return XaResult.error("请选中项");
+
+
+        Pm pm = pmService.getByID(id);
+        return  XaResult.success(pm);
+    }
+
     /**
      * 导出列表数据
      *
@@ -132,7 +149,7 @@ public class PmController extends ProductBaseController {
         pmRequstPojo.setPmNo(pmNo);
         pmRequstPojo.setName(name);
         pmRequstPojo.setType(type);
-        pmRequstPojo.setCall(call);
+        pmRequstPojo.setCallStr(call);
         pmRequstPojo.setColour(colour);
         pmRequstPojo.setMaterial(material);
         pmRequstPojo.setNorms(norms);
