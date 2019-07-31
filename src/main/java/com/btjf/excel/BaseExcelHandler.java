@@ -32,12 +32,14 @@ public abstract class BaseExcelHandler {
         int celllength = firstRow.getLastCellNum();
 
         List<String> response = new ArrayList<>();
+        List<String> errResponse = new ArrayList<>();
         // 获取Excel中的列名
         for (int f = 0; f < celllength; f++) {
             XSSFCell cell = firstRow.getCell(f);
             String field = cell.getStringCellValue().trim();
             if(!fields.get(f).equals(field)){
                 wb.close();
+                response.add("导入文档数据格式不符，请重选文件");
                 response.add("Excel格式出错,第" + (f+1) +"列表头应该为:" + fields.get(f));
                 return response;
             }
@@ -49,13 +51,22 @@ public abstract class BaseExcelHandler {
                 create(row);
             }catch (Exception e){
                 e.printStackTrace();
-                response.add("第" + (j +1) + "行数据录入出错。" );
+                errResponse.add("第" + (j +1) + "行数据 " + e.getMessage() );
             }
         }
-        response.add("提交成功！新增导入" + sheet.getLastRowNum() + "条数据！" );
+        if(errResponse.size() > 0){
+            int sum = sheet.getLastRowNum() - errResponse.size();
+            response.add("导入失败，以下数据请修改后再重新上传");
+            response.addAll(errResponse);
+        }else{
+            insert();
+            response.add("提交成功！新增导入" + sheet.getLastRowNum() + "条数据！" );
+        }
         wb.close();
         return response;
     }
+
+    protected abstract void insert();
 
     protected abstract void create(XSSFRow row)throws Exception;
 

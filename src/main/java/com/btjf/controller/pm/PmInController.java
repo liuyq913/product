@@ -6,6 +6,7 @@ import com.btjf.application.util.XaResult;
 import com.btjf.common.page.Page;
 import com.btjf.common.utils.DateUtil;
 import com.btjf.controller.base.ProductBaseController;
+import com.btjf.excel.PmInExcelHandler;
 import com.btjf.model.pm.Pm;
 import com.btjf.model.pm.PmIn;
 import com.btjf.model.sys.SysUser;
@@ -16,11 +17,17 @@ import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 
@@ -104,13 +111,57 @@ public class PmInController extends ProductBaseController {
     }
 
     @RequestMapping(value = "export", method = RequestMethod.GET)
-    public XaResult<Pm> export(@ApiParam("编号") String pmNo, @ApiParam("名称") String name
-            , @ApiParam("类型") String type, @ApiParam("起始时间") String startDate, @ApiParam("截止时间") String endDate) {
+    public void export(@ApiParam("编号") String pmNo, @ApiParam("名称") String name
+            , @ApiParam("类型") String type, @ApiParam("起始时间") String startDate, @ApiParam("截止时间") String endDate,
+                               HttpServletResponse response) {
         LOGGER.info(getRequestParamsAndUrl());
         List<PmInVo> list = pmInService.findList(pmNo, name, type, startDate, endDate);
 
+        Workbook wb = new XSSFWorkbook();
+        Sheet sheet = wb.createSheet();
+        Row header = sheet.createRow(0);
 
-        return XaResult.success();
+        sheet.setColumnWidth(0, (int) ((20 + 0.72) * 256));
+        sheet.setColumnWidth(1, (int) ((20 + 0.72) * 256));
+        sheet.setColumnWidth(2, (int) ((10 + 0.72) * 256));
+        sheet.setColumnWidth(3, (int) ((20 + 0.72) * 256));
+        sheet.setColumnWidth(4, (int) ((20 + 0.72) * 256));
+        sheet.setColumnWidth(5, (int) ((15 + 0.72) * 256));
+        sheet.setColumnWidth(6, (int) ((15 + 0.72) * 256));
+
+        for(int i=0; i< PmInExcelHandler.fields.size(); i++){
+            header.createCell(i).setCellValue(PmInExcelHandler.fields.get(i));
+        }
+
+        PmInVo pm = null;
+        if (list != null && list.size() >= 1) {
+            for (int i = 0; i < list.size(); i++) {
+                pm = list.get(i);
+                Row row = sheet.createRow(i + 1);
+                int j = 0;
+                row.createCell(j++).setCellValue(pm.getPmNo());
+                row.createCell(j++).setCellValue(pm.getName());
+                row.createCell(j++).setCellValue(pm.getType());
+                row.createCell(j++).setCellValue(pm.getSupplier());
+                row.createCell(j++).setCellValue(pm.getNum());
+                row.createCell(j++).setCellValue(pm.getUnit());
+                row.createCell(j++).setCellValue(pm.getRemark());
+            }
+        }
+        try {
+            sheet.setForceFormulaRecalculation(true);
+            response.setHeader("Pragma", "no-cache");
+            response.setHeader("Cache-Control", "no-cache");
+            response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode("入库记录.xlsx", "UTF-8"));
+            response.setDateHeader("Expires", 0);
+            response.setHeader("Connection", "close");
+            response.setHeader("Content-Type", "application/vnd.ms-excel");
+            wb.write(response.getOutputStream());
+            wb.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error("入库记录导出excel异常");
+        }
 
     }
 
