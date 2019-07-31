@@ -30,17 +30,22 @@ public class ProductPmService {
         return new Page<>(pageInfo);
     }
 
+    public List<ProductPm> findList(String productNo, String pmNo, int status) {
+        List<ProductPm> productpms = productpmMapper.findList(productNo, pmNo, status);
+        return productpms;
+    }
+
     @Transactional(readOnly = false, rollbackFor = Exception.class)
-    public Integer updateStatue(List<Integer> ids){
+    public Integer updateStatue(List<Integer> ids) {
         try {
-            ids.stream().forEach(t ->{
+            ids.stream().forEach(t -> {
                 ProductPm productpm = new ProductPm();
                 productpm.setId(t);
                 productpm.setLastModifyTime(new Date());
                 productpm.setStatus(1);
                 productpmMapper.updateByPrimaryKey(productpm);
             });
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
@@ -48,18 +53,17 @@ public class ProductPmService {
     }
 
 
-
     @Transactional(readOnly = false, rollbackFor = Exception.class)
-    public Integer delete(List<Integer> ids){
+    public Integer delete(List<Integer> ids) {
         try {
-            ids.stream().forEach(t ->{
+            ids.stream().forEach(t -> {
                 ProductPm productpm = new ProductPm();
                 productpm.setId(t);
                 productpm.setLastModifyTime(new Date());
                 productpm.setIsDelete(1);
                 productpmMapper.updateByPrimaryKey(productpm);
             });
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
@@ -72,5 +76,29 @@ public class ProductPmService {
 
     public ProductPm getByNo(String productNo) {
         return productpmMapper.selectByNo(productNo);
+    }
+
+    public Integer update(ProductPm productPm) {
+        return productpmMapper.updateByPrimaryKeySelective(productPm);
+    }
+
+    public Integer add(ProductPm productPm) {
+        return productpmMapper.insertSelective(productPm);
+    }
+
+
+    @Transactional(readOnly = false, rollbackFor = Exception.class)
+    public Integer addBySameModel(String oldModel, String newModel) {
+        List<ProductPm> productPms = productpmMapper.findListByProductNo(oldModel);
+        Integer row = 0;
+        if (productPms != null && productPms.size() > 0) {
+            productPms.stream().filter(t -> t != null).forEach(t -> {
+                t.setProductNo(newModel);
+                t.setId(null);
+                productpmMapper.insertSelective(t);
+            });
+            row = productPms.size();
+        }
+        return row;
     }
 }

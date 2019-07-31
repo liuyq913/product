@@ -915,6 +915,286 @@ public class PmExample {
             return (Criteria) this;
         }
 
+        public Criteria andColourIsNull() {
+            addCriterion("colour is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andColourIsNotNull() {
+            addCriterion("colour is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andColourEqualTo(String value) {
+            addCriterion("colour =", value, "colour");
+            return (Criteria) this;
+        }
+
+        public Criteria andColourNotEqualTo(String value) {
+            addCriterion("colour <>", value, "colour");
+            return (Criteria) this;
+        }
+
+        public Criteria andColourGreaterThan(String value) {
+            addCriterion("colour >", value, "colour");
+            return (Criteria) this;
+        }
+
+        public Criteria andColourGreaterThanOrEqualTo(String value) {
+            addCriterion("colour >=", value, "colour");
+            return (Criteria) this;
+        }
+
+        public Criteria andColourLessThan(String value) {
+            addCriterion("colour <", value, "colour");
+            return (Criteria) this;
+        }
+
+        public Criteria andColourLessThanOrEqualTo(String value) {
+            addCriterion("colour <=", value, "colour");
+            return (Criteria) this;
+        }
+
+        public Criteria andColourLike(String value) {
+            addCriterion("colour like", value, "colour");
+            return (Criteria) this;
+        }
+
+        public Criteria andColourNotLike(String value) {
+            addCriterion("colour not like", value, "colour");
+            return (Criteria) this;
+        }
+
+        public Criteria andColourIn(List<String> values) {
+            addCriterion("colour in", values, "colour");
+            return (Criteria) this;
+        }
+
+        public Criteria andColourNotIn(List<String> values) {
+            addCriterion("colour not in", values, "colour");
+            return (Criteria) this;
+        }
+
+        public Criteria andColourBetween(String value1, String value2) {
+            addCriterion("colour between", value1, value2, "colour");
+            return (Criteria) this;
+        }
+
+        public Criteria andColourNotBetween(String value1, String value2) {
+            addCriterion("colour not between", value1, value2, "colour");
+            return (Criteria) this;
+        }
+
+        public Criteria andNormsIsNull() {
+            addCriterion("norms is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNormsIsNotNull() {
+            addCriterion("norms is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNormsEqualTo(String value) {
+            addCriterion("norms =", value, "norms");
+            return (Criteria) this;
+        }
+
+        public Criteria andNormsNotEqualTo(String value) {
+            addCriterion("norms <>", value, "norms");
+            return (Criteria) this;
+        }
+
+        public Criteria andNormsGreaterThan(String value) {
+            addCriterion("norms >", value, "norms");
+            return (Criteria) this;
+        }
+
+        public Criteria andNormsGreaterThanOrEqualTo(String value) {
+            addCriterion("norms >=", value, "norms");
+            return (Criteria) this;
+        }
+
+        public Criteria andNormsLessThan(String value) {
+            addCriterion("norms <", value, "norms");
+            return (Criteria) this;
+        }
+
+        public Criteria andNormsLessThanOrEqualTo(String value) {
+            addCriterion("norms <=", value, "norms");
+            return (Criteria) this;
+        }
+
+        public Criteria andNormsLike(String value) {
+            addCriterion("norms like", value, "norms");
+            return (Criteria) this;
+        }
+
+        public Criteria andNormsNotLike(String value) {
+            addCriterion("norms not like", value, "norms");
+            return (Criteria) this;
+        }
+
+        public Criteria andNormsIn(List<String> values) {
+            addCriterion("norms in", values, "norms");
+            return (Criteria) this;
+        }
+
+        public Criteria andNormsNotIn(List<String> values) {
+            addCriterion("norms not in", values, "norms");
+            return (Criteria) this;
+        }
+
+        public Criteria andNormsBetween(String value1, String value2) {
+            addCriterion("norms between", value1, value2, "norms");
+            return (Criteria) this;
+        }
+
+        public Criteria andNormsNotBetween(String value1, String value2) {
+            addCriterion("norms not between", value1, value2, "norms");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialIsNull() {
+            addCriterion("material is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialIsNotNull() {
+            addCriterion("material is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialEqualTo(String value) {
+            addCriterion("material =", value, "material");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialNotEqualTo(String value) {
+            addCriterion("material <>", value, "material");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialGreaterThan(String value) {
+            addCriterion("material >", value, "material");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialGreaterThanOrEqualTo(String value) {
+            addCriterion("material >=", value, "material");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialLessThan(String value) {
+            addCriterion("material <", value, "material");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialLessThanOrEqualTo(String value) {
+            addCriterion("material <=", value, "material");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialLike(String value) {
+            addCriterion("material like", value, "material");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialNotLike(String value) {
+            addCriterion("material not like", value, "material");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialIn(List<String> values) {
+            addCriterion("material in", values, "material");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialNotIn(List<String> values) {
+            addCriterion("material not in", values, "material");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialBetween(String value1, String value2) {
+            addCriterion("material between", value1, value2, "material");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialNotBetween(String value1, String value2) {
+            addCriterion("material not between", value1, value2, "material");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallIsNull() {
+            addCriterion("call is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallIsNotNull() {
+            addCriterion("call is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallEqualTo(String value) {
+            addCriterion("call =", value, "call");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallNotEqualTo(String value) {
+            addCriterion("call <>", value, "call");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallGreaterThan(String value) {
+            addCriterion("call >", value, "call");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallGreaterThanOrEqualTo(String value) {
+            addCriterion("call >=", value, "call");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallLessThan(String value) {
+            addCriterion("call <", value, "call");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallLessThanOrEqualTo(String value) {
+            addCriterion("call <=", value, "call");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallLike(String value) {
+            addCriterion("call like", value, "call");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallNotLike(String value) {
+            addCriterion("call not like", value, "call");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallIn(List<String> values) {
+            addCriterion("call in", values, "call");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallNotIn(List<String> values) {
+            addCriterion("call not in", values, "call");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallBetween(String value1, String value2) {
+            addCriterion("call between", value1, value2, "call");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallNotBetween(String value1, String value2) {
+            addCriterion("call not between", value1, value2, "call");
+            return (Criteria) this;
+        }
+
         public Criteria andPmNoLikeInsensitive(String value) {
             addCriterion("upper(pmNo) like", value.toUpperCase(), "pmNo");
             return (Criteria) this;
@@ -942,6 +1222,26 @@ public class PmExample {
 
         public Criteria andOperatorLikeInsensitive(String value) {
             addCriterion("upper(operator) like", value.toUpperCase(), "operator");
+            return (Criteria) this;
+        }
+
+        public Criteria andColourLikeInsensitive(String value) {
+            addCriterion("upper(colour) like", value.toUpperCase(), "colour");
+            return (Criteria) this;
+        }
+
+        public Criteria andNormsLikeInsensitive(String value) {
+            addCriterion("upper(norms) like", value.toUpperCase(), "norms");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialLikeInsensitive(String value) {
+            addCriterion("upper(material) like", value.toUpperCase(), "material");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallLikeInsensitive(String value) {
+            addCriterion("upper(call) like", value.toUpperCase(), "call");
             return (Criteria) this;
         }
     }

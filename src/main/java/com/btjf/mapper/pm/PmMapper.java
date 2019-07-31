@@ -2,6 +2,7 @@ package com.btjf.mapper.pm;
 
 import com.btjf.model.pm.Pm;
 import com.btjf.model.pm.PmExample;
+import com.btjf.model.pm.PmRequstPojo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -95,11 +96,13 @@ public interface PmMapper {
      */
     int updateByPrimaryKey(Pm record);
 
-    List<Pm> findList(@Param("pmNo") String pmNo, @Param("name") String name,@Param("type") String type);
+    List<Pm> findList(PmRequstPojo pmRequstPojo);
 
     Integer deleteByID(@Param("integers") List<Integer> integers);
 
     Integer saveList(@Param("pmList") List<Pm> pmList);
 
     Pm getByNO(@Param("no") String pmNo);
+
+    Integer deleteByNo(@Param("nos") List<String> nos);
 }
