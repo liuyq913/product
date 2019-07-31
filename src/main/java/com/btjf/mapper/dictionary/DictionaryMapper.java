@@ -101,4 +101,7 @@ public interface DictionaryMapper {
      * @return
      */
     List<String> getList(@Param("type")Integer type);
+
+
+    List<String> getListByNameAndType(@Param("name") String name, @Param("type") Integer type);
 }

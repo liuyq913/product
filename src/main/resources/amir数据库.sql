@@ -138,7 +138,7 @@ CREATE TABLE t_PM(
 	colour varchar(100)  DEFAULT '' COMMENT '颜色',
   norms varchar(100)  DEFAULT '' COMMENT '规格',
   material varchar(100)  DEFAULT '' COMMENT '材质',
-  call varchar(100)  DEFAULT '' COMMENT '称呼'
+  callStr varchar(100)  DEFAULT '' COMMENT '称呼'
 );
 INSERT INTO `product`.`t_PM` (`pmNo`, `name`, `type`, `num`, `unit`, `remark`, `operator`, `createTime`, `lastModifyTime`, `isDelete`) VALUES ('TEST1', '测试1', '辅料', '20', '双', 'SSS', '1', '2019-07-30 21:41:53', NULL, '0');
 INSERT INTO `product`.`t_PM` (`pmNo`, `name`, `type`, `num`, `unit`, `remark`, `operator`, `createTime`, `lastModifyTime`, `isDelete`) VALUES ('DDD0', '002', '包装材料类', '0', '个', NULL, '1', '2019-07-30 21:57:22', NULL, '0');
