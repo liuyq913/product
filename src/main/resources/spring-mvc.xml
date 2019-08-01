@@ -85,7 +85,7 @@
 			</bean>
 		</mvc:interceptor>
 		<mvc:interceptor>
-			<mvc:mapping path="/m/**"/>
+			<mvc:mapping path="/**"/>
 			<mvc:exclude-mapping path="/system/data"/>
 			<mvc:exclude-mapping path="/user/login"/>
 			<bean class="com.btjf.interceptor.LoginInterceptor">
