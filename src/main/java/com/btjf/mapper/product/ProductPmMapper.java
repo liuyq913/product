@@ -95,7 +95,7 @@ public interface ProductPmMapper {
      */
     int updateByPrimaryKey(ProductPm record);
 
-    List<ProductPm> findList(@Param("productNo") String productNo, @Param("pmNo") String pmNo, @Param("status") int status);
+    List<ProductPm> findList(@Param("productNo") String productNo, @Param("pmNo") String pmNo, @Param("status") Integer status);
 
     ProductPm selectByNo(@Param("productNo") String productNo);
 

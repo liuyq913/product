@@ -22,7 +22,7 @@ public class ProductPmService {
     private ProductPmMapper productpmMapper;
 
 
-    public Page<ProductPm> findListPage(String productNo, String pmNo, int status, Page page) {
+    public Page<ProductPm> findListPage(String productNo, String pmNo, Integer status, Page page) {
         PageHelper.startPage(page.getPage(), page.getRp());
         List<ProductPm> productpms = productpmMapper.findList(productNo, pmNo, status);
         PageInfo pageInfo = new PageInfo(productpms);
@@ -43,7 +43,7 @@ public class ProductPmService {
                 productpm.setId(t);
                 productpm.setLastModifyTime(new Date());
                 productpm.setStatus(1);
-                productpmMapper.updateByPrimaryKey(productpm);
+                productpmMapper.updateByPrimaryKeySelective(productpm);
             });
         } catch (Exception e) {
             e.printStackTrace();
@@ -61,7 +61,7 @@ public class ProductPmService {
                 productpm.setId(t);
                 productpm.setLastModifyTime(new Date());
                 productpm.setIsDelete(1);
-                productpmMapper.updateByPrimaryKey(productpm);
+                productpmMapper.updateByPrimaryKeySelective(productpm);
             });
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,7 +83,8 @@ public class ProductPmService {
     }
 
     public Integer add(ProductPm productPm) {
-        return productpmMapper.insertSelective(productPm);
+        productpmMapper.insertSelective(productPm);
+        return productPm.getId();
     }
 
 
