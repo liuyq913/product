@@ -157,7 +157,6 @@ public class PmController extends ProductBaseController {
         LOGGER.info(getRequestParamsAndUrl());
         if(id == null) return XaResult.error("请选中项");
 
-
         Pm pm = pmService.getByID(id);
         return  XaResult.success(pm);
     }
@@ -217,6 +216,7 @@ public class PmController extends ProductBaseController {
                 row.createCell(j++).setCellValue(pm.getName());
                 row.createCell(j++).setCellValue(pm.getType());
                 row.createCell(j++).setCellValue(pm.getUnit());
+                row.createCell(j++).setCellValue(pm.getRemark());
                 row.createCell(j++).setCellValue(pm.getOperator());
                 row.createCell(j++).setCellValue(DateUtil.dateToString(pm.getCreateTime(), DateUtil.ymdFormat));
             }
@@ -251,14 +251,16 @@ public class PmController extends ProductBaseController {
         sheet.setColumnWidth(4, (int) ((20 + 0.72) * 256));
         sheet.setColumnWidth(5, (int) ((15 + 0.72) * 256));
         sheet.setColumnWidth(6, (int) ((15 + 0.72) * 256));
+        sheet.setColumnWidth(7, (int) ((15 + 0.72) * 256));
         int j = 0;
         header.createCell(j++).setCellValue("物料编号");
-        header.createCell(j++).setCellValue("物料名称");
+        header.createCell(j++).setCellValue("颜色");
+        header.createCell(j++).setCellValue("规格");
+        header.createCell(j++).setCellValue("材质");
+        header.createCell(j++).setCellValue("称呼");
         header.createCell(j++).setCellValue("类别");
         header.createCell(j++).setCellValue("单位");
         header.createCell(j++).setCellValue("备注");
-        header.createCell(j++).setCellValue("添加人");
-        header.createCell(j++).setCellValue("添加日期");
 
         try {
             sheet.setForceFormulaRecalculation(true);
