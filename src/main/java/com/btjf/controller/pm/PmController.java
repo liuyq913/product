@@ -53,6 +53,10 @@ public class PmController extends ProductBaseController {
          getLoginUser();
         LOGGER.info(getRequestParamsAndUrl());
 
+        if(currentPage != null){
+            currentPage--;
+        }
+
         PmRequstPojo pmRequstPojo = new PmRequstPojo();
         pmRequstPojo.setPmNo(pmNo);
         pmRequstPojo.setName(name);

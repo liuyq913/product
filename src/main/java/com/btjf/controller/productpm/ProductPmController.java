@@ -55,6 +55,10 @@ public class ProductPmController extends ProductBaseController {
         getLoginUser();
         LOGGER.info(getRequestParamsAndUrl());
 
+        if(currentPage != null){
+            currentPage--;
+        }
+
         Page<ProductPm> listPage = productPmService.findListPage(productNo, pmNo, status, AppPageHelper.appInit(currentPage, pageSize));
         XaResult<List<ProductPm>> result = AppXaResultHelper.success(listPage, listPage.getRows());
         return result;
