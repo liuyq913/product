@@ -217,6 +217,7 @@
                     <include>**/*.properties</include>
                     <include>**/*.pdf</include>
                     <include>**/*.ttf</include>
+                    <include>**/*.xlsx</include>
                 </includes>
             </resource>
         </resources>

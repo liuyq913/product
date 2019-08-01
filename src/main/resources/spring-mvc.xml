@@ -88,6 +88,7 @@
 			<mvc:mapping path="/**"/>
 			<mvc:exclude-mapping path="/system/data"/>
 			<mvc:exclude-mapping path="/user/login"/>
+			<mvc:exclude-mapping path="/download/**"/>
 			<bean class="com.btjf.interceptor.LoginInterceptor">
 				<!--<property name="loginInfoCache" ref="loginInfoCache"/>-->
 				<!--<property name="accessTokenMemberCache" ref="accessTokenMemberCache"/>-->
@@ -126,4 +127,5 @@
 			</array>
 		</property>
 	</bean>
+	<mvc:resources mapping="/download/**" location="/template/" />
 </beans>
