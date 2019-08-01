@@ -12,6 +12,7 @@ import com.btjf.model.sys.SysUser;
 import com.btjf.service.pm.PmService;
 import com.btjf.service.productpm.ProductPmService;
 import com.btjf.util.BigDecimalUtil;
+import com.google.common.collect.Lists;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.apache.log4j.Logger;
@@ -60,14 +61,18 @@ public class ProductPmController extends ProductBaseController {
     }
 
     @RequestMapping(value = "/modelConfige", method = RequestMethod.POST)
-    public XaResult<Integer> modelConfige(Integer[] ids) {
+    public XaResult<Integer> modelConfige(String[] ids) {
         getLoginUser();
         LOGGER.info(getRequestParamsAndUrl());
 
         if (null == ids || Arrays.asList(ids).size() <= 0) {
             return XaResult.error("请选择要确认的记录");
         }
-        Integer row = productPmService.updateStatue(Arrays.asList(ids));
+        List<Integer> integers = Lists.newArrayList();
+        Arrays.asList(ids).stream().forEach( t -> {
+            integers.add(new Integer(t));
+        });
+        Integer row = productPmService.updateStatue(integers);
         return XaResult.success(row);
     }
 
@@ -79,7 +84,11 @@ public class ProductPmController extends ProductBaseController {
         if (null == ids || Arrays.asList(ids).size() <= 0) {
             return XaResult.error("请选择要删除的记录");
         }
-        Integer row = productPmService.delete(Arrays.asList(ids));
+        List<Integer> integers = Lists.newArrayList();
+        Arrays.asList(ids).stream().forEach( t -> {
+            integers.add(new Integer(t));
+        });
+        Integer row = productPmService.delete(integers);
         return XaResult.success(row);
     }
 

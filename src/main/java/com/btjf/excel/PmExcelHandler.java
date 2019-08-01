@@ -35,7 +35,7 @@ public class PmExcelHandler extends BaseExcelHandler {
 
     @Override
     public List<String> execute(MultipartFile file, Boolean isCover, String operator) throws Exception {
-        if (!file.getName().endsWith(".xlsx")) {
+        if (!file.getOriginalFilename().endsWith(".xlsx")) {
             throw new BusinessException("请上传excel文件");
         }
         // Workbook 通用
@@ -102,6 +102,7 @@ public class PmExcelHandler extends BaseExcelHandler {
                         //去空格
                         stringCellValue = cell.getStringCellValue().replaceAll("\u00A0", "").trim();
                         name.append(stringCellValue).append("-");
+                        pm.setColour(stringCellValue);
                         break;
                     //规格
                     case 2:
@@ -112,6 +113,7 @@ public class PmExcelHandler extends BaseExcelHandler {
                         if (!stringCellValue.endsWith("-")) {
                             name.append("-");
                         }
+                        pm.setNorms(stringCellValue);
                         break;
                     //材质
                     case 3:
@@ -122,6 +124,7 @@ public class PmExcelHandler extends BaseExcelHandler {
                         if (!stringCellValue.endsWith("-")) {
                             name.append("-");
                         }
+                        pm.setMaterial(stringCellValue);
                         break;
                     //称呼
                     case 4:
@@ -132,6 +135,7 @@ public class PmExcelHandler extends BaseExcelHandler {
                         if (StringUtils.isEmpty(name.toString())) {
                             error.add("第" + k + "行的材料名称为空");
                         }
+                        pm.setCallStr(stringCellValue);
                         pm.setName(name.toString());
                         break;
 
@@ -165,10 +169,10 @@ public class PmExcelHandler extends BaseExcelHandler {
                         pm.setRemark(stringCellValue);
                         break;
 
-
                 }
-                pmList.add(pm);
+                pm.setIsDelete(0);
             }
+            pmList.add(pm);
         }
 
         if (error.size() > 0) {
