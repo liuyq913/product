@@ -175,7 +175,7 @@ CREATE TABLE t_ProductPM(
 	operator varchar(100) NOT NULL comment '添加人',
 	createTime datetime,
 	lastModifyTime datetime,
-	isDelete int NOT NULL,
+	isDelete int DEFAULT '0',
 	sequence int(11) NOT NULL COMMENT '序号'
 );
 ##材料入库单

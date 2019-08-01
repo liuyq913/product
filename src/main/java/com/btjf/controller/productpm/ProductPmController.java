@@ -51,7 +51,7 @@ public class ProductPmController extends ProductBaseController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public XaResult<List<ProductPm>> findList(@ApiParam("编号") String productNo, @ApiParam("物料编号") String pmNo
-            , @ApiParam("1已确认  0 未确认") int status, Integer pageSize, Integer currentPage) {
+            , @ApiParam("1已确认  0 未确认") Integer status, Integer pageSize, Integer currentPage) {
         getLoginUser();
         LOGGER.info(getRequestParamsAndUrl());
 
@@ -92,7 +92,7 @@ public class ProductPmController extends ProductBaseController {
         return XaResult.success(row);
     }
 
-    @RequestMapping(value = "/detail", method = RequestMethod.POST)
+    @RequestMapping(value = "/detail", method = RequestMethod.GET)
     public XaResult<ProductPm> detail(Integer id) {
         getLoginUser();
         LOGGER.info(getRequestParamsAndUrl());
@@ -110,7 +110,7 @@ public class ProductPmController extends ProductBaseController {
 
     @RequestMapping(value = "/addOrUpdate", method = RequestMethod.POST)
     public XaResult<Integer> updateOrAdd(Integer id, String productNo, String pmNo, String num,
-                                         String unit, String type, String remark, int status) {
+                                         String unit, String type, String remark, Integer status, Integer sequence) {
         SysUser sysUser = getLoginUser();
         LOGGER.info(getRequestParamsAndUrl());
 
@@ -128,17 +128,19 @@ public class ProductPmController extends ProductBaseController {
         productPm.setLastModifyTime(new Date());
         productPm.setStatus(status);
         productPm.setOperator(sysUser.getUserName());
+        productPm.setProductNo(productNo);
         productPm.setPmName(pm.getName());
         productPm.setPmId(pm.getId());
+        productPm.setPmNo(pm.getPmNo());
         productPm.setCreateTime(new Date());
         productPm.setUnit(unit);
         productPm.setType(type);
         productPm.setRemark(remark);
         productPm.setNum(BigDecimalUtil.getBigDecimal(num));
         productPm.setUnitNum(BigDecimal.valueOf(BigDecimalUtil.div(1d, productPm.getNum().doubleValue())));
+        productPm.setSequence(sequence);
 
-
-        if (status != 0 || status != 1) {
+        if (status != 0 && status != 1) {
             return XaResult.error("是否确认类型错误");
         }
 
