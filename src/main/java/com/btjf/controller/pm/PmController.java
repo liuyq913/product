@@ -64,7 +64,7 @@ public class PmController extends ProductBaseController {
         pmRequstPojo.setCallStr(callStr);
         pmRequstPojo.setColour(colour);
         pmRequstPojo.setMaterial(material);
-        pmRequstPojo.setNorms(norms);
+         pmRequstPojo.setNorms(norms);
         Page<Pm> listPage = pmService.findListPage(pmRequstPojo, AppPageHelper.appInit(currentPage, pageSize));
         List<Pm> pms = listPage.getRows();
         pms.stream().filter(t -> t!=null).forEach(t -> {
