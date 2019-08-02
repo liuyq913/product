@@ -1,7 +1,6 @@
 package com.btjf.controller.pm;
 
 import com.alibaba.dubbo.common.utils.StringUtils;
-import com.btjf.application.components.page.AppPageHelper;
 import com.btjf.application.components.xaresult.AppXaResultHelper;
 import com.btjf.application.util.XaResult;
 import com.btjf.common.page.Page;
@@ -53,10 +52,13 @@ public class PmController extends ProductBaseController {
          getLoginUser();
         LOGGER.info(getRequestParamsAndUrl());
 
-        if(currentPage != null){
-            currentPage--;
+        if(currentPage == null || currentPage < 1){
+            currentPage =1;
         }
-
+        if(pageSize == null || pageSize < 1){
+            pageSize = 25;
+        }
+        Page page = new Page(pageSize, currentPage);
         PmRequstPojo pmRequstPojo = new PmRequstPojo();
         pmRequstPojo.setPmNo(pmNo);
         pmRequstPojo.setName(name);
@@ -65,7 +67,7 @@ public class PmController extends ProductBaseController {
         pmRequstPojo.setColour(colour);
         pmRequstPojo.setMaterial(material);
         pmRequstPojo.setNorms(norms);
-        Page<Pm> listPage = pmService.findListPage(pmRequstPojo, AppPageHelper.appInit(currentPage, pageSize));
+        Page<Pm> listPage = pmService.findListPage(pmRequstPojo, page);
         List<Pm> pms = listPage.getRows();
         pms.stream().filter(t -> t!=null).forEach(t -> {
             if(t.getCreateTime()!= null){
