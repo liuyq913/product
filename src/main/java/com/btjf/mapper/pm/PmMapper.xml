@@ -455,6 +455,7 @@
         <if test="type != null">
             AND type = #{type,jdbcType=VARCHAR}
         </if>
+        AND isDelete = 0
         order by createTime desc
     </select>
 
