@@ -48,7 +48,7 @@ public class PmController extends ProductBaseController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public XaResult<List<Pm>> findList(@ApiParam("编号") String pmNo, @Param("name") String name ,@ApiParam("颜色") String colour, @ApiParam("规格")
-                                      String norms, @Param("材质") String material, @Param("称呼") String call
+                                      String norms, @Param("材质") String material, @Param("称呼") String callStr
             , @ApiParam("类型") String type, Integer pageSize, Integer currentPage) {
          getLoginUser();
         LOGGER.info(getRequestParamsAndUrl());
@@ -61,7 +61,7 @@ public class PmController extends ProductBaseController {
         pmRequstPojo.setPmNo(pmNo);
         pmRequstPojo.setName(name);
         pmRequstPojo.setType(type);
-        pmRequstPojo.setCallStr(call);
+        pmRequstPojo.setCallStr(callStr);
         pmRequstPojo.setColour(colour);
         pmRequstPojo.setMaterial(material);
         pmRequstPojo.setNorms(norms);
@@ -94,15 +94,15 @@ public class PmController extends ProductBaseController {
 
     @RequestMapping(value = "/addOrUpdate", method = RequestMethod.POST)
     public XaResult<Integer> addOrUpdate(@ApiParam("id") Integer id, @ApiParam("编号") String pmNo, @ApiParam("名称")
-                String name, @ApiParam("颜色") String color, @ApiParam("规格")
-            String norms, @Param("材质") String material, @Param("称呼") String call, @ApiParam("类型") String type, @ApiParam("单位") String unit,
+                String name, @ApiParam("颜色") String colour, @ApiParam("规格")
+            String norms, @Param("材质") String material, @Param("称呼") String callStr, @ApiParam("类型") String type, @ApiParam("单位") String unit,
                                          @ApiParam("备注") String remark) {
         LOGGER.info(getRequestParamsAndUrl());
 
         SysUser sysUser = getLoginUser();
         StringBuffer nameStr = new StringBuffer();
-        if(!StringUtils.isEmpty(color)){
-            nameStr.append(color).append("-");
+        if(!StringUtils.isEmpty(colour)){
+            nameStr.append(colour).append("-");
         }
         if(!StringUtils.isEmpty(norms)){
             nameStr.append(norms).append("-");
@@ -110,8 +110,8 @@ public class PmController extends ProductBaseController {
         if(!StringUtils.isEmpty(material)){
             nameStr.append(material).append("-");
         }
-        if(!StringUtils.isEmpty(call)){
-            nameStr.append(call).append("-");
+        if(!StringUtils.isEmpty(callStr)){
+            nameStr.append(callStr).append("-");
         }
         if(nameStr.toString().endsWith("-")) {
             name = nameStr.toString().substring(0, nameStr.toString().length() - 1);
@@ -125,8 +125,8 @@ public class PmController extends ProductBaseController {
             pm.setType(type);
             pm.setUnit(unit);
             pm.setRemark(remark);
-            pm.setCallStr(call);
-            pm.setColour(color);
+            pm.setCallStr(callStr);
+            pm.setColour(colour);
             pm.setNorms(norms);
             pm.setMaterial(material);
             pm.setOperator(sysUser.getUserName());
@@ -142,8 +142,8 @@ public class PmController extends ProductBaseController {
             pm.setName(name);
             pm.setType(type);
             pm.setUnit(unit);
-            pm.setCallStr(call);
-            pm.setColour(color);
+            pm.setCallStr(callStr);
+            pm.setColour(colour);
             pm.setNorms(norms);
             pm.setMaterial(material);
             pm.setRemark(remark);
