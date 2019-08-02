@@ -149,6 +149,8 @@ public class PmController extends ProductBaseController {
             pm.setRemark(remark);
             pm.setCreateTime(new Date());
             pm.setOperator(sysUser.getUserName());
+            pm.setNum(0);
+            pm.setIsDelete(0);
             id = pmService.insert(pm);
         }
 
