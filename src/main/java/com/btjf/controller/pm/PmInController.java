@@ -52,11 +52,14 @@ public class PmInController extends ProductBaseController {
             , @ApiParam("类型") String type, @ApiParam("起始时间") String startDate, @ApiParam("截止时间") String endDate,
                                            Integer pageSize, Integer currentPage) {
         LOGGER.info(getRequestParamsAndUrl());
-        if(currentPage != null){
-            currentPage--;
+        if(currentPage == null || currentPage < 1){
+            currentPage =1;
         }
-
-        Page<PmInVo> listPage = pmInService.findListPage(pmNo, name, type,startDate,endDate, AppPageHelper.appInit(currentPage, pageSize));
+        if(pageSize == null || pageSize < 1){
+            pageSize = 25;
+        }
+        Page page = new Page(pageSize, currentPage);
+        Page<PmInVo> listPage = pmInService.findListPage(pmNo, name, type,startDate,endDate, page);
         XaResult<List<PmInVo>> result = AppXaResultHelper.success(listPage, listPage.getRows());
         return result;
     }
