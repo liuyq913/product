@@ -48,7 +48,7 @@ public class PmController extends ProductBaseController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public XaResult<List<Pm>> findList(@ApiParam("编号") String pmNo, @Param("name") String name ,@ApiParam("颜色") String colour, @ApiParam("规格")
-                                      String norms, @Param("材质") String material, @Param("称呼") String callStr
+                                      String norms, @Param("材质") String material, @Param("称呼")  String callStr
             , @ApiParam("类型") String type, Integer pageSize, Integer currentPage) {
          getLoginUser();
         LOGGER.info(getRequestParamsAndUrl());
@@ -64,7 +64,7 @@ public class PmController extends ProductBaseController {
         pmRequstPojo.setCallStr(callStr);
         pmRequstPojo.setColour(colour);
         pmRequstPojo.setMaterial(material);
-         pmRequstPojo.setNorms(norms);
+        pmRequstPojo.setNorms(norms);
         Page<Pm> listPage = pmService.findListPage(pmRequstPojo, AppPageHelper.appInit(currentPage, pageSize));
         List<Pm> pms = listPage.getRows();
         pms.stream().filter(t -> t!=null).forEach(t -> {
