@@ -1,7 +1,6 @@
 package com.btjf.controller.productpm;
 
 import com.alibaba.druid.util.StringUtils;
-import com.btjf.application.components.page.AppPageHelper;
 import com.btjf.application.components.xaresult.AppXaResultHelper;
 import com.btjf.application.util.XaResult;
 import com.btjf.common.page.Page;
@@ -55,11 +54,14 @@ public class ProductPmController extends ProductBaseController {
         getLoginUser();
         LOGGER.info(getRequestParamsAndUrl());
 
-        if(currentPage != null){
-            currentPage--;
+        if (currentPage == null || currentPage < 1) {
+            currentPage = 1;
         }
-
-        Page<ProductPm> listPage = productPmService.findListPage(productNo, pmNo, status, AppPageHelper.appInit(currentPage, pageSize));
+        if (pageSize == null || pageSize < 1) {
+            pageSize = 25;
+        }
+        Page page = new Page(pageSize, currentPage);
+        Page<ProductPm> listPage = productPmService.findListPage(productNo, pmNo, status, page);
         XaResult<List<ProductPm>> result = AppXaResultHelper.success(listPage, listPage.getRows());
         return result;
     }
@@ -73,7 +75,7 @@ public class ProductPmController extends ProductBaseController {
             return XaResult.error("请选择要确认的记录");
         }
         List<Integer> integers = Lists.newArrayList();
-        Arrays.asList(ids).stream().forEach( t -> {
+        Arrays.asList(ids).stream().forEach(t -> {
             integers.add(new Integer(t));
         });
         Integer row = productPmService.updateStatue(integers);
@@ -89,7 +91,7 @@ public class ProductPmController extends ProductBaseController {
             return XaResult.error("请选择要删除的记录");
         }
         List<Integer> integers = Lists.newArrayList();
-        Arrays.asList(ids).stream().forEach( t -> {
+        Arrays.asList(ids).stream().forEach(t -> {
             integers.add(new Integer(t));
         });
         Integer row = productPmService.delete(integers);
@@ -144,8 +146,10 @@ public class ProductPmController extends ProductBaseController {
         productPm.setUnitNum(BigDecimal.valueOf(BigDecimalUtil.div(1d, productPm.getNum().doubleValue())));
         productPm.setSequence(sequence);
 
-        if (status != 0 && status != 1) {
-            return XaResult.error("是否确认类型错误");
+        if(null != status) {
+            if (status != 0 && status != 1) {
+                return XaResult.error("是否确认类型错误");
+            }
         }
 
         if (id != null) {
@@ -242,5 +246,4 @@ public class ProductPmController extends ProductBaseController {
             LOGGER.error("型号耗料管理导出excel异常");
         }
     }
-
 }
