@@ -210,7 +210,7 @@ public class PmController extends ProductBaseController {
         header.createCell(j++).setCellValue("物料编号");
         header.createCell(j++).setCellValue("物料名称");
         header.createCell(j++).setCellValue("类别");
-        header.createCell(j++).setCellValue("单位");
+        header.createCell(j++).setCellValue("物料单位");
         header.createCell(j++).setCellValue("备注");
         header.createCell(j++).setCellValue("添加人");
         header.createCell(j++).setCellValue("添加日期");
