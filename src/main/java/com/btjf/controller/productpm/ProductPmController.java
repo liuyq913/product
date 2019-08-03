@@ -8,6 +8,7 @@ import com.btjf.controller.base.ProductBaseController;
 import com.btjf.model.pm.Pm;
 import com.btjf.model.product.ProductPm;
 import com.btjf.model.sys.SysUser;
+import com.btjf.service.dictionary.DictionaryService;
 import com.btjf.service.pm.PmService;
 import com.btjf.service.productpm.ProductPmService;
 import com.btjf.util.BigDecimalUtil;
@@ -47,6 +48,9 @@ public class ProductPmController extends ProductBaseController {
 
     @Resource
     private PmService pmService;
+
+    @Resource
+    private DictionaryService dictionaryService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public XaResult<List<ProductPm>> findList(@ApiParam("编号") String productNo, @ApiParam("物料编号") String pmNo
@@ -139,6 +143,9 @@ public class ProductPmController extends ProductBaseController {
         productPm.setPmId(pm.getId());
         productPm.setPmNo(pm.getPmNo());
         productPm.setCreateTime(new Date());
+        if(null == dictionaryService.getListByNameAndType(unit,2)){
+            return XaResult.error("单位填写错误");
+        }
         productPm.setUnit(unit);
         productPm.setType(type);
         productPm.setRemark(remark);
