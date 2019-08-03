@@ -6,6 +6,7 @@ import com.btjf.model.product.ProductPm;
 import com.btjf.service.pm.PmService;
 import com.btjf.service.productpm.ProductPmService;
 import org.apache.poi.ss.formula.functions.T;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
@@ -13,6 +14,7 @@ import java.util.concurrent.ForkJoinPool;
 /**
  * Created by liuyq on 2019/7/28.
  */
+@Component
 public class ExcelImportFactory {
 
     public Integer savePm(List<Pm> list, boolean isCover){
