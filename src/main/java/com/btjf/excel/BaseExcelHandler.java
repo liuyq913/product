@@ -21,9 +21,6 @@ import java.util.List;
  */
 public abstract class BaseExcelHandler {
 
-    private static List<T> result;
-
-
     public abstract  List<String> execute(MultipartFile file, Boolean isCover, String operator)throws Exception;
 
     public  List<String> checkLayout(MultipartFile file, List<String> fields) throws Exception{
@@ -49,7 +46,7 @@ public abstract class BaseExcelHandler {
             }
         }
         // 将sheet转换为list
-        result = new ArrayList<>();
+        List<T> result = new ArrayList<>();
         for (int j = 1; j <= sheet.getLastRowNum(); j++) {
             XSSFRow row = (XSSFRow) sheet.getRow(j);
             try {
