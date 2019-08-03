@@ -53,9 +53,7 @@ public class ProductPmExcelHandler extends BaseExcelHandler {
 
     @Override
     protected void insert(List productPms) {
-        //excelImportFactory.saveProductPm(productPms);
-        productPmService.saveList(productPms);
-       // productPms.clear();
+        excelImportFactory.saveProductPm(productPms);
     }
 
     @Override
