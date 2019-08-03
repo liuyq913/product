@@ -27,8 +27,6 @@ public class PmInExcelHandler extends BaseExcelHandler{
     public final static List<String> fields = Stream.of("物料编号", "物料名称", "物料类别",
             "供应单位", "初始库或入库数量", "物料单位", "备注").collect(Collectors.toList());
 
-    private List<PmIn> pmInList = new ArrayList<>();
-
     @Resource
     private PmInService pmInService;
     @Resource
@@ -40,10 +38,10 @@ public class PmInExcelHandler extends BaseExcelHandler{
     }
 
     @Override
-    protected void insert() {
+    protected void insert(List pmInList) {
         if(pmInList != null && pmInList.size() >0){
             for(int i=0; i< pmInList.size(); i++){
-                PmIn pmIn = pmInList.get(i);
+                PmIn pmIn = (PmIn) pmInList.get(i);
                 Pm pm = pmService.getByNo(pmIn.getPmNo());
                 pmIn.setPmId(pm.getId());
                 pmIn.setPerNum(pm.getNum());
@@ -60,10 +58,12 @@ public class PmInExcelHandler extends BaseExcelHandler{
                 pmService.updateByID(pm1);
             }
         }
+        pmInList.clear();
     }
 
     @Override
-    protected void create(XSSFRow row) throws BusinessException {
+    protected List create(XSSFRow row) throws BusinessException {
+        List<PmIn> pmInList = new ArrayList<>();
         PmIn pmIn = new PmIn();
         for(int i=0; i< fields.size(); i++){
             switch (i){
@@ -93,6 +93,7 @@ public class PmInExcelHandler extends BaseExcelHandler{
             }
         }
         pmInList.add(pmIn);
+        return pmInList;
     }
 
     private String getCellValue(XSSFCell cell, int i) {

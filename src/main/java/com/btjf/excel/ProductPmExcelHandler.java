@@ -32,8 +32,6 @@ public class ProductPmExcelHandler extends BaseExcelHandler {
     public final static List<String> fields = Stream.of("型号", "物料编号", "数量（耗料/双）",
             "单位", "类别", "序号", "备注").collect(Collectors.toList());
 
-    private List<ProductPm> productPms = new ArrayList<>();
-
     @Resource
     private ProductPmService productPmService;
 
@@ -54,15 +52,16 @@ public class ProductPmExcelHandler extends BaseExcelHandler {
     }
 
     @Override
-    protected void insert() {
+    protected void insert(List productPms) {
         //excelImportFactory.saveProductPm(productPms);
         productPmService.saveList(productPms);
-        productPms.clear();
+       // productPms.clear();
     }
 
     @Override
-    protected void create(XSSFRow row) throws Exception {
+    protected List create(XSSFRow row) throws Exception {
 
+        List<ProductPm> productPms = new ArrayList<>();
         ProductPm productPm = new ProductPm();
         for (int i = 0; i < fields.size(); i++) {
             switch (i) {
@@ -131,6 +130,8 @@ public class ProductPmExcelHandler extends BaseExcelHandler {
             }
         }
         productPms.add(productPm);
+
+        return productPms;
 
     }
 

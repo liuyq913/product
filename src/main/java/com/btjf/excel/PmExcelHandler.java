@@ -179,20 +179,20 @@ public class PmExcelHandler extends BaseExcelHandler {
             return error;
         } else {
             //insert
-            excelImportFactory.savePm(pmList, isCover);
+            excelImportFactory.save(pmList, isCover, PmService.class);
             error.add("提交成功！新增导入" + sheet.getLastRowNum() + "条数据！");
             return error;
         }
     }
 
     @Override
-    protected void insert() {
+    protected void insert(List list) {
 
     }
 
     @Override
-    protected void create(XSSFRow row) throws Exception {
-
+    protected List create(XSSFRow row) throws Exception {
+        return null;
     }
 
     /**
