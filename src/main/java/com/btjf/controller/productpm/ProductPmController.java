@@ -235,6 +235,7 @@ public class ProductPmController extends ProductBaseController {
                 row.createCell(j++).setCellValue(pm.getNum().toString());
                 row.createCell(j++).setCellValue(pm.getUnit());
                 row.createCell(j++).setCellValue(pm.getUnitNum().toString());
+                row.createCell(j++).setCellValue(pm.getUnit());
                 row.createCell(j++).setCellValue(pm.getType());
                 row.createCell(j++).setCellValue(pm.getRemark());
                 row.createCell(j++).setCellValue(pm.getStatus() == 1 ? "已确认" : "未确认");
