@@ -102,4 +102,8 @@ public class ProductPmService {
         }
         return row;
     }
+
+    public Integer saveList(List<ProductPm> productPms){
+       return productpmMapper.saveList(productPms);
+    }
 }

@@ -40,16 +40,12 @@ public abstract class ProductBaseController {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
                 .getRequestAttributes()).getRequest();
         String secretKey = request.getHeader(LoginInterceptor.SECRETKEY);
-        SysUser sysUser = new SysUser();
-        sysUser.setLoginName("liuyq");
-        sysUser.setUserName("liuyq");
-        return sysUser;
-        /*SysUser sysUser = (SysUser) loginInfoCache.get(secretKey);
+        SysUser sysUser = (SysUser) loginInfoCache.get(secretKey);
         if (null == sysUser) {
             throw new BusinessException("请登录之后重试");
         } else {
             return sysUser;
-        }*/
+        }
     }
 
     public HttpServletRequest getRequest() {

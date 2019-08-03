@@ -85,15 +85,15 @@ public class PmExcelHandler extends BaseExcelHandler {
                             //去空格
                             stringCellValue = cell.getStringCellValue().replaceAll("\u00A0", "").trim();
                             if (StringUtils.isEmpty(stringCellValue)) {
-                                error.add("第" + k + "行的材料编号为空");
+                                error.add("第" + k + 1 + "行的材料编号为空");
                             } else if (null != pmService.getByNo(stringCellValue) && !Boolean.TRUE.equals(isCover)) {
-                                error.add("第" + k + "行的材料编号已经存在");
+                                error.add("第" + k + 1 + "行的材料编号已经存在");
                             } else {
                                 pm.setPmNo(stringCellValue);
 
                             }
                         } else {
-                            error.add("第" + k + "行的材料编号为空");
+                            error.add("第" + k + 1 + "行的材料编号为空");
                         }
                         break;
                     //颜色
@@ -133,7 +133,7 @@ public class PmExcelHandler extends BaseExcelHandler {
                         stringCellValue = cell.getStringCellValue().replaceAll("\u00A0", "").trim();
                         name.append(stringCellValue);
                         if (StringUtils.isEmpty(name.toString())) {
-                            error.add("第" + k + "行的材料名称为空");
+                            error.add("第" + k + 1 + "行的材料名称为空");
                         }
                         pm.setCallStr(stringCellValue);
                         pm.setName(name.toString());
@@ -145,7 +145,7 @@ public class PmExcelHandler extends BaseExcelHandler {
                         //去空格
                         stringCellValue = cell.getStringCellValue().replaceAll("\u00A0", "").trim();
                         if (CollectionUtils.isEmpty(dictionaryService.getListByNameAndType(stringCellValue, 1))) {
-                            error.add("第" + k + "行的材料类别有误为空");
+                            error.add("第" + k + 1 + "行的材料类别有误为空");
                         } else {
                             pm.setType(stringCellValue);
                         }
@@ -156,7 +156,7 @@ public class PmExcelHandler extends BaseExcelHandler {
                         //去空格
                         stringCellValue = cell.getStringCellValue().replaceAll("\u00A0", "").trim();
                         if (CollectionUtils.isEmpty(dictionaryService.getListByNameAndType(stringCellValue, 2))) {
-                            error.add("第" + k + "行的材料单位有误");
+                            error.add("第" + k + 1+"行的材料单位有误");
                         } else {
                             pm.setUnit(stringCellValue);
                         }
@@ -180,8 +180,9 @@ public class PmExcelHandler extends BaseExcelHandler {
         } else {
             //insert
             excelImportFactory.savePm(pmList, isCover);
+            error.add("提交成功！新增导入" + sheet.getLastRowNum() + "条数据！");
+            return error;
         }
-        return null;
     }
 
     @Override
