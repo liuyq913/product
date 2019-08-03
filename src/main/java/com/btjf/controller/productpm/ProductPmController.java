@@ -157,6 +157,8 @@ public class ProductPmController extends ProductBaseController {
             if (status != 0 && status != 1) {
                 return XaResult.error("是否确认类型错误");
             }
+        }else{
+            productPm.setStatus(0);
         }
 
         if (id != null) {

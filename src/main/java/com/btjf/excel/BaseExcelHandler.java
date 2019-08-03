@@ -49,10 +49,11 @@ public abstract class BaseExcelHandler {
             }
         }
         // 将sheet转换为list
+        result = new ArrayList<>();
         for (int j = 1; j <= sheet.getLastRowNum(); j++) {
             XSSFRow row = (XSSFRow) sheet.getRow(j);
             try {
-                result = create(row);
+                result.addAll(create(row));
             }catch (Exception e){
                 e.printStackTrace();
                 errResponse.add("第" + (j +1) + "行数据 " + e.getMessage() );
