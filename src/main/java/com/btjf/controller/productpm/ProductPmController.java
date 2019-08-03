@@ -188,7 +188,7 @@ public class ProductPmController extends ProductBaseController {
 
     @RequestMapping(value = "/export", method = RequestMethod.GET)
     public void exportPm(@ApiParam("编号") String productNo, @ApiParam("名称") String pmNo
-            , @ApiParam("1已确认  0 未确认") int status, HttpServletResponse response) {
+            , @ApiParam("1已确认  0 未确认") Integer status, HttpServletResponse response) {
         getLoginUser();
         LOGGER.info(getRequestParamsAndUrl());
 
