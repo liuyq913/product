@@ -1,6 +1,7 @@
 package com.btjf.excel;
 
 
+import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -19,6 +20,9 @@ import java.util.List;
  * Created by yj on 2019/7/31.
  */
 public abstract class BaseExcelHandler {
+
+    private static List<T> result;
+
 
     public abstract  List<String> execute(MultipartFile file, Boolean isCover, String operator)throws Exception;
 
@@ -48,7 +52,7 @@ public abstract class BaseExcelHandler {
         for (int j = 1; j <= sheet.getLastRowNum(); j++) {
             XSSFRow row = (XSSFRow) sheet.getRow(j);
             try {
-                create(row);
+                result = create(row);
             }catch (Exception e){
                 e.printStackTrace();
                 errResponse.add("第" + (j +1) + "行数据 " + e.getMessage() );
@@ -59,16 +63,16 @@ public abstract class BaseExcelHandler {
             response.add("导入失败，以下数据请修改后再重新上传");
             response.addAll(errResponse);
         }else{
-            insert();
+            insert(result);
             response.add("提交成功！新增导入" + sheet.getLastRowNum() + "条数据！" );
         }
         wb.close();
         return response;
     }
 
-    protected abstract void insert();
+    protected abstract void insert(List<T> list);
 
-    protected abstract void create(XSSFRow row)throws Exception;
+    protected abstract List<T> create(XSSFRow row)throws Exception;
 
 
     public String getCellValue(Cell cell) {
