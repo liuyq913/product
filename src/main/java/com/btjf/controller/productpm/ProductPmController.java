@@ -188,7 +188,7 @@ public class ProductPmController extends ProductBaseController {
 
     @RequestMapping(value = "/export", method = RequestMethod.GET)
     public void exportPm(@ApiParam("编号") String productNo, @ApiParam("名称") String pmNo
-            , @ApiParam("1已确认  0 未确认") int status, HttpServletResponse response) {
+            , @ApiParam("1已确认  0 未确认") Integer status, HttpServletResponse response) {
         getLoginUser();
         LOGGER.info(getRequestParamsAndUrl());
 
@@ -235,6 +235,7 @@ public class ProductPmController extends ProductBaseController {
                 row.createCell(j++).setCellValue(pm.getNum().toString());
                 row.createCell(j++).setCellValue(pm.getUnit());
                 row.createCell(j++).setCellValue(pm.getUnitNum().toString());
+                row.createCell(j++).setCellValue(pm.getUnit());
                 row.createCell(j++).setCellValue(pm.getType());
                 row.createCell(j++).setCellValue(pm.getRemark());
                 row.createCell(j++).setCellValue(pm.getStatus() == 1 ? "已确认" : "未确认");

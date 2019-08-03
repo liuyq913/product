@@ -30,7 +30,7 @@ public class ProductPmService {
         return new Page<>(pageInfo);
     }
 
-    public List<ProductPm> findList(String productNo, String pmNo, int status) {
+    public List<ProductPm> findList(String productNo, String pmNo, Integer status) {
         List<ProductPm> productpms = productpmMapper.findList(productNo, pmNo, status);
         return productpms;
     }
