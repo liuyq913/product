@@ -446,17 +446,17 @@
 
   <select id="findList" resultType="com.btjf.vo.PmInVo">
     select p.id,
-            p.pmNo,
-            p.name,
-            p.type,
-            p.num,
-            p.unit,
-            i.inDate,
-            aa.remark,
-            aa.supplier
+    p.pmNo,
+    p.name,
+    p.type,
+    p.num,
+    p.unit,
+    aa.inDate,
+    aa.remark,
+    aa.supplier
     from t_PM p left JOIN
-    (select a.pmId,max(a.inDate) inDate from t_PMIn a GROUP BY a.pmId )i on p.id = i.pmId
-    LEFT JOIN t_PMIn aa on i.inDate = aa.inDate
+    (select a.pmId,max(a.createTime) createTime,max(a.id) id from t_PMIn a GROUP BY a.pmId)i on p.id = i.pmId
+    left JOIN t_PMIn aa on i.createTime = aa.createTime and aa.id = i.id
     where 1=1
     <if test="pmNo != null">
       and p.pmNo LIKE '%${pmNo}%'
@@ -468,10 +468,10 @@
       and p.type = #{type,jdbcType=VARCHAR}
     </if>
     <if test="startDate != null">
-      and i.inDate &gt;= #{startDate}
+      and aa.inDate &gt;= #{startDate}
     </if>
     <if test="endDate != null">
-      and i.inDate &lt;= #{endDate}
+      and aa.inDate &lt;= #{endDate}
     </if>
 
 

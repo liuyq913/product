@@ -51,6 +51,7 @@ public class PmInExcelHandler extends BaseExcelHandler{
                 pmIn.setOperator("系统导入");
                 pmIn.setCreateTime(new Date());
                 pmIn.setIsDelete(0);
+                pmIn.setInDate(new Date());
                 pmInService.create(pmIn);
                 Pm pm1 = new Pm();
                 pm1.setId(pm.getId());
