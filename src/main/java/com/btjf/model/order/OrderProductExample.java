@@ -1502,63 +1502,63 @@ public class OrderProductExample {
             return (Criteria) this;
         }
 
-        public Criteria and assignedNumIsNull() {
-            addCriterion("\" assignedNum\" is null");
+        public Criteria andAssignedNumIsNull() {
+            addCriterion("assignedNum is null");
             return (Criteria) this;
         }
 
-        public Criteria and assignedNumIsNotNull() {
-            addCriterion("\" assignedNum\" is not null");
+        public Criteria andAssignedNumIsNotNull() {
+            addCriterion("assignedNum is not null");
             return (Criteria) this;
         }
 
-        public Criteria and assignedNumEqualTo(Integer value) {
-            addCriterion("\" assignedNum\" =", value, " assignedNum");
+        public Criteria andAssignedNumEqualTo(Integer value) {
+            addCriterion("assignedNum =", value, "assignedNum");
             return (Criteria) this;
         }
 
-        public Criteria and assignedNumNotEqualTo(Integer value) {
-            addCriterion("\" assignedNum\" <>", value, " assignedNum");
+        public Criteria andAssignedNumNotEqualTo(Integer value) {
+            addCriterion("assignedNum <>", value, "assignedNum");
             return (Criteria) this;
         }
 
-        public Criteria and assignedNumGreaterThan(Integer value) {
-            addCriterion("\" assignedNum\" >", value, " assignedNum");
+        public Criteria andAssignedNumGreaterThan(Integer value) {
+            addCriterion("assignedNum >", value, "assignedNum");
             return (Criteria) this;
         }
 
-        public Criteria and assignedNumGreaterThanOrEqualTo(Integer value) {
-            addCriterion("\" assignedNum\" >=", value, " assignedNum");
+        public Criteria andAssignedNumGreaterThanOrEqualTo(Integer value) {
+            addCriterion("assignedNum >=", value, "assignedNum");
             return (Criteria) this;
         }
 
-        public Criteria and assignedNumLessThan(Integer value) {
-            addCriterion("\" assignedNum\" <", value, " assignedNum");
+        public Criteria andAssignedNumLessThan(Integer value) {
+            addCriterion("assignedNum <", value, "assignedNum");
             return (Criteria) this;
         }
 
-        public Criteria and assignedNumLessThanOrEqualTo(Integer value) {
-            addCriterion("\" assignedNum\" <=", value, " assignedNum");
+        public Criteria andAssignedNumLessThanOrEqualTo(Integer value) {
+            addCriterion("assignedNum <=", value, "assignedNum");
             return (Criteria) this;
         }
 
-        public Criteria and assignedNumIn(List<Integer> values) {
-            addCriterion("\" assignedNum\" in", values, " assignedNum");
+        public Criteria andAssignedNumIn(List<Integer> values) {
+            addCriterion("assignedNum in", values, "assignedNum");
             return (Criteria) this;
         }
 
-        public Criteria and assignedNumNotIn(List<Integer> values) {
-            addCriterion("\" assignedNum\" not in", values, " assignedNum");
+        public Criteria andAssignedNumNotIn(List<Integer> values) {
+            addCriterion("assignedNum not in", values, "assignedNum");
             return (Criteria) this;
         }
 
-        public Criteria and assignedNumBetween(Integer value1, Integer value2) {
-            addCriterion("\" assignedNum\" between", value1, value2, " assignedNum");
+        public Criteria andAssignedNumBetween(Integer value1, Integer value2) {
+            addCriterion("assignedNum between", value1, value2, "assignedNum");
             return (Criteria) this;
         }
 
-        public Criteria and assignedNumNotBetween(Integer value1, Integer value2) {
-            addCriterion("\" assignedNum\" not between", value1, value2, " assignedNum");
+        public Criteria andAssignedNumNotBetween(Integer value1, Integer value2) {
+            addCriterion("assignedNum not between", value1, value2, "assignedNum");
             return (Criteria) this;
         }
 
