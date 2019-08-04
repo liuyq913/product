@@ -287,6 +287,8 @@ CREATE TABLE t_Order_Product(
 	productNo varchar(100) NOT NULL comment '产品型号',
 	productType varchar(30) NOT NULL comment '类别 小手套 大手套 格斗手套 靶类 护具类 其他类',
 	num int comment '数量',
+	assignedNum int comment '已分配数额',
+	notAssignNum int comment '未分配数额 （已分配数量+未分配数量 = 总数量）',
 	maxNum int comment '上限数量',
 	unit varchar(30) NOT NULL comment '单位 双、套、箱、只、件、米、SF、并、张、KG、个、卷、跟、片、m2、颗、付、顶、条、块',
 	completeDate date comment '出货日期',
