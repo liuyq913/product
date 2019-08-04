@@ -78,6 +78,10 @@ public class ProductPmService {
         return productpmMapper.selectByNo(productNo);
     }
 
+    public ProductPm getByNoAndPmNo(String productNo, String pmNo) {
+        return productpmMapper.selectByNoAndPmNo(productNo, pmNo);
+    }
+
     public Integer update(ProductPm productPm) {
         return productpmMapper.updateByPrimaryKeySelective(productPm);
     }

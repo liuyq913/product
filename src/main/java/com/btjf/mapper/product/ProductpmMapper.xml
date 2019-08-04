@@ -485,6 +485,14 @@
     </select>
 
 
+  <select id="selectByNoAndPmNo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_ProductPM
+    WHERE productNo = #{productNo} and pmNO =#{pmNO} and isDelete = 0;
+  </select>
+
+
     <select id="findListByProductNo" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List" />
