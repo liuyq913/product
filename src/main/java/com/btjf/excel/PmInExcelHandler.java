@@ -43,6 +43,7 @@ public class PmInExcelHandler extends BaseExcelHandler{
             for(int i=0; i< pmInList.size(); i++){
                 PmIn pmIn = (PmIn) pmInList.get(i);
                 Pm pm = pmService.getByNo(pmIn.getPmNo());
+
                 pmIn.setPmId(pm.getId());
                 pmIn.setPerNum(pm.getNum());
                 pmIn.setBackNum(pm.getNum() + pmIn.getNum());
@@ -91,6 +92,16 @@ public class PmInExcelHandler extends BaseExcelHandler{
                 default:
                         break;
             }
+        }
+        Pm pm = pmService.getByNo(pmIn.getPmNo());
+        if(pm == null){
+            throw new BusinessException("第" + 1 +"列" + fields.get(0) + " 填写错误");
+        }else if(!pm.getName().equals(pmIn.getPmName())){
+            throw new BusinessException("第" + 2 +"列" + fields.get(1) + " 填写错误");
+        }else if(!pm.getType().equals(pmIn.getType())){
+            throw new BusinessException("第" + 3 +"列" + fields.get(2) + " 填写错误");
+        }else if(!pm.getUnit().equals(pmIn.getUnit())){
+            throw new BusinessException("第" + 6 +"列" + fields.get(5) + " 填写错误");
         }
         pmInList.add(pmIn);
         return pmInList;
