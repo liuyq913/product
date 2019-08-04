@@ -87,7 +87,7 @@ CREATE TABLE t_SysUser(
 	loginPwd varchar(100) NULL,
 	userName varchar(50) NULL
 	);
-INSERT INTO `product`.`t_SysUser` (`deptId`, `roleId`, `loginName`, `loginPwd`, `userName`) VALUES ('1', '1', 'admin', '123456', '我说了算');
+INSERT INTO `product`.`t_SysUser` (`deptId`, `roleId`, `loginName`, `loginPwd`, `userName`) VALUES ('1', '1', 'admin', '123456', '系统管理员');
 
 
 ##角色
