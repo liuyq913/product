@@ -87,7 +87,7 @@ CREATE TABLE t_SysUser(
 	loginPwd varchar(100) NULL,
 	userName varchar(50) NULL
 	);
-INSERT INTO `product`.`t_SysUser` (`deptId`, `roleId`, `loginName`, `loginPwd`, `userName`) VALUES ('1', '1', 'admin', '123456', '我说了算');
+INSERT INTO `product`.`t_SysUser` (`deptId`, `roleId`, `loginName`, `loginPwd`, `userName`) VALUES ('1', '1', 'admin', '123456', '系统管理员');
 
 
 ##角色
@@ -140,7 +140,7 @@ CREATE TABLE t_PM(
   material varchar(100)  DEFAULT '' COMMENT '材质',
   callStr varchar(100)  DEFAULT '' COMMENT '称呼'
 );
-INSERT INTO `product`.`t_PM` (`pmNo`, `name`, `type`, `num`, `unit`, `remark`, `operator`, `createTime`, `lastModifyTime`, `isDelete`) VALUES ('TEST1', '测试1', '辅料', '20', '双', 'SSS', '1', '2019-07-30 21:41:53', NULL, '0');
+INSERT INTO `product`.`t_PM` (`pmNo`, `name`, `type`, `num`, `unit`, `remark`, `operator`, `createTime`, `lastModifyTime`, `isDelete`) VALUES ('TEST1', '测试1', '辅料类', '20', '双', 'SSS', '1', '2019-07-30 21:41:53', NULL, '0');
 INSERT INTO `product`.`t_PM` (`pmNo`, `name`, `type`, `num`, `unit`, `remark`, `operator`, `createTime`, `lastModifyTime`, `isDelete`) VALUES ('DDD0', '002', '包装材料类', '0', '个', NULL, '1', '2019-07-30 21:57:22', NULL, '0');
 
 
@@ -171,7 +171,7 @@ CREATE TABLE t_ProductPM(
 	remark varchar(200) comment '备注',
 	status int(11) comment '0未确认  1确认',
 	num decimal(5,2) comment '数量(耗料/双)',
-	unitNum decimal(5,2) comment '数量(双/单位)',
+	unitNum decimal(5,4) comment '数量(双/单位)',
 	operator varchar(100) NOT NULL comment '添加人',
 	createTime datetime,
 	lastModifyTime datetime,
@@ -198,8 +198,8 @@ CREATE TABLE t_PMIn(
 	isDelete int NOT NULL
 );
 
-INSERT INTO `product`.`t_PMIn` (`pmId`, `pmNo`, `pmName`, `type`, `unit`, `remark`, `supplier`, `inDate`, `num`, `perNum`, `backNum`, `operator`, `createTime`, `lastModifyTime`, `isDelete`) VALUES ('1', 'TEST1', '测试1', '辅料', '10', 'AAA', '！！！！', '2019-07-30', '10', '0', '10', '1', '2019-07-30 21:43:13', NULL, '0');
-INSERT INTO `product`.`t_PMIn` (`pmId`, `pmNo`, `pmName`, `type`, `unit`, `remark`, `supplier`, `inDate`, `num`, `perNum`, `backNum`, `operator`, `createTime`, `lastModifyTime`, `isDelete`) VALUES ('1', 'TEST1', '测试1', '辅料', '10', 'AAA', '！！！！', '2019-07-31', '10', '10', '20', '1', '2019-07-30 21:43:13', NULL, '0');
+INSERT INTO `product`.`t_PMIn` (`pmId`, `pmNo`, `pmName`, `type`, `unit`, `remark`, `supplier`, `inDate`, `num`, `perNum`, `backNum`, `operator`, `createTime`, `lastModifyTime`, `isDelete`) VALUES ('1', 'TEST1', '测试1', '辅料类', '10', 'AAA', '！！！！', '2019-07-30', '10', '0', '10', '1', '2019-07-30 21:43:13', NULL, '0');
+INSERT INTO `product`.`t_PMIn` (`pmId`, `pmNo`, `pmName`, `type`, `unit`, `remark`, `supplier`, `inDate`, `num`, `perNum`, `backNum`, `operator`, `createTime`, `lastModifyTime`, `isDelete`) VALUES ('1', 'TEST1', '测试1', '辅料类', '10', 'AAA', '！！！！', '2019-07-31', '10', '10', '20', '1', '2019-07-30 21:43:13', NULL, '0');
 
 
 ##领料单  耗料上限出库  好像可以直接用订单做主表
