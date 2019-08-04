@@ -171,7 +171,7 @@ CREATE TABLE t_ProductPM(
 	remark varchar(200) comment '备注',
 	status int(11) comment '0未确认  1确认',
 	num decimal(5,2) comment '数量(耗料/双)',
-	unitNum decimal(5,2) comment '数量(双/单位)',
+	unitNum decimal(5,4) comment '数量(双/单位)',
 	operator varchar(100) NOT NULL comment '添加人',
 	createTime datetime,
 	lastModifyTime datetime,

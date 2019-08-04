@@ -12,6 +12,7 @@ import com.btjf.model.sys.SysUser;
 import com.btjf.service.pm.PmInService;
 import com.btjf.service.pm.PmService;
 import com.btjf.vo.PmInVo;
+import com.btjf.vo.PmOutBillDetailVo;
 import com.btjf.vo.PmOutBillListVo;
 import com.btjf.vo.PmOutStockDetailListVo;
 import com.wordnik.swagger.annotations.Api;
@@ -66,13 +67,30 @@ public class PmOutController extends ProductBaseController {
     }
 
     /**
-     *
+     *库存料明细
      * @param orderNo
      * @param productNo
      * @return
      */
     @RequestMapping(value = "/stock/detail", method = RequestMethod.GET)
     public XaResult<PmOutStockDetailListVo> stockDetail(@ApiParam("订单号") String orderNo, @ApiParam("型号") String productNo) {
+        LOGGER.info(getRequestParamsAndUrl());
+        //查询订单 获取订单 产品数量
+        //查询 产品 耗料  获取所需耗料数量
+
+        return XaResult.success();
+
+    }
+
+    /**
+     *每件/双耗料/需用料数量
+     * @param orderNo
+     * @param productNo
+     * @return
+     */
+    @RequestMapping(value = "/productpm/detail", method = RequestMethod.GET)
+    public XaResult<PmOutStockDetailListVo> pmDetail(@ApiParam("订单号") String orderNo,
+                   @ApiParam("型号") String productNo, @ApiParam("类型") String type) {
         LOGGER.info(getRequestParamsAndUrl());
         //查询订单 获取订单 产品数量
         //查询 产品 耗料  获取所需耗料数量
@@ -91,7 +109,7 @@ public class PmOutController extends ProductBaseController {
      * @return
      */
     @RequestMapping(value = "bill/list", method = RequestMethod.GET)
-    public XaResult<List<PmOutBillListVo>> detail(@ApiParam("票据编号") String billNo,
+    public XaResult<List<PmOutBillListVo>> billList(@ApiParam("票据编号") String billNo,
                                                   @ApiParam("订单号") String orderNo, @ApiParam("型号") String productNo,
                                                   Integer pageSize, Integer currentPage) {
         LOGGER.info(getRequestParamsAndUrl());
@@ -99,6 +117,37 @@ public class PmOutController extends ProductBaseController {
 
         return null;
     }
+
+    /**
+     * 领料单详情
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "bill/detail", method = RequestMethod.GET)
+    public XaResult<PmOutBillDetailVo> billDetail(@ApiParam("票据编号") Integer id) {
+        LOGGER.info(getRequestParamsAndUrl());
+        //总用量=订单型号数量*型号耗材数
+        //核可领用=分配数*2，但是可修改
+
+        return null;
+    }
+
+//    /**
+//     * 计算核可领用
+//     * @param productNo
+//     * @param distributeNum
+//     * @return
+//     */
+//    @RequestMapping(value = "bill/", method = RequestMethod.GET)
+//    public XaResult<String> billDetail(@ApiParam("型号") String productNo,
+//                                                  @ApiParam("分配数量") Integer distributeNum) {
+//        LOGGER.info(getRequestParamsAndUrl());
+//
+//
+//        return null;
+//    }
+
+
 
     @RequestMapping(value = "export", method = RequestMethod.GET)
     public void export(@ApiParam("编号") String pmNo, @ApiParam("名称") String name

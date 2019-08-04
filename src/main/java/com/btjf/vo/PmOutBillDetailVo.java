@@ -1,16 +1,23 @@
 package com.btjf.vo;
 
-public class PmOutBillListVo {
+import java.util.List;
+
+public class PmOutBillDetailVo {
 
     private Integer id;//领料单ID
     private String orderNo;
     private String productNo;
     private String billNo;
-    private String groupNmae;
-    private String pmType;
-    private String pmCheckItem;
-    private Integer sum;
+    private String groupNmae;//领用组
+    private String pmType;//材料类别
+    private String pmCheckItem;//检测项目
+    private String operator;//开票人
+    private Integer sum;//总数
     private String billDate;
+    private String workshop;//车间
+    private Integer num;//分配数
+    private Integer maxNum;//上限数
+    private List<BillPmVo> list;
 
     public Integer getId() {
         return id;
@@ -76,11 +83,51 @@ public class PmOutBillListVo {
         this.sum = sum;
     }
 
+    public String getOperator() {
+        return operator;
+    }
+
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
+
     public String getBillDate() {
         return billDate;
     }
 
     public void setBillDate(String billDate) {
         this.billDate = billDate;
+    }
+
+    public String getWorkshop() {
+        return workshop;
+    }
+
+    public void setWorkshop(String workshop) {
+        this.workshop = workshop;
+    }
+
+    public Integer getNum() {
+        return num;
+    }
+
+    public void setNum(Integer num) {
+        this.num = num;
+    }
+
+    public Integer getMaxNum() {
+        return maxNum;
+    }
+
+    public void setMaxNum(Integer maxNum) {
+        this.maxNum = maxNum;
+    }
+
+    public List<BillPmVo> getList() {
+        return list;
+    }
+
+    public void setList(List<BillPmVo> list) {
+        this.list = list;
     }
 }

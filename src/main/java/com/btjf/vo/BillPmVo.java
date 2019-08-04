@@ -1,11 +1,6 @@
 package com.btjf.vo;
 
-import com.btjf.common.utils.DateUtil;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-public class PmOutStockDetailVo {
+public class BillPmVo {
 
     private String pmNo;
 
@@ -15,10 +10,10 @@ public class PmOutStockDetailVo {
 
     private String unit;
     //以下 返回参数  件/双耗料/需用料数量  接口专用
-    private String type;
+
+    private Integer allowNum;//可领用
+    private String pmBatchNo;//材料批次号
     private String remark;
-    private Integer num;//单位数
-    private Integer unitNum;//倒数
 
     public String getPmNo() {
         return pmNo;
@@ -36,12 +31,12 @@ public class PmOutStockDetailVo {
         this.pmName = pmName;
     }
 
-    public Integer getNum() {
-        return num;
+    public Integer getSum() {
+        return sum;
     }
 
-    public void setNum(Integer num) {
-        this.num = num;
+    public void setSum(Integer sum) {
+        this.sum = sum;
     }
 
     public String getUnit() {
@@ -52,20 +47,20 @@ public class PmOutStockDetailVo {
         this.unit = unit;
     }
 
-    public Integer getSum() {
-        return sum;
+    public Integer getAllowNum() {
+        return allowNum;
     }
 
-    public void setSum(Integer sum) {
-        this.sum = sum;
+    public void setAllowNum(Integer allowNum) {
+        this.allowNum = allowNum;
     }
 
-    public String getType() {
-        return type;
+    public String getPmBatchNo() {
+        return pmBatchNo;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setPmBatchNo(String pmBatchNo) {
+        this.pmBatchNo = pmBatchNo;
     }
 
     public String getRemark() {
@@ -74,13 +69,5 @@ public class PmOutStockDetailVo {
 
     public void setRemark(String remark) {
         this.remark = remark;
-    }
-
-    public Integer getUnitNum() {
-        return unitNum;
-    }
-
-    public void setUnitNum(Integer unitNum) {
-        this.unitNum = unitNum;
     }
 }
