@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -60,5 +61,45 @@ public class CustomerController extends ProductBaseController {
         }
     }
 
-    public
+
+    @RequestMapping(value = "/updateOrAdd", method = RequestMethod.POST)
+    public XaResult<Integer> updateOrAdd(Integer id, String name, String phone, String tel, String address, String level, String industry,
+                                         String source, String product, String linkMan, String salesman, String email, String qq,
+                                         String msn, String bankName, String bankNo, String legalPerson, String duty, String remark) {
+
+        if (name == null) return XaResult.error("名称必填");
+
+        Customer customer = new Customer();
+        customer.setName(name);
+        customer.setIsDelete(0);
+        customer.setLastModifyTime(new Date());
+        customer.setAddress(address);
+        customer.setBankName(bankName);
+        customer.setMsn(msn);
+        customer.setTel(tel);
+        customer.setBankNo(bankNo);
+        customer.setSalesman(salesman);
+        customer.setPhone(phone);
+        customer.setLevel(level);
+        customer.setSource(source);
+        customer.setProduct(product);
+        customer.setLinkMan(linkMan);
+        customer.setLegalPerson(legalPerson);
+        customer.setDuty(duty);
+        customer.setEmail(email);
+        customer.setRemark(remark);
+        customer.setIndustry(industry);
+        customer.setQq(qq);
+
+        //更新
+        if (id != null) {
+            customer.setId(id);
+            customerService.updateByID(customer);
+        } else {
+            customer.setCreateTime(new Date());
+            id = customerService.insert(customer);
+        }
+        return XaResult.success(id);
+
+    }
 }

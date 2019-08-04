@@ -18,7 +18,7 @@ public class CustomerService {
     @Resource
     private CustomerMapper customerMapper;
 
-    public Page<Customer> findListPage(String name, String startDate, String endDate,  Page page) {
+    public Page<Customer> findListPage(String name, String startDate, String endDate, Page page) {
         PageHelper.startPage(page.getPage(), page.getRp());
         List<Customer> pmList = customerMapper.findList(name, startDate, endDate);
         PageInfo pageInfo = new PageInfo(pmList);
@@ -27,8 +27,18 @@ public class CustomerService {
     }
 
     public Customer getByID(Integer id) {
-        if(id == null) return null;
+        if (id == null) return null;
 
         return customerMapper.selectByPrimaryKey(id);
+    }
+
+    public Integer updateByID(Customer customer) {
+        if (customer == null) return 0;
+        return customerMapper.updateByPrimaryKeySelective(customer);
+    }
+
+    public Integer insert(Customer customer) {
+        if (customer == null) return 0;
+        return customerMapper.insertSelective(customer);
     }
 }
