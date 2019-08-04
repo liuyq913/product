@@ -112,8 +112,11 @@ public class PmInController extends ProductBaseController {
     public XaResult<Pm> detail(@ApiParam("材料编号") String pmNo) {
         LOGGER.info(getRequestParamsAndUrl());
         Pm pm = pmService.getByNo(pmNo);
-        return XaResult.success(pm);
-
+        if(pm != null) {
+            return XaResult.success(pm);
+        }else{
+            return XaResult.error(pmNo +",该材料不存在");
+        }
     }
 
     @RequestMapping(value = "export", method = RequestMethod.GET)
