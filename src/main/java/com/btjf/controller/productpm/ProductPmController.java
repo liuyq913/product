@@ -15,6 +15,7 @@ import com.btjf.util.BigDecimalUtil;
 import com.google.common.collect.Lists;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -120,7 +121,7 @@ public class ProductPmController extends ProductBaseController {
 
     @RequestMapping(value = "/addOrUpdate", method = RequestMethod.POST)
     public XaResult<Integer> updateOrAdd(Integer id, String productNo, String pmNo, String num,
-                                         String unit, String type, String remark, Integer status, Integer sequence) {
+                                         String unit, String type, String remark, Integer status, String sequence) {
         SysUser sysUser = getLoginUser();
         LOGGER.info(getRequestParamsAndUrl());
 
@@ -133,6 +134,9 @@ public class ProductPmController extends ProductBaseController {
             return XaResult.error("数量填写有误！");
         }
 
+        if(!NumberUtils.isDigits(sequence)){
+            return XaResult.error("序号填写有误！");
+        }
         ProductPm productPm = new ProductPm();
         productPm.setIsDelete(0);
         productPm.setLastModifyTime(new Date());
@@ -151,7 +155,7 @@ public class ProductPmController extends ProductBaseController {
         productPm.setRemark(remark);
         productPm.setNum(BigDecimalUtil.getBigDecimal(num));
         productPm.setUnitNum(BigDecimal.valueOf(BigDecimalUtil.div(1d, productPm.getNum().doubleValue())));
-        productPm.setSequence(sequence);
+        productPm.setSequence(new Integer(sequence));
 
         if(null != status) {
             if (status != 0 && status != 1) {
@@ -166,7 +170,10 @@ public class ProductPmController extends ProductBaseController {
             productPmService.update(productPm);
         } else {
             if (null != productPmService.getByNo(productNo)) {
-                return XaResult.error("物料编号已经存在");
+                return XaResult.error("型号已经已经存在");
+            }
+            if(null != productPmService.getByNoAndPmNo(productNo, pmNo)){
+                return XaResult.error("该型号已经存在该物料");
             }
             id = productPmService.add(productPm);
         }
