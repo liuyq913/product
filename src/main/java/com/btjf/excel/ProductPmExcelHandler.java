@@ -65,9 +65,6 @@ public class ProductPmExcelHandler extends BaseExcelHandler {
             switch (i) {
                 case 0:
                     String productNo = getCellValue(row.getCell(i), i);
-                    if (null != productPmService.getByNo(productNo)) {
-                        throw new BusinessException("型号已存在");
-                    }
                     productPm.setProductNo(productNo);
                     break;
 
@@ -76,6 +73,9 @@ public class ProductPmExcelHandler extends BaseExcelHandler {
                     Pm pm = pmService.getByNo(pmSt);
                     if (null == pm) {
                         throw new BusinessException("物料型号不存在");
+                    }
+                    if (null != productPmService.getByNoAndPmNo(productPm.getProductNo(), pm.getPmNo())) {
+                        throw new BusinessException(productPm.getProductNo()+"型号的，"+pm.getPmNo()+"耗料已经存在");
                     }
                     productPm.setPmName(pm.getName());
                     productPm.setPmId(pm.getId());
