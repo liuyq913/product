@@ -136,6 +136,10 @@ public class ProductPmExcelHandler extends BaseExcelHandler {
 
     private String getCellValue(XSSFCell cell, int i) {
         String value = null;
+        if(cell == null && i == 6){
+            //备注列 允许为空
+            return null;
+        }
         try {
             value = getCellValue(cell);
         } catch (Exception e) {
