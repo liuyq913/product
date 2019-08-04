@@ -190,6 +190,7 @@ public class PmExcelHandler extends BaseExcelHandler {
                 }
                 pm.setIsDelete(0);
                 pm.setName(name.toString());
+                pm.setNum(0);
             }
             pmList.add(pm);
         }
