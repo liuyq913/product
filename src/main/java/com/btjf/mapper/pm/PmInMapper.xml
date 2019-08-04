@@ -457,7 +457,8 @@
     from t_PM p left JOIN
     (select a.pmId,max(a.createTime) createTime,max(a.id) id from t_PMIn a GROUP BY a.pmId)i on p.id = i.pmId
     left JOIN t_PMIn aa on i.createTime = aa.createTime and aa.id = i.id
-    where 1=1
+    where
+    p.isDelete = 0
     <if test="pmNo != null">
       and p.pmNo LIKE '%${pmNo}%'
     </if>
