@@ -41,4 +41,9 @@ public class CustomerService {
         if (customer == null) return 0;
         return customerMapper.insertSelective(customer);
     }
+
+    public List<Customer> findList(String name, String startDate, String endDate) {
+        List<Customer> pmList = customerMapper.findList(name, startDate, endDate);
+        return pmList;
+    }
 }

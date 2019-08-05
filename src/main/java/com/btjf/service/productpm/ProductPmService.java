@@ -144,4 +144,8 @@ public class ProductPmService {
     public List<ProductPm> findListByProductNoAndType(String productNo, String type) {
         return productpmMapper.findListByProductNoAndType(productNo,type);
     }
+
+    public Integer deleteByPmNo(String pmNo) {
+       return productpmMapper.deleteByPmNo(pmNo);
+    }
 }

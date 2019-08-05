@@ -533,4 +533,9 @@
       #{item.sequence,jdbcType=INTEGER})
     </foreach>
   </insert>
+
+
+  <update id="deleteByPmNo">
+    UPDATE t_ProductPM SET isDelete = 1 WHERE pmNo = #{pmNo}
+  </update>
 </mapper>
