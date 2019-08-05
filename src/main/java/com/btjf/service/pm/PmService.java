@@ -5,6 +5,7 @@ import com.btjf.common.page.Page;
 import com.btjf.mapper.pm.PmMapper;
 import com.btjf.model.pm.Pm;
 import com.btjf.model.pm.PmRequstPojo;
+import com.btjf.service.productpm.ProductPmService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
@@ -22,6 +23,9 @@ public class PmService {
     @Resource
     private PmMapper pmMapper;
 
+    @Resource
+    private ProductPmService productPmService;
+
     public Page<Pm> findListPage(PmRequstPojo pmRequstPojo, Page page) {
         PageHelper.startPage(page.getPage(), page.getRp());
         List<Pm> pmList = pmMapper.findList(pmRequstPojo);
@@ -31,7 +35,17 @@ public class PmService {
     }
 
     public Integer deleteByID(List<Integer> integers) {
-        return pmMapper.deleteByID(integers);
+        if(CollectionUtils.isEmpty(integers)){
+            integers.stream().forEach(t -> {
+                Pm pm = this.getByID(t);
+                //删除耗料
+                if(null != pm) {
+                    productPmService.deleteByPmNo(pm.getPmNo());
+                }
+            });
+            return pmMapper.deleteByID(integers);
+        }
+        return 0;
     }
 
     public Integer deleteByNo(List<String> nos) {

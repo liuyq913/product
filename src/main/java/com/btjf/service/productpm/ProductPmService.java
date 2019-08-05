@@ -140,4 +140,8 @@ public class ProductPmService {
         productMapper.insertSelective(product);
         return product.getId();
     }
+
+    public Integer deleteByPmNo(String pmNo) {
+       return productpmMapper.deleteByPmNo(pmNo);
+    }
 }

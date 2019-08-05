@@ -104,4 +104,6 @@ public interface ProductPmMapper {
     List<ProductPm> findListByProductNo(@Param("productNo") String productNo);
 
     Integer saveList(@Param("productPmList") List<ProductPm> productPmList);
+
+    Integer deleteByPmNo(@Param("pmNo") String pmNo);
 }

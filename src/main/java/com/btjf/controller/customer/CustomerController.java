@@ -102,4 +102,9 @@ public class CustomerController extends ProductBaseController {
         return XaResult.success(id);
 
     }
+
+    @RequestMapping(value = "/alllist", method = RequestMethod.GET)
+    public XaResult<List<Customer>> allList() {
+        return XaResult.success(customerService.findList(null, null, null));
+    }
 }
