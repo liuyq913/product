@@ -6,11 +6,15 @@ import com.btjf.common.page.Page;
 import com.btjf.common.utils.DateUtil;
 import com.btjf.controller.base.ProductBaseController;
 import com.btjf.excel.PmInExcelHandler;
+import com.btjf.model.order.OrderProduct;
 import com.btjf.model.pm.Pm;
 import com.btjf.model.pm.PmIn;
+import com.btjf.model.product.ProductPm;
 import com.btjf.model.sys.SysUser;
+import com.btjf.service.order.OrderProductService;
 import com.btjf.service.pm.PmInService;
 import com.btjf.service.pm.PmService;
+import com.btjf.service.productpm.ProductPmService;
 import com.btjf.vo.PmInVo;
 import com.btjf.vo.PmOutBillDetailVo;
 import com.btjf.vo.PmOutBillListVo;
@@ -45,9 +49,9 @@ public class PmOutController extends ProductBaseController {
             .getLogger(PmOutController.class);
 
     @Resource
-    private PmInService pmInService;
+    private OrderProductService orderProductService;
     @Resource
-    private PmService pmService;
+    private ProductPmService productPmService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public XaResult<List<PmInVo>> findList(@ApiParam("订单号") String orderNo, @ApiParam("型号") String productNo
@@ -75,8 +79,19 @@ public class PmOutController extends ProductBaseController {
     @RequestMapping(value = "/stock/detail", method = RequestMethod.GET)
     public XaResult<PmOutStockDetailListVo> stockDetail(@ApiParam("订单号") String orderNo, @ApiParam("型号") String productNo) {
         LOGGER.info(getRequestParamsAndUrl());
+        if(StringUtils.isEmpty(orderNo)){
+            XaResult.error("订单号不能为空");
+        }
+        if(StringUtils.isEmpty(productNo)){
+            XaResult.error("型号不能为空");
+        }
         //查询订单 获取订单 产品数量
+        OrderProduct orderProduct = orderProductService.findByOrderNoAndProductNo(orderNo, productNo);
         //查询 产品 耗料  获取所需耗料数量
+        List<ProductPm> list = productPmService.findList(productNo, null, null);
+        if (list != null && list.size() >0){
+
+        }
 
         return XaResult.success();
 
@@ -92,8 +107,19 @@ public class PmOutController extends ProductBaseController {
     public XaResult<PmOutStockDetailListVo> pmDetail(@ApiParam("订单号") String orderNo,
                    @ApiParam("型号") String productNo, @ApiParam("类型") String type) {
         LOGGER.info(getRequestParamsAndUrl());
+        if(StringUtils.isEmpty(orderNo)){
+            XaResult.error("订单号不能为空");
+        }
+        if(StringUtils.isEmpty(productNo)){
+            XaResult.error("型号不能为空");
+        }
         //查询订单 获取订单 产品数量
+        OrderProduct orderProduct = orderProductService.findByOrderNoAndProductNo(orderNo, productNo);
         //查询 产品 耗料  获取所需耗料数量
+        List<ProductPm> list = productPmService.findListByProductNoAndType(productNo, type);
+        if (list != null && list.size() >0){
+
+        }
 
         return XaResult.success();
 
@@ -154,53 +180,7 @@ public class PmOutController extends ProductBaseController {
             , @ApiParam("类型") String type, @ApiParam("起始时间") String startDate, @ApiParam("截止时间") String endDate,
                                HttpServletResponse response) {
         LOGGER.info(getRequestParamsAndUrl());
-        List<PmInVo> list = pmInService.findList(pmNo, name, type, startDate, endDate);
 
-        Workbook wb = new XSSFWorkbook();
-        Sheet sheet = wb.createSheet();
-        Row header = sheet.createRow(0);
-
-        sheet.setColumnWidth(0, (int) ((20 + 0.72) * 256));
-        sheet.setColumnWidth(1, (int) ((20 + 0.72) * 256));
-        sheet.setColumnWidth(2, (int) ((10 + 0.72) * 256));
-        sheet.setColumnWidth(3, (int) ((20 + 0.72) * 256));
-        sheet.setColumnWidth(4, (int) ((20 + 0.72) * 256));
-        sheet.setColumnWidth(5, (int) ((15 + 0.72) * 256));
-        sheet.setColumnWidth(6, (int) ((15 + 0.72) * 256));
-
-        for(int i=0; i< PmInExcelHandler.fields.size(); i++){
-            header.createCell(i).setCellValue(PmInExcelHandler.fields.get(i));
-        }
-
-        PmInVo pm = null;
-        if (list != null && list.size() >= 1) {
-            for (int i = 0; i < list.size(); i++) {
-                pm = list.get(i);
-                Row row = sheet.createRow(i + 1);
-                int j = 0;
-                row.createCell(j++).setCellValue(pm.getPmNo());
-                row.createCell(j++).setCellValue(pm.getName());
-                row.createCell(j++).setCellValue(pm.getType());
-                row.createCell(j++).setCellValue(pm.getSupplier());
-                row.createCell(j++).setCellValue(pm.getNum());
-                row.createCell(j++).setCellValue(pm.getUnit());
-                row.createCell(j++).setCellValue(pm.getRemark());
-            }
-        }
-        try {
-            sheet.setForceFormulaRecalculation(true);
-            response.setHeader("Pragma", "no-cache");
-            response.setHeader("Cache-Control", "no-cache");
-            response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode("入库记录.xlsx", "UTF-8"));
-            response.setDateHeader("Expires", 0);
-            response.setHeader("Connection", "close");
-            response.setHeader("Content-Type", "application/vnd.ms-excel");
-            wb.write(response.getOutputStream());
-            wb.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            LOGGER.error("入库记录导出excel异常");
-        }
 
     }
 

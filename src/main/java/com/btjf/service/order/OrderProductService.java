@@ -1,5 +1,6 @@
 package com.btjf.service.order;
 
+import com.btjf.model.order.OrderProduct;
 import org.springframework.stereotype.Service;
 
 /**
@@ -7,4 +8,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class OrderProductService {
+    public OrderProduct findByOrderNoAndProductNo(String orderNo, String productNo) {
+        return null;
+    }
 }

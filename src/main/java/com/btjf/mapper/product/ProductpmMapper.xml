@@ -502,6 +502,19 @@
         AND productNo = #{productNo,jdbcType=VARCHAR}
         and isDelete = 0
     </select>
+  <select id="findListByProductNoAndType" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM t_ProductPM
+    WHERE
+    isDelete = 0
+    <if test="productNo != null">
+      AND productNo = #{productNo,jdbcType=VARCHAR}
+    </if>
+    <if test="type != null">
+      AND type = #{type,jdbcType=VARCHAR}
+    </if>
+  </select>
 
   <insert id="saveList" parameterType="com.btjf.model.product.ProductPm">
     INSERT INTO t_ProductPM (productId, productNo, pmId,
