@@ -140,4 +140,8 @@ public class ProductPmService {
         productMapper.insertSelective(product);
         return product.getId();
     }
+
+    public List<ProductPm> findListByProductNoAndType(String productNo, String type) {
+        return productpmMapper.findListByProductNoAndType(productNo,type);
+    }
 }
