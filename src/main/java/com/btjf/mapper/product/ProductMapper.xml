@@ -347,4 +347,10 @@
       isDelete = #{isDelete,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="getByNo" resultMap="BaseResultMap">
+      select <include refid="Base_Column_List"/>
+      FROM  t_Product
+      WHERE  productNo = #{no} and isDelete = 0
+  </select>
 </mapper>

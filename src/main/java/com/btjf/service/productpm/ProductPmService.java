@@ -1,7 +1,10 @@
 package com.btjf.service.productpm;
 
+import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.btjf.common.page.Page;
+import com.btjf.mapper.product.ProductMapper;
 import com.btjf.mapper.product.ProductPmMapper;
+import com.btjf.model.product.Product;
 import com.btjf.model.product.ProductPm;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -20,6 +23,9 @@ public class ProductPmService {
 
     @Resource
     private ProductPmMapper productpmMapper;
+
+    @Resource
+    private ProductMapper productMapper;
 
 
     public Page<ProductPm> findListPage(String productNo, String pmNo, Integer status, Page page) {
@@ -87,6 +93,7 @@ public class ProductPmService {
     }
 
     public Integer add(ProductPm productPm) {
+        productPm.setProductId(insertProduct(productPm));
         productpmMapper.insertSelective(productPm);
         return productPm.getId();
     }
@@ -108,6 +115,29 @@ public class ProductPmService {
     }
 
     public Integer saveList(List<ProductPm> productPms){
+        //初始化产品表
+        if(!CollectionUtils.isEmpty(productPms)){
+            for(ProductPm productPm : productPms){
+                if(null == productMapper.getByNo(productPm.getPmNo())){
+                    productPm.setProductId(insertProduct(productPm));
+                }
+            }
+        }
+
        return productpmMapper.saveList(productPms);
+    }
+
+    public Integer insertProduct(ProductPm productPm){
+        Product product = new Product();
+        product.setCreateTime(new Date());
+        product.setOperator("系统");
+        product.setProductNo(productPm.getProductNo());
+        product.setType(productPm.getType());
+        product.setLastModifyTime(new Date());
+        product.setIsDelete(0);
+        product.setName(productPm.getProductNo());
+        product.setUnit(productPm.getUnit());
+        productMapper.insertSelective(product);
+        return product.getId();
     }
 }
