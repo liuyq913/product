@@ -93,4 +93,6 @@ public interface OrderProductMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(OrderProduct record);
+
+    OrderProduct findByOrderNoAndProductNo(@Param("orderNo")String orderNo, @Param("productNo")String productNo);
 }

@@ -2,6 +2,7 @@ package com.btjf.mapper.pm;
 
 import com.btjf.model.pm.PmOutBill;
 import com.btjf.model.pm.PmOutBillExample;
+import com.btjf.vo.PmOutBillListVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -94,4 +95,7 @@ public interface PmOutBillMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(PmOutBill record);
+
+    List<PmOutBillListVo> findList(@Param("billNo")String billNo, @Param("orderNo")String orderNo,
+                                   @Param("productNo")String productNo);
 }
