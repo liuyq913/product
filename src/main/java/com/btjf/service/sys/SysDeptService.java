@@ -21,4 +21,9 @@ public class SysDeptService {
         return sysdeptMapper.selectByPrimaryKey(id);
     }
 
+
+    public List<Sysdept> getList() {
+
+        return sysdeptMapper.getList();
+    }
 }

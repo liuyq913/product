@@ -93,4 +93,6 @@ public interface SysdeptMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(Sysdept record);
+
+    List<Sysdept> getList();
 }

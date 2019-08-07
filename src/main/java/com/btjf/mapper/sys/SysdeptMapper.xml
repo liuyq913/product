@@ -236,4 +236,8 @@
       deptOrder = #{deptOrder,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+    <select id="getList" resultMap="BaseResultMap">
+        select * from t_SysDept order by deptOrder ASC
+    </select>
 </mapper>

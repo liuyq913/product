@@ -128,7 +128,7 @@ CREATE TABLE t_PM(
 	pmNo varchar(100) NOT NULL comment '物料编号',
 	name varchar(100) NOT NULL comment '物料名称',
 	type varchar(100) NOT NULL comment '类别 泡棉类、主要面料类、标类、辅料类、包装材料类',
-	num int DEFAULT '0' comment '数量',
+	num decimal(8,4)  comment '数量',
 	unit varchar(30) NOT NULL comment '单位 双、套、箱、只、件、米、SF、并、张、KG、个、卷、跟、片、m2、颗、付、顶、条、块',
 	remark varchar(200) comment '备注',
 	operator varchar(100) NOT NULL comment '添加人',
@@ -325,7 +325,7 @@ CREATE TABLE t_Production_Order(
    createTime datetime,
 	 lastModifyTime datetime,
 	 isDelete int NOT NULL
-)
+);
 
 
 ##生产单-工序表
@@ -339,7 +339,7 @@ CREATE TABLE t_Production_Procedure(
    procedureName varchar(50) comment '工序名称',
    createTime datetime,
 	 isDelete int NOT NULL
-)
+);
 
 ##生产单-罗表
 CREATE TABLE t_Production_Luo(
@@ -353,7 +353,7 @@ CREATE TABLE t_Production_Luo(
   codeUrl varchar(100) comment '二维码地址',
   createTime datetime,
 	isDelete int NOT NULL
-)
+);
 
 
 -- 暂时不用
