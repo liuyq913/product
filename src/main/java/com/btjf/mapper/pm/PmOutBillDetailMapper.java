@@ -94,4 +94,6 @@ public interface PmOutBillDetailMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(PmOutBillDetail record);
+
+    List<PmOutBillDetail> getListDetailByBillId(@Param("billId")Integer billId);
 }

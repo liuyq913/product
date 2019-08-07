@@ -1,5 +1,10 @@
 package com.btjf.vo;
 
+import com.btjf.common.utils.DateUtil;
+import com.btjf.model.order.OrderProduct;
+import com.btjf.model.pm.PmOutBill;
+import com.btjf.model.pm.PmOutBillDetail;
+
 import java.util.List;
 
 public class PmOutBillDetailVo {
@@ -18,6 +23,29 @@ public class PmOutBillDetailVo {
     private Integer num;//分配数
     private Integer maxNum;//上限数
     private List<BillPmVo> list;
+
+    public PmOutBillDetailVo() {
+    }
+
+    public PmOutBillDetailVo(PmOutBill pmOutBill, OrderProduct orderProduct, List<PmOutBillDetail> plist) {
+        id = pmOutBill.getId();
+        orderNo = pmOutBill.getOrderNo();
+        productNo = pmOutBill.getProductNo();
+        billNo = pmOutBill.getBillNo();
+        groupNmae = pmOutBill.getGroupNmae();
+        pmType = pmOutBill.getPmType();
+        pmCheckItem = pmOutBill.getPmCheckItem();
+        operator = pmOutBill.getOperator();
+        workshop = pmOutBill.getWorkshop();
+        sum = orderProduct.getNum();
+        maxNum = orderProduct.getMaxNum();
+        billDate = DateUtil.dateToString(pmOutBill.getCreateTime(), DateUtil.ymdFormat);
+        if(plist != null && plist.size() >0){
+            for (int i=0; i< plist.size(); i++){
+                //TODO  未完待续
+            }
+        }
+    }
 
     public Integer getId() {
         return id;

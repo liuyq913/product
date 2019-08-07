@@ -2,9 +2,11 @@ package com.btjf.service.pm;
 
 import com.btjf.common.page.Page;
 import com.btjf.mapper.pm.PmInMapper;
+import com.btjf.mapper.pm.PmOutBillDetailMapper;
 import com.btjf.mapper.pm.PmOutBillMapper;
 import com.btjf.model.pm.PmIn;
 import com.btjf.model.pm.PmOutBill;
+import com.btjf.model.pm.PmOutBillDetail;
 import com.btjf.vo.PmInVo;
 import com.btjf.vo.PmOutBillListVo;
 import com.github.pagehelper.PageHelper;
@@ -23,12 +25,23 @@ public class PmOutService {
     @Resource
     private PmOutBillMapper mapper;
 
+    @Resource
+    private PmOutBillDetailMapper pmOutBillDetailMapper;
+
     public Page<PmOutBillListVo> findListPage(String billNo, String orderNo, String productNo, Page page) {
         PageHelper.startPage(page.getPage(), page.getRp());
         List<PmOutBillListVo> pmList = mapper.findList(billNo, orderNo, productNo);
         PageInfo pageInfo = new PageInfo(pmList);
         pageInfo.setList(pmList);
         return new Page<>(pageInfo);
+    }
+
+    public PmOutBill getByBillNo(String billNo) {
+        return mapper.getByBillNo(billNo);
+    }
+
+    public List<PmOutBillDetail> getListDetailByBillId(Integer billId) {
+        return pmOutBillDetailMapper.getListDetailByBillId(billId);
     }
 
 //    public List<PmInVo> findList(String pmNo, String name, String type,String startDate,String endDate){
