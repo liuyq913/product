@@ -1,5 +1,6 @@
 package com.btjf.model.pm;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -832,52 +833,52 @@ public class PmInExample {
             return (Criteria) this;
         }
 
-        public Criteria andNumEqualTo(Integer value) {
+        public Criteria andNumEqualTo(BigDecimal value) {
             addCriterion("num =", value, "num");
             return (Criteria) this;
         }
 
-        public Criteria andNumNotEqualTo(Integer value) {
+        public Criteria andNumNotEqualTo(BigDecimal value) {
             addCriterion("num <>", value, "num");
             return (Criteria) this;
         }
 
-        public Criteria andNumGreaterThan(Integer value) {
+        public Criteria andNumGreaterThan(BigDecimal value) {
             addCriterion("num >", value, "num");
             return (Criteria) this;
         }
 
-        public Criteria andNumGreaterThanOrEqualTo(Integer value) {
+        public Criteria andNumGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("num >=", value, "num");
             return (Criteria) this;
         }
 
-        public Criteria andNumLessThan(Integer value) {
+        public Criteria andNumLessThan(BigDecimal value) {
             addCriterion("num <", value, "num");
             return (Criteria) this;
         }
 
-        public Criteria andNumLessThanOrEqualTo(Integer value) {
+        public Criteria andNumLessThanOrEqualTo(BigDecimal value) {
             addCriterion("num <=", value, "num");
             return (Criteria) this;
         }
 
-        public Criteria andNumIn(List<Integer> values) {
+        public Criteria andNumIn(List<BigDecimal> values) {
             addCriterion("num in", values, "num");
             return (Criteria) this;
         }
 
-        public Criteria andNumNotIn(List<Integer> values) {
+        public Criteria andNumNotIn(List<BigDecimal> values) {
             addCriterion("num not in", values, "num");
             return (Criteria) this;
         }
 
-        public Criteria andNumBetween(Integer value1, Integer value2) {
+        public Criteria andNumBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("num between", value1, value2, "num");
             return (Criteria) this;
         }
 
-        public Criteria andNumNotBetween(Integer value1, Integer value2) {
+        public Criteria andNumNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("num not between", value1, value2, "num");
             return (Criteria) this;
         }
@@ -892,52 +893,52 @@ public class PmInExample {
             return (Criteria) this;
         }
 
-        public Criteria andPerNumEqualTo(Integer value) {
+        public Criteria andPerNumEqualTo(BigDecimal value) {
             addCriterion("perNum =", value, "perNum");
             return (Criteria) this;
         }
 
-        public Criteria andPerNumNotEqualTo(Integer value) {
+        public Criteria andPerNumNotEqualTo(BigDecimal value) {
             addCriterion("perNum <>", value, "perNum");
             return (Criteria) this;
         }
 
-        public Criteria andPerNumGreaterThan(Integer value) {
+        public Criteria andPerNumGreaterThan(BigDecimal value) {
             addCriterion("perNum >", value, "perNum");
             return (Criteria) this;
         }
 
-        public Criteria andPerNumGreaterThanOrEqualTo(Integer value) {
+        public Criteria andPerNumGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("perNum >=", value, "perNum");
             return (Criteria) this;
         }
 
-        public Criteria andPerNumLessThan(Integer value) {
+        public Criteria andPerNumLessThan(BigDecimal value) {
             addCriterion("perNum <", value, "perNum");
             return (Criteria) this;
         }
 
-        public Criteria andPerNumLessThanOrEqualTo(Integer value) {
+        public Criteria andPerNumLessThanOrEqualTo(BigDecimal value) {
             addCriterion("perNum <=", value, "perNum");
             return (Criteria) this;
         }
 
-        public Criteria andPerNumIn(List<Integer> values) {
+        public Criteria andPerNumIn(List<BigDecimal> values) {
             addCriterion("perNum in", values, "perNum");
             return (Criteria) this;
         }
 
-        public Criteria andPerNumNotIn(List<Integer> values) {
+        public Criteria andPerNumNotIn(List<BigDecimal> values) {
             addCriterion("perNum not in", values, "perNum");
             return (Criteria) this;
         }
 
-        public Criteria andPerNumBetween(Integer value1, Integer value2) {
+        public Criteria andPerNumBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("perNum between", value1, value2, "perNum");
             return (Criteria) this;
         }
 
-        public Criteria andPerNumNotBetween(Integer value1, Integer value2) {
+        public Criteria andPerNumNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("perNum not between", value1, value2, "perNum");
             return (Criteria) this;
         }
@@ -952,52 +953,52 @@ public class PmInExample {
             return (Criteria) this;
         }
 
-        public Criteria andBackNumEqualTo(Integer value) {
+        public Criteria andBackNumEqualTo(BigDecimal value) {
             addCriterion("backNum =", value, "backNum");
             return (Criteria) this;
         }
 
-        public Criteria andBackNumNotEqualTo(Integer value) {
+        public Criteria andBackNumNotEqualTo(BigDecimal value) {
             addCriterion("backNum <>", value, "backNum");
             return (Criteria) this;
         }
 
-        public Criteria andBackNumGreaterThan(Integer value) {
+        public Criteria andBackNumGreaterThan(BigDecimal value) {
             addCriterion("backNum >", value, "backNum");
             return (Criteria) this;
         }
 
-        public Criteria andBackNumGreaterThanOrEqualTo(Integer value) {
+        public Criteria andBackNumGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("backNum >=", value, "backNum");
             return (Criteria) this;
         }
 
-        public Criteria andBackNumLessThan(Integer value) {
+        public Criteria andBackNumLessThan(BigDecimal value) {
             addCriterion("backNum <", value, "backNum");
             return (Criteria) this;
         }
 
-        public Criteria andBackNumLessThanOrEqualTo(Integer value) {
+        public Criteria andBackNumLessThanOrEqualTo(BigDecimal value) {
             addCriterion("backNum <=", value, "backNum");
             return (Criteria) this;
         }
 
-        public Criteria andBackNumIn(List<Integer> values) {
+        public Criteria andBackNumIn(List<BigDecimal> values) {
             addCriterion("backNum in", values, "backNum");
             return (Criteria) this;
         }
 
-        public Criteria andBackNumNotIn(List<Integer> values) {
+        public Criteria andBackNumNotIn(List<BigDecimal> values) {
             addCriterion("backNum not in", values, "backNum");
             return (Criteria) this;
         }
 
-        public Criteria andBackNumBetween(Integer value1, Integer value2) {
+        public Criteria andBackNumBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("backNum between", value1, value2, "backNum");
             return (Criteria) this;
         }
 
-        public Criteria andBackNumNotBetween(Integer value1, Integer value2) {
+        public Criteria andBackNumNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("backNum not between", value1, value2, "backNum");
             return (Criteria) this;
         }

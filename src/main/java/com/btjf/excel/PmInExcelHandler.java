@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -45,8 +46,8 @@ public class PmInExcelHandler extends BaseExcelHandler{
                 Pm pm = pmService.getByNo(pmIn.getPmNo());
 
                 pmIn.setPmId(pm.getId());
-                pmIn.setPerNum(pm.getNum());
-                pmIn.setBackNum(pm.getNum() + pmIn.getNum());
+                pmIn.setPerNum(BigDecimal.valueOf(pm.getNum()));
+                pmIn.setBackNum(BigDecimal.valueOf(pm.getNum()).add(pmIn.getNum()));
                 pmIn.setOperator("系统导入");
                 pmIn.setCreateTime(new Date());
                 pmIn.setIsDelete(0);
@@ -54,7 +55,7 @@ public class PmInExcelHandler extends BaseExcelHandler{
                 pmInService.create(pmIn);
                 Pm pm1 = new Pm();
                 pm1.setId(pm.getId());
-                pm1.setNum(pm.getNum() + pmIn.getNum());
+                pm1.setNum(pmIn.getBackNum().intValue());
                 pm.setLastModifyTime(new Date());
                 pmService.updateByID(pm1);
             }
@@ -81,7 +82,7 @@ public class PmInExcelHandler extends BaseExcelHandler{
                     pmIn.setSupplier(getCellValue(row.getCell(i), i));
                     break;
                 case 4:
-                    pmIn.setNum(Integer.valueOf(getCellValue(row.getCell(i), i)));
+                    pmIn.setNum(BigDecimal.valueOf(Double.parseDouble(getCellValue(row.getCell(i), i))));
                     break;
                 case 5:
                     pmIn.setUnit(getCellValue(row.getCell(i), i));

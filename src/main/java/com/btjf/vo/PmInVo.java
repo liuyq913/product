@@ -2,6 +2,7 @@ package com.btjf.vo;
 
 import com.btjf.common.utils.DateUtil;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,7 +17,7 @@ public class PmInVo {
 
     private String type;
 
-    private Integer num;
+    private BigDecimal num;
 
     private String unit;
 
@@ -60,11 +61,11 @@ public class PmInVo {
         this.type = type;
     }
 
-    public Integer getNum() {
+    public BigDecimal getNum() {
         return num;
     }
 
-    public void setNum(Integer num) {
+    public void setNum(BigDecimal num) {
         this.num = num;
     }
 

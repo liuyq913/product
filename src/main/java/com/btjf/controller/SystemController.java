@@ -1,6 +1,7 @@
 package com.btjf.controller;
 
 import com.btjf.application.util.XaResult;
+import com.btjf.model.sys.Sysdept;
 import com.btjf.service.dictionary.DictionaryService;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -35,6 +36,17 @@ public class SystemController {
         }
         List<String> list = dictionaryService.getList(type);
         return XaResult.success(list);
+    }
+
+    /**
+     * 获取部门
+     *
+     * @return
+     */
+    @RequestMapping(value = "/dept", method = RequestMethod.GET)
+    public XaResult<List<Sysdept>> dept() {
+
+        return XaResult.success();
     }
 
 

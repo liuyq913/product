@@ -1,6 +1,7 @@
 package com.btjf.model.pm;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class PmIn implements Serializable {
@@ -92,7 +93,7 @@ public class PmIn implements Serializable {
      *
      * @mbg.generated
      */
-    private Integer num;
+    private BigDecimal num;
 
     /**
      *
@@ -101,7 +102,7 @@ public class PmIn implements Serializable {
      *
      * @mbg.generated
      */
-    private Integer perNum;
+    private BigDecimal perNum;
 
     /**
      *
@@ -110,7 +111,7 @@ public class PmIn implements Serializable {
      *
      * @mbg.generated
      */
-    private Integer backNum;
+    private BigDecimal backNum;
 
     /**
      *
@@ -380,7 +381,7 @@ public class PmIn implements Serializable {
      *
      * @mbg.generated
      */
-    public Integer getNum() {
+    public BigDecimal getNum() {
         return num;
     }
 
@@ -392,7 +393,7 @@ public class PmIn implements Serializable {
      *
      * @mbg.generated
      */
-    public void setNum(Integer num) {
+    public void setNum(BigDecimal num) {
         this.num = num;
     }
 
@@ -404,7 +405,7 @@ public class PmIn implements Serializable {
      *
      * @mbg.generated
      */
-    public Integer getPerNum() {
+    public BigDecimal getPerNum() {
         return perNum;
     }
 
@@ -416,7 +417,7 @@ public class PmIn implements Serializable {
      *
      * @mbg.generated
      */
-    public void setPerNum(Integer perNum) {
+    public void setPerNum(BigDecimal perNum) {
         this.perNum = perNum;
     }
 
@@ -428,7 +429,7 @@ public class PmIn implements Serializable {
      *
      * @mbg.generated
      */
-    public Integer getBackNum() {
+    public BigDecimal getBackNum() {
         return backNum;
     }
 
@@ -440,7 +441,7 @@ public class PmIn implements Serializable {
      *
      * @mbg.generated
      */
-    public void setBackNum(Integer backNum) {
+    public void setBackNum(BigDecimal backNum) {
         this.backNum = backNum;
     }
 

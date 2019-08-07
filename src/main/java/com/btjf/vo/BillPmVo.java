@@ -11,7 +11,7 @@ public class BillPmVo {
     private String pmName;
     private Double sum;//总数
     private String unit;
-    private Integer allowNum;//可领用
+    private Double allowNum;//可领用
     private String pmBatchNo;//材料批次号
     private String remark;
 
@@ -20,7 +20,7 @@ public class BillPmVo {
         pmNo = pmOutBillDetail.getPmNo();
         sum = maxNum * pm.getNum().doubleValue();
         unit = pmOutBillDetail.getUnit();
-        allowNum = pmOutBillDetail.getNum();
+        allowNum = pmOutBillDetail.getNum().doubleValue();
         pmBatchNo = pmOutBillDetail.getPmBatchNo();
         remark = pm.getRemark();
 
@@ -62,11 +62,11 @@ public class BillPmVo {
         this.unit = unit;
     }
 
-    public Integer getAllowNum() {
+    public Double getAllowNum() {
         return allowNum;
     }
 
-    public void setAllowNum(Integer allowNum) {
+    public void setAllowNum(Double allowNum) {
         this.allowNum = allowNum;
     }
 
