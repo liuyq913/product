@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -190,7 +191,7 @@ public class PmExcelHandler extends BaseExcelHandler {
                 }
                 pm.setIsDelete(0);
                 pm.setName(name.toString());
-                pm.setNum(0);
+                pm.setNum(BigDecimal.ZERO);
             }
             pmList.add(pm);
         }

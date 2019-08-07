@@ -46,8 +46,8 @@ public class PmInExcelHandler extends BaseExcelHandler{
                 Pm pm = pmService.getByNo(pmIn.getPmNo());
 
                 pmIn.setPmId(pm.getId());
-                pmIn.setPerNum(BigDecimal.valueOf(pm.getNum()));
-                pmIn.setBackNum(BigDecimal.valueOf(pm.getNum()).add(pmIn.getNum()));
+                pmIn.setPerNum(pm.getNum());
+                pmIn.setBackNum(pm.getNum().add(pmIn.getNum()));
                 pmIn.setOperator("系统导入");
                 pmIn.setCreateTime(new Date());
                 pmIn.setIsDelete(0);
@@ -55,7 +55,7 @@ public class PmInExcelHandler extends BaseExcelHandler{
                 pmInService.create(pmIn);
                 Pm pm1 = new Pm();
                 pm1.setId(pm.getId());
-                pm1.setNum(pmIn.getBackNum().intValue());
+                pm1.setNum(pmIn.getBackNum());
                 pm.setLastModifyTime(new Date());
                 pmService.updateByID(pm1);
             }

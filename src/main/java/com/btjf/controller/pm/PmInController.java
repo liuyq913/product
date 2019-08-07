@@ -1,6 +1,5 @@
 package com.btjf.controller.pm;
 
-import com.btjf.application.components.page.AppPageHelper;
 import com.btjf.application.components.xaresult.AppXaResultHelper;
 import com.btjf.application.util.XaResult;
 import com.btjf.common.page.Page;
@@ -12,6 +11,7 @@ import com.btjf.model.pm.PmIn;
 import com.btjf.model.sys.SysUser;
 import com.btjf.service.pm.PmInService;
 import com.btjf.service.pm.PmService;
+import com.btjf.util.BigDecimalUtil;
 import com.btjf.vo.PmInVo;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -94,15 +94,15 @@ public class PmInController extends ProductBaseController {
             pmIn.setInDate(DateUtil.string2Date(date, DateUtil.ymdFormat));
         }
         pmIn.setNum(BigDecimal.valueOf(num));
-        pmIn.setPerNum(BigDecimal.valueOf(pm.getNum()));
-        pmIn.setBackNum(BigDecimal.valueOf(pm.getNum() + num));
+        pmIn.setPerNum(pm.getNum());
+        pmIn.setBackNum(BigDecimal.valueOf(BigDecimalUtil.add(pm.getNum().doubleValue(), num)));
         pmIn.setOperator(sysUser.getLoginName());
         pmIn.setCreateTime(new Date());
         pmIn.setIsDelete(0);
         pmInService.create(pmIn);
         Pm pm1 = new Pm();
         pm1.setId(pm.getId());
-        pm1.setNum((int) (pm.getNum() + num));
+        pm1.setNum(BigDecimal.valueOf(BigDecimalUtil.add(pm.getNum().doubleValue(), num)));
         pm.setLastModifyTime(new Date());
         pmService.updateByID(pm1);
         return XaResult.success();
