@@ -395,4 +395,16 @@
       isDelete = #{isDelete,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="getByWorkShopName" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from t_product_procedure_workshop
+    WHERE workshop = #{name} and isDelete = 0;
+  </select>
+
+  <select id="getNumByWorkShopName">
+    select count(1)
+    from t_product_procedure_workshop
+    WHERE workshop = #{name} and isDelete = 0;
+  </select>
 </mapper>

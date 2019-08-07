@@ -2,8 +2,9 @@ package com.btjf.mapper.order;
 
 import com.btjf.model.order.Order;
 import com.btjf.model.order.OrderExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface OrderMapper {
     /**
@@ -93,4 +94,6 @@ public interface OrderMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(Order record);
+
+    Order getByNo(@Param("orderNo") String orderNo);
 }
