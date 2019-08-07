@@ -15,9 +15,9 @@
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="supplier" jdbcType="VARCHAR" property="supplier" />
     <result column="inDate" jdbcType="DATE" property="inDate" />
-    <result column="num" jdbcType="INTEGER" property="num" />
-    <result column="perNum" jdbcType="INTEGER" property="perNum" />
-    <result column="backNum" jdbcType="INTEGER" property="backNum" />
+    <result column="num" jdbcType="DECIMAL" property="num" />
+    <result column="perNum" jdbcType="DECIMAL" property="perNum" />
+    <result column="backNum" jdbcType="DECIMAL" property="backNum" />
     <result column="operator" jdbcType="VARCHAR" property="operator" />
     <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
     <result column="lastModifyTime" jdbcType="TIMESTAMP" property="lastModifyTime" />
@@ -159,8 +159,8 @@
       )
     values (#{pmId,jdbcType=INTEGER}, #{pmNo,jdbcType=VARCHAR}, #{pmName,jdbcType=VARCHAR}, 
       #{type,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{supplier,jdbcType=VARCHAR}, #{inDate,jdbcType=DATE}, #{num,jdbcType=INTEGER}, 
-      #{perNum,jdbcType=INTEGER}, #{backNum,jdbcType=INTEGER}, #{operator,jdbcType=VARCHAR}, 
+      #{supplier,jdbcType=VARCHAR}, #{inDate,jdbcType=DATE}, #{num,jdbcType=DECIMAL}, 
+      #{perNum,jdbcType=DECIMAL}, #{backNum,jdbcType=DECIMAL}, #{operator,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{lastModifyTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER}
       )
   </insert>
@@ -246,13 +246,13 @@
         #{inDate,jdbcType=DATE},
       </if>
       <if test="num != null">
-        #{num,jdbcType=INTEGER},
+        #{num,jdbcType=DECIMAL},
       </if>
       <if test="perNum != null">
-        #{perNum,jdbcType=INTEGER},
+        #{perNum,jdbcType=DECIMAL},
       </if>
       <if test="backNum != null">
-        #{backNum,jdbcType=INTEGER},
+        #{backNum,jdbcType=DECIMAL},
       </if>
       <if test="operator != null">
         #{operator,jdbcType=VARCHAR},
@@ -313,13 +313,13 @@
         inDate = #{record.inDate,jdbcType=DATE},
       </if>
       <if test="record.num != null">
-        num = #{record.num,jdbcType=INTEGER},
+        num = #{record.num,jdbcType=DECIMAL},
       </if>
       <if test="record.perNum != null">
-        perNum = #{record.perNum,jdbcType=INTEGER},
+        perNum = #{record.perNum,jdbcType=DECIMAL},
       </if>
       <if test="record.backNum != null">
-        backNum = #{record.backNum,jdbcType=INTEGER},
+        backNum = #{record.backNum,jdbcType=DECIMAL},
       </if>
       <if test="record.operator != null">
         operator = #{record.operator,jdbcType=VARCHAR},
@@ -353,9 +353,9 @@
       remark = #{record.remark,jdbcType=VARCHAR},
       supplier = #{record.supplier,jdbcType=VARCHAR},
       inDate = #{record.inDate,jdbcType=DATE},
-      num = #{record.num,jdbcType=INTEGER},
-      perNum = #{record.perNum,jdbcType=INTEGER},
-      backNum = #{record.backNum,jdbcType=INTEGER},
+      num = #{record.num,jdbcType=DECIMAL},
+      perNum = #{record.perNum,jdbcType=DECIMAL},
+      backNum = #{record.backNum,jdbcType=DECIMAL},
       operator = #{record.operator,jdbcType=VARCHAR},
       createTime = #{record.createTime,jdbcType=TIMESTAMP},
       lastModifyTime = #{record.lastModifyTime,jdbcType=TIMESTAMP},
@@ -396,13 +396,13 @@
         inDate = #{inDate,jdbcType=DATE},
       </if>
       <if test="num != null">
-        num = #{num,jdbcType=INTEGER},
+        num = #{num,jdbcType=DECIMAL},
       </if>
       <if test="perNum != null">
-        perNum = #{perNum,jdbcType=INTEGER},
+        perNum = #{perNum,jdbcType=DECIMAL},
       </if>
       <if test="backNum != null">
-        backNum = #{backNum,jdbcType=INTEGER},
+        backNum = #{backNum,jdbcType=DECIMAL},
       </if>
       <if test="operator != null">
         operator = #{operator,jdbcType=VARCHAR},
@@ -433,9 +433,9 @@
       remark = #{remark,jdbcType=VARCHAR},
       supplier = #{supplier,jdbcType=VARCHAR},
       inDate = #{inDate,jdbcType=DATE},
-      num = #{num,jdbcType=INTEGER},
-      perNum = #{perNum,jdbcType=INTEGER},
-      backNum = #{backNum,jdbcType=INTEGER},
+      num = #{num,jdbcType=DECIMAL},
+      perNum = #{perNum,jdbcType=DECIMAL},
+      backNum = #{backNum,jdbcType=DECIMAL},
       operator = #{operator,jdbcType=VARCHAR},
       createTime = #{createTime,jdbcType=TIMESTAMP},
       lastModifyTime = #{lastModifyTime,jdbcType=TIMESTAMP},

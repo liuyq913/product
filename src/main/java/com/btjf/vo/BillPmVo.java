@@ -1,19 +1,34 @@
 package com.btjf.vo;
 
+import com.btjf.model.pm.PmOutBillDetail;
+import com.btjf.model.product.ProductPm;
+
+import java.math.BigDecimal;
+
 public class BillPmVo {
 
     private String pmNo;
-
     private String pmName;
-
-    private Integer sum;//总数
-
+    private Double sum;//总数
     private String unit;
-    //以下 返回参数  件/双耗料/需用料数量  接口专用
-
-    private Integer allowNum;//可领用
+    private Double allowNum;//可领用
     private String pmBatchNo;//材料批次号
     private String remark;
+
+    public BillPmVo(PmOutBillDetail pmOutBillDetail, Integer maxNum, ProductPm pm) {
+        pmName = pmOutBillDetail.getPmName();
+        pmNo = pmOutBillDetail.getPmNo();
+        sum = maxNum * pm.getNum().doubleValue();
+        unit = pmOutBillDetail.getUnit();
+        allowNum = pmOutBillDetail.getNum().doubleValue();
+        pmBatchNo = pmOutBillDetail.getPmBatchNo();
+        remark = pm.getRemark();
+
+    }
+
+    public BillPmVo(PmOutBillDetail pmOutBillDetail) {
+
+    }
 
     public String getPmNo() {
         return pmNo;
@@ -31,11 +46,11 @@ public class BillPmVo {
         this.pmName = pmName;
     }
 
-    public Integer getSum() {
+    public Double getSum() {
         return sum;
     }
 
-    public void setSum(Integer sum) {
+    public void setSum(Double sum) {
         this.sum = sum;
     }
 
@@ -47,11 +62,11 @@ public class BillPmVo {
         this.unit = unit;
     }
 
-    public Integer getAllowNum() {
+    public Double getAllowNum() {
         return allowNum;
     }
 
-    public void setAllowNum(Integer allowNum) {
+    public void setAllowNum(Double allowNum) {
         this.allowNum = allowNum;
     }
 

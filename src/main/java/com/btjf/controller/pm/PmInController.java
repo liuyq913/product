@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
@@ -65,7 +66,7 @@ public class PmInController extends ProductBaseController {
     }
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
-    public XaResult<Integer> add(@ApiParam("id") Integer id, @ApiParam("入库数量") Integer num, @ApiParam("供应单位")
+    public XaResult<Integer> add(@ApiParam("id") Integer id, @ApiParam("入库数量") Double num, @ApiParam("供应单位")
             String supplier, @ApiParam("入库日期") String date,@ApiParam("备注") String remark) {
         LOGGER.info(getRequestParamsAndUrl());
         if(id == null){
@@ -92,16 +93,16 @@ public class PmInController extends ProductBaseController {
         }else {
             pmIn.setInDate(DateUtil.string2Date(date, DateUtil.ymdFormat));
         }
-        pmIn.setNum(num);
-        pmIn.setPerNum(pm.getNum());
-        pmIn.setBackNum(pm.getNum() + num);
+        pmIn.setNum(BigDecimal.valueOf(num));
+        pmIn.setPerNum(BigDecimal.valueOf(pm.getNum()));
+        pmIn.setBackNum(BigDecimal.valueOf(pm.getNum() + num));
         pmIn.setOperator(sysUser.getLoginName());
         pmIn.setCreateTime(new Date());
         pmIn.setIsDelete(0);
         pmInService.create(pmIn);
         Pm pm1 = new Pm();
         pm1.setId(pm.getId());
-        pm1.setNum(pm.getNum() + num);
+        pm1.setNum((int) (pm.getNum() + num));
         pm.setLastModifyTime(new Date());
         pmService.updateByID(pm1);
         return XaResult.success();
@@ -152,7 +153,7 @@ public class PmInController extends ProductBaseController {
                 row.createCell(j++).setCellValue(pm.getName());
                 row.createCell(j++).setCellValue(pm.getType());
                 row.createCell(j++).setCellValue(pm.getSupplier());
-                row.createCell(j++).setCellValue(pm.getNum());
+                row.createCell(j++).setCellValue(String.valueOf(pm.getNum()));
                 row.createCell(j++).setCellValue(pm.getUnit());
                 row.createCell(j++).setCellValue(pm.getRemark());
             }

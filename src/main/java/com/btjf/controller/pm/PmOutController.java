@@ -5,6 +5,8 @@ import com.btjf.application.util.XaResult;
 import com.btjf.common.page.Page;
 import com.btjf.controller.base.ProductBaseController;
 import com.btjf.model.order.OrderProduct;
+import com.btjf.model.pm.PmOutBill;
+import com.btjf.model.pm.PmOutBillDetail;
 import com.btjf.model.product.ProductPm;
 import com.btjf.service.order.OrderProductService;
 import com.btjf.service.pm.PmOutService;
@@ -21,7 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by liuyq on 2019/7/28.
@@ -121,6 +125,7 @@ public class PmOutController extends ProductBaseController {
         PmOutStockDetailListVo vo = new PmOutStockDetailListVo();
         vo.setOrderNo(orderNo);
         vo.setProductNo(productNo);
+        vo.setNum(orderProduct.getNum());
         if(orderProduct != null){
             //查询 产品 耗料  获取所需耗料数量
             List<ProductPm> list = productPmService.findListByProductNoAndType(productNo, type);
@@ -174,37 +179,84 @@ public class PmOutController extends ProductBaseController {
     @RequestMapping(value = "bill/detail", method = RequestMethod.GET)
     public XaResult<PmOutBillDetailVo> billDetail(@ApiParam("票据编号") String billNo) {
         LOGGER.info(getRequestParamsAndUrl());
+        if(StringUtils.isEmpty(billNo)){
+            XaResult.error("票据编号不能为空");
+        }
         //总用量=订单型号数量*型号耗材数
-        //核可领用=分配数*2，但是可修改
-        //搞一个表 存具体材料 领用
+        PmOutBill pmOutBill = pmOutService.getByBillNo(billNo);
+        if(pmOutBill == null){
+            XaResult.error("领料单不存在");
+        }
+        OrderProduct orderProduct = orderProductService.getByOrderNoAndProductNo(pmOutBill.getOrderNo(), pmOutBill.getProductNo());
+        if(orderProduct == null){
+            XaResult.error("订单不存在或者该订单"+ pmOutBill.getOrderNo() +"没有该型号" + pmOutBill.getProductNo());
+        }
+        List<PmOutBillDetail> list = pmOutService.getListDetailByBillId(pmOutBill.getId());
+        List<ProductPm> pplist = productPmService.findListByProductNoAndType(pmOutBill.getProductNo(), null);
+        PmOutBillDetailVo vo = new PmOutBillDetailVo(pmOutBill, orderProduct, list, pplist);
 
-        return null;
+        return XaResult.success(vo);
     }
 
-//    /**
-//     * 计算核可领用
-//     * @param productNo
-//     * @param distributeNum
-//     * @return
-//     */
-//    @RequestMapping(value = "bill/", method = RequestMethod.GET)
-//    public XaResult<String> billDetail(@ApiParam("型号") String productNo,
-//                                                  @ApiParam("分配数量") Integer distributeNum) {
-//        LOGGER.info(getRequestParamsAndUrl());
-//
-//
-//        return null;
-//    }
+    /**
+     * 计算核可领用
+     * @param productNo
+     * @param distributeNum
+     * @return
+     */
+    @RequestMapping(value = "bill/calculate", method = RequestMethod.GET)
+    public XaResult<Map<String, Double>> calculate(@ApiParam("型号") String productNo,
+                                            @ApiParam("分配数量") Integer distributeNum) {
+        LOGGER.info(getRequestParamsAndUrl());
+        if(StringUtils.isEmpty(productNo)){
+            XaResult.error("型号不能为空");
+        }
+        if(distributeNum == null || distributeNum <1){
+            XaResult.error("分配数量不合法");
+        }
+        List<ProductPm> list = productPmService.findListByProductNoAndType(productNo, null);
+        Map<String, Double> map = new HashMap<>();
+        if(list != null && list.size() >0){
+            for (int i=0; i< list.size(); i++){
+                ProductPm pm = list.get(i);
+                map.put(pm.getPmNo(), pm.getNum().doubleValue() * distributeNum);
+            }
+        }
+
+        return XaResult.success(map);
+    }
 
 
-
-    @RequestMapping(value = "export", method = RequestMethod.GET)
-    public void export(@ApiParam("编号") String pmNo, @ApiParam("名称") String name
-            , @ApiParam("类型") String type, @ApiParam("起始时间") String startDate, @ApiParam("截止时间") String endDate,
-                               HttpServletResponse response) {
+    /**
+     * 新增领料单、订单号开单
+     */
+    @RequestMapping(value = "add", method = RequestMethod.POST)
+    public void addBill() {
         LOGGER.info(getRequestParamsAndUrl());
 
 
     }
+
+
+    /**
+     * 计划外开单列表
+     */
+    @RequestMapping(value = "planout/list", method = RequestMethod.GET)
+    public void planOutList() {
+        LOGGER.info(getRequestParamsAndUrl());
+
+
+    }
+
+    /**
+     * 出入库汇总
+     */
+    @RequestMapping(value = "collect", method = RequestMethod.GET)
+    public void collect() {
+        LOGGER.info(getRequestParamsAndUrl());
+
+
+    }
+
 
 }
