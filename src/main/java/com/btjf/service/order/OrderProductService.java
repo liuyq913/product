@@ -1,10 +1,15 @@
 package com.btjf.service.order;
 
+import com.btjf.common.page.Page;
+import com.btjf.controller.order.vo.OrderVo;
 import com.btjf.mapper.order.OrderProductMapper;
 import com.btjf.model.order.OrderProduct;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by liuyq on 2019/8/4.
@@ -13,9 +18,23 @@ import javax.annotation.Resource;
 public class OrderProductService {
 
     @Resource
-    private OrderProductMapper mapper;
+    private OrderProductMapper orderProductMapper;
 
-    public OrderProduct findByOrderNoAndProductNo(String orderNo, String productNo) {
-        return mapper.findByOrderNoAndProductNo(orderNo,productNo);
+    public OrderProduct getByOrderNoAndProductNo(String orderNo, String productNo) {
+        return orderProductMapper.getByOrderNoAndProductNo(orderNo, productNo);
+    }
+
+    public Integer insert(OrderProduct orderProduct) {
+        orderProductMapper.insertSelective(orderProduct);
+        return orderProduct.getId();
+    }
+
+    public Page<OrderVo> listPage(String orderNo, String pmNo, String type, String completeStartDate, String completeStartEnd, String createStartDate, String createEndDate, Page page) {
+
+        PageHelper.startPage(page.getPage(), page.getRp());
+        List<OrderVo> orderVos = orderProductMapper.findList(orderNo, pmNo, type, completeStartDate, completeStartEnd, createStartDate, createEndDate);
+        PageInfo pageInfo = new PageInfo(orderVos);
+        pageInfo.setList(orderVos);
+        return new Page<>(pageInfo);
     }
 }

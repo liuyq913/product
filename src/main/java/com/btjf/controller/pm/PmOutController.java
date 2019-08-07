@@ -1,41 +1,26 @@
 package com.btjf.controller.pm;
 
 import com.btjf.application.components.xaresult.AppXaResultHelper;
-import com.btjf.application.components.xaresult.WebXaResultHelper;
 import com.btjf.application.util.XaResult;
 import com.btjf.common.page.Page;
-import com.btjf.common.utils.DateUtil;
 import com.btjf.controller.base.ProductBaseController;
-import com.btjf.excel.PmInExcelHandler;
 import com.btjf.model.order.OrderProduct;
-import com.btjf.model.pm.Pm;
-import com.btjf.model.pm.PmIn;
-import com.btjf.model.pm.PmOutBill;
 import com.btjf.model.product.ProductPm;
-import com.btjf.model.sys.SysUser;
 import com.btjf.service.order.OrderProductService;
-import com.btjf.service.pm.PmInService;
 import com.btjf.service.pm.PmOutService;
-import com.btjf.service.pm.PmService;
 import com.btjf.service.productpm.ProductPmService;
 import com.btjf.vo.*;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -90,7 +75,7 @@ public class PmOutController extends ProductBaseController {
             XaResult.error("型号不能为空");
         }
         //查询订单 获取订单 产品数量
-        OrderProduct orderProduct = orderProductService.findByOrderNoAndProductNo(orderNo, productNo);
+        OrderProduct orderProduct = orderProductService.getByOrderNoAndProductNo(orderNo, productNo);
 
         PmOutStockDetailListVo vo = new PmOutStockDetailListVo();
         vo.setOrderNo(orderNo);
@@ -132,7 +117,7 @@ public class PmOutController extends ProductBaseController {
             XaResult.error("型号不能为空");
         }
         //查询订单 获取订单 产品数量
-        OrderProduct orderProduct = orderProductService.findByOrderNoAndProductNo(orderNo, productNo);
+        OrderProduct orderProduct = orderProductService.getByOrderNoAndProductNo(orderNo, productNo);
         PmOutStockDetailListVo vo = new PmOutStockDetailListVo();
         vo.setOrderNo(orderNo);
         vo.setProductNo(productNo);

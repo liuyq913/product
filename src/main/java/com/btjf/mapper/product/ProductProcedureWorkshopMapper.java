@@ -2,8 +2,9 @@ package com.btjf.mapper.product;
 
 import com.btjf.model.product.ProductProcedureWorkshop;
 import com.btjf.model.product.ProductProcedureWorkshopExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface ProductProcedureWorkshopMapper {
     /**
@@ -93,4 +94,8 @@ public interface ProductProcedureWorkshopMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(ProductProcedureWorkshop record);
+
+    List<ProductProcedureWorkshop> getByWorkShopName(@Param("name") String name);
+
+    Integer getNumByWorkShopName(@Param("name") String name);
 }

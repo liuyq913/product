@@ -97,4 +97,6 @@ public interface ProductMapper {
 
 
     Product getByNo(@Param("no") String no);
+
+    List<Product> getList(@Param("type") String type, @Param("productNo") String productNo);
 }

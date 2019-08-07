@@ -1,9 +1,11 @@
 package com.btjf.mapper.order;
 
+import com.btjf.controller.order.vo.OrderVo;
 import com.btjf.model.order.OrderProduct;
 import com.btjf.model.order.OrderProductExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface OrderProductMapper {
     /**
@@ -94,5 +96,10 @@ public interface OrderProductMapper {
      */
     int updateByPrimaryKey(OrderProduct record);
 
-    OrderProduct findByOrderNoAndProductNo(@Param("orderNo")String orderNo, @Param("productNo")String productNo);
+    OrderProduct getByOrderNoAndProductNo(@Param("orderNo") String orderNo, @Param("productNo") String productNo);
+
+    List<OrderVo> findList(@Param("orderNo") String orderNo, @Param("pmNo")
+            String pmNo, @Param("type") String type, @Param("completeStartDate") String completeStartDate,
+                           @Param("completeStartEnd") String completeStartEnd,
+                           @Param("createStartDate") String createStartDate, @Param("createEndDate") String createEndDate);
 }
