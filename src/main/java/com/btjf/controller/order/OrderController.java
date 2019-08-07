@@ -117,7 +117,7 @@ public class OrderController extends ProductBaseController {
     }
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
-    public XaResult<List<OrderVo>> list(String orderNo, String pmNo, String type, String completeStartDate,
+    public XaResult<List<OrderVo>> list(String orderNo, String pmNo, String type, Integer customerId, String completeStartDate,
                                         String completeStartEnd, String createStartDate, String createEndDate, Integer pageSize, Integer currentPage) {
 
         LOGGER.info(getRequestParamsAndUrl());
@@ -129,8 +129,14 @@ public class OrderController extends ProductBaseController {
         }
         Page page = new Page(pageSize, currentPage);
 
-        Page<OrderVo> listPage = orderProductService.listPage(orderNo, pmNo, type, completeStartDate, completeStartEnd, createStartDate, createEndDate, page);
+        Page<OrderVo> listPage = orderProductService.listPage(customerId, orderNo, pmNo, type, completeStartDate, completeStartEnd, createStartDate, createEndDate, page);
         XaResult<List<OrderVo>> result = AppXaResultHelper.success(listPage, listPage.getRows());
         return result;
     }
+
+    @RequestMapping(value = "delete", method = RequestMethod.POST)
+    public XaResult<Integer> delete(Integer[] orderIds){
+        return XaResult.success(1);
+    }
+
 }

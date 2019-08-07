@@ -302,7 +302,60 @@ CREATE TABLE t_Order_Product(
 	createTime datetime,
 	lastModifyTime datetime,
 	isDelete int NOT NULL
-);	
+);
+
+##生产单表
+CREATE TABLE t_Production_Order(
+   id int(11) primary key AUTO_INCREMENT,
+   productionNo varchar(100) NOT NULL COMMENT '生产单编号',
+   orderId int(11) NOT NULL comment '订单ID',
+   orderNo varchar(100) NOT NULL comment '订单编号',
+   productNo varchar(100) NOT NULL comment '产品型号',
+   maxNum int comment '上限数量',
+   assignNum int comment '已分配数额',
+   workshop varchar(30) comment '车间',
+   workshopDirector varchar(100) comment '车间主任',
+   isLuo int NOT NULL COMMENT '是否按罗分 0否 1 是',
+   luoNum int(11) COMMENT '一罗的数量',
+   printer varchar(100) COMMENT '打印人',
+   printTime DATE COMMENT '打印时间',
+   printCount int COMMENT '打印次数',
+   codeUrl varchar(100) comment '二维码地址',
+   createTime datetime,
+	 lastModifyTime datetime,
+	 isDelete int NOT NULL
+)
+
+
+##生产单-工序表
+CREATE TABLE t_Production_Procedure(
+   id int(11) primary key AUTO_INCREMENT,
+   productionNo varchar(100) NOT NULL COMMENT '生产单编号',
+   orderId int(11) NOT NULL comment '订单ID',
+   orderNo varchar(100) NOT NULL comment '订单编号',
+   productNo varchar(100) NOT NULL comment '产品型号',
+   procedureId int(11) comment '工序ID',
+   procedureName varchar(50) comment '工序名称',
+   createTime datetime,
+	 isDelete int NOT NULL
+)
+
+##生产单-罗表
+CREATE TABLE t_Production_Luo(
+  id int(11) primary key AUTO_INCREMENT,
+  productionNo varchar(100) NOT NULL COMMENT '生产单编号',
+  orderId int(11) NOT NULL comment '订单ID',
+  orderNo varchar(100) NOT NULL comment '订单编号',
+  productNo varchar(100) NOT NULL comment '产品型号',
+  num int(11) NOT NULL comment '数量',
+  maxNum int comment '上限数量',
+  codeUrl varchar(100) comment '二维码地址',
+  createTime datetime,
+	isDelete int NOT NULL
+)
+
+
+-- 暂时不用
 ##订单型号 车间
 CREATE TABLE t_Order_Product_Workshop(
 	id int(11) primary key AUTO_INCREMENT,
@@ -314,6 +367,7 @@ CREATE TABLE t_Order_Product_Workshop(
 	isDelete int NOT NULL
 );	
 
+## 工序单价管理列表
 ##产品 工序 车间
 CREATE TABLE t_Product_Procedure_workshop(
 	id int(11) primary key AUTO_INCREMENT,

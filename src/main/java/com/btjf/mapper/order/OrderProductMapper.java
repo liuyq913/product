@@ -98,7 +98,7 @@ public interface OrderProductMapper {
 
     OrderProduct getByOrderNoAndProductNo(@Param("orderNo") String orderNo, @Param("productNo") String productNo);
 
-    List<OrderVo> findList(@Param("orderNo") String orderNo, @Param("pmNo")
+    List<OrderVo> findList(@Param("customerId") Integer customerId, @Param("orderNo") String orderNo, @Param("pmNo")
             String pmNo, @Param("type") String type, @Param("completeStartDate") String completeStartDate,
                            @Param("completeStartEnd") String completeStartEnd,
                            @Param("createStartDate") String createStartDate, @Param("createEndDate") String createEndDate);

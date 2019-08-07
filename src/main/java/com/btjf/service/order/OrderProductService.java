@@ -29,10 +29,10 @@ public class OrderProductService {
         return orderProduct.getId();
     }
 
-    public Page<OrderVo> listPage(String orderNo, String pmNo, String type, String completeStartDate, String completeStartEnd, String createStartDate, String createEndDate, Page page) {
+    public Page<OrderVo> listPage(Integer customerId, String orderNo, String pmNo, String type, String completeStartDate, String completeStartEnd, String createStartDate, String createEndDate, Page page) {
 
         PageHelper.startPage(page.getPage(), page.getRp());
-        List<OrderVo> orderVos = orderProductMapper.findList(orderNo, pmNo, type, completeStartDate, completeStartEnd, createStartDate, createEndDate);
+        List<OrderVo> orderVos = orderProductMapper.findList(customerId, orderNo, pmNo, type, completeStartDate, completeStartEnd, createStartDate, createEndDate);
         PageInfo pageInfo = new PageInfo(orderVos);
         pageInfo.setList(orderVos);
         return new Page<>(pageInfo);

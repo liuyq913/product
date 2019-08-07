@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Date;
@@ -151,7 +152,7 @@ public class PmController extends ProductBaseController {
             pm.setRemark(remark);
             pm.setCreateTime(new Date());
             pm.setOperator(sysUser.getUserName());
-            pm.setNum(0);
+            pm.setNum(BigDecimal.ZERO);
             pm.setIsDelete(0);
             id = pmService.insert(pm);
         }

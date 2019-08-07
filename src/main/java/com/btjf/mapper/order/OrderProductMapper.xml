@@ -583,6 +583,9 @@
         <if test="createEndDate != null">
             and createTime &lt;=  #{createEndDate}
         </if>
+        <if test="customerId != null">
+            and customerId = #{customerId}
+        </if>
         and isDelete = 0
     </select>
 </mapper>
