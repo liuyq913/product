@@ -188,6 +188,9 @@ public class OrderProduct implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
+    public OrderProduct() {
+    }
+
     public OrderProduct(Integer orderId, String orderNo, Integer productId, String productNo, String productType, Integer num, Integer maxNum, String unit, Date completeDate, Integer customerId, String customerName, Integer isMore, Integer urgentLevel, String leader, String pmType, String pmCheckItem, Date createTime, Date lastModifyTime, Integer isDelete) {
         this.orderId = orderId;
         this.orderNo = orderNo;
@@ -208,6 +211,31 @@ public class OrderProduct implements Serializable {
         this.createTime = createTime;
         this.lastModifyTime = lastModifyTime;
         this.isDelete = isDelete;
+    }
+
+    public OrderProduct(Integer id, Integer orderId, String orderNo, Integer productId, String productNo, String productType, Integer num, Integer maxNum, String unit, Date completeDate, Integer customerId, String customerName, Integer isMore, Integer urgentLevel, String leader, String pmType, String pmCheckItem, Date createTime, Date lastModifyTime, Integer isDelete, Integer assignedNum, Integer notAssignNum) {
+        this.id = id;
+        this.orderId = orderId;
+        this.orderNo = orderNo;
+        this.productId = productId;
+        this.productNo = productNo;
+        this.productType = productType;
+        this.num = num;
+        this.maxNum = maxNum;
+        this.unit = unit;
+        this.completeDate = completeDate;
+        this.customerId = customerId;
+        this.customerName = customerName;
+        this.isMore = isMore;
+        this.urgentLevel = urgentLevel;
+        this.leader = leader;
+        this.pmType = pmType;
+        this.pmCheckItem = pmCheckItem;
+        this.createTime = createTime;
+        this.lastModifyTime = lastModifyTime;
+        this.isDelete = isDelete;
+        this.assignedNum = assignedNum;
+        this.notAssignNum = notAssignNum;
     }
 
     /**

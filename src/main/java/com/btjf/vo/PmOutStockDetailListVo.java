@@ -8,6 +8,8 @@ public class PmOutStockDetailListVo {
 
     private String productNo;
 
+    private Integer num;
+
     private List<PmOutStockDetailVo> list;
 
     public String getOrderNo() {
@@ -32,5 +34,13 @@ public class PmOutStockDetailListVo {
 
     public void setList(List<PmOutStockDetailVo> list) {
         this.list = list;
+    }
+
+    public Integer getNum() {
+        return num;
+    }
+
+    public void setNum(Integer num) {
+        this.num = num;
     }
 }

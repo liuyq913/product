@@ -125,6 +125,7 @@ public class PmOutController extends ProductBaseController {
         PmOutStockDetailListVo vo = new PmOutStockDetailListVo();
         vo.setOrderNo(orderNo);
         vo.setProductNo(productNo);
+        vo.setNum(orderProduct.getNum());
         if(orderProduct != null){
             //查询 产品 耗料  获取所需耗料数量
             List<ProductPm> list = productPmService.findListByProductNoAndType(productNo, type);
@@ -191,7 +192,8 @@ public class PmOutController extends ProductBaseController {
             XaResult.error("订单不存在或者该订单"+ pmOutBill.getOrderNo() +"没有该型号" + pmOutBill.getProductNo());
         }
         List<PmOutBillDetail> list = pmOutService.getListDetailByBillId(pmOutBill.getId());
-        PmOutBillDetailVo vo = new PmOutBillDetailVo(pmOutBill, orderProduct, list);
+        List<ProductPm> pplist = productPmService.findListByProductNoAndType(pmOutBill.getProductNo(), null);
+        PmOutBillDetailVo vo = new PmOutBillDetailVo(pmOutBill, orderProduct, list, pplist);
 
         return XaResult.success(vo);
     }
