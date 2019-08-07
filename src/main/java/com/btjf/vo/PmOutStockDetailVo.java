@@ -1,6 +1,8 @@
 package com.btjf.vo;
 
 import com.btjf.common.utils.DateUtil;
+import com.btjf.model.order.OrderProduct;
+import com.btjf.model.product.ProductPm;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,14 +13,30 @@ public class PmOutStockDetailVo {
 
     private String pmName;
 
-    private Integer sum;//总数
+    private Double sum;//总数
 
     private String unit;
     //以下 返回参数  件/双耗料/需用料数量  接口专用
     private String type;
     private String remark;
-    private Integer num;//单位数
-    private Integer unitNum;//倒数
+    private Double num;//单位数
+    private Double unitNum;//倒数
+
+    public PmOutStockDetailVo() {
+    }
+
+    public PmOutStockDetailVo(OrderProduct orderProduct, ProductPm productPm, Boolean isMore) {
+        if(isMore){
+            this.type = productPm.getType();
+            this.remark = productPm.getRemark();
+            this.num = productPm.getNum().doubleValue();
+            this.unitNum = productPm.getUnitNum().doubleValue();
+        }
+        this.sum = productPm.getNum().doubleValue() * orderProduct.getNum();
+        this.pmNo = productPm.getPmNo();
+        this.pmName = productPm.getPmName();
+        this.unit = productPm.getUnit();
+    }
 
     public String getPmNo() {
         return pmNo;
@@ -36,11 +54,11 @@ public class PmOutStockDetailVo {
         this.pmName = pmName;
     }
 
-    public Integer getNum() {
+    public Double getNum() {
         return num;
     }
 
-    public void setNum(Integer num) {
+    public void setNum(Double num) {
         this.num = num;
     }
 
@@ -52,11 +70,11 @@ public class PmOutStockDetailVo {
         this.unit = unit;
     }
 
-    public Integer getSum() {
+    public Double getSum() {
         return sum;
     }
 
-    public void setSum(Integer sum) {
+    public void setSum(Double sum) {
         this.sum = sum;
     }
 
@@ -76,11 +94,11 @@ public class PmOutStockDetailVo {
         this.remark = remark;
     }
 
-    public Integer getUnitNum() {
+    public Double getUnitNum() {
         return unitNum;
     }
 
-    public void setUnitNum(Integer unitNum) {
+    public void setUnitNum(Double unitNum) {
         this.unitNum = unitNum;
     }
 }

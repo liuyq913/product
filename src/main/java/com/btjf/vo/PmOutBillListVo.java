@@ -1,5 +1,7 @@
 package com.btjf.vo;
 
+import com.btjf.model.pm.PmOutBill;
+
 public class PmOutBillListVo {
 
     private Integer id;//领料单ID
@@ -9,8 +11,12 @@ public class PmOutBillListVo {
     private String groupNmae;
     private String pmType;
     private String pmCheckItem;
-    private Integer sum;
+    private Integer num;
+    private Integer assignedNum;
     private String billDate;
+
+    public PmOutBillListVo() {
+    }
 
     public Integer getId() {
         return id;
@@ -68,12 +74,12 @@ public class PmOutBillListVo {
         this.pmCheckItem = pmCheckItem;
     }
 
-    public Integer getSum() {
-        return sum;
+    public Integer getNum() {
+        return num;
     }
 
-    public void setSum(Integer sum) {
-        this.sum = sum;
+    public void setNum(Integer num) {
+        this.num = num;
     }
 
     public String getBillDate() {
@@ -82,5 +88,13 @@ public class PmOutBillListVo {
 
     public void setBillDate(String billDate) {
         this.billDate = billDate;
+    }
+
+    public Integer getAssignedNum() {
+        return assignedNum;
+    }
+
+    public void setAssignedNum(Integer assignedNum) {
+        this.assignedNum = assignedNum;
     }
 }
