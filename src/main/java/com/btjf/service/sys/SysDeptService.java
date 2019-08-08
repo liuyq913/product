@@ -1,9 +1,6 @@
 package com.btjf.service.sys;
 
-import com.btjf.mapper.sys.SysUserMapper;
 import com.btjf.mapper.sys.SysdeptMapper;
-import com.btjf.model.sys.SysUser;
-import com.btjf.model.sys.SysUserExample;
 import com.btjf.model.sys.Sysdept;
 import org.springframework.stereotype.Service;
 
@@ -25,5 +22,9 @@ public class SysDeptService {
     public List<Sysdept> getList() {
 
         return sysdeptMapper.getList();
+    }
+
+    public List<Sysdept> getWorkshopList() {
+        return sysdeptMapper.getWorkshopList();
     }
 }

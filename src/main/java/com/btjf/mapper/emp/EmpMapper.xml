@@ -694,4 +694,10 @@
       isDelete = #{isDelete,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="getLeaderByDeptID" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM t_Emp
+    where deptId = #{id} and isLeader = 1 and isDelete = 0
+  </select>
 </mapper>

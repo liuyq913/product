@@ -1,0 +1,158 @@
+package com.btjf.controller.order.vo;
+
+import com.alibaba.dubbo.common.utils.CollectionUtils;
+import com.btjf.model.emp.Emp;
+import com.btjf.model.product.ProductProcedureWorkshop;
+import com.btjf.model.sys.Sysdept;
+import com.google.common.collect.Lists;
+
+import java.io.Serializable;
+import java.util.List;
+
+/**
+ * Created by liuyq on 2019/8/8.
+ */
+public class WorkShopVo implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private String workshop;//车间
+
+    private Integer workshopId;
+
+    /**
+     * 车间主任
+     */
+    private List<Leader> leaderList;
+
+    /**
+     * 工序
+     */
+    private List<Procedure> procedures;
+
+    public WorkShopVo(Sysdept sysdept, List<Emp> emps, List<ProductProcedureWorkshop> productProcedureWorkshops) {
+        if (sysdept != null) {
+            this.workshop = sysdept.getDeptName();
+            this.workshopId = sysdept.getId();
+            if (!CollectionUtils.isEmpty(emps)) {
+                this.leaderList = Leader.transfor(emps);
+            }
+            if (!CollectionUtils.isEmpty(productProcedureWorkshops)) {
+                this.procedures = Procedure.transfor(productProcedureWorkshops);
+            }
+        }
+    }
+
+    public String getWorkshop() {
+        return workshop;
+    }
+
+    public void setWorkshop(String workshop) {
+        this.workshop = workshop;
+    }
+
+    public Integer getWorkshopId() {
+        return workshopId;
+    }
+
+    public void setWorkshopId(Integer workshopId) {
+        this.workshopId = workshopId;
+    }
+
+    public List<Leader> getLeaderList() {
+        return leaderList;
+    }
+
+    public void setLeaderList(List<Leader> leaderList) {
+        this.leaderList = leaderList;
+    }
+
+    public List<Procedure> getProcedures() {
+        return procedures;
+    }
+
+    public void setProcedures(List<Procedure> procedures) {
+        this.procedures = procedures;
+    }
+
+    public static class Leader
+
+    {
+
+        private Integer id;
+
+        private String workshopDirector;
+
+        public Leader(Emp emp) {
+            this.id = emp.getId();
+            this.workshopDirector = emp.getName();
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
+
+        public String getWorkshopDirector() {
+            return workshopDirector;
+        }
+
+        public void setWorkshopDirector(String workshopDirector) {
+            this.workshopDirector = workshopDirector;
+        }
+
+        public static List<Leader> transfor(List<Emp> emps) {
+            List<Leader> leaders = Lists.newArrayList();
+            if (emps != null) {
+                for (Emp emp : emps) {
+                    leaders.add(new Leader(emp));
+                }
+            }
+            return leaders;
+        }
+    }
+
+
+    /**
+     * 工序
+     */
+    public static class Procedure {
+        private Integer procedureId;
+
+        private String procedureName;
+
+        public Procedure(ProductProcedureWorkshop productProcedureWorkshop) {
+            this.procedureId = productProcedureWorkshop.getProcedureId();
+            this.procedureName = productProcedureWorkshop.getProcedureName();
+        }
+
+        public Integer getProcedureId() {
+            return procedureId;
+        }
+
+        public void setProcedureId(Integer procedureId) {
+            this.procedureId = procedureId;
+        }
+
+        public String getProcedureName() {
+            return procedureName;
+        }
+
+        public void setProcedureName(String procedureName) {
+            this.procedureName = procedureName;
+        }
+
+        public static List<Procedure> transfor(List<ProductProcedureWorkshop> productProcedureWorkshops) {
+            List<Procedure> procedures = Lists.newArrayList();
+            if (productProcedureWorkshops != null) {
+                for (ProductProcedureWorkshop productProcedureWorkshop : productProcedureWorkshops) {
+                    procedures.add(new Procedure(productProcedureWorkshop));
+                }
+            }
+            return procedures;
+        }
+    }
+}

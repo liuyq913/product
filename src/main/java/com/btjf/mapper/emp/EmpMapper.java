@@ -2,8 +2,9 @@ package com.btjf.mapper.emp;
 
 import com.btjf.model.emp.Emp;
 import com.btjf.model.emp.EmpExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface EmpMapper {
     /**
@@ -93,4 +94,6 @@ public interface EmpMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(Emp record);
+
+    List<Emp> getLeaderByDeptID(@Param("id") Integer id);
 }

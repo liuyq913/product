@@ -149,6 +149,10 @@ public class OrderController extends ProductBaseController {
     }
 
 
+    /**
+     * 获取所有订单 + 型号
+     * @return
+     */
     @RequestMapping(value = "/orderandproductlist", method = RequestMethod.GET)
     public XaResult<List<OrderProductVo>> orderProductVos() {
         List<Order> orders = orderService.findAll();

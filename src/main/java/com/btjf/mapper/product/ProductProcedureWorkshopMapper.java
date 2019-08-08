@@ -98,4 +98,6 @@ public interface ProductProcedureWorkshopMapper {
     List<ProductProcedureWorkshop> getByWorkShopName(@Param("name") String name);
 
     Integer getNumByWorkShopName(@Param("name") String name);
+
+    List<ProductProcedureWorkshop> findByWorkshopName(@Param("name") String name);
 }
