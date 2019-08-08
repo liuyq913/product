@@ -1,10 +1,12 @@
 package com.btjf.controller.order;
 
 import com.alibaba.druid.util.StringUtils;
+import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.btjf.application.components.xaresult.AppXaResultHelper;
 import com.btjf.application.util.XaResult;
 import com.btjf.common.page.Page;
 import com.btjf.controller.base.ProductBaseController;
+import com.btjf.controller.order.vo.OrderProductVo;
 import com.btjf.controller.order.vo.OrderVo;
 import com.btjf.model.order.Order;
 import com.btjf.model.order.OrderProduct;
@@ -12,6 +14,8 @@ import com.btjf.model.product.Product;
 import com.btjf.service.order.OrderProductService;
 import com.btjf.service.order.OrderService;
 import com.btjf.service.productpm.ProductService;
+import com.google.common.collect.Lists;
+import com.heige.aikajinrong.base.exception.BusinessException;
 import com.wordnik.swagger.annotations.Api;
 import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -134,9 +139,29 @@ public class OrderController extends ProductBaseController {
         return result;
     }
 
-    @RequestMapping(value = "delete", method = RequestMethod.POST)
-    public XaResult<Integer> delete(Integer[] orderIds){
-        return XaResult.success(1);
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public XaResult<Integer> delete(String[] orderIds) throws BusinessException {
+        if (null == orderIds || Arrays.asList(orderIds).size() <= 0) {
+            return XaResult.error("请选择要删除的记录");
+        }
+        Integer num = orderService.delete(Arrays.asList(orderIds));
+        return XaResult.success(num);
     }
 
+
+    @RequestMapping(value = "/orderandproductlist", method = RequestMethod.GET)
+    public XaResult<List<OrderProductVo>> orderProductVos() {
+        List<Order> orders = orderService.findAll();
+        if (CollectionUtils.isEmpty(orders)) {
+            return XaResult.success();
+        } else {
+            List<OrderProductVo> orderProductVos = Lists.newArrayList();
+            for (Order order : orders) {
+                if (null == order) continue;
+                List<OrderProduct> orderProducts = orderProductService.findByOrderId(order.getId());
+                orderProductVos.add(new OrderProductVo(order, orderProducts));
+            }
+            return XaResult.success(orderProductVos);
+        }
+    }
 }

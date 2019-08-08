@@ -312,6 +312,7 @@ CREATE TABLE t_Production_Order(
    orderId int(11) NOT NULL comment '订单ID',
    orderNo varchar(100) NOT NULL comment '订单编号',
    productNo varchar(100) NOT NULL comment '产品型号',
+   orderProductId  int(11) NOT NULL comment '订单 型号表ID',
    maxNum int comment '上限数量',
    assignNum int comment '已分配数额',
    workshop varchar(30) comment '车间',

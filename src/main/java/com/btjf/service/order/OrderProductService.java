@@ -37,4 +37,16 @@ public class OrderProductService {
         pageInfo.setList(orderVos);
         return new Page<>(pageInfo);
     }
+
+    public OrderProduct getByID(Integer ID){
+       return orderProductMapper.selectByPrimaryKey(ID);
+    }
+
+    public Integer deleteById(Integer Id) {
+        return orderProductMapper.deleteById(Id);
+    }
+
+    public List<OrderProduct> findByOrderId(Integer orderId) {
+        return orderProductMapper.findByOrderID(orderId);
+    }
 }

@@ -96,4 +96,8 @@ public interface OrderMapper {
     int updateByPrimaryKey(Order record);
 
     Order getByNo(@Param("orderNo") String orderNo);
+
+    Integer deletByID(@Param("orderId") Integer orderId);
+
+    List<Order> findAll();
 }
