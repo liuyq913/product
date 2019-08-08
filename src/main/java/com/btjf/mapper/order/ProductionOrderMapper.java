@@ -1,5 +1,6 @@
 package com.btjf.mapper.order;
 
+import com.btjf.controller.productionorder.vo.ProductionOrderVo;
 import com.btjf.model.order.ProductionOrder;
 import com.btjf.model.order.ProductionOrderExample;
 import org.apache.ibatis.annotations.Param;
@@ -96,4 +97,6 @@ public interface ProductionOrderMapper {
     int updateByPrimaryKey(ProductionOrder record);
 
     ProductionOrder getByOrderProductID(@Param("orderProductID") Integer orderProductID);
+
+    List<ProductionOrderVo> findList(ProductionOrderVo productionOrderVo);
 }

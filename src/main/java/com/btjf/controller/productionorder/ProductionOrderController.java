@@ -2,9 +2,12 @@ package com.btjf.controller.productionorder;
 
 import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSONObject;
+import com.btjf.application.components.xaresult.AppXaResultHelper;
 import com.btjf.application.util.XaResult;
+import com.btjf.common.page.Page;
 import com.btjf.controller.base.ProductBaseController;
 import com.btjf.controller.order.vo.WorkShopVo;
+import com.btjf.controller.productionorder.vo.ProductionOrderVo;
 import com.btjf.model.order.OrderProduct;
 import com.btjf.model.order.ProductionOrder;
 import com.btjf.service.order.OrderProductService;
@@ -13,6 +16,7 @@ import com.google.common.collect.Lists;
 import com.heige.aikajinrong.base.exception.BusinessException;
 import com.wordnik.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -57,9 +61,39 @@ public class ProductionOrderController extends ProductBaseController {
         productionOrder.setAssignNum(assignNum);
         productionOrder.setLastModifyTime(new Date());
         productionOrder.setIsLuo(isLuo);
+        productionOrder.setOrderId(orderProduct.getOrderId());
+        productionOrder.setProductNo(orderProduct.getProductNo());
+        productionOrder.setMaxNum(orderProduct.getMaxNum());
 
         Integer id = productionOrderService.assign(productionOrder, procedures);
         return XaResult.success(id);
     }
 
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public XaResult<List<ProductionOrderVo>> getList(String orderNo, String productionNo, String customerName, String productNo,
+                                           String productType, String workshop, String workshopDirector, String createStartTime,
+                                           String createEndTime, Integer pageSize, Integer currentPage) throws BusinessException {
+        if (currentPage == null || currentPage < 1) {
+            currentPage = 1;
+        }
+        if (pageSize == null || pageSize < 1) {
+            pageSize = 25;
+        }
+        Page page = new Page(pageSize, currentPage);
+        ProductionOrderVo productionOrderVo = new ProductionOrderVo();
+        productionOrderVo.setOrderNo(orderNo);
+        productionOrderVo.setProductionNo(productionNo);
+        productionOrderVo.setCustomerName(customerName);
+        productionOrderVo.setProductNo(productNo);
+        productionOrderVo.setProductType(productType);
+        productionOrderVo.setWorkshop(workshop);
+        productionOrderVo.setWorkshopDirector(workshopDirector);
+        productionOrderVo.setCreateEndTime(createEndTime);
+        productionOrderVo.setCreateStartTime(createStartTime);
+        Page<ProductionOrderVo> productionOrderVoPage = productionOrderService.getPage(productionOrderVo, page);
+        XaResult<List<ProductionOrderVo>> result = AppXaResultHelper.success(productionOrderVoPage, productionOrderVoPage.getRows());
+        return result;
+    }
+
 }
+
