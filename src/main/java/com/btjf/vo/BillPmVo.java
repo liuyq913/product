@@ -30,6 +30,10 @@ public class BillPmVo {
 
     }
 
+    public BillPmVo() {
+
+    }
+
     public String getPmNo() {
         return pmNo;
     }

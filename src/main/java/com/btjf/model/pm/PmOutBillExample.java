@@ -1055,6 +1055,76 @@ public class PmOutBillExample {
             return (Criteria) this;
         }
 
+        public Criteria andStampIsNull() {
+            addCriterion("stamp is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStampIsNotNull() {
+            addCriterion("stamp is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStampEqualTo(String value) {
+            addCriterion("stamp =", value, "stamp");
+            return (Criteria) this;
+        }
+
+        public Criteria andStampNotEqualTo(String value) {
+            addCriterion("stamp <>", value, "stamp");
+            return (Criteria) this;
+        }
+
+        public Criteria andStampGreaterThan(String value) {
+            addCriterion("stamp >", value, "stamp");
+            return (Criteria) this;
+        }
+
+        public Criteria andStampGreaterThanOrEqualTo(String value) {
+            addCriterion("stamp >=", value, "stamp");
+            return (Criteria) this;
+        }
+
+        public Criteria andStampLessThan(String value) {
+            addCriterion("stamp <", value, "stamp");
+            return (Criteria) this;
+        }
+
+        public Criteria andStampLessThanOrEqualTo(String value) {
+            addCriterion("stamp <=", value, "stamp");
+            return (Criteria) this;
+        }
+
+        public Criteria andStampLike(String value) {
+            addCriterion("stamp like", value, "stamp");
+            return (Criteria) this;
+        }
+
+        public Criteria andStampNotLike(String value) {
+            addCriterion("stamp not like", value, "stamp");
+            return (Criteria) this;
+        }
+
+        public Criteria andStampIn(List<String> values) {
+            addCriterion("stamp in", values, "stamp");
+            return (Criteria) this;
+        }
+
+        public Criteria andStampNotIn(List<String> values) {
+            addCriterion("stamp not in", values, "stamp");
+            return (Criteria) this;
+        }
+
+        public Criteria andStampBetween(String value1, String value2) {
+            addCriterion("stamp between", value1, value2, "stamp");
+            return (Criteria) this;
+        }
+
+        public Criteria andStampNotBetween(String value1, String value2) {
+            addCriterion("stamp not between", value1, value2, "stamp");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateTimeIsNull() {
             addCriterion("createTime is null");
             return (Criteria) this;
@@ -1342,6 +1412,11 @@ public class PmOutBillExample {
 
         public Criteria andPmCheckItemLikeInsensitive(String value) {
             addCriterion("upper(pmCheckItem) like", value.toUpperCase(), "pmCheckItem");
+            return (Criteria) this;
+        }
+
+        public Criteria andStampLikeInsensitive(String value) {
+            addCriterion("upper(stamp) like", value.toUpperCase(), "stamp");
             return (Criteria) this;
         }
 

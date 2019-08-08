@@ -22,10 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by liuyq on 2019/7/28.
@@ -205,37 +204,106 @@ public class PmOutController extends ProductBaseController {
      * @return
      */
     @RequestMapping(value = "bill/calculate", method = RequestMethod.GET)
-    public XaResult<Map<String, Double>> calculate(@ApiParam("型号") String productNo,
-                                            @ApiParam("分配数量") Integer distributeNum) {
+    public XaResult<List<BillPmVo>> calculate(@ApiParam("订单号")String orderNo,
+                                              @ApiParam("型号") String productNo,
+                                            @ApiParam("分配数量") Integer distributeNum,
+                                              @ApiParam("材料类型")String pmType) {
         LOGGER.info(getRequestParamsAndUrl());
         if(StringUtils.isEmpty(productNo)){
             XaResult.error("型号不能为空");
         }
-        if(distributeNum == null || distributeNum <1){
-            XaResult.error("分配数量不合法");
+        if(StringUtils.isEmpty(orderNo)){
+            return XaResult.error("订单号不能为空");
         }
-        List<ProductPm> list = productPmService.findListByProductNoAndType(productNo, null);
-        Map<String, Double> map = new HashMap<>();
+        OrderProduct orderProduct = orderProductService.getByOrderNoAndProductNo(orderNo, productNo);
+        if(orderProduct == null){
+            XaResult.error("订单不存在或者该订单"+ orderNo +"没有该型号" + productNo);
+        }
+        List<ProductPm> list = productPmService.findListByProductNoAndType(productNo, pmType);
+
+        List<BillPmVo> voList = null;
         if(list != null && list.size() >0){
+            voList = new ArrayList<>();
             for (int i=0; i< list.size(); i++){
                 ProductPm pm = list.get(i);
-                map.put(pm.getPmNo(), pm.getNum().doubleValue() * distributeNum);
+                BillPmVo billPmVo = new BillPmVo();
+                billPmVo.setPmNo(pm.getPmNo());
+                billPmVo.setPmName(pm.getPmName());
+                billPmVo.setUnit(pm.getUnit());
+                if(distributeNum != null) {
+                    billPmVo.setAllowNum(pm.getNum().doubleValue() * distributeNum);
+                }
+                billPmVo.setSum(orderProduct.getMaxNum() * pm.getNum().doubleValue());
+                voList.add(billPmVo);
             }
         }
 
-        return XaResult.success(map);
+        return XaResult.success(voList);
     }
-
 
     /**
      * 新增领料单、订单号开单
      */
-    @RequestMapping(value = "add", method = RequestMethod.POST)
-    public void addBill() {
+    @RequestMapping(value = "bill/add", method = RequestMethod.POST)
+    public XaResult<String> addBill(@ApiParam("1领料单 2订单号开单")Integer type, @ApiParam("订单号")String orderNo,@ApiParam("电子章")String stamp,
+            @ApiParam("型号")String productNo,@ApiParam("单号")String billNo, @ApiParam("领用组")String groupNmae,@ApiParam("材料类型")String pmType,
+            @ApiParam("材质检测")String pmCheckItem,@ApiParam("车间")String workshop,@ApiParam("分配数量")Integer assignedNum,
+            @ApiParam("耗材信息")String[] pms) {
+        //pms结构 材料编号|核可领用|批次
+        if(pms ==null || pms.length <1){
+            return XaResult.error("耗料信息为空");
+        }
+        if(type == null || (type >2) || (type < 1)){
+            return XaResult.error("单据类型有误");
+        }
+        if(StringUtils.isEmpty(orderNo)){
+            return XaResult.error("订单号为空");
+        }
+        if(StringUtils.isEmpty(productNo)){
+            return XaResult.error("型号为空");
+        }
+        if(StringUtils.isEmpty(billNo)){
+            return XaResult.error("订单号为空");
+        }
+        if(assignedNum == null){
+            return XaResult.error("分配数量为空");
+        }
+        List<BillPmVo> list = new ArrayList<>();
+        for (int i=0; i< pms.length; i++){
+            String pm = pms[i];
+            String[] s = pm.split("|");
+            if(s.length <3){
+                return XaResult.error("耗材信息有误");
+            }
+            BillPmVo vo = new BillPmVo();
+            vo.setPmNo(s[0]);
+            vo.setAllowNum(Double.valueOf(s[1]));
+            vo.setPmBatchNo(s[2]);
+            list.add(vo);
+        }
+
         LOGGER.info(getRequestParamsAndUrl());
+        PmOutBill pmOutBill = new PmOutBill();
+        pmOutBill.setBillNo(billNo);
+        pmOutBill.setOrderNo(orderNo);
+        pmOutBill.setProductNo(productNo);
+        pmOutBill.setType(type);
+        pmOutBill.setPmCheckItem(pmCheckItem);
+        pmOutBill.setPmType(pmType);
+        pmOutBill.setGroupNmae(groupNmae);
+        pmOutBill.setWorkshop(workshop);
+        pmOutBill.setStamp(stamp);
+        pmOutBill.setDistributionNum(assignedNum);
+        pmOutBill.setCreateTime(new Date());
+        pmOutBill.setOperator(getLoginUser().getUserName());
+        pmOutBill.setIsDelete(0);
+        pmOutBill.setLastModifyTime(new Date());
+        pmOutService.createBill(pmOutBill, list);
 
-
+        return XaResult.success();
     }
+
+
 
 
     /**

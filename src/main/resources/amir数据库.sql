@@ -217,6 +217,7 @@ CREATE TABLE t_PMout_Bill(
 	leader varchar(30) comment '负责人',
 	pmType varchar(50) comment '材料类别',
 	pmCheckItem varchar(50) comment '材料检测',
+  stamp varchar(50) comment '电子章',
 	operator varchar(100) NOT NULL comment '添加人',
 	createTime datetime,
 	lastModifyTime datetime,
