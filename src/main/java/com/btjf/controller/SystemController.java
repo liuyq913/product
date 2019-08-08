@@ -3,6 +3,7 @@ package com.btjf.controller;
 import com.btjf.application.util.XaResult;
 import com.btjf.model.sys.Sysdept;
 import com.btjf.service.dictionary.DictionaryService;
+import com.btjf.service.sys.SysDeptService;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,8 @@ public class SystemController {
 
     @Resource
     private DictionaryService dictionaryService;
+    @Resource
+    private SysDeptService sysDeptService;
 
     /**
      * 获取数据
@@ -45,8 +48,8 @@ public class SystemController {
      */
     @RequestMapping(value = "/dept", method = RequestMethod.GET)
     public XaResult<List<Sysdept>> dept() {
-
-        return XaResult.success();
+        List<Sysdept> list = sysDeptService.getList();
+        return XaResult.success(list);
     }
 
 
