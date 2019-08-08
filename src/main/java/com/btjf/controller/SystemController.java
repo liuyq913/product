@@ -17,7 +17,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
+import java.util.Random;
+import java.util.UUID;
 
 
 /**
@@ -62,6 +70,16 @@ public class SystemController {
         return XaResult.success(list);
     }
 
+    /**
+     * 获取单号
+     * type 1 领料单  2订单号开单 3 订单 4 生产单
+     *
+     * @return
+     */
+    @RequestMapping(value = "/getNo", method = RequestMethod.GET)
+    public XaResult<String> getNo(Integer type) {
+        return XaResult.success(getBillNo(type));
+    }
 
     /**
      * 获取车间及车间负责人及车间工序
@@ -81,4 +99,35 @@ public class SystemController {
         return XaResult.success(workShopVos);
     }
 
+
+    private String getBillNo(Integer type) {
+        if(type == 1){
+            return "L" + getDateTime() + getOrderIdByUUId();
+        }else if(type == 2){
+            return "D" + getDateTime() + getOrderIdByUUId();
+        }else if(type == 3){
+            return "O" + getDateTime() + getOrderIdByUUId();
+        }else if(type == 4){
+            return "P" + getDateTime() + getOrderIdByUUId();
+        }else{
+            return null;
+        }
+    }
+
+    private static String getDateTime(){
+        DateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        return sdf.format(new Date());
+    }
+
+    private String getOrderIdByUUId() {
+        int first = new Random(10).nextInt(8) + 1;
+        int hashCodeV = UUID.randomUUID().toString().hashCode();
+        if (hashCodeV < 0) {//有可能是负数
+            hashCodeV = -hashCodeV;
+        }
+        // 0 代表前面补充0
+        // 4 代表长度为4
+        // d 代表参数为正数型
+        return first + String.format("%015d", hashCodeV);
+    }
 }
