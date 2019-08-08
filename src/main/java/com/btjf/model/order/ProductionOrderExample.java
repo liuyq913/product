@@ -1372,6 +1372,66 @@ public class ProductionOrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andOrderProductIdIsNull() {
+            addCriterion("orderProductId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProductIdIsNotNull() {
+            addCriterion("orderProductId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProductIdEqualTo(Integer value) {
+            addCriterion("orderProductId =", value, "orderProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProductIdNotEqualTo(Integer value) {
+            addCriterion("orderProductId <>", value, "orderProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProductIdGreaterThan(Integer value) {
+            addCriterion("orderProductId >", value, "orderProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProductIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("orderProductId >=", value, "orderProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProductIdLessThan(Integer value) {
+            addCriterion("orderProductId <", value, "orderProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProductIdLessThanOrEqualTo(Integer value) {
+            addCriterion("orderProductId <=", value, "orderProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProductIdIn(List<Integer> values) {
+            addCriterion("orderProductId in", values, "orderProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProductIdNotIn(List<Integer> values) {
+            addCriterion("orderProductId not in", values, "orderProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProductIdBetween(Integer value1, Integer value2) {
+            addCriterion("orderProductId between", value1, value2, "orderProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProductIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("orderProductId not between", value1, value2, "orderProductId");
+            return (Criteria) this;
+        }
+
         public Criteria andProductionNoLikeInsensitive(String value) {
             addCriterion("upper(productionNo) like", value.toUpperCase(), "productionNo");
             return (Criteria) this;

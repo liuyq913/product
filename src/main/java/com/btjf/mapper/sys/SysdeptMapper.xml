@@ -240,4 +240,8 @@
     <select id="getList" resultMap="BaseResultMap">
         select * from t_SysDept order by deptOrder ASC
     </select>
+
+    <select id="getWorkshopList" resultMap="BaseResultMap">
+       select * from t_SysDept WHERE  deptName LIKE  '%车间%' order by deptOrder ASC
+    </select>
 </mapper>

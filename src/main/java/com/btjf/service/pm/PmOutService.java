@@ -81,6 +81,12 @@ public class PmOutService {
 
     }
 
+
+    public List<PmOutBillListVo> findList(String billNo, String orderNo, String productNo) {
+        List<PmOutBillListVo> pmList = mapper.findList(billNo, orderNo, productNo);
+        return pmList;
+    }
+
 //    public List<PmInVo> findList(String pmNo, String name, String type,String startDate,String endDate){
 //        List<PmInVo> pmList = pmInMapper.findList(pmNo, name, type,startDate, endDate);
 //        return pmList;

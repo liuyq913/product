@@ -313,8 +313,9 @@ CREATE TABLE t_Production_Order(
    orderId int(11) NOT NULL comment '订单ID',
    orderNo varchar(100) NOT NULL comment '订单编号',
    productNo varchar(100) NOT NULL comment '产品型号',
+   orderProductId  int(11) NOT NULL comment '订单 型号表ID',
    maxNum int comment '上限数量',
-   assignNum int comment '已分配数额',
+   assignNum int comment '分配数额',
    workshop varchar(30) comment '车间',
    workshopDirector varchar(100) comment '车间主任',
    isLuo int NOT NULL COMMENT '是否按罗分 0否 1 是',
@@ -371,7 +372,7 @@ CREATE TABLE t_Order_Product_Workshop(
 
 ## 工序单价管理列表
 ##产品 工序 车间
-CREATE TABLE t_Product_Procedure_workshop(
+CREATE TABLE t_Product_Procedure_Workshop(
 	id int(11) primary key AUTO_INCREMENT,
 	productId int(11),
 	productNo varchar(100) NOT NULL comment '产品型号',

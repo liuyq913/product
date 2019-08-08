@@ -102,4 +102,8 @@ public interface OrderProductMapper {
             String pmNo, @Param("type") String type, @Param("completeStartDate") String completeStartDate,
                            @Param("completeStartEnd") String completeStartEnd,
                            @Param("createStartDate") String createStartDate, @Param("createEndDate") String createEndDate);
+
+    Integer deleteById(@Param("id") Integer id);
+
+    List<OrderProduct> findByOrderID(@Param("orderId") Integer orderId);
 }

@@ -1,9 +1,15 @@
 package com.btjf.controller;
 
 import com.btjf.application.util.XaResult;
+import com.btjf.controller.order.vo.WorkShopVo;
+import com.btjf.model.emp.Emp;
+import com.btjf.model.product.ProductProcedureWorkshop;
 import com.btjf.model.sys.Sysdept;
 import com.btjf.service.dictionary.DictionaryService;
+import com.btjf.service.emp.EmpService;
+import com.btjf.service.productpm.ProductWorkshopService;
 import com.btjf.service.sys.SysDeptService;
+import com.google.common.collect.Lists;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +20,10 @@ import javax.annotation.Resource;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.Random;
 import java.util.UUID;
 
@@ -31,6 +40,10 @@ public class SystemController {
     private DictionaryService dictionaryService;
     @Resource
     private SysDeptService sysDeptService;
+    @Resource
+    private EmpService empService;
+    @Resource
+    private ProductWorkshopService productWorkshopService;
 
     /**
      * 获取数据
@@ -39,7 +52,7 @@ public class SystemController {
      */
     @RequestMapping(value = "/data", method = RequestMethod.GET)
     public XaResult<List<String>> data(@ApiParam("数据类型 1 材料类别  2材料单位  3产品类型") Integer type) {
-        if(type == null){
+        if (type == null) {
             return XaResult.error("数据类型为空");
         }
         List<String> list = dictionaryService.getList(type);
@@ -67,6 +80,25 @@ public class SystemController {
     public XaResult<String> getNo(Integer type) {
         return XaResult.success(getBillNo(type));
     }
+
+    /**
+     * 获取车间及车间负责人及车间工序
+     *
+     * @return
+     */
+    @RequestMapping(value = "/workshop", method = RequestMethod.GET)
+    public XaResult<List<WorkShopVo>> workshop(){
+        List<Sysdept> list = sysDeptService.getWorkshopList();
+        List<WorkShopVo> workShopVos = Lists.newArrayList();
+        for (Sysdept sysdept : list) {
+            if (null == sysdept) continue;
+            List<Emp> emps = empService.getLeaderByDeptID(sysdept.getId());
+            List<ProductProcedureWorkshop> productProcedureWorkshops = productWorkshopService.findByWorkshopName(sysdept.getDeptName());
+            workShopVos.add(new WorkShopVo(sysdept, emps, productProcedureWorkshops));
+        }
+        return XaResult.success(workShopVos);
+    }
+
 
     private String getBillNo(Integer type) {
         if(type == 1){
@@ -98,6 +130,4 @@ public class SystemController {
         // d 代表参数为正数型
         return first + String.format("%015d", hashCodeV);
     }
-
-
 }
