@@ -420,4 +420,10 @@
         from t_Product_Procedure_Workshop
         WHERE workshop = #{name} and isDelete = 0;
     </select>
+
+    <select id="getWorkShop" resultMap="BaseResultMap">
+      SELECT <include refid="Base_Column_List"/>
+      FROM t_Product_Procedure_Workshop
+        WHERE productNo = #{productNo} and isDelete = 0;
+    </select>
 </mapper>

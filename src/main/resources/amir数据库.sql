@@ -340,6 +340,7 @@ CREATE TABLE t_Production_Procedure(
    procedureId int(11) comment '工序ID',
    procedureName varchar(50) comment '工序名称',
    createTime datetime,
+   sort int(11) NOT NULL comment '工序序号',
 	 isDelete int NOT NULL
 );
 

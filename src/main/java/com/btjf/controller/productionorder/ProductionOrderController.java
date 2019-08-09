@@ -1,20 +1,28 @@
 package com.btjf.controller.productionorder;
 
 import com.alibaba.druid.util.StringUtils;
+import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.btjf.application.components.xaresult.AppXaResultHelper;
 import com.btjf.application.util.XaResult;
 import com.btjf.common.page.Page;
 import com.btjf.controller.base.ProductBaseController;
 import com.btjf.controller.order.vo.WorkShopVo;
+import com.btjf.controller.productionorder.vo.ProductionOrderDetailVo;
 import com.btjf.controller.productionorder.vo.ProductionOrderVo;
 import com.btjf.model.order.OrderProduct;
+import com.btjf.model.order.ProductionLuo;
 import com.btjf.model.order.ProductionOrder;
+import com.btjf.model.order.ProductionProcedure;
+import com.btjf.model.sys.SysUser;
 import com.btjf.service.order.OrderProductService;
+import com.btjf.service.order.ProductionLuoService;
 import com.btjf.service.order.ProductionOrderService;
+import com.btjf.service.order.ProductionProcedureService;
 import com.google.common.collect.Lists;
 import com.heige.aikajinrong.base.exception.BusinessException;
 import com.wordnik.swagger.annotations.Api;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,6 +46,12 @@ public class ProductionOrderController extends ProductBaseController {
 
     @Resource
     private ProductionOrderService productionOrderService;
+
+    @Resource
+    private ProductionProcedureService productionProcedureService;
+
+    @Resource
+    private ProductionLuoService productionLuoService;
 
 
     @RequestMapping(value = "/assign")
@@ -64,6 +78,8 @@ public class ProductionOrderController extends ProductBaseController {
         productionOrder.setOrderId(orderProduct.getOrderId());
         productionOrder.setProductNo(orderProduct.getProductNo());
         productionOrder.setMaxNum(orderProduct.getMaxNum());
+        productionOrder.setWorkshop(workshop);
+        productionOrder.setWorkshopDirector(workshopDirector);
 
         Integer id = productionOrderService.assign(productionOrder, procedures);
         return XaResult.success(id);
@@ -71,8 +87,8 @@ public class ProductionOrderController extends ProductBaseController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public XaResult<List<ProductionOrderVo>> getList(String orderNo, String productionNo, String customerName, String productNo,
-                                           String productType, String workshop, String workshopDirector, String createStartTime,
-                                           String createEndTime, Integer pageSize, Integer currentPage) throws BusinessException {
+                                                     String productType, String workshop, String workshopDirector, String createStartTime,
+                                                     String createEndTime, Integer pageSize, Integer currentPage) throws BusinessException {
         if (currentPage == null || currentPage < 1) {
             currentPage = 1;
         }
@@ -93,6 +109,44 @@ public class ProductionOrderController extends ProductBaseController {
         Page<ProductionOrderVo> productionOrderVoPage = productionOrderService.getPage(productionOrderVo, page);
         XaResult<List<ProductionOrderVo>> result = AppXaResultHelper.success(productionOrderVoPage, productionOrderVoPage.getRows());
         return result;
+    }
+
+    @RequestMapping(value = "/print", method = RequestMethod.GET)
+    public XaResult<List<ProductionOrderDetailVo>> getDetailByProductionNo(String productionNo) throws BusinessException {
+        SysUser sysUser = getLoginUser();
+
+        if (null == productionNo) return XaResult.error("请输入要打印是生成单号");
+
+        List<ProductionOrderDetailVo> productionOrderDetailVos = Lists.newArrayList();
+        ProductionOrder productionOrder = productionOrderService.getByNo(productionNo);
+        if (productionOrder == null) return XaResult.error("该生成单不存在");
+        //订单
+        OrderProduct orderProduct = orderProductService.getByID(productionOrder.getOrderId());
+        //工序
+        List<ProductionProcedure> productionProcedures = productionProcedureService.findByProductionNo(productionOrder.getProductionNo());
+
+        ProductionOrderDetailVo productionOrderDetailVo = new ProductionOrderDetailVo(productionOrder, productionProcedures, orderProduct);
+        productionOrderDetailVo.setPrintTime(new Date());
+        productionOrderDetailVo.setPrinter(sysUser.getUserName());
+        //未分
+        if (productionOrder.getIsLuo() == 1) {
+            List<ProductionLuo> productionLuos = productionLuoService.getByProductionNo(productionOrder.getProductionNo());
+            if (!CollectionUtils.isEmpty(productionLuos)) {
+                productionLuos.stream().forEach(t -> {
+                    try {
+                        ProductionOrderDetailVo productionOrderDetailVo1 = (ProductionOrderDetailVo) BeanUtils.cloneBean(productionOrderDetailVo);
+                        productionOrderDetailVo1.setAssignNum(t.getNum());
+                        productionOrderDetailVo1.setCodeUrl(t.getCodeUrl());
+                        productionOrderDetailVos.add(productionOrderDetailVo1);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+        } else {
+            productionOrderDetailVos.add(productionOrderDetailVo);
+        }
+        return XaResult.success(productionOrderDetailVos);
     }
 
 }

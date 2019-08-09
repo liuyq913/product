@@ -503,7 +503,7 @@
     <select id="findList" parameterType="com.btjf.controller.productionorder.vo.ProductionOrderVo"
             resultType="com.btjf.controller.productionorder.vo.ProductionOrderVo">
         SELECT
-        tpo.orderNo AS  orderNo,
+        tpo.orderNo AS orderNo,
         tpo.productionNo as productionNo,
         top.customerName as customerName,
         tpo.productNo as productNo,
@@ -543,6 +543,14 @@
         <if test="createStartTime != null">
             and createStartTime &gt;=createStartTime
         </if>
+    </select>
+
+
+    <select id="getByNo" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_Production_Order
+        WHERE productionNo =#{productionNo} and isDelete = 0
     </select>
 
 </mapper>

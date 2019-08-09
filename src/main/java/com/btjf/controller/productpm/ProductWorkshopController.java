@@ -65,5 +65,13 @@ public class ProductWorkshopController extends ProductBaseController {
         } else {
             return XaResult.success();
         }
+
+    }
+
+    @RequestMapping(value = "/getWorkShop", method = RequestMethod.GET)
+    public XaResult<List<ProductProcedureWorkshop>> getWorkShop(String productNo){
+        if(productNo == null) XaResult.error("产品型号不能为空");
+
+       return XaResult.success(productWorkshopService.getWorkShop(productNo));
     }
 }

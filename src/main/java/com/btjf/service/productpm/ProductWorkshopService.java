@@ -53,4 +53,8 @@ public class ProductWorkshopService {
 
         return productProcedureWorkshopMapper.findByWorkshopName(name);
     }
+
+    public List<ProductProcedureWorkshop> getWorkShop(String productNo) {
+        return productProcedureWorkshopMapper.getWorkShop(productNo);
+    }
 }

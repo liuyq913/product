@@ -348,4 +348,11 @@
       codeUrl = #{codeUrl,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="getByProductionNo" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM t_production_luo
+    WHERE  productionNo = #{productionNo}
+    and isDelete = 0
+  </select>
 </mapper>

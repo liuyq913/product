@@ -20,10 +20,7 @@ import javax.annotation.Resource;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
 import java.util.Random;
 import java.util.UUID;
 

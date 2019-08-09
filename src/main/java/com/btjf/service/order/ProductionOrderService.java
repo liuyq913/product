@@ -1,6 +1,7 @@
 package com.btjf.service.order;
 
 import com.alibaba.dubbo.common.utils.CollectionUtils;
+import com.alibaba.dubbo.common.utils.StringUtils;
 import com.btjf.common.page.Page;
 import com.btjf.controller.order.vo.WorkShopVo;
 import com.btjf.controller.productionorder.vo.ProductionOrderVo;
@@ -16,8 +17,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -50,7 +54,7 @@ public class ProductionOrderService {
     public Integer assign(ProductionOrder productionOrder, List<WorkShopVo.Procedure> procedures) {
         if (null == productionOrder) return 0;
 
-        productionOrder.setProductionNo(UUID.randomUUID().toString());
+        productionOrder.setProductionNo("P" + getDateTime() + getOrderIdByUUId());
         productionOrderMapper.insertSelective(productionOrder);
         //更新  订单 型号表 分配数量信息
         OrderProduct orderProduct = orderProductService.getByID(productionOrder.getOrderProductId());
@@ -73,6 +77,7 @@ public class ProductionOrderService {
                 productionProcedure.setProcedureId(t.getProcedureId());
                 productionProcedure.setProcedureName(t.getProcedureName());
                 productionProcedure.setOrderNo(productionOrder.getOrderNo());
+                productionProcedure.setSort(t.getSort());
                 productionProcedureService.insert(productionProcedure);
             });
         }
@@ -120,7 +125,7 @@ public class ProductionOrderService {
         }
     }
 
-    public Page<ProductionOrderVo> getPage(ProductionOrderVo productionOrderVo, Page page){
+    public Page<ProductionOrderVo> getPage(ProductionOrderVo productionOrderVo, Page page) {
         PageHelper.startPage(page.getPage(), page.getRp());
         List<ProductionOrderVo> pmList = productionOrderMapper.findList(productionOrderVo);
         PageInfo pageInfo = new PageInfo(pmList);
@@ -128,18 +133,27 @@ public class ProductionOrderService {
         return new Page<>(pageInfo);
     }
 
-    public static void main(String[] args) {
+    public ProductionOrder getByNo(String productionNo) {
+        if (StringUtils.isEmpty(productionNo)) return null;
 
-        Integer assignNum = 45;
-        Integer num = 10;
-        List<Integer> list = Lists.newArrayList();
-        do {
-            list.add(num);
-            assignNum -= num;
-        } while (assignNum > 10 * 1.5);
-        list.add(assignNum);
+        return productionOrderMapper.getByNo(productionNo);
+    }
 
-        System.out.println(list.toString());
+    private static String getDateTime() {
+        DateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        return sdf.format(new Date());
+    }
+
+    private String getOrderIdByUUId() {
+        int first = new Random(10).nextInt(8) + 1;
+        int hashCodeV = UUID.randomUUID().toString().hashCode();
+        if (hashCodeV < 0) {//有可能是负数
+            hashCodeV = -hashCodeV;
+        }
+        // 0 代表前面补充0
+        // 4 代表长度为4
+        // d 代表参数为正数型
+        return first + String.format("%015d", hashCodeV);
     }
 
 }

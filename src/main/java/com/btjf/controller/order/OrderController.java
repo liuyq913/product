@@ -5,6 +5,7 @@ import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.btjf.application.components.xaresult.AppXaResultHelper;
 import com.btjf.application.util.XaResult;
 import com.btjf.common.page.Page;
+import com.btjf.common.utils.DateUtil;
 import com.btjf.controller.base.ProductBaseController;
 import com.btjf.controller.order.vo.OrderProductVo;
 import com.btjf.controller.order.vo.OrderVo;
@@ -50,7 +51,7 @@ public class OrderController extends ProductBaseController {
 
     @RequestMapping(value = "/updateOrAdd", method = RequestMethod.POST)
     public XaResult<Integer> updateOrAdd(Integer id, String orderNo, String productNo, Integer num,
-                                         String type, String unit, Integer maxNum, Date completeDate,
+                                         String type, String unit, Integer maxNum, String completeDate,
                                          String customerName, Integer customerId, Integer isMore, Integer urgentLevel) {
 
         if (StringUtils.isEmpty(orderNo)) {
@@ -106,7 +107,7 @@ public class OrderController extends ProductBaseController {
         }
 
         OrderProduct orderProduct1 = new OrderProduct(orderID, orderNo, product.getId(),
-                productNo, type, num, maxNum, unit, completeDate, customerId, customerName, null, null,
+                productNo, type, num, maxNum, unit, DateUtil.string2Date(completeDate, DateUtil.ymdFormat), customerId, customerName, null, null,
                 null, null, null, new Date(), new Date(), 0);
         if (id != null) {
             return XaResult.error("暂时不支持更新");
@@ -151,6 +152,7 @@ public class OrderController extends ProductBaseController {
 
     /**
      * 获取所有订单 + 型号
+     *
      * @return
      */
     @RequestMapping(value = "/orderandproductlist", method = RequestMethod.GET)
