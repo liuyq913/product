@@ -583,4 +583,13 @@
     </if>
     AND isDelete = 0
   </select>
+
+
+  <select id="getByName" resultMap="BaseResultMap">
+    SELECT  <include refid="Base_Column_List"/>
+    FROM t_Customer
+    WHERE 1=1
+    and name = #{name}
+    AND isDelete = 0
+  </select>
 </mapper>

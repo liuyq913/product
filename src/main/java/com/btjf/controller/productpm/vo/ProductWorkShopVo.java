@@ -21,10 +21,6 @@ public class ProductWorkShopVo implements Serializable {
 
     private Integer groundFloor;// 一楼车间工序数
 
-    private Integer secondFloor;//二楼车间工序数
-
-    private Integer thirdFloor;//三楼车间工序数
-
     private Integer backAssist;//后道辅工
 
     private Integer backCenterAssist;//后道中辅工
@@ -32,6 +28,8 @@ public class ProductWorkShopVo implements Serializable {
     private Integer backBigAssist;//后道大辅工
 
     private Integer inspection;// 验货
+
+    private Integer packing ;//包装
 
     public ProductWorkShopVo(Product t) {
         this.productNo = t.getProductNo();
@@ -78,22 +76,6 @@ public class ProductWorkShopVo implements Serializable {
         this.groundFloor = groundFloor;
     }
 
-    public Integer getSecondFloor() {
-        return secondFloor;
-    }
-
-    public void setSecondFloor(Integer secondFloor) {
-        this.secondFloor = secondFloor;
-    }
-
-    public Integer getThirdFloor() {
-        return thirdFloor;
-    }
-
-    public void setThirdFloor(Integer thirdFloor) {
-        this.thirdFloor = thirdFloor;
-    }
-
     public Integer getBackAssist() {
         return backAssist;
     }
@@ -120,6 +102,14 @@ public class ProductWorkShopVo implements Serializable {
 
     public Integer getInspection() {
         return inspection;
+    }
+
+    public Integer getPacking() {
+        return packing;
+    }
+
+    public void setPacking(Integer packing) {
+        this.packing = packing;
     }
 
     public void setInspection(Integer inspection) {

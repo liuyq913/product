@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.btjf.application.components.xaresult.AppXaResultHelper;
 import com.btjf.application.util.XaResult;
 import com.btjf.common.page.Page;
+import com.btjf.common.utils.DateUtil;
 import com.btjf.controller.base.ProductBaseController;
 import com.btjf.controller.order.vo.WorkShopVo;
 import com.btjf.controller.productionorder.vo.ProductionOrderDetailVo;
@@ -37,7 +38,7 @@ import java.util.List;
  * 生产单
  */
 @RestController
-@RequestMapping(value = "/ProductionOrder")
+@RequestMapping(value = "/productionOrder")
 @Api(value = "ProductionOrderController", description = "生产单管理", position = 1)
 public class ProductionOrderController extends ProductBaseController {
 
@@ -54,14 +55,15 @@ public class ProductionOrderController extends ProductBaseController {
     private ProductionLuoService productionLuoService;
 
 
-    @RequestMapping(value = "/assign")
+    @RequestMapping(value = "/assign", method = RequestMethod.POST)
     public XaResult<Integer> assign(Integer orderProductId, Integer assignNum, String workshop, String workshopDirector,
                                     Integer isLuo, Integer luoNum, String procedure) throws BusinessException {
 
+        if(orderProductId == null)  return XaResult.error("订单型号id不能为null");
         OrderProduct orderProduct = orderProductService.getByID(orderProductId);
         if (null == orderProduct) return XaResult.error("订单不存在");
         if (null == assignNum) return XaResult.error("请输入分配数额");
-        if (null == isLuo || isLuo != 1 || isLuo != 0) return XaResult.error("请选择是否分萝");
+        if (null == isLuo || (isLuo != 1 && isLuo != 0)) return XaResult.error("请选择是否分萝");
         if (isLuo == 1 && (null == luoNum || luoNum < 0)) return XaResult.error("请输入一萝数量");
         if (orderProduct.getNotAssignNum() < assignNum) return XaResult.error("可分配数额不足");
         List<WorkShopVo.Procedure> procedures = Lists.newArrayList();
@@ -72,9 +74,11 @@ public class ProductionOrderController extends ProductBaseController {
         productionOrder.setIsDelete(0);
         productionOrder.setOrderProductId(orderProductId);
         productionOrder.setCreateTime(new Date());
+        productionOrder.setOrderNo(orderProduct.getOrderNo());
         productionOrder.setAssignNum(assignNum);
         productionOrder.setLastModifyTime(new Date());
         productionOrder.setIsLuo(isLuo);
+        productionOrder.setLuoNum(luoNum);
         productionOrder.setOrderId(orderProduct.getOrderId());
         productionOrder.setProductNo(orderProduct.getProductNo());
         productionOrder.setMaxNum(orderProduct.getMaxNum());
@@ -126,7 +130,7 @@ public class ProductionOrderController extends ProductBaseController {
         List<ProductionProcedure> productionProcedures = productionProcedureService.findByProductionNo(productionOrder.getProductionNo());
 
         ProductionOrderDetailVo productionOrderDetailVo = new ProductionOrderDetailVo(productionOrder, productionProcedures, orderProduct);
-        productionOrderDetailVo.setPrintTime(new Date());
+        productionOrderDetailVo.setPrintTime(DateUtil.dateToString(new Date(), DateUtil.ymdFormat));
         productionOrderDetailVo.setPrinter(sysUser.getUserName());
         //未分
         if (productionOrder.getIsLuo() == 1) {
@@ -145,6 +149,8 @@ public class ProductionOrderController extends ProductBaseController {
             }
         } else {
             productionOrderDetailVos.add(productionOrderDetailVo);
+            productionOrder.setPrintCount(productionOrder.getPrintCount()+1);
+            productionOrderService.update(productionOrder);
         }
         return XaResult.success(productionOrderDetailVos);
     }

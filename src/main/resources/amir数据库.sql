@@ -353,7 +353,7 @@ CREATE TABLE t_Production_Luo(
   productNo varchar(100) NOT NULL comment '产品型号',
   num int(11) NOT NULL comment '数量',
   maxNum int comment '上限数量',
-  codeUrl varchar(100) comment '二维码地址',
+  codeUrl varchar(100) DEFAULT NULL comment '二维码地址',
   createTime datetime,
 	isDelete int NOT NULL
 );

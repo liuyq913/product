@@ -286,4 +286,15 @@
         FROM t_Order
         WHERE isDelete = 0
     </select>
+
+    <select id="notAssignOrder" resultType="com.btjf.model.order.Order">
+        select tor.id as id,
+               tor.orderNo as orderNo
+        from  t_Order tor LEFT JOIN t_Order_Product top ON tor.orderNo = top.orderNo
+        WHERE top.notAssignNum &gt; 0 and tor.isDelete = 0
+        <if test="orderNo != null">
+           and tor.orderNo LIKE '%${orderNo}%'
+        </if>
+        group by tor.orderNo, tor.id
+    </select>
 </mapper>

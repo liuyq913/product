@@ -1,13 +1,13 @@
 package com.btjf.controller.productionorder.vo;
 
 import com.alibaba.dubbo.common.utils.CollectionUtils;
+import com.btjf.common.utils.DateUtil;
 import com.btjf.controller.order.vo.WorkShopVo;
 import com.btjf.model.order.OrderProduct;
 import com.btjf.model.order.ProductionOrder;
 import com.btjf.model.order.ProductionProcedure;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,13 +45,16 @@ public class ProductionOrderDetailVo implements Serializable {
 
     private Integer printCount;
 
-    private Date printTime;
+    private String printTime;
 
     private String codeUrl;
 
     private String printer;
 
     private List<WorkShopVo.Procedure> procedures;
+
+    public ProductionOrderDetailVo() {
+    }
 
     public ProductionOrderDetailVo(ProductionOrder productionOrder, List<ProductionProcedure> productionProcedures,
                                    OrderProduct orderProduct) {
@@ -62,20 +65,18 @@ public class ProductionOrderDetailVo implements Serializable {
             this.isLuo = productionOrder.getIsLuo();
             this.luoNum = productionOrder.getLuoNum();
             this.maxNum = productionOrder.getMaxNum();
-            this.printCount = productionOrder.getPrintCount();
-            this.printTime = productionOrder.getPrintTime();
+            this.printCount = productionOrder.getPrintCount() == null ? 1 : productionOrder.getPrintCount() + 1;
+            this.printTime = DateUtil.dateToString(productionOrder.getPrintTime(), DateUtil.ymdFormat);
             this.workshop = productionOrder.getWorkshop();
             this.workshopDirector = productionOrder.getWorkshopDirector();
             this.productNo = productionOrder.getProductNo();
             this.productionNo = productionOrder.getProductionNo();
         }
 
-        if (!CollectionUtils.isEmpty(productionProcedures))
-
-        {
-            WorkShopVo.Procedure.productionProcedureTransfor(productionProcedures);
+        if (!CollectionUtils.isEmpty(productionProcedures)) {
+            this.procedures = WorkShopVo.Procedure.productionProcedureTransfor(productionProcedures);
         }
-        if(orderProduct != null){
+        if (orderProduct != null) {
             this.unit = orderProduct.getUnit();
             this.customerName = orderProduct.getCustomerName();
             this.productType = orderProduct.getProductType();
@@ -196,11 +197,11 @@ public class ProductionOrderDetailVo implements Serializable {
         this.printCount = printCount;
     }
 
-    public Date getPrintTime() {
+    public String getPrintTime() {
         return printTime;
     }
 
-    public void setPrintTime(Date printTime) {
+    public void setPrintTime(String printTime) {
         this.printTime = printTime;
     }
 

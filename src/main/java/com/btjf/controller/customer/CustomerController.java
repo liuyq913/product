@@ -7,6 +7,7 @@ package com.btjf.controller.customer;
 import com.btjf.application.components.xaresult.AppXaResultHelper;
 import com.btjf.application.util.XaResult;
 import com.btjf.common.page.Page;
+import com.btjf.common.utils.DateUtil;
 import com.btjf.controller.base.ProductBaseController;
 import com.btjf.model.customer.Customer;
 import com.btjf.service.customer.CustomerService;
@@ -45,7 +46,11 @@ public class CustomerController extends ProductBaseController {
         }
         Page page = new Page(pageSize, currentPage);
         Page<Customer> listPage = customerService.findListPage(name, startDate, endDate, page);
-        XaResult<List<Customer>> result = AppXaResultHelper.success(listPage, listPage.getRows());
+        List<Customer> list = listPage.getRows();
+        list.forEach(t -> {
+            t.setCreateTimeStr(DateUtil.dateToString(t.getCreateTime(), DateUtil.ymdFormat));
+        });
+        XaResult<List<Customer>> result = AppXaResultHelper.success(listPage, list);
         return result;
     }
 
@@ -54,6 +59,7 @@ public class CustomerController extends ProductBaseController {
         if (id == null) return XaResult.error("id必填");
 
         Customer customer = customerService.getByID(id);
+        customer.setCreateTimeStr(DateUtil.dateToString(customer.getCreateTime(), DateUtil.ymdFormat));
         if (customer == null) {
             return XaResult.error("该客户不存在");
         } else {
@@ -96,6 +102,9 @@ public class CustomerController extends ProductBaseController {
             customer.setId(id);
             customerService.updateByID(customer);
         } else {
+            if (null != customerService.getByName(name)) {
+                return XaResult.error("该名称已经存在");
+            }
             customer.setCreateTime(new Date());
             id = customerService.insert(customer);
         }
@@ -103,7 +112,7 @@ public class CustomerController extends ProductBaseController {
 
     }
 
-    @RequestMapping(value = "/alllist", method = RequestMethod.GET)
+    @RequestMapping(value = "/allList", method = RequestMethod.GET)
     public XaResult<List<Customer>> allList() {
         return XaResult.success(customerService.findList(null, null, null));
     }

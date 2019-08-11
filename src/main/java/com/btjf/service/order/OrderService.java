@@ -65,7 +65,7 @@ public class OrderService {
        return i;
     }
 
-    public List<Order> findAll() {
-        return orderMapper.findAll();
+    public List<Order> notAssignOrder(String ordeNo) {
+        return orderMapper.notAssignOrder(ordeNo);
     }
 }

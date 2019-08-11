@@ -123,7 +123,7 @@
         select
         <include refid="Base_Column_List"/>
         from t_Product_Procedure_Workshop
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER} and isDelete = 0
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         <!--
@@ -400,14 +400,7 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <select id="getByWorkShopName" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from t_Product_Procedure_Workshop
-        WHERE workshop = #{name} and isDelete = 0;
-    </select>
-
-    <select id="getNumByWorkShopName">
+    <select id="getNumByWorkShopName" resultType="java.lang.Integer">
     select count(1)
     from t_Product_Procedure_Workshop
     WHERE workshop = #{name} and isDelete = 0;
@@ -426,4 +419,10 @@
       FROM t_Product_Procedure_Workshop
         WHERE productNo = #{productNo} and isDelete = 0;
     </select>
+
+    <update id="deleteByProcedureId" >
+        UPDATE  t_Product_Procedure_Workshop
+        SET isDelete = 1
+        WHERE procedureId = #{procedureId}
+    </update>
 </mapper>

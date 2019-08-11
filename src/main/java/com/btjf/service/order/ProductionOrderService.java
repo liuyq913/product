@@ -104,6 +104,7 @@ public class ProductionOrderService {
                 productionLuo.setCreateTime(new Date());
                 productionLuo.setProductNo(productionOrder.getProductNo());
                 productionLuo.setOrderId(productionOrder.getOrderId());
+                productionLuo.setProductionNo(productionOrder.getProductionNo());
                 productionLuos.add(productionLuo);
                 assignNum -= productionOrder.getLuoNum();
             } while (assignNum > productionOrder.getLuoNum() * 1.5);
@@ -114,6 +115,7 @@ public class ProductionOrderService {
             productionLuo.setOrderNo(productionOrder.getOrderNo());
             productionLuo.setMaxNum(productionOrder.getMaxNum());
             productionLuo.setNum(assignNum);
+            productionLuo.setProductionNo(productionOrder.getProductionNo());
             productionLuo.setCreateTime(new Date());
             productionLuo.setProductNo(productionOrder.getProductNo());
             productionLuo.setOrderId(productionOrder.getOrderId());
@@ -156,4 +158,7 @@ public class ProductionOrderService {
         return first + String.format("%015d", hashCodeV);
     }
 
+    public Integer update(ProductionOrder productionOrder) {
+        return productionOrderMapper.updateByPrimaryKeySelective(productionOrder);
+    }
 }

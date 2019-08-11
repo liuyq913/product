@@ -127,6 +127,8 @@ public class WorkShopVo implements Serializable {
 
         private Integer sort;
 
+        public Procedure(){}
+
         public Procedure(ProductProcedureWorkshop productProcedureWorkshop) {
             this.procedureId = productProcedureWorkshop.getProcedureId();
             this.procedureName = productProcedureWorkshop.getProcedureName();
