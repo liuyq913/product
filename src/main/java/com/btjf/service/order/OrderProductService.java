@@ -56,4 +56,9 @@ public class OrderProductService {
         if (null == orderProduct1) return 0;
         return orderProductMapper.updateByPrimaryKeySelective(orderProduct1);
     }
+
+    public List<OrderVo> list(Integer customerId, String orderNo, String pmNo, String type, String completeStartDate, String completeStartEnd, String createStartDate, String createEndDate) {
+        List<OrderVo> orderVos = orderProductMapper.findList(customerId, orderNo, pmNo, type, completeStartDate, completeStartEnd, createStartDate, createEndDate);
+        return orderVos;
+    }
 }

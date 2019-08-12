@@ -34,6 +34,11 @@ public class ProductProcedureService {
         return productProcedure.getId();
     }
 
+    public Integer add(ProductProcedure productProcedure){
+        productProcedureMapper.insertSelective(productProcedure);
+        return productProcedure.getId();
+    }
+
 
     public ProductProcedureWorkshop build(ProductProcedure productProcedure) {
         ProductProcedureWorkshop productProcedureWorkshop = new ProductProcedureWorkshop();

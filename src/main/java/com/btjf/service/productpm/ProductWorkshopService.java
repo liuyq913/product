@@ -35,28 +35,17 @@ public class ProductWorkshopService {
     public Page<ProductWorkShopVo> getListPage(Page page, String type, String productNo) {
         PageHelper.startPage(page.getPage(), page.getRp());
         List<Product> pmList = productMapper.getList(type, productNo);
-        List<ProductWorkShopVo> productWorkShopVos = Lists.newArrayList();
-        if (!CollectionUtils.isEmpty(pmList)) {
-            pmList.stream().forEach(t -> {
-                ProductWorkShopVo productWorkShopVo = new ProductWorkShopVo(t);
-                productWorkShopVo.setAssist(productProcedureWorkshopMapper.getNumByWorkShopName("外协质检"));
-                productWorkShopVo.setBlanking(productProcedureWorkshopMapper.getNumByWorkShopName("下料车间"));
-                productWorkShopVo.setGroundFloor(productProcedureWorkshopMapper.getNumByWorkShopName("一车间"));
-                productWorkShopVo.setBackAssist(productProcedureWorkshopMapper.getNumByWorkShopName("后道车间-车工"));
-                productWorkShopVo.setBackCenterAssist(productProcedureWorkshopMapper.getNumByWorkShopName("后道车间-中辅工"));
-                productWorkShopVo.setBackBigAssist(productProcedureWorkshopMapper.getNumByWorkShopName("后道车间-大辅工"));
-                productWorkShopVo.setInspection(productProcedureWorkshopMapper.getNumByWorkShopName("质检部-成品质检"));
-                productWorkShopVo.setPacking(productProcedureWorkshopMapper.getNumByWorkShopName("包装车间"));
-                productWorkShopVo.setProductNo(t.getProductNo());
-                productWorkShopVo.setType(t.getType());
-                productWorkShopVos.add(productWorkShopVo);
-            });
-        }
-
+        List<ProductWorkShopVo> productWorkShopVos = build(pmList);
         PageInfo pageInfo = new PageInfo(productWorkShopVos);
         pageInfo.setList(productWorkShopVos);
 
         return new Page<>(pageInfo);
+    }
+
+    public List<ProductWorkShopVo> getList(String type, String productNo) {
+        List<Product> pmList = productMapper.getList(type, productNo);
+        List<ProductWorkShopVo> productWorkShopVos = build(pmList);
+        return productWorkShopVos;
     }
 
 
@@ -74,6 +63,27 @@ public class ProductWorkshopService {
         return productProcedureWorkshopMapper.selectByPrimaryKey(id);
     }
 
+    public List<ProductWorkShopVo> build(List<Product> pmList) {
+        List<ProductWorkShopVo> productWorkShopVos = Lists.newArrayList();
+        if (!CollectionUtils.isEmpty(pmList)) {
+            pmList.stream().forEach(t -> {
+                ProductWorkShopVo productWorkShopVo = new ProductWorkShopVo(t);
+                productWorkShopVo.setAssist(productProcedureWorkshopMapper.getNumByWorkShopName("外协质检"));
+                productWorkShopVo.setBlanking(productProcedureWorkshopMapper.getNumByWorkShopName("下料车间"));
+                productWorkShopVo.setGroundFloor(productProcedureWorkshopMapper.getNumByWorkShopName("一车间"));
+                productWorkShopVo.setBackAssist(productProcedureWorkshopMapper.getNumByWorkShopName("后道车间-车工"));
+                productWorkShopVo.setBackCenterAssist(productProcedureWorkshopMapper.getNumByWorkShopName("后道车间-中辅工"));
+                productWorkShopVo.setBackBigAssist(productProcedureWorkshopMapper.getNumByWorkShopName("后道车间-大辅工"));
+                productWorkShopVo.setInspection(productProcedureWorkshopMapper.getNumByWorkShopName("质检部-成品质检"));
+                productWorkShopVo.setPacking(productProcedureWorkshopMapper.getNumByWorkShopName("包装车间"));
+                productWorkShopVo.setProductNo(t.getProductNo());
+                productWorkShopVo.setType(t.getType());
+                productWorkShopVos.add(productWorkShopVo);
+            });
+        }
+        return productWorkShopVos;
+    }
+
     public Integer add(ProductProcedureWorkshop productProcedureWorkshop) {
         ProductProcedure productProcedure = new ProductProcedure();
         productProcedure.setCreateTime(new Date());
@@ -84,7 +94,7 @@ public class ProductWorkshopService {
         productProcedure.setProductNo(productProcedureWorkshop.getProductNo());
         productProcedure.setPrice(productProcedureWorkshop.getPrice());
         productProcedure.setSort(productProcedureWorkshop.getSort());
-        Integer productId = productProcedureService.addOrUpdate(productProcedure);
+        Integer productId = productProcedureService.add(productProcedure);
         productProcedureWorkshop.setProcedureId(productId);
         return productProcedureWorkshopMapper.insertSelective(productProcedureWorkshop);
     }
@@ -94,9 +104,9 @@ public class ProductWorkshopService {
         productProcedureWorkshopMapper.updateByPrimaryKeySelective(productProcedureWorkshop);
         ProductProcedure productProcedure = productProcedureService.getById(productProcedureWorkshop1.getProcedureId());
         if (productProcedure != null) {
-            productProcedure.setSort(productProcedure.getSort());
-            productProcedure.setPrice(productProcedure.getPrice());
-            productProcedure.setLastModifyTime(productProcedure.getLastModifyTime());
+            productProcedure.setSort(productProcedureWorkshop.getSort());
+            productProcedure.setPrice(productProcedureWorkshop.getPrice());
+            productProcedure.setLastModifyTime(new Date());
             productProcedure.setProcedureName(productProcedureWorkshop.getProcedureName());
             productProcedureService.update(productProcedure);
         }
