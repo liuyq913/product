@@ -46,8 +46,8 @@ public class PmOutController extends ProductBaseController {
 
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public XaResult<List<PmInVo>> findList(@ApiParam("订单号") String orderNo, @ApiParam("型号") String productNo
-            , @ApiParam("是否已录入") Integer isInput, Integer pageSize, Integer currentPage) {
+    public XaResult<List<PmOutUpListVo>> findList(@ApiParam("订单号") String orderNo, @ApiParam("型号") String productNo
+            , @ApiParam("是否已录入") Integer isInput,@ApiParam("客户名字") Integer customerName, Integer pageSize, Integer currentPage) {
         LOGGER.info(getRequestParamsAndUrl());
         if(currentPage == null || currentPage < 1){
             currentPage =1;
@@ -56,10 +56,10 @@ public class PmOutController extends ProductBaseController {
             pageSize = 25;
         }
         Page page = new Page(pageSize, currentPage);
-
+        Page<PmOutUpListVo> listPage = pmOutService.findUpList(orderNo,productNo,isInput,customerName, page);
         //是否确认   型号、耗料  是否确认
 
-        return null;
+        return AppXaResultHelper.success(listPage, listPage.getRows());
     }
 
     /**
@@ -319,10 +319,24 @@ public class PmOutController extends ProductBaseController {
     /**
      * 出入库汇总
      */
-    @RequestMapping(value = "collect", method = RequestMethod.GET)
-    public void collect() {
+    @RequestMapping(value = "collect/list", method = RequestMethod.GET)
+    public XaResult<List<PmInAndOutVo>> collect(@ApiParam("编号")String pmNo,@ApiParam("名称")String pmName,
+                        @ApiParam("订单号")String orderNo,@ApiParam("出入库 1入库 2出库")Integer inOrOut,
+                        @ApiParam("操作人")String operator,
+                        @ApiParam("起始时间") String startDate, @ApiParam("截止时间") String endDate,
+                        Integer pageSize, Integer currentPage) {
         LOGGER.info(getRequestParamsAndUrl());
+        //名称 操作人 模糊查找
+        if(currentPage == null || currentPage < 1){
+            currentPage =1;
+        }
+        if(pageSize == null || pageSize < 1){
+            pageSize = 25;
+        }
+        Page page = new Page(pageSize, currentPage);
+        Page<PmInAndOutVo> listPage = pmOutService.findInAndOutListPage(pmNo,pmName,orderNo,inOrOut,operator,startDate,endDate,page);
 
+        return AppXaResultHelper.success(listPage, listPage.getRows());
 
     }
 

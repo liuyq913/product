@@ -148,4 +148,9 @@ public class ProductPmService {
     public Integer deleteByPmNo(String pmNo) {
        return productpmMapper.deleteByPmNo(pmNo);
     }
+
+
+    public Integer count(String productNo) {
+        return productpmMapper.count(productNo);
+    }
 }

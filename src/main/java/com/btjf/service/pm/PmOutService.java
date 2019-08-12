@@ -6,8 +6,11 @@ import com.btjf.mapper.pm.PmOutBillMapper;
 import com.btjf.model.pm.Pm;
 import com.btjf.model.pm.PmOutBill;
 import com.btjf.model.pm.PmOutBillDetail;
+import com.btjf.service.productpm.ProductPmService;
 import com.btjf.vo.BillPmVo;
+import com.btjf.vo.PmInAndOutVo;
 import com.btjf.vo.PmOutBillListVo;
+import com.btjf.vo.PmOutUpListVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
@@ -32,6 +35,8 @@ public class PmOutService {
     private PmOutBillDetailMapper pmOutBillDetailMapper;
     @Resource
     private PmService pmService;
+    @Resource
+    private ProductPmService productPmService;
 
     public Page<PmOutBillListVo> findListPage(String billNo, String orderNo, String productNo, Page page) {
         PageHelper.startPage(page.getPage(), page.getRp());
@@ -87,13 +92,47 @@ public class PmOutService {
         return pmList;
     }
 
-//    public List<PmInVo> findList(String pmNo, String name, String type,String startDate,String endDate){
-//        List<PmInVo> pmList = pmInMapper.findList(pmNo, name, type,startDate, endDate);
-//        return pmList;
-//    }
-//
-//    public void create(PmIn pmIn) {
-//        pmInMapper.insertSelective(pmIn);
-//    }
+    public Page<PmOutUpListVo> findUpList(String orderNo, String productNo, Integer isInput, Integer customerName, Page page) {
+        PageHelper.startPage(page.getPage(), page.getRp());
+        List<PmOutUpListVo> pmList = mapper.findUpList(orderNo,productNo,isInput,customerName);
+        if(pmList != null && pmList.size() >0){
+            for (PmOutUpListVo vo: pmList){
+                if(isInput != null && isInput == 0){
+                    //未录入
+                    vo.setInputNum(0);
+                }else{
+                    vo.setInputNum(productPmService.count(vo.getProductNo()));
+                }
+                vo.setBillNum(count(vo.getOrderNo(),vo.getProductNo()));
+            }
+        }
+        PageInfo pageInfo = new PageInfo(pmList);
+        pageInfo.setList(pmList);
+        return new Page<>(pageInfo);
+    }
+
+    private Integer count(String orderNo, String productNo) {
+        return mapper.count(orderNo,productNo);
+    }
+
+    public Page<PmInAndOutVo> findInAndOutListPage(String pmNo, String pmName, String orderNo,
+            Integer inOrOut, String operator, String startDate, String endDate, Page page) {
+        PageHelper.startPage(page.getPage(), page.getRp());
+        List<PmInAndOutVo> pmList = null;
+        if(inOrOut == null){
+            //出库加入库
+            pmList = mapper.findInAndOutList(pmNo,pmName,orderNo,operator,startDate,endDate);
+        }else if(inOrOut == 1){
+            //入库
+            pmList = mapper.findInList(pmNo,pmName,orderNo,operator,startDate,endDate);
+        }else if(inOrOut == 2){
+            //出库
+            pmList = mapper.findOutList(pmNo,pmName,orderNo,operator,startDate,endDate);
+        }
+        PageInfo pageInfo = new PageInfo(pmList);
+        pageInfo.setList(pmList);
+        return new Page<>(pageInfo);
+    }
+
 
 }
