@@ -1,7 +1,9 @@
 package com.btjf.controller.order.vo;
 
-import com.btjf.model.order.Order;
+import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.btjf.model.order.OrderProduct;
+import com.btjf.model.product.ProductProcedureWorkshop;
+import com.google.common.collect.Lists;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,20 +13,38 @@ import java.util.List;
  */
 public class OrderProductVo implements Serializable {
 
+    private Integer id;
+
     private Integer orderId;
 
-    private String orderNo;
+    private String productNo;
 
-    private List<OrderProduct> products;
+    private Integer maxNum;
 
-    private static final long serialVersionUID = 1L;
+    private List<WorkShopVo.Procedure> procedures;
 
-    public OrderProductVo(Order order, List<OrderProduct> orderProducts) {
-        if (order != null) {
-            this.orderId = order.getId();
-            this.orderNo = order.getOrderNo();
-            products = orderProducts;
+    public OrderProductVo(OrderProduct orderProduct, List<ProductProcedureWorkshop> productProcedureWorkshops) {
+        if (null != orderProduct) {
+            this.id = orderProduct.getId();
+            this.orderId = orderProduct.getOrderId();
+            this.productNo = orderProduct.getProductNo();
+            this.maxNum = orderProduct.getMaxNum();
         }
+        if(!CollectionUtils.isEmpty(productProcedureWorkshops)){
+            procedures = Lists.newArrayList();
+            productProcedureWorkshops.forEach(t -> {
+                procedures.add(new WorkShopVo.Procedure(t));
+            });
+        }
+
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getOrderId() {
@@ -35,19 +55,27 @@ public class OrderProductVo implements Serializable {
         this.orderId = orderId;
     }
 
-    public String getOrderNo() {
-        return orderNo;
+    public String getProductNo() {
+        return productNo;
     }
 
-    public void setOrderNo(String orderNo) {
-        this.orderNo = orderNo;
+    public void setProductNo(String productNo) {
+        this.productNo = productNo;
     }
 
-    public List<OrderProduct> getProducts() {
-        return products;
+    public Integer getMaxNum() {
+        return maxNum;
     }
 
-    public void setProducts(List<OrderProduct> products) {
-        this.products = products;
+    public void setMaxNum(Integer maxNum) {
+        this.maxNum = maxNum;
+    }
+
+    public List<WorkShopVo.Procedure> getProcedures() {
+        return procedures;
+    }
+
+    public void setProcedures(List<WorkShopVo.Procedure> procedures) {
+        this.procedures = procedures;
     }
 }

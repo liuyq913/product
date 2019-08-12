@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by liuyq on 2019/8/8.
@@ -26,4 +27,9 @@ public class ProductionLuoService {
         return productionLuo.getId();
     }
 
+
+    public List<ProductionLuo> getByProductionNo(String productionNo) {
+        if (null == productionNo) return null;
+        return productionLuoMapper.getByProductionNo(productionNo);
+    }
 }

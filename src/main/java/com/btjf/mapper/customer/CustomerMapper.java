@@ -97,4 +97,6 @@ public interface CustomerMapper {
 
 
     List<Customer> findList(@Param("name") String name, @Param("startDate") String startDate, @Param("endDate") String endDate);
+
+    Customer getByName(@Param("name") String name);
 }

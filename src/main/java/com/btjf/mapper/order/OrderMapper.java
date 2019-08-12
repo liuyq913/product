@@ -100,4 +100,6 @@ public interface OrderMapper {
     Integer deletByID(@Param("orderId") Integer orderId);
 
     List<Order> findAll();
+
+    List<Order> notAssignOrder(@Param("orderNo") String orderNo);
 }

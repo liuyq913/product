@@ -2,6 +2,7 @@ package com.btjf.controller.order.vo;
 
 import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.btjf.model.emp.Emp;
+import com.btjf.model.order.ProductionProcedure;
 import com.btjf.model.product.ProductProcedureWorkshop;
 import com.btjf.model.sys.Sysdept;
 import com.google.common.collect.Lists;
@@ -38,7 +39,7 @@ public class WorkShopVo implements Serializable {
                 this.leaderList = Leader.transfor(emps);
             }
             if (!CollectionUtils.isEmpty(productProcedureWorkshops)) {
-                this.procedures = Procedure.transfor(productProcedureWorkshops);
+                this.procedures = Procedure.workshopTransfor(productProcedureWorkshops);
             }
         }
     }
@@ -124,9 +125,20 @@ public class WorkShopVo implements Serializable {
 
         private String procedureName;
 
+        private Integer sort;
+
+        public Procedure(){}
+
         public Procedure(ProductProcedureWorkshop productProcedureWorkshop) {
             this.procedureId = productProcedureWorkshop.getProcedureId();
             this.procedureName = productProcedureWorkshop.getProcedureName();
+            this.sort = productProcedureWorkshop.getSort();
+        }
+
+        public Procedure(ProductionProcedure productionProcedure) {
+            this.procedureId = productionProcedure.getProcedureId();
+            this.procedureName = productionProcedure.getProcedureName();
+            this.sort = productionProcedure.getSort();
         }
 
         public Integer getProcedureId() {
@@ -145,11 +157,29 @@ public class WorkShopVo implements Serializable {
             this.procedureName = procedureName;
         }
 
-        public static List<Procedure> transfor(List<ProductProcedureWorkshop> productProcedureWorkshops) {
+        public Integer getSort() {
+            return sort;
+        }
+
+        public void setSort(Integer sort) {
+            this.sort = sort;
+        }
+
+        public static List<Procedure> workshopTransfor(List<ProductProcedureWorkshop> productProcedureWorkshops) {
             List<Procedure> procedures = Lists.newArrayList();
             if (productProcedureWorkshops != null) {
                 for (ProductProcedureWorkshop productProcedureWorkshop : productProcedureWorkshops) {
                     procedures.add(new Procedure(productProcedureWorkshop));
+                }
+            }
+            return procedures;
+        }
+
+        public static List<Procedure> productionProcedureTransfor(List<ProductionProcedure> productionProcedures) {
+            List<Procedure> procedures = Lists.newArrayList();
+            if (productionProcedures != null) {
+                for (ProductionProcedure productionProcedure : productionProcedures) {
+                    procedures.add(new Procedure(productionProcedure));
                 }
             }
             return procedures;

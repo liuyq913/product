@@ -557,7 +557,7 @@
         num as num,
         unit as unit,
         maxNum as maxNum,
-        type as type,
+        productType as type,
         DATE_FORMAT(createTime,'%Y-%m-%d') as createTime,
         DATE_FORMAT(completeDate,'%Y-%m-%d') as completeDate
         from t_Order_Product
@@ -569,7 +569,7 @@
             AND pmNo LIKE '%${pmNo}%'
         </if>
         <if test="type!= null">
-          AND  TYPE = #{type}
+          AND  productType = #{type}
         </if>
         <if test="completeStartDate != null">
           and completeDate &gt;= #{completeStartDate}
@@ -599,6 +599,6 @@
     <select id="findByOrderID" resultMap="BaseResultMap">
         SELECT  <include refid="Base_Column_List"/>
         FROM  t_Order_Product
-        where orderId = #{orderId} and isDelete = 0
+        where orderId = #{orderId} and isDelete = 0 and notAssignNum > 0
     </select>
 </mapper>

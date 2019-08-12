@@ -2,8 +2,9 @@ package com.btjf.mapper.order;
 
 import com.btjf.model.order.ProductionLuo;
 import com.btjf.model.order.ProductionLuoExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface ProductionLuoMapper {
     /**
@@ -93,4 +94,6 @@ public interface ProductionLuoMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(ProductionLuo record);
+
+    List<ProductionLuo> getByProductionNo(@Param("productionNo") String productionNo);
 }

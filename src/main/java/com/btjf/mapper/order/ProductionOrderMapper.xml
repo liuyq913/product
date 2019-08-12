@@ -503,11 +503,11 @@
     <select id="findList" parameterType="com.btjf.controller.productionorder.vo.ProductionOrderVo"
             resultType="com.btjf.controller.productionorder.vo.ProductionOrderVo">
         SELECT
-        tpo.orderNo AS  orderNo,
+        tpo.orderNo AS orderNo,
         tpo.productionNo as productionNo,
         top.customerName as customerName,
         tpo.productNo as productNo,
-        tpo.productType as productType,
+        top.productType as productType,
         tpo.workshop as workshop,
         tpo.workshopDirector as workshopDirector,
         date_format(tpo.createTime, '%Y-%m-%d') as createTime,
@@ -529,20 +529,28 @@
             AND tpo.productNo LIKE '%${productNo}%'
         </if>
         <if test="productType != null">
-            AND tpo.productType LIKE '%${productType}%'
+            AND top.productType LIKE '%${productType}%'
         </if>
         <if test="workshop != null">
-            AND tpo.workshop LIKE '%{workshop}%'
+            AND tpo.workshop LIKE '%${workshop}%'
         </if>
         <if test="workshopDirector != null">
-            AND tpo.workshopDirector LIKE '%{workshopDirector}%'
+            AND tpo.workshopDirector LIKE '%${workshopDirector}%'
         </if>
         <if test="createEndTime != null">
-            AND tpo.createTime &lt;= createEndTime
+            AND tpo.createTime &lt;= #{createEndTime,jdbcType=VARCHAR)
         </if>
         <if test="createStartTime != null">
-            and createStartTime &gt;=createStartTime
+            and tpo.createStartTime &gt;= #{createStartTime,jdbcType=VARCHAR)
         </if>
+    </select>
+
+
+    <select id="getByNo" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_Production_Order
+        WHERE productionNo =#{productionNo} and isDelete = 0
     </select>
 
 </mapper>

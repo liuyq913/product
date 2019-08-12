@@ -9,6 +9,7 @@ import com.btjf.controller.base.ProductBaseController;
 import com.btjf.controller.order.vo.WorkShopVo;
 import com.btjf.controller.productpm.vo.ProductWorkShopVo;
 import com.btjf.model.product.ProductProcedureWorkshop;
+import com.btjf.model.sys.SysUser;
 import com.btjf.service.productpm.ProductWorkshopService;
 import com.google.common.collect.Lists;
 import com.heige.aikajinrong.base.exception.BusinessException;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -65,5 +68,46 @@ public class ProductWorkshopController extends ProductBaseController {
         } else {
             return XaResult.success();
         }
+
+    }
+
+    @RequestMapping(value = "/getWorkShopByProductNo", method = RequestMethod.GET)
+    public XaResult<List<ProductProcedureWorkshop>> getWorkShop(String productNo) {
+        if (productNo == null) return XaResult.error("产品型号不能为空");
+
+        return XaResult.success(productWorkshopService.getWorkShop(productNo));
+    }
+
+    @RequestMapping(value = "/detail", method = RequestMethod.GET)
+    public XaResult<ProductProcedureWorkshop> detail(Integer id) throws BusinessException {
+        if (id == null) return XaResult.error("id 不能为null");
+
+        ProductProcedureWorkshop productProcedureWorkshop = productWorkshopService.getById(id);
+        if (null == productProcedureWorkshop) return XaResult.error("该型号的工序不存在");
+        return XaResult.success(productProcedureWorkshop);
+    }
+
+    @RequestMapping(value = "updateOrAdd", method = RequestMethod.POST)
+    public XaResult<Integer> updateOrAdd(Integer id, String workShop, String procedureName, Double price, Integer sort, String productNo) throws BusinessException {
+
+        SysUser sysUser = getLoginUser();
+        LOGGER.info(getRequestParamsAndUrl());
+        ProductProcedureWorkshop productProcedureWorkshop = new ProductProcedureWorkshop();
+        productProcedureWorkshop.setWorkshop(workShop);
+        productProcedureWorkshop.setProcedureName(procedureName);
+        productProcedureWorkshop.setPrice(BigDecimal.valueOf(price));
+        productProcedureWorkshop.setSort(sort);
+        productProcedureWorkshop.setId(id);
+        productProcedureWorkshop.setProductNo(productNo);
+        productProcedureWorkshop.setOperator(sysUser.getUserName());
+        if(id == null){ //新增
+            productProcedureWorkshop.setCreateTime(new Date());
+            productProcedureWorkshop.setLastModifyTime(new Date());
+            productProcedureWorkshop.setIsDelete(0);
+            id = productWorkshopService.add(productProcedureWorkshop);
+        }else{
+            id = productWorkshopService.udpate(productProcedureWorkshop);
+        }
+        return XaResult.success(id);
     }
 }

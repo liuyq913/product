@@ -32,6 +32,12 @@ public class CustomerService {
         return customerMapper.selectByPrimaryKey(id);
     }
 
+    public Customer getByName(String name) {
+        if (name == null) return null;
+
+        return customerMapper.getByName(name);
+    }
+
     public Integer updateByID(Customer customer) {
         if (customer == null) return 0;
         return customerMapper.updateByPrimaryKeySelective(customer);
@@ -39,7 +45,8 @@ public class CustomerService {
 
     public Integer insert(Customer customer) {
         if (customer == null) return 0;
-        return customerMapper.insertSelective(customer);
+        customerMapper.insertSelective(customer);
+        return customer.getId();
     }
 
     public List<Customer> findList(String name, String startDate, String endDate) {

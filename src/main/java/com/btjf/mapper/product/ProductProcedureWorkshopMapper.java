@@ -95,9 +95,11 @@ public interface ProductProcedureWorkshopMapper {
      */
     int updateByPrimaryKey(ProductProcedureWorkshop record);
 
-    List<ProductProcedureWorkshop> getByWorkShopName(@Param("name") String name);
-
     Integer getNumByWorkShopName(@Param("name") String name);
 
     List<ProductProcedureWorkshop> findByWorkshopName(@Param("name") String name);
+
+    List<ProductProcedureWorkshop> getWorkShop(@Param("productNo") String productNo);
+
+    Integer deleteByProcedureId (@Param("procedureId") Integer procedureId);
 }

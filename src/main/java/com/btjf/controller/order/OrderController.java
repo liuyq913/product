@@ -5,15 +5,18 @@ import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.btjf.application.components.xaresult.AppXaResultHelper;
 import com.btjf.application.util.XaResult;
 import com.btjf.common.page.Page;
+import com.btjf.common.utils.DateUtil;
 import com.btjf.controller.base.ProductBaseController;
 import com.btjf.controller.order.vo.OrderProductVo;
 import com.btjf.controller.order.vo.OrderVo;
 import com.btjf.model.order.Order;
 import com.btjf.model.order.OrderProduct;
 import com.btjf.model.product.Product;
+import com.btjf.model.product.ProductProcedureWorkshop;
 import com.btjf.service.order.OrderProductService;
 import com.btjf.service.order.OrderService;
 import com.btjf.service.productpm.ProductService;
+import com.btjf.service.productpm.ProductWorkshopService;
 import com.google.common.collect.Lists;
 import com.heige.aikajinrong.base.exception.BusinessException;
 import com.wordnik.swagger.annotations.Api;
@@ -44,13 +47,16 @@ public class OrderController extends ProductBaseController {
     @Resource
     private ProductService productService;
 
+    @Resource
+    private ProductWorkshopService productWorkshopService;
+
 
     private static final Logger LOGGER = Logger
             .getLogger(OrderController.class);
 
     @RequestMapping(value = "/updateOrAdd", method = RequestMethod.POST)
     public XaResult<Integer> updateOrAdd(Integer id, String orderNo, String productNo, Integer num,
-                                         String type, String unit, Integer maxNum, Date completeDate,
+                                         String type, String unit, Integer maxNum, String completeDate,
                                          String customerName, Integer customerId, Integer isMore, Integer urgentLevel) {
 
         if (StringUtils.isEmpty(orderNo)) {
@@ -96,21 +102,21 @@ public class OrderController extends ProductBaseController {
         } else {
             orderID = order.getId();
         }
-        OrderProduct orderProduct = orderProductService.getByOrderNoAndProductNo(orderNo, productNo);
-        if (null != orderProduct) {
-            return XaResult.error("该型号的订单已经存在");
-        }
         Product product = productService.getByNO(productNo);
         if (product == null) {
             return XaResult.error("该型号不存在");
         }
 
         OrderProduct orderProduct1 = new OrderProduct(orderID, orderNo, product.getId(),
-                productNo, type, num, maxNum, unit, completeDate, customerId, customerName, null, null,
+                productNo, type, num, maxNum, unit, DateUtil.string2Date(completeDate, DateUtil.ymdFormat), customerId, customerName, null, null,
                 null, null, null, new Date(), new Date(), 0);
         if (id != null) {
             return XaResult.error("暂时不支持更新");
         } else {
+            OrderProduct orderProduct = orderProductService.getByOrderNoAndProductNo(orderNo, productNo);
+            if (null != orderProduct) {
+                return XaResult.error("该型号的订单已经存在");
+            }
             orderProduct1.setNotAssignNum(maxNum);
             orderProduct1.setAssignedNum(0);
             orderProduct1.setIsMore(isMore);
@@ -150,22 +156,32 @@ public class OrderController extends ProductBaseController {
 
 
     /**
-     * 获取所有订单 + 型号
+     * 获取所有未分配订单
+     *
      * @return
      */
-    @RequestMapping(value = "/orderandproductlist", method = RequestMethod.GET)
-    public XaResult<List<OrderProductVo>> orderProductVos() {
-        List<Order> orders = orderService.findAll();
-        if (CollectionUtils.isEmpty(orders)) {
-            return XaResult.success();
-        } else {
-            List<OrderProductVo> orderProductVos = Lists.newArrayList();
-            for (Order order : orders) {
-                if (null == order) continue;
-                List<OrderProduct> orderProducts = orderProductService.findByOrderId(order.getId());
-                orderProductVos.add(new OrderProductVo(order, orderProducts));
-            }
-            return XaResult.success(orderProductVos);
-        }
+    @RequestMapping(value = "/notAssignOrder", method = RequestMethod.GET)
+    public XaResult<List<Order>> orderProductVos(String orderNo) {
+        List<Order> orders = orderService.notAssignOrder(orderNo);
+        return XaResult.success(orders);
     }
+
+    @RequestMapping(value = "/getOrderProductAndProcedure", method = RequestMethod.GET)
+    public XaResult<List<OrderProductVo>> getOrderProductAndProcedure(Integer orderId) {
+        if (orderId == null) XaResult.error("请输入订单id");
+
+        List<OrderProduct> products = orderProductService.findByOrderId(orderId);
+        List<OrderProductVo> productVos = Lists.newArrayList();
+        if (!CollectionUtils.isEmpty(products)) {
+            products.stream().filter(t -> t != null).forEach(t -> {
+                List<ProductProcedureWorkshop> productProcedureWorkshops =
+                        productWorkshopService.getWorkShop(t.getProductNo());
+                OrderProductVo orderProductVo = new OrderProductVo(t, productProcedureWorkshops);
+                productVos.add(orderProductVo);
+            });
+        }
+        return XaResult.success(productVos);
+    }
+
+
 }

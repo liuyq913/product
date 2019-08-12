@@ -99,4 +99,6 @@ public interface ProductionOrderMapper {
     ProductionOrder getByOrderProductID(@Param("orderProductID") Integer orderProductID);
 
     List<ProductionOrderVo> findList(ProductionOrderVo productionOrderVo);
+
+    ProductionOrder getByNo(@Param("productionNo") String productionNo);
 }
