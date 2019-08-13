@@ -7,6 +7,7 @@ import java.util.List;
 import com.btjf.vo.PmInAndOutVo;
 import com.btjf.vo.PmOutBillListVo;
 import com.btjf.vo.PmOutUpListVo;
+import com.btjf.vo.PmPlanOutVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface PmOutBillMapper {
@@ -131,4 +132,9 @@ public interface PmOutBillMapper {
                                    @Param("operator")String operator,
                                    @Param("startDate")String startDate,
                                    @Param("endDate")String endDate);
+
+    List<PmPlanOutVo> findPlanOutList(@Param("pmNo")String pmNo,
+                                      @Param("operator")String operator,
+                                      @Param("startDate")String startDate,
+                                      @Param("endDate")String endDate);
 }

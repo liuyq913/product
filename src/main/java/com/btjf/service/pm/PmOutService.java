@@ -7,10 +7,7 @@ import com.btjf.model.pm.Pm;
 import com.btjf.model.pm.PmOutBill;
 import com.btjf.model.pm.PmOutBillDetail;
 import com.btjf.service.productpm.ProductPmService;
-import com.btjf.vo.BillPmVo;
-import com.btjf.vo.PmInAndOutVo;
-import com.btjf.vo.PmOutBillListVo;
-import com.btjf.vo.PmOutUpListVo;
+import com.btjf.vo.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
@@ -135,4 +132,33 @@ public class PmOutService {
     }
 
 
+    public List<PmInAndOutVo> findInAndOutList(String pmNo, String pmName, String orderNo, Integer inOrOut, String operator, String startDate, String endDate) {
+        List<PmInAndOutVo> pmList = null;
+        if(inOrOut == null){
+            //出库加入库
+            pmList = mapper.findInAndOutList(pmNo,pmName,orderNo,operator,startDate,endDate);
+        }else if(inOrOut == 1){
+            //入库
+            pmList = mapper.findInList(pmNo,pmName,orderNo,operator,startDate,endDate);
+        }else if(inOrOut == 2){
+            //出库
+            pmList = mapper.findOutList(pmNo,pmName,orderNo,operator,startDate,endDate);
+        }
+        return pmList;
+    }
+
+    public Page<PmPlanOutVo> findPlanOutListPage(String pmNo, String operator,
+            String startDate, String endDate, Page page) {
+        PageHelper.startPage(page.getPage(), page.getRp());
+        List<PmPlanOutVo> pmList  = mapper.findPlanOutList(pmNo,operator,startDate,endDate);
+        PageInfo pageInfo = new PageInfo(pmList);
+        pageInfo.setList(pmList);
+        return new Page<>(pageInfo);
+    }
+
+    public void insert(PmOutBill pmOutBill, PmOutBillDetail pmOutBillDetail) {
+        mapper.insertSelective(pmOutBill);
+        pmOutBillDetail.setBillId(pmOutBill.getId());
+        pmOutBillDetailMapper.insertSelective(pmOutBillDetail);
+    }
 }

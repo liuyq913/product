@@ -593,7 +593,7 @@
         b.productNo AS productNo
         from t_PMout_Bill b LEFT JOIN t_PMout_Bill_Detail o on b.id = o.billId
         where b.isDelete = 0
-        and b.type = 1
+        and (b.type = 1 or b.type = 3)
         <if test="pmName != null">
             and o.pmName like '%${pmName}%'
         </if>
@@ -665,7 +665,7 @@
         b.productNo AS productNo
         from t_PMout_Bill b LEFT JOIN t_PMout_Bill_Detail o on b.id = o.billId
         where b.isDelete = 0
-        and b.type = 1
+        and (b.type = 1 or b.type = 3)
         <if test="pmName != null">
             and o.pmName like '%${pmName}%'
         </if>
@@ -683,6 +683,32 @@
         </if>
         <if test="orderNo != null">
             and b.orderNo = #{orderNo}
+        </if>
+        order by o.createTime desc
+    </select>
+    <select id="findPlanOutList" resultType="com.btjf.vo.PmPlanOutVo">
+        select
+        o.pmId id,
+        o.pmNo,
+        o.pmName name,
+        o.remark outInfo,
+        o.createTime date,
+        o.operator,
+        o.num AS outNum
+        from t_PMout_Bill b LEFT JOIN t_PMout_Bill_Detail o on b.id = o.billId
+        where b.isDelete = 0
+        and b.type = 3
+        <if test="pmNo != null">
+            and o.pmNo = #{pmNo}
+        </if>
+        <if test="operator != null">
+            and o.operator like '%${operator}%'
+        </if>
+        <if test="startDate != null">
+            and o.createTime &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            and o.createTime &lt;= #{endDate}
         </if>
         order by o.createTime desc
     </select>

@@ -35,11 +35,11 @@ public class PmInExcelHandler extends BaseExcelHandler{
 
     @Override
     public List<String> execute(MultipartFile file, Boolean isCover, String operator)throws Exception {
-        return checkLayout(file, fields);
+        return checkLayout(file, fields, operator);
     }
 
     @Override
-    protected void insert(List pmInList) {
+    protected void insert(List pmInList, String operator) {
         if(pmInList != null && pmInList.size() >0){
             for(int i=0; i< pmInList.size(); i++){
                 PmIn pmIn = (PmIn) pmInList.get(i);
@@ -48,7 +48,7 @@ public class PmInExcelHandler extends BaseExcelHandler{
                 pmIn.setPmId(pm.getId());
                 pmIn.setPerNum(pm.getNum());
                 pmIn.setBackNum(pm.getNum().add(pmIn.getNum()));
-                pmIn.setOperator("系统导入");
+                pmIn.setOperator(operator);
                 pmIn.setCreateTime(new Date());
                 pmIn.setIsDelete(0);
                 pmIn.setInDate(new Date());

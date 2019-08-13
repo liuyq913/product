@@ -16,12 +16,17 @@ import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -310,10 +315,20 @@ public class PmOutController extends ProductBaseController {
      * 计划外开单列表
      */
     @RequestMapping(value = "planout/list", method = RequestMethod.GET)
-    public void planOutList() {
+    public XaResult<List<PmPlanOutVo>> planOutList(@ApiParam("编号")String pmNo,@ApiParam("操作人")String operator,
+                                             @ApiParam("起始时间") String startDate, @ApiParam("截止时间") String endDate,
+                                             Integer pageSize, Integer currentPage) {
         LOGGER.info(getRequestParamsAndUrl());
+        if(currentPage == null || currentPage < 1){
+            currentPage =1;
+        }
+        if(pageSize == null || pageSize < 1){
+            pageSize = 25;
+        }
+        Page page = new Page(pageSize, currentPage);
+        Page<PmPlanOutVo> listPage = pmOutService.findPlanOutListPage(pmNo,operator,startDate,endDate,page);
 
-
+        return AppXaResultHelper.success(listPage, listPage.getRows());
     }
 
     /**
@@ -340,5 +355,75 @@ public class PmOutController extends ProductBaseController {
 
     }
 
+    /**
+     * 出入库汇总
+     */
+    @RequestMapping(value = "collect/list/export", method = RequestMethod.GET)
+    public void export(@ApiParam("编号")String pmNo,@ApiParam("名称")String pmName,
+                                                @ApiParam("订单号")String orderNo,@ApiParam("出入库 1入库 2出库")Integer inOrOut,
+                                                @ApiParam("操作人")String operator,
+                                                @ApiParam("起始时间") String startDate, @ApiParam("截止时间") String endDate,
+                                                HttpServletResponse response) {
+        LOGGER.info(getRequestParamsAndUrl());
 
+        List<PmInAndOutVo> list = pmOutService.findInAndOutList(pmNo,pmName,orderNo,inOrOut,operator,startDate,endDate);
+        Workbook wb = new XSSFWorkbook();
+        Sheet sheet = wb.createSheet();
+        Row header = sheet.createRow(0);
+
+        sheet.setColumnWidth(0, (int) ((20 + 0.72) * 256));
+        sheet.setColumnWidth(1, (int) ((20 + 0.72) * 256));
+        sheet.setColumnWidth(2, (int) ((10 + 0.72) * 256));
+        sheet.setColumnWidth(3, (int) ((20 + 0.72) * 256));
+        sheet.setColumnWidth(4, (int) ((20 + 0.72) * 256));
+        sheet.setColumnWidth(5, (int) ((15 + 0.72) * 256));
+        sheet.setColumnWidth(6, (int) ((15 + 0.72) * 256));
+
+        header.createCell(0).setCellValue("物料编号");
+        header.createCell(1).setCellValue("物料名称");
+        header.createCell(2).setCellValue("供应单位");
+        header.createCell(3).setCellValue("日期");
+        header.createCell(4).setCellValue("入数");
+        header.createCell(5).setCellValue("出数");
+        header.createCell(6).setCellValue("存数");
+        header.createCell(7).setCellValue("订单号");
+        header.createCell(8).setCellValue("型号");
+        header.createCell(9).setCellValue("操作人");
+        header.createCell(10).setCellValue("备注");
+
+        PmInAndOutVo vo = null;
+        if (list != null && list.size() >= 1) {
+            for (int i = 0; i < list.size(); i++) {
+                vo = list.get(i);
+                Row row = sheet.createRow(i + 1);
+                int j = 0;
+                row.createCell(j++).setCellValue(vo.getPmNo());
+                row.createCell(j++).setCellValue(vo.getName());
+                row.createCell(j++).setCellValue(vo.getSupplier());
+                row.createCell(j++).setCellValue(vo.getDate());
+                row.createCell(j++).setCellValue(vo.getInNum()==null?"":String.valueOf(vo.getInNum()));
+                row.createCell(j++).setCellValue(vo.getOutNum()==null?"":String.valueOf(vo.getOutNum()));
+                row.createCell(j++).setCellValue(vo.getNum()==null?"":String.valueOf(vo.getNum()));
+                row.createCell(j++).setCellValue(vo.getOrderNo());
+                row.createCell(j++).setCellValue(vo.getProductNo());
+                row.createCell(j++).setCellValue(vo.getOperator());
+                row.createCell(j++).setCellValue(vo.getRemark());
+            }
+        }
+
+        try {
+            sheet.setForceFormulaRecalculation(true);
+            response.setHeader("Pragma", "no-cache");
+            response.setHeader("Cache-Control", "no-cache");
+            response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode("出入库汇总.xlsx", "UTF-8"));
+            response.setDateHeader("Expires", 0);
+            response.setHeader("Connection", "close");
+            response.setHeader("Content-Type", "application/vnd.ms-excel");
+            wb.write(response.getOutputStream());
+            wb.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error("入库记录导出excel异常");
+        }
+    }
 }

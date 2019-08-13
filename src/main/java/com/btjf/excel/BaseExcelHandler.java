@@ -23,7 +23,7 @@ public abstract class BaseExcelHandler {
 
     public abstract  List<String> execute(MultipartFile file, Boolean isCover, String operator)throws Exception;
 
-    public  List<String> checkLayout(MultipartFile file, List<String> fields) throws Exception{
+    public  List<String> checkLayout(MultipartFile file, List<String> fields, String operator) throws Exception{
 
         InputStream is = file.getInputStream();
         Workbook wb = WorkbookFactory.create(is);
@@ -61,14 +61,14 @@ public abstract class BaseExcelHandler {
             response.add("导入失败，以下数据请修改后再重新上传");
             response.addAll(errResponse);
         }else{
-            insert(result);
+            insert(result, operator);
             response.add("提交成功！新增导入" + sheet.getLastRowNum() + "条数据！" );
         }
         wb.close();
         return response;
     }
 
-    protected abstract void insert(List<T> list);
+    protected abstract void insert(List<T> list, String operator);
 
     protected abstract List<T> create(XSSFRow row)throws Exception;
 
