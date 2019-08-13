@@ -95,7 +95,7 @@ public interface ProductProcedureWorkshopMapper {
      */
     int updateByPrimaryKey(ProductProcedureWorkshop record);
 
-    Integer getNumByWorkShopName(@Param("name") String name);
+    Integer getNumByWorkShopNameAndPID(@Param("name") String name, @Param("productNo") String productNo);
 
     List<ProductProcedureWorkshop> findByWorkshopName(@Param("name") String name);
 

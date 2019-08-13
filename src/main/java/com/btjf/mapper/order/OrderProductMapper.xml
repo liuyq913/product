@@ -566,10 +566,10 @@
             AND orderNo LIKE '%${orderNo}%'
         </if>
         <if test="pmNo != null">
-            AND pmNo LIKE '%${pmNo}%'
+            AND productNo LIKE '%${pmNo}%'
         </if>
         <if test="type!= null">
-          AND  productType = #{type}
+              AND  productType = #{type}
         </if>
         <if test="completeStartDate != null">
           and completeDate &gt;= #{completeStartDate}

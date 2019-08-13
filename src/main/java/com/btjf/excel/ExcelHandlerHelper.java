@@ -20,6 +20,9 @@ public class ExcelHandlerHelper {
     @Resource
     private ProductPmExcelHandler productPmExcelHandler;
 
+    @Resource
+    private ProductWorkshopExcelHandler productWorkshopExcelHandler;
+
     public BaseExcelHandler getHandler(Integer type) throws BusinessException {
         switch (type){
             case 1:
@@ -30,6 +33,9 @@ public class ExcelHandlerHelper {
                 return pmInExcelHandlerl;
             case 3:
                 return productPmExcelHandler;
+            case 4:
+                //工序导入
+                return productWorkshopExcelHandler;
 
 
             default:

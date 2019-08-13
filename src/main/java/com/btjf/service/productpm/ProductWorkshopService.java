@@ -3,6 +3,7 @@ package com.btjf.service.productpm;
 import com.alibaba.druid.util.StringUtils;
 import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.btjf.common.page.Page;
+import com.btjf.constant.WorkShopProductionMapEnum;
 import com.btjf.controller.productpm.vo.ProductWorkShopVo;
 import com.btjf.mapper.product.ProductMapper;
 import com.btjf.mapper.product.ProductProcedureWorkshopMapper;
@@ -66,20 +67,20 @@ public class ProductWorkshopService {
     public List<ProductWorkShopVo> build(List<Product> pmList) {
         List<ProductWorkShopVo> productWorkShopVos = Lists.newArrayList();
         if (!CollectionUtils.isEmpty(pmList)) {
-            pmList.stream().forEach(t -> {
+            for (Product t : pmList) {
                 ProductWorkShopVo productWorkShopVo = new ProductWorkShopVo(t);
-                productWorkShopVo.setAssist(productProcedureWorkshopMapper.getNumByWorkShopName("外协质检"));
-                productWorkShopVo.setBlanking(productProcedureWorkshopMapper.getNumByWorkShopName("下料车间"));
-                productWorkShopVo.setGroundFloor(productProcedureWorkshopMapper.getNumByWorkShopName("一车间"));
-                productWorkShopVo.setBackAssist(productProcedureWorkshopMapper.getNumByWorkShopName("后道车间-车工"));
-                productWorkShopVo.setBackCenterAssist(productProcedureWorkshopMapper.getNumByWorkShopName("后道车间-中辅工"));
-                productWorkShopVo.setBackBigAssist(productProcedureWorkshopMapper.getNumByWorkShopName("后道车间-大辅工"));
-                productWorkShopVo.setInspection(productProcedureWorkshopMapper.getNumByWorkShopName("质检部-成品质检"));
-                productWorkShopVo.setPacking(productProcedureWorkshopMapper.getNumByWorkShopName("包装车间"));
+                productWorkShopVo.setAssist(productProcedureWorkshopMapper.getNumByWorkShopNameAndPID("外协质检", t.getProductNo()));
+                productWorkShopVo.setBlanking(productProcedureWorkshopMapper.getNumByWorkShopNameAndPID("下料车间", t.getProductNo()));
+                productWorkShopVo.setGroundFloor(productProcedureWorkshopMapper.getNumByWorkShopNameAndPID("一车间", t.getProductNo()));
+                productWorkShopVo.setBackAssist(productProcedureWorkshopMapper.getNumByWorkShopNameAndPID("后道车间-车工", t.getProductNo()));
+                productWorkShopVo.setBackCenterAssist(productProcedureWorkshopMapper.getNumByWorkShopNameAndPID("后道车间-中辅工", t.getProductNo()));
+                productWorkShopVo.setBackBigAssist(productProcedureWorkshopMapper.getNumByWorkShopNameAndPID("后道车间-大辅工", t.getProductNo()));
+                productWorkShopVo.setInspection(productProcedureWorkshopMapper.getNumByWorkShopNameAndPID("质检部-成品质检", t.getProductNo()));
+                productWorkShopVo.setPacking(productProcedureWorkshopMapper.getNumByWorkShopNameAndPID("包装车间", t.getProductNo()));
                 productWorkShopVo.setProductNo(t.getProductNo());
                 productWorkShopVo.setType(t.getType());
                 productWorkShopVos.add(productWorkShopVo);
-            });
+            }
         }
         return productWorkShopVos;
     }
@@ -112,5 +113,31 @@ public class ProductWorkshopService {
         }
 
         return productProcedureWorkshop.getId();
+    }
+
+    public void saveList(List<ProductProcedureWorkshop> list) {
+        if (!CollectionUtils.isEmpty(list)) {
+            list.stream().filter(t -> t != null).forEach(t -> {
+                Product product = productMapper.getByNo(t.getProductNo());
+                ProductProcedure productProcedure = new ProductProcedure();
+                productProcedure.setProductId(product.getId());
+                productProcedure.setProductNo(t.getProductNo());
+                productProcedure.setSort(t.getSort());
+                productProcedure.setPrice(t.getPrice());
+                productProcedure.setOperator(t.getOperator());
+                productProcedure.setIsDelete(0);
+                productProcedure.setCreateTime(new Date());
+                productProcedure.setLastModifyTime(new Date());
+
+                Integer productProcedureId = productProcedureService.add(productProcedure);
+                t.setOperator(t.getOperator());
+                t.setCreateTime(new Date());
+                t.setLastModifyTime(new Date());
+                t.setProcedureId(productProcedureId);
+                t.setIsDelete(0);
+                t.setWorkshop(WorkShopProductionMapEnum.get(t.getSort()).getContent());
+                productProcedureWorkshopMapper.insertSelective(t);
+            });
+        }
     }
 }

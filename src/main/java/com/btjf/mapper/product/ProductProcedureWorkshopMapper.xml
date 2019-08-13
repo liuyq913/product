@@ -400,10 +400,10 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <select id="getNumByWorkShopName" resultType="java.lang.Integer">
+    <select id="getNumByWorkShopNameAndPID" resultType="java.lang.Integer">
     select count(1)
     from t_Product_Procedure_Workshop
-    WHERE workshop = #{name} and isDelete = 0;
+    WHERE workshop = #{name} and isDelete = 0 and productNo = #{productNo};
   </select>
 
 

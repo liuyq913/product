@@ -13,6 +13,7 @@ import com.btjf.model.order.Order;
 import com.btjf.model.order.OrderProduct;
 import com.btjf.model.product.Product;
 import com.btjf.model.product.ProductProcedureWorkshop;
+import com.btjf.model.sys.SysUser;
 import com.btjf.service.order.OrderProductService;
 import com.btjf.service.order.OrderService;
 import com.btjf.service.productpm.ProductService;
@@ -25,6 +26,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -60,11 +62,13 @@ public class OrderController extends ProductBaseController {
     private static final Logger LOGGER = Logger
             .getLogger(OrderController.class);
 
+    @Transactional
     @RequestMapping(value = "/updateOrAdd", method = RequestMethod.POST)
     public XaResult<Integer> updateOrAdd(Integer id, String orderNo, String productNo, Integer num,
                                          String type, String unit, Integer maxNum, String completeDate,
                                          String customerName, Integer customerId, Integer isMore, Integer urgentLevel) {
 
+        SysUser sysUser =  getLoginUser();
         if (StringUtils.isEmpty(orderNo)) {
             return XaResult.error("订单No为空");
         }
@@ -108,12 +112,25 @@ public class OrderController extends ProductBaseController {
         } else {
             orderID = order.getId();
         }
+        Integer productId =  null;
         Product product = productService.getByNO(productNo);
         if (product == null) {
-            return XaResult.error("该型号不存在");
+            Product productNew = new Product();
+            productNew.setUnit(unit);
+            productNew.setIsDelete(0);
+            productNew.setName(productNo);
+            productNew.setProductNo(productNo);
+            productNew.setLastModifyTime(new Date());
+            productNew.setCreateTime(new Date());
+            productNew.setOperator(sysUser.getUserName());
+            productId = productService.add(productNew);
+        }else{
+            product.setType(type);
+            product.setLastModifyTime(new Date());
+            productService.update(product);
         }
 
-        OrderProduct orderProduct1 = new OrderProduct(orderID, orderNo, product.getId(),
+        OrderProduct orderProduct1 = new OrderProduct(orderID, orderNo, productId,
                 productNo, type, num, maxNum, unit, DateUtil.string2Date(completeDate, DateUtil.ymdFormat), customerId, customerName, null, null,
                 null, null, null, new Date(), new Date(), 0);
         if (id != null) {
@@ -228,6 +245,7 @@ public class OrderController extends ProductBaseController {
                 row.createCell(j++).setCellValue(orderVo.getOrderNo());
                 row.createCell(j++).setCellValue(orderVo.getProductNo());
                 row.createCell(j++).setCellValue(orderVo.getNum());
+                row.createCell(j++).setCellValue(orderVo.getUnit());
                 row.createCell(j++).setCellValue(orderVo.getMaxNum());
                 row.createCell(j++).setCellValue(orderVo.getType());
                 row.createCell(j++).setCellValue(orderVo.getCreateTime());
