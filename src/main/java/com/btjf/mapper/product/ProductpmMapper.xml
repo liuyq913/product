@@ -516,7 +516,12 @@
     </if>
   </select>
 
-  <insert id="saveList" parameterType="com.btjf.model.product.ProductPm">
+    <select id="count" resultType="java.lang.Integer">
+        select count(1) from t_ProductPM
+        where isDelete = 0 and status = 1 and productNo = #{productNo}
+    </select>
+
+    <insert id="saveList" parameterType="com.btjf.model.product.ProductPm">
     INSERT INTO t_ProductPM (productId, productNo, pmId,
     pmNo, pmName, type,
     unit, remark, status,

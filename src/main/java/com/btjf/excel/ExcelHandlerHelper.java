@@ -21,6 +21,9 @@ public class ExcelHandlerHelper {
     private ProductPmExcelHandler productPmExcelHandler;
 
     @Resource
+    private PmPlanOutExcelHandler pmPlanOutExcelHandler;
+
+    @Resource
     private ProductWorkshopExcelHandler productWorkshopExcelHandler;
 
     public BaseExcelHandler getHandler(Integer type) throws BusinessException {
@@ -34,9 +37,10 @@ public class ExcelHandlerHelper {
             case 3:
                 return productPmExcelHandler;
             case 4:
+                return pmPlanOutExcelHandler;
+            case 5:
                 //工序导入
                 return productWorkshopExcelHandler;
-
 
             default:
                 throw new BusinessException("文件类型不存在");

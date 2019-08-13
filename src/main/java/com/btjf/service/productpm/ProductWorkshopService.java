@@ -124,13 +124,14 @@ public class ProductWorkshopService {
                 productProcedure.setProductNo(t.getProductNo());
                 productProcedure.setSort(t.getSort());
                 productProcedure.setPrice(t.getPrice());
-                productProcedure.setOperator(t.getOperator());
+                productProcedure.setOperator(t.getOperator() == null ? "系统" : t.getOperator());
                 productProcedure.setIsDelete(0);
+                productProcedure.setProcedureName(t.getProcedureName());
                 productProcedure.setCreateTime(new Date());
                 productProcedure.setLastModifyTime(new Date());
 
                 Integer productProcedureId = productProcedureService.add(productProcedure);
-                t.setOperator(t.getOperator());
+                t.setOperator(t.getOperator() == null ? "系统" : t.getOperator());
                 t.setCreateTime(new Date());
                 t.setLastModifyTime(new Date());
                 t.setProcedureId(productProcedureId);

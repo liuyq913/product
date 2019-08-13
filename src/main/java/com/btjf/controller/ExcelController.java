@@ -66,6 +66,9 @@ public class ExcelController extends ProductBaseController{
                 filename = "批量新增型号耗料.xlsx";
                 break;
             case 4:
+                filename = "计划外出库批量导入.xlsx";
+                break;
+            case 5:
                 filename = "批量导入工序模板.xlsx";
                 break;
         }

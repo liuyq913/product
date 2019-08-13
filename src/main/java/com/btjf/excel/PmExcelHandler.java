@@ -207,7 +207,7 @@ public class PmExcelHandler extends BaseExcelHandler {
     }
 
     @Override
-    protected void insert(List list) {
+    protected void insert(List list, String operator) {
 
     }
 

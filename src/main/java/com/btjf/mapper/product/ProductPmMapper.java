@@ -108,4 +108,6 @@ public interface ProductPmMapper {
     List<ProductPm> findListByProductNoAndType(@Param("productNo")String productNo, @Param("type")String type);
 
     Integer deleteByPmNo(@Param("pmNo") String pmNo);
+
+    Integer count(@Param("productNo")String productNo);
 }

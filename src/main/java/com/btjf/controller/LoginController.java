@@ -66,7 +66,6 @@ public class LoginController {
             SysRole sysRole = sysRoleService.get(sysUser.getRoleId());
             userInfoVo.setRoleName(sysRole!= null?sysRole.getName():null);
         }
-        //TODO 缺一个 用户信息加密
         String json = JSONUtils.toJSON(sysUser);
         String key = MD5Utils.ecodeByMD5(json);
         loginInfoCache.add(key, sysUser);

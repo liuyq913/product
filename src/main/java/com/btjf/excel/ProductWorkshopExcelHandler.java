@@ -35,11 +35,17 @@ public class ProductWorkshopExcelHandler extends BaseExcelHandler {
 
     @Override
     public List<String> execute(MultipartFile file, Boolean isCover, String operator) throws Exception {
-        return checkLayout(file, fields);
+        return checkLayout(file, fields, operator);
     }
 
     @Override
-    protected void insert(List list) {
+    protected void insert(List list, String operator) {
+        if (list != null && list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                ProductProcedureWorkshop productProcedureWorkshop = (ProductProcedureWorkshop) list.get(i);
+                productProcedureWorkshop.setOperator(operator);
+            }
+        }
         excelImportFactory.saveProductWorkshop(list);
     }
 

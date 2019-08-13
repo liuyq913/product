@@ -48,11 +48,17 @@ public class ProductPmExcelHandler extends BaseExcelHandler {
 
     @Override
     public List<String> execute(MultipartFile file, Boolean isCover, String operator) throws Exception {
-        return checkLayout(file, fields);
+        return checkLayout(file, fields, operator);
     }
 
     @Override
-    protected void insert(List productPms) {
+    protected void insert(List productPms,String operator) {
+        if(productPms != null && productPms.size() >0) {
+            for (int i = 0; i < productPms.size(); i++) {
+                ProductPm pm = (ProductPm) productPms.get(i);
+                pm.setOperator(operator);
+            }
+        }
         excelImportFactory.saveProductPm(productPms);
     }
 
@@ -120,7 +126,7 @@ public class ProductPmExcelHandler extends BaseExcelHandler {
                     productPm.setIsDelete(0);
                     productPm.setCreateTime(new Date());
                     productPm.setLastModifyTime(new Date());
-                    productPm.setOperator("系统导入");
+                    //productPm.setOperator(operator);
                     productPm.setStatus(0);
                     break;
                 default:

@@ -4,7 +4,10 @@ import com.btjf.model.pm.PmOutBill;
 import com.btjf.model.pm.PmOutBillExample;
 import java.util.List;
 
+import com.btjf.vo.PmInAndOutVo;
 import com.btjf.vo.PmOutBillListVo;
+import com.btjf.vo.PmOutUpListVo;
+import com.btjf.vo.PmPlanOutVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface PmOutBillMapper {
@@ -100,4 +103,38 @@ public interface PmOutBillMapper {
                                    @Param("productNo")String productNo);
 
     PmOutBill getByBillNo(@Param("billNo")String billNo);
+
+    List<PmOutUpListVo> findUpList(@Param("orderNo")String orderNo,
+                                 @Param("productNo")String productNo,
+                                 @Param("isInput")Integer isInput,
+                                 @Param("customerName")Integer customerName);
+
+    Integer count(@Param("orderNo")String orderNo,
+                  @Param("productNo")String productNo);
+
+    List<PmInAndOutVo> findInAndOutList(@Param("pmNo")String pmNo,
+                                        @Param("pmName")String pmName,
+                                        @Param("orderNo")String orderNo,
+                                        @Param("operator")String operator,
+                                        @Param("startDate")String startDate,
+                                        @Param("endDate")String endDate);
+
+    List<PmInAndOutVo> findInList(@Param("pmNo")String pmNo,
+                                  @Param("pmName")String pmName,
+                                  @Param("orderNo")String orderNo,
+                                  @Param("operator")String operator,
+                                  @Param("startDate")String startDate,
+                                  @Param("endDate")String endDate);
+
+    List<PmInAndOutVo> findOutList(@Param("pmNo")String pmNo,
+                                   @Param("pmName")String pmName,
+                                   @Param("orderNo")String orderNo,
+                                   @Param("operator")String operator,
+                                   @Param("startDate")String startDate,
+                                   @Param("endDate")String endDate);
+
+    List<PmPlanOutVo> findPlanOutList(@Param("pmNo")String pmNo,
+                                      @Param("operator")String operator,
+                                      @Param("startDate")String startDate,
+                                      @Param("endDate")String endDate);
 }
