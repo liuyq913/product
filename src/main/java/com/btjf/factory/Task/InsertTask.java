@@ -2,8 +2,10 @@ package com.btjf.factory.Task;
 
 import com.btjf.model.pm.Pm;
 import com.btjf.model.product.ProductPm;
+import com.btjf.model.product.ProductProcedureWorkshop;
 import com.btjf.service.pm.PmService;
 import com.btjf.service.productpm.ProductPmService;
+import com.btjf.service.productpm.ProductWorkshopService;
 import com.btjf.util.SpringBeanUtil;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.math.NumberUtils;
@@ -114,6 +116,8 @@ public class InsertTask<T> extends RecursiveTask<Integer> {
             SpringBeanUtil.getBean(PmService.class).saveList((List<Pm>) list, isCover);
         }else if(this.clazz == ProductPmService.class){
             SpringBeanUtil.getBean(ProductPmService.class).saveList((List<ProductPm>) list);
+        }else if(this.clazz == ProductWorkshopService.class){
+            SpringBeanUtil.getBean(ProductWorkshopService.class).saveList((List<ProductProcedureWorkshop>) list);
         }
     }
 }

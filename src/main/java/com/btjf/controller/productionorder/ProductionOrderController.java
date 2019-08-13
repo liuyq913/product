@@ -24,11 +24,18 @@ import com.google.common.collect.Lists;
 import com.heige.aikajinrong.base.exception.BusinessException;
 import com.wordnik.swagger.annotations.Api;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.log4j.Logger;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 
@@ -54,12 +61,15 @@ public class ProductionOrderController extends ProductBaseController {
     @Resource
     private ProductionLuoService productionLuoService;
 
+    private static final Logger LOGGER = Logger
+            .getLogger(ProductionOrderController.class);
+
 
     @RequestMapping(value = "/assign", method = RequestMethod.POST)
     public XaResult<Integer> assign(Integer orderProductId, Integer assignNum, String workshop, String workshopDirector,
                                     Integer isLuo, Integer luoNum, String procedure) throws BusinessException {
 
-        if(orderProductId == null)  return XaResult.error("订单型号id不能为null");
+        if (orderProductId == null) return XaResult.error("订单型号id不能为null");
         OrderProduct orderProduct = orderProductService.getByID(orderProductId);
         if (null == orderProduct) return XaResult.error("订单不存在");
         if (null == assignNum) return XaResult.error("请输入分配数额");
@@ -149,11 +159,91 @@ public class ProductionOrderController extends ProductBaseController {
             }
         } else {
             productionOrderDetailVos.add(productionOrderDetailVo);
-            productionOrder.setPrintCount(productionOrder.getPrintCount()+1);
+            productionOrder.setPrintCount(productionOrder.getPrintCount() + 1);
             productionOrderService.update(productionOrder);
         }
         return XaResult.success(productionOrderDetailVos);
     }
 
+
+    @RequestMapping(value = "/export", method = RequestMethod.GET)
+    public void export(HttpServletResponse response, String orderNo, String productionNo, String customerName, String productNo,
+                       String productType, String workshop, String workshopDirector, String createStartTime,
+                       String createEndTime) {
+        ProductionOrderVo productionOrderVo = new ProductionOrderVo();
+        productionOrderVo.setOrderNo(orderNo);
+        productionOrderVo.setProductionNo(productionNo);
+        productionOrderVo.setCustomerName(customerName);
+        productionOrderVo.setProductNo(productNo);
+        productionOrderVo.setProductType(productType);
+        productionOrderVo.setWorkshop(workshop);
+        productionOrderVo.setWorkshopDirector(workshopDirector);
+        productionOrderVo.setCreateEndTime(createEndTime);
+        productionOrderVo.setCreateStartTime(createStartTime);
+        List<ProductionOrderVo> productionOrderVoPage = productionOrderService.getList(productionOrderVo);
+
+
+        Workbook wb = new XSSFWorkbook();
+        Sheet sheet = wb.createSheet();
+        Row header = sheet.createRow(0);
+
+        sheet.setColumnWidth(0, (int) ((20 + 0.72) * 256));
+        sheet.setColumnWidth(1, (int) ((20 + 0.72) * 256));
+        sheet.setColumnWidth(2, (int) ((10 + 0.72) * 256));
+        sheet.setColumnWidth(3, (int) ((20 + 0.72) * 256));
+        sheet.setColumnWidth(4, (int) ((20 + 0.72) * 256));
+        sheet.setColumnWidth(5, (int) ((15 + 0.72) * 256));
+        sheet.setColumnWidth(6, (int) ((15 + 0.72) * 256));
+        sheet.setColumnWidth(7, (int) ((15 + 0.72) * 256));
+        sheet.setColumnWidth(8, (int) ((15 + 0.72) * 256));
+        sheet.setColumnWidth(9, (int) ((15 + 0.72) * 256));
+        sheet.setColumnWidth(10, (int) ((15 + 0.72) * 256));
+        int j = 0;
+
+        header.createCell(j++).setCellValue("订单号");
+        header.createCell(j++).setCellValue("生产编号");
+        header.createCell(j++).setCellValue("订购客户");
+        header.createCell(j++).setCellValue("产品型号");
+        header.createCell(j++).setCellValue("数量");
+        header.createCell(j++).setCellValue("单位");
+        header.createCell(j++).setCellValue("上限数量");
+        header.createCell(j++).setCellValue("产品类别");
+        header.createCell(j++).setCellValue("负责车间");
+        header.createCell(j++).setCellValue("车间主任");
+        header.createCell(j++).setCellValue("创建日期");
+        ProductionOrderVo productionOrderVo1 = null;
+        if (productionOrderVoPage != null && productionOrderVoPage.size() >= 1) {
+            for (int i = 0; i < productionOrderVoPage.size(); i++) {
+                productionOrderVo1 = productionOrderVoPage.get(i);
+                Row row = sheet.createRow(i + 1);
+                j = 0;
+                row.createCell(j++).setCellValue(productionOrderVo1.getOrderNo());
+                row.createCell(j++).setCellValue(productionOrderVo1.getProductionNo());
+                row.createCell(j++).setCellValue(productionOrderVo1.getCustomerName());
+                row.createCell(j++).setCellValue(productionOrderVo1.getProductNo());
+                row.createCell(j++).setCellValue(productionOrderVo1.getAssignNum());
+                row.createCell(j++).setCellValue(productionOrderVo1.getUnit());
+                row.createCell(j++).setCellValue(productionOrderVo1.getMaxNum());
+                row.createCell(j++).setCellValue(productionOrderVo1.getProductType());
+                row.createCell(j++).setCellValue(productionOrderVo1.getWorkshop());
+                row.createCell(j++).setCellValue(productionOrderVo1.getWorkshopDirector());
+                row.createCell(j++).setCellValue(productionOrderVo1.getCreateTime());
+            }
+        }
+        try {
+            sheet.setForceFormulaRecalculation(true);
+            response.setHeader("Pragma", "no-cache");
+            response.setHeader("Cache-Control", "no-cache");
+            response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode("生产单.xlsx", "UTF-8"));
+            response.setDateHeader("Expires", 0);
+            response.setHeader("Connection", "close");
+            response.setHeader("Content-Type", "application/vnd.ms-excel");
+            wb.write(response.getOutputStream());
+            wb.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error("生产单导出excel异常");
+        }
+    }
 }
 

@@ -135,6 +135,11 @@ public class ProductionOrderService {
         return new Page<>(pageInfo);
     }
 
+    public List<ProductionOrderVo> getList(ProductionOrderVo productionOrderVo) {
+        List<ProductionOrderVo> pmList = productionOrderMapper.findList(productionOrderVo);
+        return pmList;
+    }
+
     public ProductionOrder getByNo(String productionNo) {
         if (StringUtils.isEmpty(productionNo)) return null;
 

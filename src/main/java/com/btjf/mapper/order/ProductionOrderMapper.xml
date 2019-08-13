@@ -497,7 +497,7 @@
         select
         <include refid="Base_Column_List"/>
         from t_Production_Order
-        WHERE orderProductId = #{orderProductID} and isDelete = 0
+        WHERE orderProductId = #{orderProductID} and isDelete = 0 limit 1;
     </select>
 
     <select id="findList" parameterType="com.btjf.controller.productionorder.vo.ProductionOrderVo"

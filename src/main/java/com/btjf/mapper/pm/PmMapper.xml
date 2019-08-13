@@ -439,7 +439,7 @@
             AND name LIKE '%${name}%'
         </if>
         <if test="colour != null">
-            AND colour = #{name,jdbcType=VARCHAR}
+            AND colour = #{colour,jdbcType=VARCHAR}
         </if>
         <if test="norms != null">
             AND norms = #{norms,jdbcType=VARCHAR}
