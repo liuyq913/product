@@ -35,34 +35,34 @@ public class OrderService {
     }
 
     public Integer insert(Order order) {
-        if(null == order) return 0;
+        if (null == order) return 0;
         orderMapper.insertSelective(order);
         return order.getId();
     }
 
     public Integer delete(List<String> ids) {
-        Integer i= 0;
-       for(String id : ids){
-           OrderProduct orderProduct = orderProductService.getByID(new Integer(id));
-           if(null == orderProduct) continue;
-           if(null != productionOrderService.getByOrderProductID(new Integer(id))){
-               throw new BusinessException("订单编号为："+orderProduct.getOrderNo()+",型号为："+orderProduct.getProductNo()
-               +"已经生成了生产单，无法删除！！！");
-           }
-           if(null != pmOutService.findList(null, orderProduct.getOrderNo(), orderProduct.getProductNo())){
-               throw new BusinessException("订单编号为："+orderProduct.getOrderNo()+",型号为："+orderProduct.getProductNo()
-                       +"已经生成耗料单，无法删除！！！");
-           }
+        Integer i = 0;
+        for (String id : ids) {
+            OrderProduct orderProduct = orderProductService.getByID(new Integer(id));
+            if (null == orderProduct) continue;
+            if (null != productionOrderService.getByOrderProductID(new Integer(id))) {
+                throw new BusinessException("订单编号为：" + orderProduct.getOrderNo() + ",型号为：" + orderProduct.getProductNo()
+                        + "已经生成了生产单，无法删除！！！");
+            }
+            if (null != pmOutService.findList(null, orderProduct.getOrderNo(), orderProduct.getProductNo())) {
+                throw new BusinessException("订单编号为：" + orderProduct.getOrderNo() + ",型号为：" + orderProduct.getProductNo()
+                        + "已经生成耗料单，无法删除！！！");
+            }
 
-           //删除
-           orderProductService.deleteById(new Integer(id));
+            //删除
+            orderProductService.deleteById(new Integer(id));
 
-           if(CollectionUtils.isEmpty(orderProductService.findByOrderId(orderProduct.getOrderId()))){
-               orderMapper.deletByID(orderProduct.getOrderId());
-           }
-           i++;
-       }
-       return i;
+            if (CollectionUtils.isEmpty(orderProductService.findByOrderId(orderProduct.getOrderId()))) {
+                orderMapper.deletByID(orderProduct.getOrderId());
+            }
+            i++;
+        }
+        return i;
     }
 
     public List<Order> notAssignOrder(String ordeNo) {

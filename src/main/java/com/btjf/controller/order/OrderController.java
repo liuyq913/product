@@ -177,6 +177,13 @@ public class OrderController extends ProductBaseController {
         return XaResult.success(num);
     }
 
+    @RequestMapping(value = "/detail", method = RequestMethod.GET)
+    public XaResult<OrderProduct> detail(Integer id) {
+        if(id == null) return XaResult.error("id必传");
+
+        return XaResult.success(orderProductService.getByID(id));
+    }
+
 
     /**
      * 获取所有未分配订单

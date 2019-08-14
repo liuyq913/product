@@ -98,6 +98,9 @@ public class ProductWorkshopController extends ProductBaseController {
 
         SysUser sysUser = getLoginUser();
         LOGGER.info(getRequestParamsAndUrl());
+        if (StringUtils.isEmpty(workShop) || StringUtils.isEmpty(procedureName) || price == null || null == sort || StringUtils.isEmpty(productNo)) {
+            return XaResult.error("请输入完整信息");
+        }
         ProductProcedureWorkshop productProcedureWorkshop = new ProductProcedureWorkshop();
         productProcedureWorkshop.setWorkshop(workShop);
         productProcedureWorkshop.setProcedureName(procedureName);
@@ -115,6 +118,13 @@ public class ProductWorkshopController extends ProductBaseController {
             id = productWorkshopService.udpate(productProcedureWorkshop);
         }
         return XaResult.success(id);
+    }
+
+    @RequestMapping(value = "deleteById", method = RequestMethod.POST)
+    public XaResult<Integer> delete(Integer id) throws BusinessException{
+        if (id == null) return XaResult.error("id 不能为null");
+
+        return XaResult.success(productWorkshopService.deleteById(id));
     }
 
 
