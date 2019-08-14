@@ -13,6 +13,7 @@ import com.btjf.model.product.ProductProcedureWorkshop;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.heige.aikajinrong.base.exception.BusinessException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -140,5 +141,13 @@ public class ProductWorkshopService {
                 productProcedureWorkshopMapper.insertSelective(t);
             });
         }
+    }
+
+    public Integer deleteById(Integer id) throws BusinessException {
+        ProductProcedureWorkshop productProcedureWorkshop = this.getById(id);
+        if (null == productProcedureWorkshop) throw new BusinessException("要删除的记录不存在");
+
+        productProcedureWorkshop.setIsDelete(1);
+       return productProcedureWorkshopMapper.updateByPrimaryKeySelective(productProcedureWorkshop);
     }
 }
