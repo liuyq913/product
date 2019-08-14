@@ -68,7 +68,7 @@ public class OrderController extends ProductBaseController {
                                          String type, String unit, Integer maxNum, String completeDate,
                                          String customerName, Integer customerId, Integer isMore, Integer urgentLevel) {
 
-        SysUser sysUser =  getLoginUser();
+        SysUser sysUser = getLoginUser();
         if (StringUtils.isEmpty(orderNo)) {
             return XaResult.error("订单No为空");
         }
@@ -112,7 +112,7 @@ public class OrderController extends ProductBaseController {
         } else {
             orderID = order.getId();
         }
-        Integer productId =  null;
+        Integer productId = null;
         Product product = productService.getByNO(productNo);
         if (product == null) {
             Product productNew = new Product();
@@ -124,7 +124,7 @@ public class OrderController extends ProductBaseController {
             productNew.setCreateTime(new Date());
             productNew.setOperator(sysUser.getUserName());
             productId = productService.add(productNew);
-        }else{
+        } else {
             product.setType(type);
             product.setLastModifyTime(new Date());
             productService.update(product);
@@ -179,9 +179,12 @@ public class OrderController extends ProductBaseController {
 
     @RequestMapping(value = "/detail", method = RequestMethod.GET)
     public XaResult<OrderProduct> detail(Integer id) {
-        if(id == null) return XaResult.error("id必传");
+        if (id == null) return XaResult.error("id必传");
 
-        return XaResult.success(orderProductService.getByID(id));
+        OrderProduct orderProduct = orderProductService.getByID(id);
+        if (null == orderProduct) return XaResult.error("订单不存在");
+            orderProduct.setCompleteDateStr(DateUtil.dateToString(orderProduct.getCompleteDate(), DateUtil.ymdFormat));
+        return XaResult.success(orderProduct);
     }
 
 

@@ -1,7 +1,6 @@
 package com.btjf.controller.productionorder.vo;
 
 import com.alibaba.dubbo.common.utils.CollectionUtils;
-import com.btjf.common.utils.DateUtil;
 import com.btjf.controller.order.vo.WorkShopVo;
 import com.btjf.model.order.OrderProduct;
 import com.btjf.model.order.ProductionOrder;
@@ -66,7 +65,6 @@ public class ProductionOrderDetailVo implements Serializable {
             this.luoNum = productionOrder.getLuoNum();
             this.maxNum = productionOrder.getMaxNum();
             this.printCount = productionOrder.getPrintCount() == null ? 1 : productionOrder.getPrintCount() + 1;
-            this.printTime = DateUtil.dateToString(productionOrder.getPrintTime(), DateUtil.ymdFormat);
             this.workshop = productionOrder.getWorkshop();
             this.workshopDirector = productionOrder.getWorkshopDirector();
             this.productNo = productionOrder.getProductNo();
