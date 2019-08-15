@@ -273,6 +273,14 @@ public class PmOutController extends ProductBaseController {
         if(assignedNum == null){
             return XaResult.error("分配数量为空");
         }
+        OrderProduct orderProduct = orderProductService.getByOrderNoAndProductNo(orderNo, productNo);
+        if(orderProduct == null){
+            XaResult.error("订单不存在或者该订单"+ orderNo +"没有该型号" + productNo);
+        }
+        if (orderProduct.getNotAssignNum() < assignedNum) {
+            return XaResult.error("可分配数额不足");
+        }
+
         List<BillPmVo> list = new ArrayList<>();
         for (int i=0; i< pms.length; i++){
             String pm = pms[i];
@@ -304,7 +312,12 @@ public class PmOutController extends ProductBaseController {
         pmOutBill.setIsDelete(0);
         pmOutBill.setLastModifyTime(new Date());
         pmOutService.createBill(pmOutBill, list);
-
+        OrderProduct orderProduct1 = new OrderProduct();
+        orderProduct1.setId(orderProduct.getId());
+        orderProduct1.setNotAssignNum(orderProduct.getNotAssignNum() - assignedNum);
+        orderProduct1.setAssignedNum(orderProduct.getAssignedNum() + assignedNum);
+        orderProduct1.setLastModifyTime(new Date());
+        orderProductService.update(orderProduct1);
         return XaResult.success();
     }
 
