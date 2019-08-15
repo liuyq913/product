@@ -123,6 +123,7 @@ public class OrderController extends ProductBaseController {
             productNew.setLastModifyTime(new Date());
             productNew.setCreateTime(new Date());
             productNew.setOperator(sysUser.getUserName());
+            productNew.setType(type);
             productId = productService.add(productNew);
         } else {
             product.setType(type);
