@@ -284,7 +284,7 @@ public class PmOutController extends ProductBaseController {
         List<BillPmVo> list = new ArrayList<>();
         for (int i=0; i< pms.length; i++){
             String pm = pms[i];
-            String[] s = pm.split("|");
+            String[] s = pm.split("\\|");
             if(s.length <3){
                 return XaResult.error("耗材信息有误");
             }

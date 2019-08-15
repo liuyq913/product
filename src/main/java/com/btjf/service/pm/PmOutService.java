@@ -1,5 +1,6 @@
 package com.btjf.service.pm;
 
+import com.btjf.business.common.exception.BusinessException;
 import com.btjf.common.page.Page;
 import com.btjf.mapper.pm.PmOutBillDetailMapper;
 import com.btjf.mapper.pm.PmOutBillMapper;
@@ -12,6 +13,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -22,6 +24,7 @@ import java.util.List;
  * Created by liuyq on 2019/7/28.
  */
 @Service
+@Transactional(readOnly = false, rollbackFor = Exception.class)
 public class PmOutService {
 
     private static final Logger LOGGER = Logger
@@ -55,6 +58,9 @@ public class PmOutService {
         mapper.insertSelective(pmOutBill);
         for(int i = 0; i < list.size(); i ++){
             Pm pm = pmService.getByNo(list.get(i).getPmNo());
+            if(pm.getNum().doubleValue() < list.get(i).getAllowNum()){
+                throw new BusinessException(pm.getPmNo() + " 材料库存" + pm.getNum() +" 不足核可领取数，"+ list.get(i).getAllowNum());
+            }
             PmOutBillDetail pmOutBillDetail = new PmOutBillDetail();
             pmOutBillDetail.setBillId(pmOutBill.getId());
             pmOutBillDetail.setPmId(pm.getId());
@@ -66,7 +72,7 @@ public class PmOutService {
             pmOutBillDetail.setBackNum(pmOutBillDetail.getPerNum().subtract(pmOutBillDetail.getNum()));
             pmOutBillDetail.setUnit(pm.getUnit());
             pmOutBillDetail.setRemark(pm.getRemark());
-            pm.setIsDelete(0);
+            pmOutBillDetail.setIsDelete(0);
             pmOutBillDetail.setCreateTime(new Date());
             pmOutBillDetail.setLastModifyTime(new Date());
             pmOutBillDetail.setOperator(pmOutBill.getOperator());
