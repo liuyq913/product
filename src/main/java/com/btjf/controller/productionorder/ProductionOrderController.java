@@ -99,6 +99,23 @@ public class ProductionOrderController extends ProductBaseController {
         return XaResult.success(id);
     }
 
+
+    @RequestMapping(value = "/detail", method = RequestMethod.GET)
+    public XaResult<ProductionOrderDetailVo> detail(String productionNo) {
+        if (productionNo == null) return XaResult.error("请输入生产单编号");
+
+        ProductionOrder productionOrder = productionOrderService.getByNo(productionNo);
+        if (null == productionOrder) return XaResult.error("生产单不存在");
+
+        OrderProduct orderProduct = orderProductService.getByID(productionOrder.getOrderId());
+
+        //工序
+        List<ProductionProcedure> productionProcedures = productionProcedureService.findByProductionNo(productionOrder.getProductionNo());
+
+        ProductionOrderDetailVo productionOrderDetailVo = new ProductionOrderDetailVo(productionOrder, productionProcedures, orderProduct);
+        return XaResult.success(productionOrderDetailVo);
+    }
+
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public XaResult<List<ProductionOrderVo>> getList(String orderNo, String productionNo, String customerName, String productNo,
                                                      String productType, String workshop, String workshopDirector, String createStartTime,
