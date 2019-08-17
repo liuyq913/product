@@ -344,6 +344,40 @@ CREATE TABLE t_Production_Procedure(
 	 isDelete int NOT NULL
 );
 
+##生产单-工序-人员 多对多表 员工自己扫码的结果
+CREATE TABLE t_Production_Procedure_Scan(
+  id int(11) primary key AUTO_INCREMENT,
+  orderNo varchar(100) NOT NULL comment '订单编号',
+  productNo varchar(100) NOT NULL comment '产品型号',
+  productionNo varchar(50) NOT NULL COMMENT '生产单编号',
+  luoId int(11) comment '生产单罗ID',
+  pmOutBillNo varchar(50) comment '领料单编号',
+  procedureId int(11) comment '工序ID',
+  procedureName varchar(50) comment '工序名称',
+  empId int(11) comment '员工ID',
+  num int(11) comment '员工计件数目',
+  price decimal(5,2) comment '价格',
+  money decimal(6,2) comment '工资',
+  createTime datetime,
+  isDelete int NOT NULL
+);
+##生产单-工序-人员 多对多表 质检之后的结果
+CREATE TABLE t_Production_Procedure_Confirm(
+  id int(11) primary key AUTO_INCREMENT,
+  orderNo varchar(100) NOT NULL comment '订单编号',
+  productNo varchar(100) NOT NULL comment '产品型号',
+  procedureId int(11) comment '工序ID',
+  procedureName varchar(50) comment '工序名称',
+  empId int(11) comment '员工ID',
+  num int(11) comment '员工计件数目',
+  price decimal(5,2) comment '价格',
+  money decimal(6,2) comment '工资',
+  createTime datetime,
+  isDelete int NOT NULL
+);
+
+
+
 ##生产单-罗表
 CREATE TABLE t_Production_Luo(
   id int(11) primary key AUTO_INCREMENT,
