@@ -66,7 +66,7 @@ public class ProductionOrderController extends ProductBaseController {
 
 
     @RequestMapping(value = "/assign", method = RequestMethod.POST)
-    public XaResult<Integer> assign(Integer orderProductId, Integer assignNum, String workshop, String workshopDirector,
+    public XaResult<String> assign(Integer orderProductId, Integer assignNum, String workshop, String workshopDirector,
                                     Integer isLuo, Integer luoNum, String procedure) throws BusinessException {
 
         if (orderProductId == null) return XaResult.error("订单型号id不能为null");
@@ -96,7 +96,7 @@ public class ProductionOrderController extends ProductBaseController {
         productionOrder.setWorkshopDirector(workshopDirector);
 
         Integer id = productionOrderService.assign(productionOrder, procedures);
-        return XaResult.success(id);
+        return XaResult.success(productionOrder.getProductionNo());
     }
 
 
