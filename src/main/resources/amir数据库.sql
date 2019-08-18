@@ -361,7 +361,7 @@ CREATE TABLE t_Production_Procedure_Scan(
   createTime datetime,
   isDelete int NOT NULL
 );
-##生产单-工序-人员 多对多表 质检之后的结果
+##生产单-工序-人员 多对多表 质检之后的结果 车间主任上报结果
 CREATE TABLE t_Production_Procedure_Confirm(
   id int(11) primary key AUTO_INCREMENT,
   orderNo varchar(100) NOT NULL comment '订单编号',
@@ -372,7 +372,10 @@ CREATE TABLE t_Production_Procedure_Confirm(
   num int(11) comment '员工计件数目',
   price decimal(5,2) comment '价格',
   money decimal(6,2) comment '工资',
-  createTime datetime,
+  completeTime datetime comment '员工扫码时间',
+  createTime datetime comment '质检时间',
+  lastModifyTime datetime,
+  operator varchar(100) NOT NULL comment '添加人',
   isDelete int NOT NULL
 );
 
