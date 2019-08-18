@@ -22,6 +22,11 @@ public class EmpService {
         return empMapper.getLeaderByDeptID(id);
     }
 
+    public Emp getByName(String empName) {
+        List<Emp> list = empMapper.getByName(empName);
+        return (list == null || list.size() ==0)? null:list.get(0);
+    }
+
     public WxEmpVo login(String phone, String password) {
         WxEmpVo wxEmpVo = empMapper.selectByPhone(phone, password);
         return wxEmpVo;

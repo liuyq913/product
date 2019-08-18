@@ -98,6 +98,8 @@ public interface EmpMapper {
 
     List<Emp> getLeaderByDeptID(@Param("id") Integer id);
 
+    List<Emp> getByName(@Param("name")String name);
+
     WxEmpVo selectByPhone(@Param("phone") String phone, @Param("password") String password);
 
     Emp getByPhoneOrIdCard(@Param("phone") String phone, @Param("idCard") String idCard);
