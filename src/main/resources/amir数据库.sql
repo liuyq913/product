@@ -322,7 +322,7 @@ CREATE TABLE t_Production_Order(
    luoNum int(11) COMMENT '一罗的数量',
    printer varchar(100) COMMENT '打印人',
    printTime DATE COMMENT '打印时间',
-   printCount int COMMENT '打印次数',
+  `printCount` int(11) DEFAULT '0' COMMENT '打印次数',
    codeUrl varchar(100) comment '二维码地址',
    createTime datetime,
 	 lastModifyTime datetime,
