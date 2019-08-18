@@ -471,7 +471,8 @@ CREATE TABLE t_Emp(
 	remark varchar(200) comment '备注',
 	createTime datetime,
 	lastModifyTime datetime,
-	isDelete int NOT NULL
+	isDelete int NOT NULL,
+	password varchar(255) DEFAULT NULL COMMENT '登入密码'
 );	
 
 ##员工 工种
