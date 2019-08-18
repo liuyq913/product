@@ -1,0 +1,34 @@
+package com.btjf.vo.weixin;
+
+import java.util.List;
+
+public class EmpProcedureListVo {
+
+    private Integer id;//工序ID
+    private String name;//工序名称
+    private List<EmpProcedureDetailVo> list;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<EmpProcedureDetailVo> getList() {
+        return list;
+    }
+
+    public void setList(List<EmpProcedureDetailVo> list) {
+        this.list = list;
+    }
+}
