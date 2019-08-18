@@ -96,4 +96,6 @@ public interface EmpMapper {
     int updateByPrimaryKey(Emp record);
 
     List<Emp> getLeaderByDeptID(@Param("id") Integer id);
+
+    List<Emp> getByName(@Param("name")String name);
 }

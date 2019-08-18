@@ -700,4 +700,9 @@
     FROM t_Emp
     where deptId = #{id} and isLeader = 1 and isDelete = 0
   </select>
+
+    <select id="getByName" resultType="com.btjf.model.emp.Emp">
+        select * from t_Emp where FName = #{name,jdbcType=VARCHAR} and isDelete = 0
+    </select>
+
 </mapper>

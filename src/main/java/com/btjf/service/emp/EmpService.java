@@ -20,4 +20,9 @@ public class EmpService {
     public List<Emp> getLeaderByDeptID(Integer id) {
         return empMapper.getLeaderByDeptID(id);
     }
+
+    public Emp getByName(String empName) {
+        List<Emp> list = empMapper.getByName(empName);
+        return (list == null || list.size() ==0)? null:list.get(0);
+    }
 }

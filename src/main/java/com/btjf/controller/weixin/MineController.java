@@ -1,21 +1,32 @@
 package com.btjf.controller.weixin;
 
 import com.btjf.application.util.XaResult;
+import com.btjf.model.emp.Emp;
 import com.btjf.model.order.Order;
+import com.btjf.model.sys.Sysdept;
+import com.btjf.service.emp.EmpService;
+import com.btjf.service.sys.SysDeptService;
 import com.btjf.vo.weixin.EmpProcedureListVo;
 import com.btjf.vo.weixin.MineIndexVo;
 import com.btjf.vo.weixin.OrderVo;
 import com.wordnik.swagger.annotations.Api;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Api(value = "MineController", description = "小程序 个人中心", position = 1)
 @RequestMapping(value = "/wx/mine")
 @RestController("mineController")
 public class MineController {
+
+    @Resource
+    private EmpService empService;
+    @Resource
+    private SysDeptService sysDeptService;
 
 
     /**
@@ -61,8 +72,17 @@ public class MineController {
      */
     @RequestMapping(value = "/emp/query", method = RequestMethod.GET)
     public XaResult<MineIndexVo> query(String empName){
-
-        //return XaResult.error("查无此员工，请修改");
+        if (StringUtils.isEmpty(empName)){
+            return XaResult.error("员工名字不能为空");
+        }
+         Emp emp =  empService.getByName(empName);
+        if(emp == null){
+            return XaResult.error("查无此员工，请修改");
+        }
+        Sysdept dept = sysDeptService.get(emp.getDeptId());
+        MineIndexVo vo = new MineIndexVo();
+        vo.setName(empName);
+        vo.setDeptName(dept==null?null:dept.getDeptName());
         return XaResult.success();
     }
 
