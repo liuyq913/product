@@ -35,7 +35,7 @@
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 
-		<table tableName="t_Production_Procedure" domainObjectName="ProductionProcedure">
+		<table tableName="t_Production_Procedure_Confirm" domainObjectName="ProductionProcedureConfirm">
 		<property name="useActualColumnNames" value="true"/>
 		<generatedKey column="id" sqlStatement="MySql" identity="true"/>
 		<columnRenamingRule searchString="^F" replaceString="" />

@@ -1,5 +1,6 @@
 package com.btjf.mapper.emp;
 
+import com.btjf.controller.weixin.vo.WxEmpVo;
 import com.btjf.model.emp.Emp;
 import com.btjf.model.emp.EmpExample;
 import org.apache.ibatis.annotations.Param;
@@ -98,4 +99,8 @@ public interface EmpMapper {
     List<Emp> getLeaderByDeptID(@Param("id") Integer id);
 
     List<Emp> getByName(@Param("name")String name);
+
+    WxEmpVo selectByPhone(@Param("phone") String phone, @Param("password") String password);
+
+    Emp getByPhoneOrIdCard(@Param("phone") String phone, @Param("idCard") String idCard);
 }

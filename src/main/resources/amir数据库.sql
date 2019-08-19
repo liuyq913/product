@@ -375,8 +375,13 @@ CREATE TABLE t_Production_Procedure_Confirm(
   completeTime datetime comment '员工扫码时间',
   createTime datetime comment '质检时间',
   lastModifyTime datetime,
+  type int(11) comment '1 员工质检  2 车间主任上报',
   operator varchar(100) NOT NULL comment '添加人',
-  isDelete int NOT NULL
+  productionNo varchar(50) NOT NULL COMMENT '生产单编号',
+  luoId int(11) comment '生产单罗ID',
+  pmOutBillNo varchar(50) comment '领料单编号',
+  isDelete int NOT NULL,
+  isChange int NOT NULL comment '主任是否调整'
 );
 
 
@@ -474,7 +479,8 @@ CREATE TABLE t_Emp(
 	remark varchar(200) comment '备注',
 	createTime datetime,
 	lastModifyTime datetime,
-	isDelete int NOT NULL
+	isDelete int NOT NULL,
+	password varchar(255) DEFAULT NULL COMMENT '登入密码'
 );	
 
 ##员工 工种
