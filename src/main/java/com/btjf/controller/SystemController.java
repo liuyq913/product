@@ -7,6 +7,7 @@ import com.btjf.model.product.ProductProcedureWorkshop;
 import com.btjf.model.sys.Sysdept;
 import com.btjf.service.dictionary.DictionaryService;
 import com.btjf.service.emp.EmpService;
+import com.btjf.service.order.BillNoService;
 import com.btjf.service.productpm.ProductWorkshopService;
 import com.btjf.service.sys.SysDeptService;
 import com.google.common.collect.Lists;
@@ -41,6 +42,8 @@ public class SystemController {
     private EmpService empService;
     @Resource
     private ProductWorkshopService productWorkshopService;
+    @Resource
+    private BillNoService billNoService;
 
     /**
      * 获取数据
@@ -75,7 +78,8 @@ public class SystemController {
      */
     @RequestMapping(value = "/getNo", method = RequestMethod.GET)
     public XaResult<String> getNo(Integer type) {
-        return XaResult.success(getBillNo(type));
+        String pre = getBillNo(type);
+        return XaResult.success(pre == null?"":pre + billNoService.getNo(type));
     }
 
     /**
@@ -99,13 +103,13 @@ public class SystemController {
 
     private String getBillNo(Integer type) {
         if(type == 1){
-            return "L" + getDateTime() + getOrderIdByUUId();
+            return "L";
         }else if(type == 2){
-            return "D" + getDateTime() + getOrderIdByUUId();
+            return "D";
         }else if(type == 3){
-            return "O" + getDateTime() + getOrderIdByUUId();
+            return "O";
         }else if(type == 4){
-            return "P" + getDateTime() + getOrderIdByUUId();
+            return "P";
         }else{
             return null;
         }
