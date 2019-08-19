@@ -1,27 +1,32 @@
 package com.btjf.controller.weixin;
 
 import com.btjf.application.util.XaResult;
+import com.btjf.controller.base.ProductBaseController;
+import com.btjf.controller.weixin.vo.WxEmpVo;
 import com.btjf.model.emp.Emp;
 import com.btjf.model.order.Order;
 import com.btjf.model.sys.Sysdept;
 import com.btjf.service.emp.EmpService;
 import com.btjf.service.sys.SysDeptService;
+import com.btjf.vo.weixin.EmpProcedureDetailVo;
 import com.btjf.vo.weixin.EmpProcedureListVo;
 import com.btjf.vo.weixin.MineIndexVo;
 import com.btjf.vo.weixin.OrderVo;
 import com.wordnik.swagger.annotations.Api;
+import org.apache.commons.collections.list.AbstractLinkedList;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Api(value = "MineController", description = "小程序 个人中心", position = 1)
 @RequestMapping(value = "/wx/mine")
 @RestController("mineController")
-public class MineController {
+public class MineController  extends ProductBaseController {
 
     @Resource
     private EmpService empService;
@@ -36,8 +41,18 @@ public class MineController {
      */
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public XaResult<MineIndexVo> importExcel(){
-
-        return null;
+        WxEmpVo vo = getWXLoginUser();
+        MineIndexVo mineIndexVo = null;
+        if(vo != null){
+            mineIndexVo = new MineIndexVo();
+            mineIndexVo.setName(vo.getName());
+            mineIndexVo.setDeptName(vo.getDeptName());
+            if (vo.getIsLeader() == 1){
+                mineIndexVo.setIsShowMenu(1);
+                mineIndexVo.setPosition("车间主任");
+            }
+        }
+        return XaResult.success(mineIndexVo);
     }
 
 
@@ -86,6 +101,58 @@ public class MineController {
         return XaResult.success();
     }
 
+    /**
+     * 计件上报-订单产品详情-上传工序计件
+     *获取当月 质检通过的订单
+     * @return
+     */
+    @RequestMapping(value = "/order/report", method = RequestMethod.POST)
+    public XaResult<List<EmpProcedureListVo>> report(String orderNo, String productNo, Integer procedureId,
+                                                     String[] content){
+        if (StringUtils.isEmpty(orderNo)){
+            return XaResult.error("订单号不能为空");
+        }
+        if (StringUtils.isEmpty(productNo)){
+            return XaResult.error("产品型号不能为空");
+        }
+        if (procedureId == null){
+            return XaResult.error("工序ID不能为空");
+        }
+        if (content == null || content.length <1){
+            return XaResult.error("上报内容不能为空");
+        }
 
+        List<EmpProcedureDetailVo> list = new ArrayList<>();
+        Integer num = 0;//上报的总数
+        for (int i=0; i<content.length; i++){
+            String ep = content[i];
+            String[] s = ep.split("\\|");
+            if(s.length <2){
+                return XaResult.error("上报信息有误");
+            }
+            EmpProcedureDetailVo vo = new EmpProcedureDetailVo();
+            vo.setEmpName(s[0]);
+            vo.setNum(Integer.valueOf(s[1]));
+            num = num + vo.getNum();
+            list.add(vo);
+        }
+
+        WxEmpVo vo = getWXLoginUser();
+
+        return null;
+    }
+
+    /**
+     * 工作产出
+     * @return
+     */
+    @RequestMapping(value = "/work", method = RequestMethod.GET)
+    public XaResult<List<EmpProcedureListVo>> detail(String date){
+        WxEmpVo vo = getWXLoginUser();
+
+
+
+        return null;
+    }
 
 }

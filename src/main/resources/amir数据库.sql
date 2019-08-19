@@ -584,6 +584,13 @@ CREATE TABLE t_File(
 	createTime datetime,
 	lastModifyTime datetime,
 	isDelete int NOT NULL
-);	
+);
 
 
+## 单号生成器
+CREATE TABLE t_BillNo(
+  id int(11) primary key AUTO_INCREMENT,
+  type int comment '单据类型 1 领料单  2订单号开单 3 订单 4 生产单',
+  date varchar(30) comment '日期 20190819',
+  num int comment '编号'
+);
