@@ -44,6 +44,9 @@ public class ProductionOrderService {
     @Resource
     private OrderProductService orderProductService;
 
+    @Resource
+    private BillNoService billNoService;
+
 
     public ProductionOrder getByOrderProductID(Integer orderProductID) {
         if (orderProductID == null) return null;
@@ -54,7 +57,7 @@ public class ProductionOrderService {
     public Integer assign(ProductionOrder productionOrder, List<WorkShopVo.Procedure> procedures) {
         if (null == productionOrder) return 0;
 
-        productionOrder.setProductionNo("P" + getDateTime() + getOrderIdByUUId());
+        productionOrder.setProductionNo("P"+billNoService.getNo(4));
         productionOrderMapper.insertSelective(productionOrder);
         //更新  订单 型号表 分配数量信息
         OrderProduct orderProduct = orderProductService.getByID(productionOrder.getOrderProductId());
