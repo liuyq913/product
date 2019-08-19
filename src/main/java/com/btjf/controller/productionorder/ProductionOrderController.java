@@ -15,7 +15,6 @@ import com.btjf.model.order.OrderProduct;
 import com.btjf.model.order.ProductionLuo;
 import com.btjf.model.order.ProductionOrder;
 import com.btjf.model.order.ProductionProcedure;
-import com.btjf.model.sys.SysUser;
 import com.btjf.service.order.OrderProductService;
 import com.btjf.service.order.ProductionLuoService;
 import com.btjf.service.order.ProductionOrderService;
@@ -144,7 +143,7 @@ public class ProductionOrderController extends ProductBaseController {
 
     @RequestMapping(value = "/print", method = RequestMethod.GET)
     public XaResult<List<ProductionOrderDetailVo>> getDetailByProductionNo(String productionNo) throws BusinessException {
-        SysUser sysUser = getLoginUser();
+        //SysUser sysUser = getLoginUser();
 
         if (null == productionNo) return XaResult.error("请输入要打印是生成单号");
 
@@ -158,7 +157,7 @@ public class ProductionOrderController extends ProductBaseController {
 
         ProductionOrderDetailVo productionOrderDetailVo = new ProductionOrderDetailVo(productionOrder, productionProcedures, orderProduct);
         productionOrderDetailVo.setPrintTime(DateUtil.dateToString(new Date(), DateUtil.ymdFormat));
-        productionOrderDetailVo.setPrinter(sysUser.getUserName());
+       // productionOrderDetailVo.setPrinter(sysUser.getUserName());
         //未分
         if (productionOrder.getIsLuo() == 1) {
             List<ProductionLuo> productionLuos = productionLuoService.getByProductionNo(productionOrder.getProductionNo());
@@ -168,6 +167,8 @@ public class ProductionOrderController extends ProductBaseController {
                         ProductionOrderDetailVo productionOrderDetailVo1 = (ProductionOrderDetailVo) BeanUtils.cloneBean(productionOrderDetailVo);
                         productionOrderDetailVo1.setAssignNum(t.getNum());
                         productionOrderDetailVo1.setCodeUrl(t.getCodeUrl());
+                        productionOrderDetailVo1.setNum(orderProduct.getNum());
+                        productionOrderDetailVo1.setUnit(orderProduct.getUnit());
                         productionOrderDetailVos.add(productionOrderDetailVo1);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -175,6 +176,8 @@ public class ProductionOrderController extends ProductBaseController {
                 });
             }
         } else {
+            productionOrderDetailVo.setNum(orderProduct.getNum());
+            productionOrderDetailVo.setUnit(orderProduct.getUnit());
             productionOrderDetailVos.add(productionOrderDetailVo);
             productionOrder.setPrintCount(productionOrder.getPrintCount() + 1);
             productionOrderService.update(productionOrder);

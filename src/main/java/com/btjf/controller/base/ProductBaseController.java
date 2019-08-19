@@ -2,6 +2,7 @@ package com.btjf.controller.base;
 
 import com.btjf.application.util.XaResult;
 import com.btjf.business.common.exception.BusinessException;
+import com.btjf.controller.weixin.vo.WxEmpVo;
 import com.btjf.interceptor.LoginInfoCache;
 import com.btjf.interceptor.LoginInterceptor;
 import com.btjf.model.sys.SysUser;
@@ -47,6 +48,24 @@ public abstract class ProductBaseController {
             return sysUser;
         }
     }
+
+    /**
+     * 获取小程序登入用户信息
+     *
+     * @return
+     */
+    public WxEmpVo getWxLoginUser() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
+                .getRequestAttributes()).getRequest();
+        String secretKey = request.getHeader(LoginInterceptor.SECRETKEY);
+        WxEmpVo wxEmpVo = (WxEmpVo) loginInfoCache.get(secretKey);
+        if (null == wxEmpVo) {
+            throw new BusinessException("请登录之后重试");
+        } else {
+            return wxEmpVo;
+        }
+    }
+
 
     public HttpServletRequest getRequest() {
         return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();

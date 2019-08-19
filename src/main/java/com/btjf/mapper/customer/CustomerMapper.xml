@@ -576,10 +576,10 @@
      AND name LIKE '%${name}%'
     </if>
     <if test="startDate != null">
-      AND  createTime &gt;= #{startDate}
+      AND  date_format(createTime,'%Y-%m-%d') &gt;= #{startDate}
     </if>
     <if test="endDate != null">
-      AND createTime &lt;= #{endDate}
+      AND date_format(createTime,'%Y-%m-%d') &lt;= #{endDate}
     </if>
     AND isDelete = 0
   </select>

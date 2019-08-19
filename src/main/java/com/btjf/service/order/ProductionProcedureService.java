@@ -1,6 +1,8 @@
 package com.btjf.service.order;
 
 import com.alibaba.druid.util.StringUtils;
+import com.btjf.common.utils.BeanUtil;
+import com.btjf.controller.order.vo.WorkShopVo;
 import com.btjf.mapper.order.ProductionProcedureMapper;
 import com.btjf.model.order.ProductionProcedure;
 import org.springframework.stereotype.Service;
@@ -29,5 +31,16 @@ public class ProductionProcedureService {
     public List<ProductionProcedure> findByProductionNo(String productionNo) {
         if (StringUtils.isEmpty(productionNo)) return null;
         return productionProcedureMapper.findByProductionNo(productionNo);
+    }
+
+    /**
+     * 获取确认工序列表
+     * @param deptName 部门名称
+     * @param productionNo 生产单编号
+     * @return
+     */
+    public List<WorkShopVo.Procedure> getConfigProcedure(String deptName, String productionNo){
+        List<ProductionProcedure> productionProcedures = productionProcedureMapper.getConfigProcedure(deptName, productionNo);
+        return BeanUtil.convertList(productionProcedures, WorkShopVo.Procedure.class);
     }
 }

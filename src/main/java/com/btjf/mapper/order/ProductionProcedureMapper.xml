@@ -359,4 +359,17 @@
         FROM t_Production_Procedure
         WHERE isDelete = 0 and productionNo = #{productionNo}
     </select>
+
+    <select id="getConfigProcedure" resultMap="BaseResultMap">
+        SELECT tpp.*
+        FROM t_Production_Procedure tpp LEFT JOIN t_Product_Procedure_Workshop tppw on  tpp.procedureId = tppw.procedureId
+        WHERE 1=1
+        <if test="deptName != null">
+            and  tppw.workshop = #{deptName}
+        </if>
+        <if test="productionNo != null">
+          and  tpp.productionNo = #{productionNo}
+        </if>
+        and tpp.isDelete = 0 and tppw.isDelete = 0
+    </select>
 </mapper>
