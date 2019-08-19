@@ -69,6 +69,7 @@ public class ProductionOrderDetailVo implements Serializable {
             this.workshopDirector = productionOrder.getWorkshopDirector();
             this.productNo = productionOrder.getProductNo();
             this.productionNo = productionOrder.getProductionNo();
+            this.codeUrl = "www.baidu.com";
         }
 
         if (!CollectionUtils.isEmpty(productionProcedures)) {
