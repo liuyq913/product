@@ -1,6 +1,8 @@
 package com.btjf.service.productpm;
 
+import com.btjf.common.utils.BeanUtil;
 import com.btjf.constant.WorkShopProductionMapEnum;
+import com.btjf.controller.order.vo.WorkShopVo;
 import com.btjf.mapper.product.ProductProcedureMapper;
 import com.btjf.mapper.product.ProductProcedureWorkshopMapper;
 import com.btjf.model.product.ProductProcedure;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by liuyq on 2019/8/5.
@@ -63,5 +66,10 @@ public class ProductProcedureService {
 
     public Integer update(ProductProcedure productProcedure){
         return productProcedureMapper.updateByPrimaryKeySelective(productProcedure);
+    }
+
+    public List<WorkShopVo.Procedure> getByWorkShopAndProductNo(String workShop, String productNo) {
+        List<ProductProcedureWorkshop> productProcedures = productProcedureWorkshopMapper.getByWorkShopAndProductNo(workShop, productNo);
+        return BeanUtil.convertList(productProcedures, WorkShopVo.Procedure.class);
     }
 }

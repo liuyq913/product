@@ -96,4 +96,6 @@ public interface ProductionProcedureMapper {
     int updateByPrimaryKey(ProductionProcedure record);
 
     List<ProductionProcedure> findByProductionNo(@Param("productionNo") String productionNo);
+
+    List<ProductionProcedure> getConfigProcedure(@Param("deptName") String deptName, @Param("productionNo") String productionNo);
 }

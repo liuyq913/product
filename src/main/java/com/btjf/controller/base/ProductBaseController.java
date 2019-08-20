@@ -66,6 +66,24 @@ public abstract class ProductBaseController {
         }
     }
 
+    /**
+     * 获取小程序登入用户信息
+     *
+     * @return
+     */
+    public WxEmpVo getWxLoginUser() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
+                .getRequestAttributes()).getRequest();
+        String secretKey = request.getHeader(LoginInterceptor.SECRETKEY);
+        WxEmpVo wxEmpVo = (WxEmpVo) loginInfoCache.get(secretKey);
+        if (null == wxEmpVo) {
+            throw new BusinessException("请登录之后重试");
+        } else {
+            return wxEmpVo;
+        }
+    }
+
+
     public HttpServletRequest getRequest() {
         return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
     }

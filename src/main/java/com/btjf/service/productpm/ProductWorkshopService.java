@@ -3,7 +3,9 @@ package com.btjf.service.productpm;
 import com.alibaba.druid.util.StringUtils;
 import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.btjf.common.page.Page;
+import com.btjf.common.utils.BeanUtil;
 import com.btjf.constant.WorkShopProductionMapEnum;
+import com.btjf.controller.order.vo.WorkShopVo;
 import com.btjf.controller.productpm.vo.ProductWorkShopVo;
 import com.btjf.mapper.product.ProductMapper;
 import com.btjf.mapper.product.ProductProcedureWorkshopMapper;
@@ -149,5 +151,11 @@ public class ProductWorkshopService {
 
         productProcedureWorkshop.setIsDelete(1);
        return productProcedureWorkshopMapper.updateByPrimaryKeySelective(productProcedureWorkshop);
+    }
+
+    public List<WorkShopVo.Procedure> getBySort(List<Integer> integers) {
+        List<ProductProcedureWorkshop> productProcedureWorkshops =  productProcedureWorkshopMapper.getBySort(integers);
+        if(CollectionUtils.isEmpty(productProcedureWorkshops)) return null;
+        return BeanUtil.convertList(productProcedureWorkshops, WorkShopVo.Procedure.class);
     }
 }

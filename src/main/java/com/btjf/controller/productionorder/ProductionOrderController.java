@@ -67,7 +67,7 @@ public class ProductionOrderController extends ProductBaseController {
 
     @RequestMapping(value = "/assign", method = RequestMethod.POST)
     public XaResult<String> assign(Integer orderProductId, Integer assignNum, String workshop, String workshopDirector,
-                                    Integer isLuo, Integer luoNum, String procedure) throws BusinessException {
+                                   Integer isLuo, Integer luoNum, String procedure) throws BusinessException {
 
         if (orderProductId == null) return XaResult.error("订单型号id不能为null");
         OrderProduct orderProduct = orderProductService.getByID(orderProductId);
@@ -143,7 +143,7 @@ public class ProductionOrderController extends ProductBaseController {
     }
 
     @RequestMapping(value = "/print", method = RequestMethod.GET)
-    public XaResult<List<ProductionOrderDetailVo>> getDetailByProductionNo(String productionNo) throws BusinessException {
+    public XaResult<List<ProductionOrderDetailVo>> getDetailByProductionNo(String productionNo, Boolean isPrint) throws BusinessException {
         SysUser sysUser = getLoginUser();
 
         if (null == productionNo) return XaResult.error("请输入要打印是生成单号");
@@ -152,13 +152,15 @@ public class ProductionOrderController extends ProductBaseController {
         ProductionOrder productionOrder = productionOrderService.getByNo(productionNo);
         if (productionOrder == null) return XaResult.error("该生成单不存在");
         //订单
-        OrderProduct orderProduct = orderProductService.getByID(productionOrder.getOrderId());
+        OrderProduct orderProduct = orderProductService.getByID(productionOrder.getOrderProductId());
         //工序
         List<ProductionProcedure> productionProcedures = productionProcedureService.findByProductionNo(productionOrder.getProductionNo());
 
         ProductionOrderDetailVo productionOrderDetailVo = new ProductionOrderDetailVo(productionOrder, productionProcedures, orderProduct);
-        productionOrderDetailVo.setPrintTime(DateUtil.dateToString(new Date(), DateUtil.ymdFormat));
-        productionOrderDetailVo.setPrinter(sysUser.getUserName());
+        if (isPrint) {
+            productionOrderDetailVo.setPrintTime(DateUtil.dateToString(new Date(), DateUtil.ymdFormat));
+            productionOrderDetailVo.setPrinter(sysUser.getUserName());
+        }
         //未分
         if (productionOrder.getIsLuo() == 1) {
             List<ProductionLuo> productionLuos = productionLuoService.getByProductionNo(productionOrder.getProductionNo());
@@ -168,6 +170,8 @@ public class ProductionOrderController extends ProductBaseController {
                         ProductionOrderDetailVo productionOrderDetailVo1 = (ProductionOrderDetailVo) BeanUtils.cloneBean(productionOrderDetailVo);
                         productionOrderDetailVo1.setAssignNum(t.getNum());
                         productionOrderDetailVo1.setCodeUrl(t.getCodeUrl());
+                        productionOrderDetailVo1.setNum(orderProduct.getNum());
+                        productionOrderDetailVo1.setUnit(orderProduct.getUnit());
                         productionOrderDetailVos.add(productionOrderDetailVo1);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -176,7 +180,9 @@ public class ProductionOrderController extends ProductBaseController {
             }
         } else {
             productionOrderDetailVos.add(productionOrderDetailVo);
-            productionOrder.setPrintCount(productionOrder.getPrintCount() + 1);
+            if (isPrint) {
+                productionOrder.setPrintCount(productionOrder.getPrintCount() + 1);
+            }
             productionOrderService.update(productionOrder);
         }
         return XaResult.success(productionOrderDetailVos);
