@@ -285,13 +285,15 @@ public class PmOutController extends ProductBaseController {
         for (int i=0; i< pms.length; i++){
             String pm = pms[i];
             String[] s = pm.split("\\|");
-            if(s.length <3){
+            if(s.length <2){
                 return XaResult.error("耗材信息有误");
             }
             BillPmVo vo = new BillPmVo();
             vo.setPmNo(s[0]);
             vo.setAllowNum(Double.valueOf(s[1]));
-            vo.setPmBatchNo(s[2]);
+            if(s.length >2) {
+                vo.setPmBatchNo(s[2]);
+            }
             list.add(vo);
         }
 
