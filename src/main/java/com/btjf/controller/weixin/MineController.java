@@ -1,17 +1,16 @@
 package com.btjf.controller.weixin;
 
 import com.btjf.application.util.XaResult;
+import com.btjf.common.utils.DateUtil;
 import com.btjf.controller.base.ProductBaseController;
 import com.btjf.controller.weixin.vo.WxEmpVo;
 import com.btjf.model.emp.Emp;
 import com.btjf.model.order.Order;
 import com.btjf.model.sys.Sysdept;
 import com.btjf.service.emp.EmpService;
+import com.btjf.service.order.ProductionProcedureConfirmService;
 import com.btjf.service.sys.SysDeptService;
-import com.btjf.vo.weixin.EmpProcedureDetailVo;
-import com.btjf.vo.weixin.EmpProcedureListVo;
-import com.btjf.vo.weixin.MineIndexVo;
-import com.btjf.vo.weixin.OrderVo;
+import com.btjf.vo.weixin.*;
 import com.wordnik.swagger.annotations.Api;
 import org.apache.commons.collections.list.AbstractLinkedList;
 import org.apache.commons.lang3.StringUtils;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +32,8 @@ public class MineController  extends ProductBaseController {
     private EmpService empService;
     @Resource
     private SysDeptService sysDeptService;
+    @Resource
+    private ProductionProcedureConfirmService productionProcedureConfirmService;
 
 
     /**
@@ -63,8 +65,26 @@ public class MineController  extends ProductBaseController {
      */
     @RequestMapping(value = "/order/list", method = RequestMethod.GET)
     public XaResult<List<OrderVo>> list(String date){
+        //2019-08
+        if (StringUtils.isEmpty(date)){
+            return XaResult.error("月份不能为空");
+        }
 
-        return null;
+        List<Order> list = productionProcedureConfirmService.getOrderByMouth(date);
+        List<OrderVo> voList = null;
+        if(list != null && list.size() >0){
+            voList = new ArrayList<>();
+            for (Order o: list){
+                OrderVo orderVo = new OrderVo();
+                orderVo.setDate(DateUtil.dateToString(o.getCreateTime(),new SimpleDateFormat("yyyy/MM/dd")));
+                orderVo.setOrderNo(o.getOrderNo());
+                List<OrderProductVo> ops = productionProcedureConfirmService.getOrderProductByMouth(o.getOrderNo());
+                orderVo.setList(ops);
+                voList.add(orderVo);
+            }
+
+        }
+        return XaResult.success(voList);
     }
 
 
@@ -75,8 +95,16 @@ public class MineController  extends ProductBaseController {
      */
     @RequestMapping(value = "/order/detail", method = RequestMethod.GET)
     public XaResult<List<EmpProcedureListVo>> detail(String orderNo, String productNo){
+        if (StringUtils.isEmpty(orderNo)){
+            return XaResult.error("订单号不能为空");
+        }
+        if (StringUtils.isEmpty(productNo)){
+            return XaResult.error("产品型号不能为空");
+        }
 
-        return null;
+        List<EmpProcedureListVo> list = productionProcedureConfirmService.getEmpNum(orderNo, productNo);
+
+        return XaResult.success(list);
     }
 
     /**
@@ -107,7 +135,7 @@ public class MineController  extends ProductBaseController {
      * @return
      */
     @RequestMapping(value = "/order/report", method = RequestMethod.POST)
-    public XaResult<List<EmpProcedureListVo>> report(String orderNo, String productNo, Integer procedureId,
+    public XaResult<String> report(String orderNo, String productNo, Integer procedureId,
                                                      String[] content){
         if (StringUtils.isEmpty(orderNo)){
             return XaResult.error("订单号不能为空");
@@ -131,7 +159,7 @@ public class MineController  extends ProductBaseController {
                 return XaResult.error("上报信息有误");
             }
             EmpProcedureDetailVo vo = new EmpProcedureDetailVo();
-            vo.setEmpName(s[0]);
+            vo.setEmpId(Integer.valueOf(s[0]));
             vo.setNum(Integer.valueOf(s[1]));
             num = num + vo.getNum();
             list.add(vo);

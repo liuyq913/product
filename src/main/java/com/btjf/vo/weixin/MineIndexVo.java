@@ -2,6 +2,7 @@ package com.btjf.vo.weixin;
 
 public class MineIndexVo {
 
+    private Integer empId;
     private String name;
     private String deptName;
     private String position;
@@ -37,5 +38,13 @@ public class MineIndexVo {
 
     public void setIsShowMenu(Integer isShowMenu) {
         this.isShowMenu = isShowMenu;
+    }
+
+    public Integer getEmpId() {
+        return empId;
+    }
+
+    public void setEmpId(Integer empId) {
+        this.empId = empId;
     }
 }
