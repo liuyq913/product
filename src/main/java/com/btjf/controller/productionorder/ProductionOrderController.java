@@ -143,7 +143,7 @@ public class ProductionOrderController extends ProductBaseController {
     }
 
     @RequestMapping(value = "/print", method = RequestMethod.GET)
-    public XaResult<List<ProductionOrderDetailVo>> getDetailByProductionNo(String productionNo, Boolean isPrint) throws BusinessException {
+    public XaResult<List<ProductionOrderDetailVo>> getDetailByProductionNo(String productionNo) throws BusinessException {
         SysUser sysUser = getLoginUser();
 
         if (null == productionNo) return XaResult.error("请输入要打印是生成单号");
@@ -157,10 +157,8 @@ public class ProductionOrderController extends ProductBaseController {
         List<ProductionProcedure> productionProcedures = productionProcedureService.findByProductionNo(productionOrder.getProductionNo());
 
         ProductionOrderDetailVo productionOrderDetailVo = new ProductionOrderDetailVo(productionOrder, productionProcedures, orderProduct);
-        if (isPrint) {
-            productionOrderDetailVo.setPrintTime(DateUtil.dateToString(new Date(), DateUtil.ymdFormat));
-            productionOrderDetailVo.setPrinter(sysUser.getUserName());
-        }
+        productionOrderDetailVo.setPrintTime(DateUtil.dateToString(new Date(), DateUtil.ymdFormat));
+        productionOrderDetailVo.setPrinter(sysUser.getUserName());
         //未分
         if (productionOrder.getIsLuo() == 1) {
             List<ProductionLuo> productionLuos = productionLuoService.getByProductionNo(productionOrder.getProductionNo());
@@ -180,14 +178,20 @@ public class ProductionOrderController extends ProductBaseController {
             }
         } else {
             productionOrderDetailVos.add(productionOrderDetailVo);
-            if (isPrint) {
-                productionOrder.setPrintCount(productionOrder.getPrintCount() + 1);
-            }
-            productionOrderService.update(productionOrder);
         }
         return XaResult.success(productionOrderDetailVos);
     }
 
+
+    @RequestMapping(value = "/addPrintCount", method = RequestMethod.POST)
+    public XaResult addPrintCount(String productionNo) {
+        if (productionNo == null) return XaResult.error("请输入生成单号");
+        ProductionOrder productionOrder = productionOrderService.getByNo(productionNo);
+        if (null == productionOrder) return XaResult.error("生成单不存在");
+        productionOrder.setPrintCount(productionOrder.getPrintCount() + 1);
+        productionOrderService.update(productionOrder);
+        return XaResult.success();
+    }
 
     @RequestMapping(value = "/export", method = RequestMethod.GET)
     public void export(HttpServletResponse response, String orderNo, String productionNo, String customerName, String productNo,
