@@ -102,4 +102,8 @@ public interface ProductProcedureWorkshopMapper {
     List<ProductProcedureWorkshop> getWorkShop(@Param("productNo") String productNo);
 
     Integer deleteByProcedureId (@Param("procedureId") Integer procedureId);
+
+    List<ProductProcedureWorkshop> getByWorkShopAndProductNo(@Param("workShop") String workShop, @Param("productNo") String productNo);
+
+    List<ProductProcedureWorkshop> getBySort(@Param("integers") List<Integer> integers);
 }

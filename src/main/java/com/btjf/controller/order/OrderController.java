@@ -113,6 +113,7 @@ public class OrderController extends ProductBaseController {
             orderID = order.getId();
         }
         Integer productId = null;
+        //新增产品
         Product product = productService.getByNO(productNo);
         if (product == null) {
             Product productNew = new Product();

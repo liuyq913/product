@@ -572,16 +572,16 @@
               AND  productType = #{type}
         </if>
         <if test="completeStartDate != null">
-          and completeDate &gt;= #{completeStartDate}
+          and date_format(completeDate,'%Y-%m-%d') &gt;= #{completeStartDate}
         </if>
         <if test="createStartDate != null">
-            and createTime &gt;= #{createStartDate}
+            and date_format(createTime,'%Y-%m-%d') &gt;= #{createStartDate}
         </if>
         <if test="completeStartEnd != null">
-            and completeDate &lt;=  #{completeStartEnd}
+            and date_format(completeDate,'%Y-%m-%d') &lt;=  #{completeStartEnd}
         </if>
         <if test="createEndDate != null">
-            and createTime &lt;=  #{createEndDate}
+            and date_format(createTime,'%Y-%m-%d') &lt;=  #{createEndDate}
         </if>
         <if test="customerId != null">
             and customerId = #{customerId}
