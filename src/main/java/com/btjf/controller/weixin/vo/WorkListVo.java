@@ -18,6 +18,10 @@ public class WorkListVo implements Serializable {
 
     private String orderNo;//订单编号
 
+    private String productionNo;
+
+    private String billNo;
+
     private Integer louId;//罗id
 
     //工序
@@ -57,6 +61,22 @@ public class WorkListVo implements Serializable {
 
     public List<WorkShopVo.Procedure> getProcedures() {
         return procedures;
+    }
+
+    public String getProductionNo() {
+        return productionNo;
+    }
+
+    public void setProductionNo(String productionNo) {
+        this.productionNo = productionNo;
+    }
+
+    public String getBillNo() {
+        return billNo;
+    }
+
+    public void setBillNo(String billNo) {
+        this.billNo = billNo;
     }
 
     public void setProcedures(List<WorkShopVo.Procedure> procedures) {

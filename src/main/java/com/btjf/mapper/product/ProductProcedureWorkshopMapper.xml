@@ -415,27 +415,35 @@
     </select>
 
     <select id="getWorkShop" resultMap="BaseResultMap">
-      SELECT <include refid="Base_Column_List"/>
-      FROM t_Product_Procedure_Workshop
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_Product_Procedure_Workshop
         WHERE productNo = #{productNo} and isDelete = 0;
     </select>
 
-    <update id="deleteByProcedureId" >
+    <update id="deleteByProcedureId">
         UPDATE  t_Product_Procedure_Workshop
         SET isDelete = 1
         WHERE procedureId = #{procedureId}
     </update>
 
     <select id="getByWorkShopAndProductNo" resultMap="BaseResultMap">
-        SELECT <include refid="Base_Column_List"/>
+        SELECT
+        <include refid="Base_Column_List"/>
         FROM t_Product_Procedure_Workshop
         WHERE productNo = #{productNo} and workshop =#{workShop} and isDelete = 0;
     </select>
 
 
     <select id="getBySort" resultMap="BaseResultMap">
-      SELECT <include refid="Base_Column_List"/>
-      FROM t_Product_Procedure_Workshop
-
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_Product_Procedure_Workshop
+        WHERE
+        1=1 and sort in
+        <foreach collection="integers" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and isDelete = 0;
     </select>
 </mapper>

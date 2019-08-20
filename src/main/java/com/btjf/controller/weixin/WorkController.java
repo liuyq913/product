@@ -52,7 +52,7 @@ public class WorkController extends ProductBaseController {
                                               @ApiParam("产品编号") String productNo, @ApiParam("生产单编号") String productionNo,
                                               @ApiParam("罗id") Integer louId, @ApiParam("领料单编号") String billNo) throws BusinessException {
         WxEmpVo wxEmpVo = getWxLoginUser();
-        if(orderId == null || orderNo == null || productNo == null) return XaResult.error("无效二维码");
+        if (orderId == null || orderNo == null || productNo == null) return XaResult.error("无效二维码");
 
         WorkListVo workListVo = new WorkListVo();
         workListVo.setOrderID(orderId);
@@ -60,22 +60,25 @@ public class WorkController extends ProductBaseController {
         workListVo.setProductNo(productNo);
         String deptName = wxEmpVo.getDeptName();
         //生产单
-        if(!StringUtils.isEmpty(productionNo)){
+        if (!StringUtils.isEmpty(productionNo)) {
             ProductionOrder productionOrder = productionOrderService.getByNo(productionNo);
-            if(productionOrder == null) return XaResult.error("没有您所需处理的工序。(如有疑问，请咨询客服)");
-            if(!deptName.equals(productionOrder.getWorkshop())) return XaResult.error("无效的二维码");
+            if (productionOrder == null) return XaResult.error("没有您所需处理的工序。(如有疑问，请咨询客服)");
+            if (!deptName.equals(productionOrder.getWorkshop())) return XaResult.error("无效的二维码");
             List<WorkShopVo.Procedure> list = productionProcedureService.getConfigProcedure(deptName, productionNo);
             workListVo.setLouId(louId);
             workListVo.setProcedures(list);
-         //领料单
-        }else if(!StringUtils.isEmpty(billNo)){
+            workListVo.setProductionNo(productionNo);
+            //领料单
+        } else if (!StringUtils.isEmpty(billNo)) {
             PmOutBill bill = pmOutService.getByBillNo(billNo);
-            if(bill == null) return XaResult.error("没有您所需处理的工序。(如有疑问，请咨询客服)");
-            if(!deptName.equals(bill.getWorkshop())) return XaResult.error("无效的二维码");
-            List<WorkShopVo.Procedure> list = productWorkshopService.getBySort(Arrays.asList(0,1,2,3));
-        }else{
+            if (bill == null) return XaResult.error("没有您所需处理的工序。(如有疑问，请咨询客服)");
+            if (!deptName.equals(bill.getWorkshop())) return XaResult.error("无效的二维码");
+            List<WorkShopVo.Procedure> list = productWorkshopService.getBySort(Arrays.asList(0, 1, 2, 3));
+            workListVo.setProcedures(list);
+            workListVo.setBillNo(billNo);
+        } else {
             return XaResult.error("没有您所需处理的工序。(如有疑问，请咨询客服)");
         }
-        return null;
+        return XaResult.success(workListVo);
     }
 }
