@@ -2,8 +2,9 @@ package com.btjf.mapper.order;
 
 import com.btjf.model.order.ProductionProcedureConfirm;
 import com.btjf.model.order.ProductionProcedureConfirmExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface ProductionProcedureConfirmMapper {
     /**
@@ -93,4 +94,10 @@ public interface ProductionProcedureConfirmMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(ProductionProcedureConfirm record);
+
+    List<ProductionProcedureConfirm> select(ProductionProcedureConfirm productionProcedureConfirm);
+
+    int delete(@Param("orderNo") String orderNo,
+               @Param("productNo") String productNo, @Param("productionNo") String productionNo,
+               @Param("louId") Integer louId,@Param("billOutNo") String billOutNo, @Param("procedureId") Integer procedureId);
 }

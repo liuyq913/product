@@ -2,8 +2,9 @@ package com.btjf.mapper.order;
 
 import com.btjf.model.order.ProductionProcedureScan;
 import com.btjf.model.order.ProductionProcedureScanExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface ProductionProcedureScanMapper {
     /**
@@ -93,4 +94,8 @@ public interface ProductionProcedureScanMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(ProductionProcedureScan record);
+
+    Integer delete(@Param("orderNo") String orderNo,
+                   @Param("productNo") String productNo, @Param("productionNo") String productionNo,
+                   @Param("louId") Integer louId,@Param("billOutNo") String billOutNo, @Param("procedureId") Integer procedureId);
 }

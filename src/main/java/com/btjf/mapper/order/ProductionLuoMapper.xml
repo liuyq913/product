@@ -117,7 +117,7 @@
     select
     <include refid="Base_Column_List" />
     from t_Production_Luo
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER} and isDelete = 0
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--

@@ -410,4 +410,20 @@
       isDelete = #{isDelete,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+  <update id="delete">
+    update t_Production_Procedure_Scan
+    SET isDelete = 1
+    WHERE orderNo = #{orderNo,jdbcType=VARCHAR} and productNo =#{productNo} and procedureId = #{procedureId}
+    <if test="productionNo != null">
+      and productionNo = #{productionNo}
+    </if>
+    <if test="louId != null">
+      and luoId = #{louId}
+    </if>
+    <if test="billOutNo != null">
+      and pmOutBillNo = #{billOutNo}
+    </if>
+  </update>
 </mapper>
