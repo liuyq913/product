@@ -1,8 +1,13 @@
 package com.btjf.mapper.order;
 
+import com.btjf.model.order.Order;
 import com.btjf.model.order.ProductionProcedureConfirm;
 import com.btjf.model.order.ProductionProcedureConfirmExample;
 import java.util.List;
+
+import com.btjf.model.product.ProductProcedure;
+import com.btjf.vo.weixin.EmpProcedureDetailVo;
+import com.btjf.vo.weixin.OrderProductVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface ProductionProcedureConfirmMapper {
@@ -93,4 +98,12 @@ public interface ProductionProcedureConfirmMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(ProductionProcedureConfirm record);
+
+    List<Order> getOrderByMouth(@Param("date")String date);
+
+    List<OrderProductVo> getOrderProductByMouth(@Param("orderNo")String orderNo);
+
+    List<ProductProcedure> getByOrderAndProduct(@Param("orderNo")String orderNo, @Param("productNo")String productNo);
+
+    List<EmpProcedureDetailVo> getEmpNum(@Param("orderNo")String orderNo, @Param("productNo")String productNo, @Param("id")Integer id);
 }

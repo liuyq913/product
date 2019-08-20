@@ -5,6 +5,7 @@ import java.util.List;
 public class EmpProcedureListVo {
 
     private Integer id;//工序ID
+    private Integer sort;//序号
     private String name;//工序名称
     private List<EmpProcedureDetailVo> list;
 
@@ -30,5 +31,13 @@ public class EmpProcedureListVo {
 
     public void setList(List<EmpProcedureDetailVo> list) {
         this.list = list;
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
     }
 }
