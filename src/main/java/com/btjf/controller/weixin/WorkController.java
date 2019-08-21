@@ -119,7 +119,7 @@ public class WorkController extends ProductBaseController {
             return XaResult.error("没有您所需处理的工序。(如有疑问，请咨询客服)");
         }
         XaResult result = XaResult.success(workListVo);
-        if (wxEmpVo.getWorkName() == "质检员") {
+        if (wxEmpVo.getWorkName().equals("检验")) {
             Map map = Maps.newHashMap();
             map.put("assignNum", assignNum);
             result.setMap(map);
@@ -199,11 +199,11 @@ public class WorkController extends ProductBaseController {
     @RequestMapping(value = "inspectionConfirm", method = RequestMethod.POST)
     public XaResult inspectionConfig(@ApiParam("订单id") Integer orderId, @ApiParam("订单编号") String orderNo,
                                      @ApiParam("产品编号") String productNo, @ApiParam("生产单编号") String productionNo,
-                                     @ApiParam("罗id") Integer louId, @ApiParam("领料单编号") String billOutNo) {
+                                     @ApiParam("罗id") Integer louId, @ApiParam("领料单编号") String billOutNo) throws BusinessException {
 
         WxEmpVo wxEmpVo = getWxLoginUser();
 
-        if (wxEmpVo.getWorkName() != "质检员") {
+        if (wxEmpVo.getWorkName().equals("检验")) {
             return XaResult.error("身份错误");
         }
         if (orderId == null || orderNo == null || productNo == null)
