@@ -112,13 +112,7 @@ public class ProductionProcedureConfirmService {
         //把之前可能存在的 调整数据 删除
         productionProcedureConfirmMapper.deleteType2(orderNo, productNo, procedureId, vo.getDeptName());
         //把之前的质检数据  置为 已调整
-        ProductionProcedureConfirm pp = new ProductionProcedureConfirm();
-        pp.setOrderNo(orderNo);
-        pp.setProductNo(productNo);
-        pp.setProcedureId(procedureId);
-        pp.setWorkshop(vo.getDeptName());
-        List<ProductionProcedureConfirm> clist = select(pp);
-       // List<ProductionProcedureConfirm> clist = productionProcedureConfirmMapper.getCheckList(orderNo, productNo, procedureId, vo.getDeptName());
+        List<ProductionProcedureConfirm> clist = productionProcedureConfirmMapper.getCheckList(orderNo, productNo, procedureId, vo.getDeptName());
         productionProcedureConfirmMapper.updateChange(orderNo, productNo, procedureId, vo.getDeptName());
         //插入 调整后的数据
         ProductionProcedureConfirm t = clist.get(0);
