@@ -426,4 +426,23 @@
       and pmOutBillNo = #{billOutNo}
     </if>
   </update>
+
+  <select id="select" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM  t_Production_Procedure_Scan
+    WHERE orderNo = #{orderNo,jdbcType=VARCHAR} and productNo =#{productNo}
+    <if test="productionNo != null">
+      and productionNo = #{productionNo}
+    </if>
+    <if test="louId != null">
+      and luoId = #{louId}
+    </if>
+    <if test="billOutNo != null">
+      and pmOutBillNo = #{billOutNo}
+    </if>
+    <if test="procedureId != null">
+      and procedureId = #{procedureId}
+    </if>
+    and isDelete = 0
+  </select>
 </mapper>

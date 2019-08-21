@@ -64,7 +64,7 @@ public class WorkController extends ProductBaseController {
     @Resource
     private ProductionLuoService productionLuoService;
 
-    @RequestMapping(value = "getConfigList", method = RequestMethod.GET)
+    @RequestMapping(value = "getConfirmList", method = RequestMethod.GET)
     public XaResult<WorkListVo> getConfigList(@ApiParam("订单id") Integer orderId, @ApiParam("订单编号") String orderNo,
                                               @ApiParam("产品编号") String productNo, @ApiParam("生产单编号") String productionNo,
                                               @ApiParam("罗id") Integer louId, @ApiParam("领料单编号") String billNo) throws BusinessException {
@@ -119,7 +119,7 @@ public class WorkController extends ProductBaseController {
             return XaResult.error("没有您所需处理的工序。(如有疑问，请咨询客服)");
         }
         XaResult result = XaResult.success(workListVo);
-        if(wxEmpVo.getWorkName() == "质检员"){
+        if (wxEmpVo.getWorkName() == "质检员") {
             Map map = Maps.newHashMap();
             map.put("assignNum", assignNum);
             result.setMap(map);
@@ -129,7 +129,7 @@ public class WorkController extends ProductBaseController {
 
 
     @Transactional(readOnly = false, rollbackFor = Exception.class)
-    @RequestMapping(value = "config", method = RequestMethod.POST)
+    @RequestMapping(value = "confirm", method = RequestMethod.POST)
     public XaResult config(@ApiParam("订单id") Integer orderId, @ApiParam("订单编号") String orderNo,
                            @ApiParam("产品编号") String productNo, @ApiParam("生产单编号") String productionNo,
                            @ApiParam("罗id") Integer louId, @ApiParam("领料单编号") String billOutNo, String proceduresJosn) throws BusinessException {
@@ -167,8 +167,8 @@ public class WorkController extends ProductBaseController {
 
         ProductionProcedureConfirm productionProcedureConfirm = new ProductionProcedureConfirm();
         productionProcedureConfirm.setOrderNo(orderNo);
-        productionProcedureConfirm.setType(2); //车间主任上报
         productionProcedureConfirm.setProductNo(productNo);
+        productionProcedureConfirm.setType(1);
         if (!StringUtils.isEmpty(productionNo)) {
             productionProcedureConfirm.setProductionNo(productionNo);
             if (louId != null) {
@@ -179,30 +179,58 @@ public class WorkController extends ProductBaseController {
             productionProcedureConfirm.setPmOutBillNo(billOutNo);
         }
 
-
         for (WorkShopVo.Procedure procedure : procedures) {
             productionProcedureConfirm.setProcedureId(procedure.getProcedureId());
+            productionProcedureConfirm.setIsChange(1);
             //是否调整
             if (!CollectionUtils.isEmpty(productionProcedureConfirmService.select(productionProcedureConfirm))) {
                 throw new BusinessException("工序：" + procedure.getProcedureName() + "车间主任已经调整过了，无法再确认该工序");
             }
             //未调整   工序上个月最新一条有质检信息
             productionProcedureConfirm.setCreateTime(DateUtil.string2Date(DateUtil.dateToString(new Date(), DateUtil.ymdFormat), DateUtil.ymdFormat));
-            //todo A 确认后   质检这个工序   B 再次确认，删除这个工序的确认信息和质检信息
-            //productionProcedureConfirm.setEmpId(empId);
+            productionProcedureConfirm.setIsChange(0);
             if (!CollectionUtils.isEmpty(productionProcedureConfirmService.select(productionProcedureConfirm))) {
                 throw new BusinessException("工序：" + procedure.getProcedureName() + "上月已经质检过，无法再确认该工序");
             }
         }
 
-
     }
 
-    public static void main(String [] agrs){
-        String s = "[{\"procedureId\":11,\"procedureName\":\"工序名称工序名称13\",\"sort\":9},{\"procedureId\":12,\"procedureName\":\"工序名称工序名称13\",\"sort\":10}]\n";
+    @RequestMapping(value = "inspectionConfirm", method = RequestMethod.POST)
+    public XaResult inspectionConfig(@ApiParam("订单id") Integer orderId, @ApiParam("订单编号") String orderNo,
+                                     @ApiParam("产品编号") String productNo, @ApiParam("生产单编号") String productionNo,
+                                     @ApiParam("罗id") Integer louId, @ApiParam("领料单编号") String billOutNo) {
 
-        List<WorkShopVo.Procedure> procedures = JSONObject.parseArray(s, WorkShopVo.Procedure.class);
-        System.out.println(procedures);
+        WxEmpVo wxEmpVo = getWxLoginUser();
 
+        if (wxEmpVo.getWorkName() != "质检员") {
+            return XaResult.error("身份错误");
+        }
+        if (orderId == null || orderNo == null || productNo == null)
+            return XaResult.error("orderId，orderNo， productNo，必填");
+
+        if (productionNo == null && billOutNo == null) return XaResult.error("生产单号和领料单号不能同时为空");
+        if (productionNo != null && billOutNo != null) return XaResult.error("生产单号和领料单号不能同时存在");
+
+        ProductionProcedureConfirm productionProcedureConfirm = new ProductionProcedureConfirm();
+        productionProcedureConfirm.setOrderNo(orderNo);
+        productionProcedureConfirm.setProductNo(productNo);
+        productionProcedureConfirm.setType(1);
+        productionProcedureConfirm.setIsChange(1);
+        productionProcedureConfirm.setIsDelete(0);
+        if (!StringUtils.isEmpty(productionNo)) {
+            productionProcedureConfirm.setProductionNo(productionNo);
+            if (louId != null) {
+                productionProcedureConfirm.setLuoId(louId);
+            }
+        }
+        if (!StringUtils.isEmpty(billOutNo)) {
+            productionProcedureConfirm.setPmOutBillNo(billOutNo);
+        }
+        if (!CollectionUtils.isEmpty(productionProcedureConfirmService.select(productionProcedureConfirm))) {
+            throw new BusinessException("车间主任已经调整过了，无法再质检");
+        }
+        Integer row = productionProcedureConfirmService.add(orderId, orderNo, louId, billOutNo, productNo, productionNo, wxEmpVo);
+        return XaResult.success(row);
     }
 }

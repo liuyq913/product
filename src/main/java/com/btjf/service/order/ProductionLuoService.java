@@ -38,4 +38,8 @@ public class ProductionLuoService {
         return productionLuoMapper.selectByPrimaryKey(id);
 
     }
+
+    public Integer update(ProductionLuo productionLuo){
+        return productionLuoMapper.updateByPrimaryKeySelective(productionLuo);
+    }
 }
