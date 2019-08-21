@@ -713,7 +713,7 @@
     </update>
 
     <select id="getByName" resultType="com.btjf.model.emp.Emp">
-        select * from t_Emp where FName = #{name,jdbcType=VARCHAR} and isDelete = 0
+        select * from t_Emp where name = #{name,jdbcType=VARCHAR} and isDelete = 0
     </select>
 
     <select id="getLeaderByDeptID" resultMap="BaseResultMap">
