@@ -98,4 +98,8 @@ public interface ProductionProcedureScanMapper {
     Integer delete(@Param("orderNo") String orderNo,
                    @Param("productNo") String productNo, @Param("productionNo") String productionNo,
                    @Param("louId") Integer louId,@Param("billOutNo") String billOutNo, @Param("procedureId") Integer procedureId);
+
+    List<ProductionProcedureScan> select(@Param("orderNo") String orderNo,
+                   @Param("productNo") String productNo, @Param("productionNo") String productionNo,
+                   @Param("louId") Integer louId,@Param("billOutNo") String billOutNo, @Param("procedureId") Integer procedureId);
 }

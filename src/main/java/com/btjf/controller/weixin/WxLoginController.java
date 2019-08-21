@@ -95,4 +95,8 @@ public class WxLoginController extends ProductBaseController{
         emp.setLastModifyTime(new Date());
         return XaResult.success(empService.update(emp));
     }
+
+    public static void main(String[] arsg){
+        System.out.println( MD5Utils.ecodeByMD5("123456"));
+    }
 }

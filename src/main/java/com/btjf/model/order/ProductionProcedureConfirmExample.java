@@ -1396,6 +1396,76 @@ public class ProductionProcedureConfirmExample {
             return (Criteria) this;
         }
 
+        public Criteria andWorkshopIsNull() {
+            addCriterion("workshop is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkshopIsNotNull() {
+            addCriterion("workshop is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkshopEqualTo(String value) {
+            addCriterion("workshop =", value, "workshop");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkshopNotEqualTo(String value) {
+            addCriterion("workshop <>", value, "workshop");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkshopGreaterThan(String value) {
+            addCriterion("workshop >", value, "workshop");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkshopGreaterThanOrEqualTo(String value) {
+            addCriterion("workshop >=", value, "workshop");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkshopLessThan(String value) {
+            addCriterion("workshop <", value, "workshop");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkshopLessThanOrEqualTo(String value) {
+            addCriterion("workshop <=", value, "workshop");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkshopLike(String value) {
+            addCriterion("workshop like", value, "workshop");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkshopNotLike(String value) {
+            addCriterion("workshop not like", value, "workshop");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkshopIn(List<String> values) {
+            addCriterion("workshop in", values, "workshop");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkshopNotIn(List<String> values) {
+            addCriterion("workshop not in", values, "workshop");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkshopBetween(String value1, String value2) {
+            addCriterion("workshop between", value1, value2, "workshop");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkshopNotBetween(String value1, String value2) {
+            addCriterion("workshop not between", value1, value2, "workshop");
+            return (Criteria) this;
+        }
+
         public Criteria andOrderNoLikeInsensitive(String value) {
             addCriterion("upper(orderNo) like", value.toUpperCase(), "orderNo");
             return (Criteria) this;
@@ -1423,6 +1493,11 @@ public class ProductionProcedureConfirmExample {
 
         public Criteria andPmOutBillNoLikeInsensitive(String value) {
             addCriterion("upper(pmOutBillNo) like", value.toUpperCase(), "pmOutBillNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkshopLikeInsensitive(String value) {
+            addCriterion("upper(workshop) like", value.toUpperCase(), "workshop");
             return (Criteria) this;
         }
     }

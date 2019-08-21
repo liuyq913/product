@@ -349,7 +349,7 @@ CREATE TABLE t_Production_Procedure_Scan(
   id int(11) primary key AUTO_INCREMENT,
   orderNo varchar(100) NOT NULL comment '订单编号',
   productNo varchar(100) NOT NULL comment '产品型号',
-  productionNo varchar(50) NOT NULL COMMENT '生产单编号',
+  productionNo varchar(50) COMMENT '生产单编号',
   luoId int(11) comment '生产单罗ID',
   pmOutBillNo varchar(50) comment '领料单编号',
   procedureId int(11) comment '工序ID',
@@ -377,11 +377,13 @@ CREATE TABLE t_Production_Procedure_Confirm(
   lastModifyTime datetime,
   type int(11) comment '1 员工质检  2 车间主任上报',
   operator varchar(100) NOT NULL comment '添加人',
-  productionNo varchar(50) NOT NULL COMMENT '生产单编号',
+  productionNo varchar(50) COMMENT '生产单编号',
   luoId int(11) comment '生产单罗ID',
   pmOutBillNo varchar(50) comment '领料单编号',
   isDelete int NOT NULL,
-  isChange int NOT NULL comment '主任是否调整'
+  isChange int NOT NULL comment '主任是否调整',
+  workshop  varchar(30) comment '车间'
+
 );
 
 

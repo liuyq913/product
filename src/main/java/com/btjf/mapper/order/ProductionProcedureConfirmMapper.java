@@ -111,5 +111,5 @@ public interface ProductionProcedureConfirmMapper {
 
     int delete(@Param("orderNo") String orderNo,
                @Param("productNo") String productNo, @Param("productionNo") String productionNo,
-               @Param("louId") Integer louId,@Param("billOutNo") String billOutNo, @Param("") Integer procedureId);
+               @Param("louId") Integer louId,@Param("billOutNo") String billOutNo, @Param("procedureId") Integer procedureId);
 }

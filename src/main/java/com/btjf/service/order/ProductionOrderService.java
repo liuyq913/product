@@ -57,7 +57,9 @@ public class ProductionOrderService {
     public Integer assign(ProductionOrder productionOrder, List<WorkShopVo.Procedure> procedures) {
         if (null == productionOrder) return 0;
 
-        productionOrder.setProductionNo("P"+billNoService.getNo(4));
+        productionOrder.setProductionNo("P" + billNoService.getNo(4));
+        productionOrder.setCodeUrl("/wx/work/getConfigList?orderId=" + productionOrder.getOrderId() + "&orderNo=" + productionOrder.getOrderNo()
+                + "&productNo=" + productionOrder.getProductNo() + "&productionNo=" + productionOrder.getProductionNo());
         productionOrderMapper.insertSelective(productionOrder);
         //更新  订单 型号表 分配数量信息
         OrderProduct orderProduct = orderProductService.getByID(productionOrder.getOrderProductId());
@@ -88,7 +90,13 @@ public class ProductionOrderService {
         //分萝
         List<ProductionLuo> productionLuos = distribution(productionOrder);
         if (!CollectionUtils.isEmpty(productionLuos)) {
-            productionLuos.forEach(t -> productionLuoService.insert(t));
+            productionLuos.stream().filter(t -> t != null).forEach(t -> {
+                Integer id = productionLuoService.insert(t);
+                ProductionLuo productionLuo = new ProductionLuo();
+                productionLuo.setId(id);
+                productionLuo.setCodeUrl(productionOrder.getCodeUrl()+"&louId="+id);
+                productionLuoService.update(productionLuo);
+            });
         }
 
         return productionOrder.getId();

@@ -44,13 +44,14 @@ public class PmOutBillDetailVo {
         this.num = orderProduct.getNum();
         this.assignedNum = pmOutBill.getDistributionNum();
         this.maxNum = orderProduct.getMaxNum();
-        this.url = "www.baidu.com";
+        this.url = "/wx/work/getConfigList?orderId=" + orderProduct.getOrderId() + "&orderNo=" + orderProduct.getOrderNo()
+                + "&productNo=" + orderProduct.getProductNo() + "&billNo=" + pmOutBill.getBillNo();
         this.billDate = DateUtil.dateToString(pmOutBill.getCreateTime(), DateUtil.ymdFormat);
-        if(plist != null && plist.size() >0){
+        if (plist != null && plist.size() > 0) {
             this.list = new ArrayList<>();
-            for (int i=0; i< plist.size(); i++){
-                for (ProductPm pm: pplist) {
-                    if(pm.getPmNo().equals(plist.get(i).getPmNo())){
+            for (int i = 0; i < plist.size(); i++) {
+                for (ProductPm pm : pplist) {
+                    if (pm.getPmNo().equals(plist.get(i).getPmNo())) {
                         BillPmVo vo = new BillPmVo(plist.get(i), maxNum, pm);
                         this.list.add(vo);
                     }
