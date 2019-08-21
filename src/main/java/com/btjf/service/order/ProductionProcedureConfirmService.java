@@ -1,5 +1,7 @@
 package com.btjf.service.order;
 
+import com.btjf.business.common.exception.BusinessException;
+import com.btjf.controller.weixin.vo.WxEmpVo;
 import com.btjf.mapper.order.ProductionProcedureConfirmMapper;
 import com.btjf.model.order.Order;
 import com.btjf.model.order.ProductionProcedureConfirm;
@@ -64,5 +66,19 @@ public class ProductionProcedureConfirmService {
     public List<ProductionProcedureConfirm> select(ProductionProcedureConfirm productionProcedureConfirm) {
         if (productionProcedureConfirm == null) return null;
         return productionProcedureConfirmMapper.select(productionProcedureConfirm);
+    }
+
+    public void change(String orderNo, String productNo, Integer procedureId, List<EmpProcedureDetailVo> list, WxEmpVo vo){
+
+        //把之前可能存在的 调整数据 删除
+
+        //把之前的质检数据  置为 已调整
+
+        //插入 调整后的数据
+
+    }
+
+    public Integer getChangeNum(String orderNo, String productNo, Integer procedureId, String deptName) {
+        return 0;
     }
 }

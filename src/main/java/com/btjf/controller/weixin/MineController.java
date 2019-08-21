@@ -1,6 +1,7 @@
 package com.btjf.controller.weixin;
 
 import com.btjf.application.util.XaResult;
+import com.btjf.business.common.exception.BusinessException;
 import com.btjf.common.utils.DateUtil;
 import com.btjf.controller.base.ProductBaseController;
 import com.btjf.controller.weixin.vo.WxEmpVo;
@@ -169,7 +170,19 @@ public class MineController  extends ProductBaseController {
 
         WxEmpVo vo = getWXLoginUser();
 
-        return null;
+        Integer changeNum = productionProcedureConfirmService.getChangeNum(orderNo, productNo, procedureId, vo.getDeptName());
+        if(num < changeNum){
+            XaResult xaResult = new XaResult();
+            xaResult.setError(1002,"您设置的产量未达到上限数量，确认保存吗？");
+            return xaResult;
+        }else if(num > changeNum){
+            XaResult xaResult = new XaResult();
+            xaResult.setError(1001,"您设置的计件产量工序超过{" + changeNum + "}，请修改");
+            return xaResult;
+        }
+
+        productionProcedureConfirmService.change(orderNo, productNo, procedureId, list, vo);
+        return XaResult.success();
     }
 
     /**
