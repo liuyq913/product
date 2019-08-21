@@ -530,4 +530,65 @@
         and (p.type = 2 or (p.type =1 and p.isChange=0))
          and p.isDelete = 0
     </select>
+
+
+    <select id="select" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_Production_Procedure_Confirm
+        WHERE 1=1
+        <if test="orderNo != null">
+            AND orderNo = #{orderNo,jdbcType=VARCHAR}
+        </if>
+        <if test="productNo != null">
+            AND productNo = #{productNo,jdbcType=VARCHAR}
+        </if>
+        <if test="procedureId != null">
+            AND procedureId = #{procedureId,jdbcType=INTEGER}
+        </if>
+        <if test="procedureName != null">
+            AND procedureName = #{procedureName,jdbcType=VARCHAR}
+        </if>
+        <if test="empId != null">
+            AND empId = #{empId,jdbcType=INTEGER}
+        </if>
+        <if test="type != null">
+            AND  type = #{type,jdbcType=INTEGER}
+        </if>
+        <if test="operator != null">
+            AND operator = #{operator,jdbcType=VARCHAR}
+        </if>
+        <if test="productionNo != null">
+            AND productionNo = #{productionNo,jdbcType=VARCHAR}
+        </if>
+        <if test="luoId != null">
+            AND luoId = #{luoId,jdbcType=INTEGER}
+        </if>
+        <if test="pmOutBillNo != null">
+            AND pmOutBillNo = #{pmOutBillNo,jdbcType=VARCHAR}
+        </if>
+        <if test="isChange != null">
+            AND isChange = #{isChange,jdbcType=INTEGER}
+        </if>
+        <if test="createTime != null">
+            AND createTime &lt; #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        AND isDelete = 0
+    </select>
+
+    <update id="delete">
+        update t_Production_Procedure_Confirm
+        SET isDelete = 1 , lastModifyTime = now()
+        WHERE orderNo = #{orderNo,jdbcType=VARCHAR} and productNo =#{productNo} and procedureId = #{procedureId}
+        <if test="productionNo != null">
+            and productionNo = #{productionNo}
+        </if>
+        <if test="louId != null">
+            and luoId = #{louId}
+        </if>
+        <if test="billOutNo != null">
+            and billOutNo = #{billOutNo}
+        </if>
+        and type = 1
+    </update>
 </mapper>

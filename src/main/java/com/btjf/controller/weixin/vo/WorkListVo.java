@@ -12,7 +12,7 @@ public class WorkListVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Integer orderID;
+    private Integer orderId;
 
     private String productNo; //型号
 
@@ -27,12 +27,12 @@ public class WorkListVo implements Serializable {
     //工序
     private List<WorkShopVo.Procedure> procedures;
 
-    public Integer getOrderID() {
-        return orderID;
+    public Integer getOrderId() {
+        return orderId;
     }
 
-    public void setOrderID(Integer orderID) {
-        this.orderID = orderID;
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
     }
 
     public String getProductNo() {
