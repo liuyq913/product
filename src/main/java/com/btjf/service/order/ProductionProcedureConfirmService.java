@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,17 +39,17 @@ public class ProductionProcedureConfirmService {
     @Resource
     private ProductionProcedureScanService productionProcedureScanService;
 
-    public List<Order> getOrderByMouth(String date) {
-        return productionProcedureConfirmMapper.getOrderByMouth(date);
+    public List<Order> getOrderByMouth(String date,String deptName) {
+        return productionProcedureConfirmMapper.getOrderByMouth(date, deptName);
     }
 
-    public List<OrderProductVo> getOrderProductByMouth(String orderNo) {
-        return productionProcedureConfirmMapper.getOrderProductByMouth(orderNo);
+    public List<OrderProductVo> getOrderProductByMouth(String orderNo, String deptName) {
+        return productionProcedureConfirmMapper.getOrderProductByMouth(orderNo, deptName);
     }
 
-    public List<EmpProcedureListVo> getEmpNum(String orderNo, String productNo) {
+    public List<EmpProcedureListVo> getEmpNum(String orderNo, String productNo, String deptName) {
         List<ProductProcedure> list =
-                productionProcedureConfirmMapper.getByOrderAndProduct(orderNo, productNo);
+                productionProcedureConfirmMapper.getByOrderAndProduct(orderNo, productNo, deptName);
         List<EmpProcedureListVo> volist = null;
         if (list != null && list.size() > 0) {
             volist = new ArrayList<>();
@@ -57,7 +58,7 @@ public class ProductionProcedureConfirmService {
                 vo.setId(list.get(i).getId());
                 vo.setName(list.get(i).getProcedureName());
                 vo.setSort(list.get(i).getSort());
-                List<EmpProcedureDetailVo> dlist = productionProcedureConfirmMapper.getEmpNum(orderNo, productNo, vo.getId());
+                List<EmpProcedureDetailVo> dlist = productionProcedureConfirmMapper.getEmpNum(orderNo, productNo, vo.getId(), deptName);
                 vo.setList(dlist);
                 volist.add(vo);
             }
@@ -88,6 +89,7 @@ public class ProductionProcedureConfirmService {
             productionProcedureConfirm.setLuoId(t.getLuoId());
             productionProcedureConfirm.setPmOutBillNo(t.getPmOutBillNo());
             productionProcedureConfirm.setProductionNo(t.getProductionNo());
+            productionProcedureConfirm.setOrderNo(t.getOrderNo());
             productionProcedureConfirm.setProductNo(t.getProductNo());
             productionProcedureConfirm.setNum(t.getNum());
             productionProcedureConfirm.setEmpId(t.getEmpId());
@@ -107,16 +109,42 @@ public class ProductionProcedureConfirmService {
     }
 
     public void change(String orderNo, String productNo, Integer procedureId, List<EmpProcedureDetailVo> list, WxEmpVo vo){
-
         //把之前可能存在的 调整数据 删除
-
+        productionProcedureConfirmMapper.deleteType2(orderNo, productNo, procedureId, vo.getDeptName());
         //把之前的质检数据  置为 已调整
-
+        ProductionProcedureConfirm pp = new ProductionProcedureConfirm();
+        pp.setOrderNo(orderNo);
+        pp.setProductNo(productNo);
+        pp.setProcedureId(procedureId);
+        pp.setWorkshop(vo.getDeptName());
+        List<ProductionProcedureConfirm> clist = select(pp);
+       // List<ProductionProcedureConfirm> clist = productionProcedureConfirmMapper.getCheckList(orderNo, productNo, procedureId, vo.getDeptName());
+        productionProcedureConfirmMapper.updateChange(orderNo, productNo, procedureId, vo.getDeptName());
         //插入 调整后的数据
-
+        ProductionProcedureConfirm t = clist.get(0);
+        for (int i = 0; i < list.size(); i++){
+            ProductionProcedureConfirm productionProcedureConfirm = new ProductionProcedureConfirm();
+            productionProcedureConfirm.setOrderNo(t.getOrderNo());
+            productionProcedureConfirm.setType(2);
+            productionProcedureConfirm.setIsDelete(0);
+            productionProcedureConfirm.setOrderNo(t.getOrderNo());
+            productionProcedureConfirm.setProductNo(t.getProductNo());
+            productionProcedureConfirm.setNum(list.get(i).getNum());
+            productionProcedureConfirm.setEmpId(list.get(i).getEmpId());
+            productionProcedureConfirm.setIsChange(0);
+            productionProcedureConfirm.setMoney(t.getPrice().multiply(BigDecimal.valueOf(list.get(i).getNum())));
+            productionProcedureConfirm.setOperator(vo.getName());
+            productionProcedureConfirm.setLastModifyTime(new Date());
+            productionProcedureConfirm.setCreateTime(new Date());
+            productionProcedureConfirm.setPrice(t.getPrice());
+            productionProcedureConfirm.setWorkshop(vo.getDeptName());
+            productionProcedureConfirm.setProcedureId(procedureId);
+            productionProcedureConfirm.setProcedureName(t.getProcedureName());
+            productionProcedureConfirmMapper.insertSelective(productionProcedureConfirm);
+        }
     }
 
     public Integer getChangeNum(String orderNo, String productNo, Integer procedureId, String deptName) {
-        return 0;
+        return productionProcedureConfirmMapper.getChangeNum(orderNo, productNo, procedureId, deptName);
     }
 }

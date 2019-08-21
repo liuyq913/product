@@ -72,7 +72,8 @@ public class MineController  extends ProductBaseController {
             return XaResult.error("月份不能为空");
         }
         //TODO 本部门订单
-        List<Order> list = productionProcedureConfirmService.getOrderByMouth(date);
+        WxEmpVo vo = getWXLoginUser();
+        List<Order> list = productionProcedureConfirmService.getOrderByMouth(date, vo.getDeptName());
         List<OrderVo> voList = null;
         if(list != null && list.size() >0){
             voList = new ArrayList<>();
@@ -80,7 +81,7 @@ public class MineController  extends ProductBaseController {
                 OrderVo orderVo = new OrderVo();
                 orderVo.setDate(DateUtil.dateToString(o.getCreateTime(),new SimpleDateFormat("yyyy/MM/dd")));
                 orderVo.setOrderNo(o.getOrderNo());
-                List<OrderProductVo> ops = productionProcedureConfirmService.getOrderProductByMouth(o.getOrderNo());
+                List<OrderProductVo> ops = productionProcedureConfirmService.getOrderProductByMouth(o.getOrderNo(),vo.getDeptName());
                 orderVo.setList(ops);
                 voList.add(orderVo);
             }
@@ -103,8 +104,8 @@ public class MineController  extends ProductBaseController {
         if (StringUtils.isEmpty(productNo)){
             return XaResult.error("产品型号不能为空");
         }
-
-        List<EmpProcedureListVo> list = productionProcedureConfirmService.getEmpNum(orderNo, productNo);
+        WxEmpVo vo = getWXLoginUser();
+        List<EmpProcedureListVo> list = productionProcedureConfirmService.getEmpNum(orderNo, productNo, vo.getDeptName());
 
         return XaResult.success(list);
     }

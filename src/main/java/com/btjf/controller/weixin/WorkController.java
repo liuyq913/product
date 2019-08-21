@@ -228,7 +228,7 @@ public class WorkController extends ProductBaseController {
             productionProcedureConfirm.setPmOutBillNo(billOutNo);
         }
         if (!CollectionUtils.isEmpty(productionProcedureConfirmService.select(productionProcedureConfirm))) {
-            throw new BusinessException("车间主任已经调整过了，无法再质检");
+            return XaResult.error("车间主任已经调整过了，无法再质检");
         }
         Integer row = productionProcedureConfirmService.add(orderId, orderNo, louId, billOutNo, productNo, productionNo, wxEmpVo);
         return XaResult.success(row);

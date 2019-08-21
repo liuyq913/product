@@ -383,7 +383,6 @@ CREATE TABLE t_Production_Procedure_Confirm(
   isDelete int NOT NULL,
   isChange int NOT NULL comment '主任是否调整',
   workshop  varchar(30) comment '车间'
-
 );
 
 

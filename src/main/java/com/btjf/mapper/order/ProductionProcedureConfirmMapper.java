@@ -99,17 +99,25 @@ public interface ProductionProcedureConfirmMapper {
      */
     int updateByPrimaryKey(ProductionProcedureConfirm record);
 
-    List<Order> getOrderByMouth(@Param("date")String date);
+    List<Order> getOrderByMouth(@Param("date") String date, @Param("deptName")String deptName);
 
-    List<OrderProductVo> getOrderProductByMouth(@Param("orderNo")String orderNo);
+    List<OrderProductVo> getOrderProductByMouth(@Param("orderNo")String orderNo, @Param("deptName")String deptName);
 
-    List<ProductProcedure> getByOrderAndProduct(@Param("orderNo")String orderNo, @Param("productNo")String productNo);
+    List<ProductProcedure> getByOrderAndProduct(@Param("orderNo")String orderNo, @Param("productNo")String productNo, @Param("deptName")String deptName);
 
-    List<EmpProcedureDetailVo> getEmpNum(@Param("orderNo")String orderNo, @Param("productNo")String productNo, @Param("id")Integer id);
+    List<EmpProcedureDetailVo> getEmpNum(@Param("orderNo")String orderNo, @Param("productNo")String productNo, @Param("id")Integer id, @Param("deptName")String deptName);
 
     List<ProductionProcedureConfirm> select(ProductionProcedureConfirm productionProcedureConfirm);
 
     int delete(@Param("orderNo") String orderNo,
                @Param("productNo") String productNo, @Param("productionNo") String productionNo,
                @Param("louId") Integer louId,@Param("billOutNo") String billOutNo, @Param("procedureId") Integer procedureId);
+
+    Integer getChangeNum(@Param("orderNo")String orderNo, @Param("productNo")String productNo, @Param("id")Integer id, @Param("deptName")String deptName);
+
+    void deleteType2(@Param("orderNo")String orderNo, @Param("productNo")String productNo, @Param("id")Integer id, @Param("deptName")String deptName);
+
+    List<ProductionProcedureConfirm> getCheckList(@Param("orderNo")String orderNo, @Param("productNo")String productNo, @Param("id")Integer id, @Param("deptName")String deptName);
+
+    void updateChange(@Param("orderNo")String orderNo, @Param("productNo")String productNo, @Param("id")Integer id, @Param("deptName")String deptName);
 }
