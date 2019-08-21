@@ -88,15 +88,11 @@ public class WxLoginController extends ProductBaseController{
 
         newPassword = MD5Utils.ecodeByMD5(newPassword);
 
-        if (emp.getPassword() == newPassword) return XaResult.error("新密码不能与原密码相同");
+        if (newPassword.equals(emp.getPassword())) return XaResult.error("新密码不能与原密码相同");
 
 
         emp.setPassword(newPassword);
         emp.setLastModifyTime(new Date());
         return XaResult.success(empService.update(emp));
-    }
-
-    public static void main(String[] arsg){
-        System.out.println( MD5Utils.ecodeByMD5("123456"));
     }
 }
