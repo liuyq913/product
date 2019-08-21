@@ -48,6 +48,7 @@ public class MineController  extends ProductBaseController {
         if(vo != null){
             mineIndexVo = new MineIndexVo();
             mineIndexVo.setName(vo.getName());
+            mineIndexVo.setEmpId(vo.getId());
             mineIndexVo.setDeptName(vo.getDeptName());
             if (vo.getIsLeader() == 1){
                 mineIndexVo.setIsShowMenu(1);
@@ -69,7 +70,7 @@ public class MineController  extends ProductBaseController {
         if (StringUtils.isEmpty(date)){
             return XaResult.error("月份不能为空");
         }
-
+        //TODO 本部门订单
         List<Order> list = productionProcedureConfirmService.getOrderByMouth(date);
         List<OrderVo> voList = null;
         if(list != null && list.size() >0){
@@ -124,9 +125,10 @@ public class MineController  extends ProductBaseController {
         }
         Sysdept dept = sysDeptService.get(emp.getDeptId());
         MineIndexVo vo = new MineIndexVo();
+        vo.setEmpId(emp.getId());
         vo.setName(empName);
         vo.setDeptName(dept==null?null:dept.getDeptName());
-        return XaResult.success();
+        return XaResult.success(vo);
     }
 
     /**
