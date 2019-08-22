@@ -127,12 +127,38 @@ public class WorkController extends ProductBaseController {
         return result;
     }
 
+    @RequestMapping(value = "/checkConfirm", method = RequestMethod.GET)
+    public XaResult<String> checkConfirm(@ApiParam("订单id") Integer orderId, @ApiParam("订单编号") String orderNo,
+                                         @ApiParam("产品编号") String productNo, @ApiParam("生产单编号") String productionNo,
+                                         @ApiParam("罗id") Integer louId, @ApiParam("领料单编号") String billOutNo, String proceduresJosn) {
+        if (orderId == null || orderNo == null || productNo == null || StringUtils.isEmpty(proceduresJosn))
+            return XaResult.error("orderId，orderNo， productNo，proceduresJosn必填");
+
+        List<WorkShopVo.Procedure> procedures = JSONObject.parseArray(proceduresJosn, WorkShopVo.Procedure.class);
+        if ((StringUtils.isEmpty(productionNo) && StringUtils.isEmpty(billOutNo)) || (!StringUtils.isEmpty(productionNo) && !StringUtils.isEmpty(billOutNo)))
+            throw new com.btjf.business.common.exception.BusinessException("生成单和领料单不能存在，且不能同时未空");
+        StringBuffer stringBuffer = new StringBuffer();
+
+        for (WorkShopVo.Procedure procedure : procedures) {
+            if (procedure == null) continue;
+            if (!CollectionUtils.isEmpty(productionProcedureScanService.select(orderNo, productNo, productionNo, louId, billOutNo, procedure.getProcedureId()))){
+                stringBuffer.append(procedure.getProcedureName() + "、");
+            }
+        }
+        if (StringUtils.isEmpty(stringBuffer)) return XaResult.success();
+        String result = stringBuffer.toString();
+        if (result.length() - 1 == result.lastIndexOf("、")) {
+            result = result.substring(0, result.length() - 1);
+        }
+        return XaResult.success(result);
+    }
+
 
     @Transactional(readOnly = false, rollbackFor = Exception.class)
     @RequestMapping(value = "confirm", method = RequestMethod.POST)
-    public XaResult config(@ApiParam("订单id") Integer orderId, @ApiParam("订单编号") String orderNo,
-                           @ApiParam("产品编号") String productNo, @ApiParam("生产单编号") String productionNo,
-                           @ApiParam("罗id") Integer louId, @ApiParam("领料单编号") String billOutNo, String proceduresJosn) throws BusinessException {
+    public XaResult confirm(@ApiParam("订单id") Integer orderId, @ApiParam("订单编号") String orderNo,
+                            @ApiParam("产品编号") String productNo, @ApiParam("生产单编号") String productionNo,
+                            @ApiParam("罗id") Integer louId, @ApiParam("领料单编号") String billOutNo, String proceduresJosn) throws BusinessException {
 
         if (orderId == null || orderNo == null || productNo == null || StringUtils.isEmpty(proceduresJosn))
             return XaResult.error("orderId，orderNo， productNo，proceduresJosn必填");
