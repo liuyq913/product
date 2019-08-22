@@ -10,9 +10,7 @@ import com.btjf.model.order.Order;
 import com.btjf.model.order.ProductionProcedureConfirm;
 import com.btjf.model.order.ProductionProcedureScan;
 import com.btjf.model.product.ProductProcedure;
-import com.btjf.vo.weixin.EmpProcedureDetailVo;
-import com.btjf.vo.weixin.EmpProcedureListVo;
-import com.btjf.vo.weixin.OrderProductVo;
+import com.btjf.vo.weixin.*;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -140,5 +138,13 @@ public class ProductionProcedureConfirmService {
 
     public Integer getChangeNum(String orderNo, String productNo, Integer procedureId, String deptName) {
         return productionProcedureConfirmMapper.getChangeNum(orderNo, productNo, procedureId, deptName);
+    }
+
+    public List<EmpDayWorkVo> analyseForDay(String date, Integer id) {
+        return null;
+    }
+
+    public List<EmpDayWorkDetailVo> getWorkForDay(String date, Integer id) {
+        return null;
     }
 }
