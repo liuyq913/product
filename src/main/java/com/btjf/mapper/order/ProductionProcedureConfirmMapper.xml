@@ -522,7 +522,7 @@
         from t_Production_Procedure_Confirm p
         where ((p.type = 2 and p.isChange=0) or (p.type =1 and p.isChange=0))
          and p.isDelete = 0
-        and p.orderNo = #{orderNo}
+        and p.orderNo = #{orderNo,jdbcType=VARCHAR}
         and p.workshop = #{deptName,jdbcType=VARCHAR}
         group by p.productNo,p.procedureId
     </select>
@@ -531,7 +531,7 @@
         pp.*
         from t_Production_Procedure_Confirm p LEFT JOIN t_Product_Procedure pp ON pp.id = p.procedureId
         where  p.productNo = #{productNo,jdbcType=VARCHAR}
-        and p.orderNo = #{orderNo,jdbcType=INTEGER}
+        and p.orderNo = #{orderNo,jdbcType=VARCHAR}
         and ((p.type = 2 and p.isChange=0) or (p.type =1 and p.isChange=0))
          and p.isDelete = 0
          and p.workshop = #{deptName,jdbcType=VARCHAR}
@@ -543,7 +543,7 @@
         e.name AS empName
         from t_Production_Procedure_Confirm p  LEFT JOIN t_Emp e ON e.id = p.empId
         where  p.productNo = #{productNo,jdbcType=VARCHAR}
-        and p.orderNo = #{orderNo,jdbcType=INTEGER}
+        and p.orderNo = #{orderNo,jdbcType=VARCHAR}
         and p.procedureId = #{id,jdbcType=INTEGER}
         and ((p.type = 2 and p.isChange=0) or (p.type =1 and p.isChange=0))
          and p.isDelete = 0
@@ -555,7 +555,7 @@
         sum(p.num)
         from t_Production_Procedure_Confirm p
         where  p.productNo = #{productNo,jdbcType=VARCHAR}
-        and p.orderNo = #{orderNo,jdbcType=INTEGER}
+        and p.orderNo = #{orderNo,jdbcType=VARCHAR}
         and p.procedureId = #{id,jdbcType=INTEGER}
         and((p.type = 2 and p.isChange=0) or (p.type =1 and p.isChange=0))
          and p.isDelete = 0
@@ -611,7 +611,7 @@
         <include refid="Base_Column_List" />
         from t_Production_Procedure_Confirm p
         where  p.productNo = #{productNo,jdbcType=VARCHAR}
-        and p.orderNo = #{orderNo,jdbcType=INTEGER}
+        and p.orderNo = #{orderNo,jdbcType=VARCHAR}
         and p.procedureId = #{id,jdbcType=INTEGER}
         and p.type =1
          and p.isDelete = 0
@@ -643,7 +643,7 @@
         update t_Production_Procedure_Confirm p
         set  p.isDelete = 1
         where  p.productNo = #{productNo,jdbcType=VARCHAR}
-        and p.orderNo = #{orderNo,jdbcType=INTEGER}
+        and p.orderNo = #{orderNo,jdbcType=VARCHAR}
         and p.procedureId = #{id,jdbcType=INTEGER}
         and((p.type = 2 and p.isChange=0) or (p.type =1 and p.isChange=0))
          and p.isDelete = 0
@@ -653,7 +653,7 @@
         update t_Production_Procedure_Confirm p
         set  p.isChange = 1
         where  p.productNo = #{productNo,jdbcType=VARCHAR}
-        and p.orderNo = #{orderNo,jdbcType=INTEGER}
+        and p.orderNo = #{orderNo,jdbcType=VARCHAR}
         and p.procedureId = #{id,jdbcType=INTEGER}
         and p.type =1
         and p.isDelete = 0
