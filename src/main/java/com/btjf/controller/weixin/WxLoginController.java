@@ -46,7 +46,7 @@ public class WxLoginController extends ProductBaseController{
 
             wxEmpVo = empService.login(phone, MD5Util.getMD5String(password));
             if (wxEmpVo == null) {
-                XaResult.error("用户名或密码错误");
+               return XaResult.error("用户名或密码错误");
             }
         } else {
             wxEmpVo = empService.login(phone, null);

@@ -99,6 +99,7 @@ public class ProductionProcedureScanService {
             productionProcedureScan.setProductNo(productNo);
             productionProcedureScan.setProductionNo(productionNo);
             productionProcedureScan.setMoney(BigDecimal.valueOf(BigDecimalUtil.mul(Double.valueOf(num), productProcedure.getPrice().doubleValue())));
+            productionProcedureScan.setStatus(0);
             productionProcedureScanMapper.insert(productionProcedureScan);
         }
         LOGGER.info("订单号：" + orderNo + "，型号：" + productNo + "确认入库完成！！！新增" + row + "条记录");
@@ -109,4 +110,7 @@ public class ProductionProcedureScanService {
         return productionProcedureScanMapper.select(orderNo, productNo, productionNo, louId, billOutNo, procedureId);
     }
 
+    public Integer updateStatue(ProductionProcedureScan t) {
+        return productionProcedureScanMapper.updateSatue(t.getId(), t.getStatus());
+    }
 }
