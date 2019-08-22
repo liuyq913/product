@@ -94,7 +94,7 @@ public class ProductionOrderService {
                 Integer id = productionLuoService.insert(t);
                 ProductionLuo productionLuo = new ProductionLuo();
                 productionLuo.setId(id);
-                productionLuo.setCodeUrl(productionOrder.getCodeUrl()+"&louId="+id);
+                productionLuo.setCodeUrl(productionOrder.getCodeUrl() + "&louId=" + id);
                 productionLuoService.update(productionLuo);
             });
         }
@@ -105,6 +105,7 @@ public class ProductionOrderService {
     private List<ProductionLuo> distribution(ProductionOrder productionOrder) {
         List<ProductionLuo> productionLuos = Lists.newArrayList();
         Integer assignNum = productionOrder.getAssignNum();
+        Integer sort = 0;
         if (null != productionOrder && productionOrder.getIsLuo() == 1) {
             do {
                 ProductionLuo productionLuo = new ProductionLuo();
@@ -116,6 +117,7 @@ public class ProductionOrderService {
                 productionLuo.setProductNo(productionOrder.getProductNo());
                 productionLuo.setOrderId(productionOrder.getOrderId());
                 productionLuo.setProductionNo(productionOrder.getProductionNo());
+                productionLuo.setSort(++sort);
                 productionLuos.add(productionLuo);
                 assignNum -= productionOrder.getLuoNum();
             } while (assignNum > productionOrder.getLuoNum() * 1.5);
@@ -130,6 +132,7 @@ public class ProductionOrderService {
             productionLuo.setCreateTime(new Date());
             productionLuo.setProductNo(productionOrder.getProductNo());
             productionLuo.setOrderId(productionOrder.getOrderId());
+            productionLuo.setSort(++sort);
             productionLuos.add(productionLuo);
 
             return productionLuos;
