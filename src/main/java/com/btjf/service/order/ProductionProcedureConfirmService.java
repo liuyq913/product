@@ -1,7 +1,5 @@
 package com.btjf.service.order;
 
-import com.btjf.business.common.exception.BusinessException;
-import com.btjf.controller.weixin.vo.WxEmpVo;
 import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.btjf.business.common.exception.BusinessException;
 import com.btjf.controller.weixin.vo.WxEmpVo;
@@ -104,6 +102,9 @@ public class ProductionProcedureConfirmService {
             productionProcedureConfirm.setProcedureId(t.getProcedureId());
             productionProcedureConfirm.setProcedureName(t.getProcedureName());
             productionProcedureConfirmMapper.insertSelective(productionProcedureConfirm);
+            t.setStatus(1);
+            //扫码记录改成已质检
+            productionProcedureScanService.updateStatue(t);
         });
         return productionProcedureScans.size();
     }

@@ -78,6 +78,29 @@ INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('样品间',
 update t_SysDept set deptOrder = id;
 
 
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('车间主任',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('组长',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('车工',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('辅工',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('大辅工',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('检验',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('杂工',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('下料工',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('印刷',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('剪辅料',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('切包边条',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('分料',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('电脑车工',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('包装工',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('新学徒车工',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('新熟练车工',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('机修工',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('小辅工',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('整形，打包',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('门卫',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('食堂',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('中辅工',NOW(),NOW(),0);
+
 ##后台登录账号
 CREATE TABLE t_SysUser(
 	id int primary key auto_increment,
@@ -359,7 +382,8 @@ CREATE TABLE t_Production_Procedure_Scan(
   price decimal(5,2) comment '价格',
   money decimal(6,2) comment '工资',
   createTime datetime,
-  isDelete int NOT NULL
+  isDelete int NOT NULL,
+  status int COMMIT '0 未质检 1 已质检'
 );
 ##生产单-工序-人员 多对多表 质检之后的结果 车间主任上报结果
 CREATE TABLE t_Production_Procedure_Confirm(
@@ -398,7 +422,8 @@ CREATE TABLE t_Production_Luo(
   maxNum int comment '上限数量',
   codeUrl varchar(100) DEFAULT NULL comment '二维码地址',
   createTime datetime,
-	isDelete int NOT NULL
+	isDelete int NOT NULL,
+	sort int NOT NULL
 );
 
 
