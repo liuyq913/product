@@ -141,11 +141,16 @@ public class ProductionProcedureConfirmService {
         return productionProcedureConfirmMapper.getChangeNum(orderNo, productNo, procedureId, deptName);
     }
 
-    public List<EmpDayWorkVo> analyseForDay(String date, Integer id) {
-        return null;
+    public List<EmpDayWorkVo> analyseForDay(String date, Integer empId) {
+        return productionProcedureConfirmMapper.analyseForDay(date,empId);
     }
 
-    public List<EmpDayWorkDetailVo> getWorkForDay(String date, Integer id) {
+    public List<EmpDayWorkDetailVo> getWorkForDay(String date, Integer empId) {
+        return productionProcedureConfirmMapper.getWorkForDay(date, empId);
+    }
+
+    public List<ProcedureInfoVo> getWorkProcedureInfo(String date, Integer empId, String orderNo, String productNo,
+                                                      String billNo) {
         return null;
     }
 }

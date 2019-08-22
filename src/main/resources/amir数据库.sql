@@ -383,7 +383,7 @@ CREATE TABLE t_Production_Procedure_Scan(
   money decimal(6,2) comment '工资',
   createTime datetime,
   isDelete int NOT NULL,
-  status int COMMIT '0 未质检 1 已质检'
+  status int comment '0 未质检 1 已质检'
 );
 ##生产单-工序-人员 多对多表 质检之后的结果 车间主任上报结果
 CREATE TABLE t_Production_Procedure_Confirm(

@@ -207,20 +207,36 @@ public class MineController  extends ProductBaseController {
         }
         WxEmpVo vo = getWXLoginUser();
         //TODO 质检员 工作量另算
+        EmpWorkVo empWorkVo = new EmpWorkVo();
+        double total = 0.0;
+
         if(vo.getIsLeader() != null && vo.getIsLeader() == 1){
 
         }else{
             List<EmpDayWorkVo> dayWorkVos = productionProcedureConfirmService.analyseForDay(date, vo.getId());
+            if(dayWorkVos == null || dayWorkVos.size() <1){
+                return XaResult.error("查无数据");
+            }
             for (EmpDayWorkVo dayWorkVo:dayWorkVos) {
                 List<EmpDayWorkDetailVo> dayWorkDetailVoList =
                         productionProcedureConfirmService.getWorkForDay(dayWorkVo.getDate(), vo.getId());
+                for (EmpDayWorkDetailVo dayWorkDetailVo:dayWorkDetailVoList) {
+                    //TODO 根据 type 罗ID  精确搜索工序
+                    List<ProcedureInfoVo> procedureInfoVos =
+                            productionProcedureConfirmService.getWorkProcedureInfo(dayWorkVo.getDate(), vo.getId(),
+                            dayWorkDetailVo.getOrderNo(), dayWorkDetailVo.getProductNo(),dayWorkDetailVo.getBillNo());
+                    dayWorkDetailVo.setProcedureInfoVoList(procedureInfoVos);
+                }
+                dayWorkVo.setDayWorkDetailVoList(dayWorkDetailVoList);
+                total = total + dayWorkVo.getSum();
             }
-
+            empWorkVo.setTotal(total);
+            empWorkVo.setDayWorkVoList(dayWorkVos);
         }
 
 
 
-        return null;
+        return XaResult.success(empWorkVo);
     }
 
 }

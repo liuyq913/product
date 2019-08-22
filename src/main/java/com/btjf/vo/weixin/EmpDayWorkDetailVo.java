@@ -7,6 +7,8 @@ public class EmpDayWorkDetailVo {
     private String orderNo;
     private String productNo;
     private String billNo;
+    private Integer type;//0 领料单 1生产单 2罗
+    private Integer luoId;
     private String statusDesc;
     private List<ProcedureInfoVo> procedureInfoVoList;
 
@@ -49,5 +51,21 @@ public class EmpDayWorkDetailVo {
 
     public void setProcedureInfoVoList(List<ProcedureInfoVo> procedureInfoVoList) {
         this.procedureInfoVoList = procedureInfoVoList;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Integer getLuoId() {
+        return luoId;
+    }
+
+    public void setLuoId(Integer luoId) {
+        this.luoId = luoId;
     }
 }
