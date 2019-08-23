@@ -464,4 +464,26 @@
   <update id="updateSatue">
     update t_Production_Procedure_Scan SET status = #{status} where id = #{id}
   </update>
+
+  <select id="selectLastMonth" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM  t_Production_Procedure_Scan
+    WHERE orderNo = #{orderNo,jdbcType=VARCHAR} and productNo =#{productNo}
+    <if test="productionNo != null">
+      and productionNo = #{productionNo}
+    </if>
+    <if test="luoId != null">
+      and luoId = #{luoId}
+    </if>
+    <if test="pmOutBillNo != null">
+      and pmOutBillNo = #{pmOutBillNo}
+    </if>
+    <if test="procedureId != null">
+      and procedureId = #{procedureId}
+    </if>
+    <if test="createTime != null">
+      and createTime &lt;= #{createTime}
+    </if>
+    and isDelete = 0 order by id desc limit 1
+  </select>
 </mapper>

@@ -104,4 +104,6 @@ public interface ProductionProcedureScanMapper {
                    @Param("louId") Integer louId,@Param("billOutNo") String billOutNo, @Param("procedureId") Integer procedureId);
 
     Integer updateSatue(@Param("id") Integer id, @Param("status") Integer status);
+
+    ProductionProcedureScan selectLastMonth(ProductionProcedureScan convert);
 }

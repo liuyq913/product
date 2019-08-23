@@ -100,7 +100,8 @@ public class ProductWorkshopService {
         productProcedure.setSort(productProcedureWorkshop.getSort());
         Integer productId = productProcedureService.add(productProcedure);
         productProcedureWorkshop.setProcedureId(productId);
-        return productProcedureWorkshopMapper.insertSelective(productProcedureWorkshop);
+        productProcedureWorkshopMapper.insertSelective(productProcedureWorkshop);
+        return productProcedureWorkshop.getId();
     }
 
     public Integer udpate(ProductProcedureWorkshop productProcedureWorkshop) {
@@ -148,14 +149,20 @@ public class ProductWorkshopService {
     public Integer deleteById(Integer id) throws BusinessException {
         ProductProcedureWorkshop productProcedureWorkshop = this.getById(id);
         if (null == productProcedureWorkshop) throw new BusinessException("要删除的记录不存在");
-
+        if ("质检".equals(productProcedureWorkshop.getProcedureName())) {
+            throw new BusinessException("无法删除质检工序");
+        }
         productProcedureWorkshop.setIsDelete(1);
-       return productProcedureWorkshopMapper.updateByPrimaryKeySelective(productProcedureWorkshop);
+        return productProcedureWorkshopMapper.updateByPrimaryKeySelective(productProcedureWorkshop);
     }
 
     public List<WorkShopVo.Procedure> getBySort(List<Integer> integers) {
-        List<ProductProcedureWorkshop> productProcedureWorkshops =  productProcedureWorkshopMapper.getBySort(integers);
-        if(CollectionUtils.isEmpty(productProcedureWorkshops)) return null;
+        List<ProductProcedureWorkshop> productProcedureWorkshops = productProcedureWorkshopMapper.getBySort(integers);
+        if (CollectionUtils.isEmpty(productProcedureWorkshops)) return null;
         return BeanUtil.convertList(productProcedureWorkshops, WorkShopVo.Procedure.class);
+    }
+
+    public ProductProcedureWorkshop getInspactPriceByWorkShapAndProductNo(String deptName, String productNo) {
+        return productProcedureWorkshopMapper.getInspactPriceByWorkShapAndProductNo(deptName, productNo);
     }
 }

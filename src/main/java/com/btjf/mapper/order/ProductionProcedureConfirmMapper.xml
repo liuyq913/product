@@ -601,9 +601,6 @@
         <if test="isChange != null">
             AND isChange = #{isChange,jdbcType=INTEGER}
         </if>
-        <if test="createTime != null">
-            AND createTime &lt; #{createTime,jdbcType=TIMESTAMP}
-        </if>
         AND isDelete = 0
     </select>
     <select id="getCheckList" resultMap="BaseResultMap">
@@ -736,7 +733,7 @@
         <if test="procedureId != null">
           and procedureId = #{procedureId}
         </if>
-        and type = 1
+        and type in(1,3) <!--质检和工资记录都要删掉-->
     </update>
 
     <update id="deleteType2">

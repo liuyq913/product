@@ -106,4 +106,6 @@ public interface ProductProcedureWorkshopMapper {
     List<ProductProcedureWorkshop> getByWorkShopAndProductNo(@Param("workShop") String workShop, @Param("productNo") String productNo);
 
     List<ProductProcedureWorkshop> getBySort(@Param("integers") List<Integer> integers);
+
+    ProductProcedureWorkshop getInspactPriceByWorkShapAndProductNo(@Param("deptName") String deptName, @Param("productNo") String productNo);
 }

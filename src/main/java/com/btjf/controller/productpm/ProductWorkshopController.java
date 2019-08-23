@@ -90,6 +90,7 @@ public class ProductWorkshopController extends ProductBaseController {
 
         ProductProcedureWorkshop productProcedureWorkshop = productWorkshopService.getById(id);
         if (null == productProcedureWorkshop) return XaResult.error("该型号的工序不存在");
+        productProcedureWorkshop.setIsInspect("质检".equals(productProcedureWorkshop.getProcedureName()) ? true : false);
         return XaResult.success(productProcedureWorkshop);
     }
 
@@ -121,7 +122,7 @@ public class ProductWorkshopController extends ProductBaseController {
     }
 
     @RequestMapping(value = "deleteById", method = RequestMethod.POST)
-    public XaResult<Integer> delete(Integer id) throws BusinessException{
+    public XaResult<Integer> delete(Integer id) throws BusinessException {
         if (id == null) return XaResult.error("id 不能为null");
 
         return XaResult.success(productWorkshopService.deleteById(id));

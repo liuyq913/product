@@ -370,6 +370,6 @@
         <if test="productionNo != null">
           and  tpp.productionNo = #{productionNo}
         </if>
-        and tpp.isDelete = 0 and tppw.isDelete = 0
+        and tpp.isDelete = 0 and tppw.isDelete = 0 and tpp.procedureName &lt;&gt;'质检'
     </select>
 </mapper>

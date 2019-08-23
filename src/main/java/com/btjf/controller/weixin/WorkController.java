@@ -3,11 +3,13 @@ package com.btjf.controller.weixin;
 import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.btjf.application.util.XaResult;
+import com.btjf.business.common.exception.BusinessException;
 import com.btjf.common.utils.DateUtil;
 import com.btjf.controller.base.ProductBaseController;
 import com.btjf.controller.order.vo.WorkShopVo;
 import com.btjf.controller.weixin.vo.WorkListVo;
 import com.btjf.controller.weixin.vo.WxEmpVo;
+import com.btjf.model.order.OrderProduct;
 import com.btjf.model.order.ProductionLuo;
 import com.btjf.model.order.ProductionOrder;
 import com.btjf.model.order.ProductionProcedureConfirm;
@@ -16,7 +18,6 @@ import com.btjf.service.order.*;
 import com.btjf.service.pm.PmOutService;
 import com.btjf.service.productpm.ProductWorkshopService;
 import com.google.common.collect.Maps;
-import com.heige.aikajinrong.base.exception.BusinessException;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.apache.commons.collections.CollectionUtils;
@@ -64,6 +65,9 @@ public class WorkController extends ProductBaseController {
     @Resource
     private ProductionLuoService productionLuoService;
 
+    @Resource
+    private OrderProductService orderProductService;
+
     @RequestMapping(value = "getConfirmList", method = RequestMethod.GET)
     public XaResult<WorkListVo> getConfigList(@ApiParam("订单id") Integer orderId, @ApiParam("订单编号") String orderNo,
                                               @ApiParam("产品编号") String productNo, @ApiParam("生产单编号") String productionNo,
@@ -77,7 +81,10 @@ public class WorkController extends ProductBaseController {
         workListVo.setProductNo(productNo);
         String deptName = wxEmpVo.getDeptName();
 
+        OrderProduct orderProduct = orderProductService.getByID(orderId);
+        if (orderProduct == null) return XaResult.error("订单不存在");
         Integer assignNum = 0;
+        String unit = orderProduct.getUnit();
         //生产单
         if (!StringUtils.isEmpty(productionNo)) {
             ProductionOrder productionOrder = productionOrderService.getByNo(productionNo);
@@ -122,6 +129,7 @@ public class WorkController extends ProductBaseController {
         if (wxEmpVo.getWorkName().equals("检验")) {
             Map map = Maps.newHashMap();
             map.put("assignNum", assignNum);
+            map.put("unit", unit);
             result.setMap(map);
         }
         return result;
@@ -141,7 +149,7 @@ public class WorkController extends ProductBaseController {
 
         for (WorkShopVo.Procedure procedure : procedures) {
             if (procedure == null) continue;
-            if (!CollectionUtils.isEmpty(productionProcedureScanService.select(orderNo, productNo, productionNo, louId, billOutNo, procedure.getProcedureId()))){
+            if (!CollectionUtils.isEmpty(productionProcedureScanService.select(orderNo, productNo, productionNo, louId, billOutNo, procedure.getProcedureId()))) {
                 stringBuffer.append(procedure.getProcedureName() + "、");
             }
         }
@@ -166,13 +174,16 @@ public class WorkController extends ProductBaseController {
         List<WorkShopVo.Procedure> procedures = JSONObject.parseArray(proceduresJosn, WorkShopVo.Procedure.class);
 
         WxEmpVo wxEmpVo = getWxLoginUser();
+        if(wxEmpVo.getWorkName().equals("检验")){
+            return XaResult.error("您无权限确认工序");
+        }
         //生产单
         if (!StringUtils.isEmpty(productionNo)) {
             try {
                 checkComfig(orderNo, productNo, productionNo, louId, billOutNo, procedures);
             } catch (BusinessException e) {
                 LOGGER.info(wxEmpVo.getName() + "扫码生成单:" + productionNo + "无效的二维码");
-                throw new BusinessException("生成单：" + procedures + "中的" + e.getMessage());
+                throw new BusinessException("生成单：" + productionNo + "中的" + e.getMessage());
             }
             //领料单
         } else if (!StringUtils.isEmpty(billOutNo)) {
@@ -210,13 +221,13 @@ public class WorkController extends ProductBaseController {
             productionProcedureConfirm.setIsChange(1);
             //是否调整
             if (!CollectionUtils.isEmpty(productionProcedureConfirmService.select(productionProcedureConfirm))) {
-                throw new BusinessException("工序：" + procedure.getProcedureName() + "车间主任已经调整过了，无法再确认该工序");
+                throw new BusinessException("工序：(" + procedure.getProcedureName() + ")车间主任已经调整过了，无法再确认该工序");
             }
             //未调整   工序上个月最新一条有质检信息
             productionProcedureConfirm.setCreateTime(DateUtil.string2Date(DateUtil.dateToString(new Date(), DateUtil.ymdFormat), DateUtil.ymdFormat));
             productionProcedureConfirm.setIsChange(0);
-            if (!CollectionUtils.isEmpty(productionProcedureConfirmService.select(productionProcedureConfirm))) {
-                throw new BusinessException("工序：" + procedure.getProcedureName() + "上月已经质检过，无法再确认该工序");
+            if (productionProcedureScanService.selectLastMonthIsPass(productionProcedureConfirm)) {
+                throw new BusinessException("工序：(" + procedure.getProcedureName() + ")上月已经质检过，无法再确认该工序");
             }
         }
 
@@ -229,7 +240,7 @@ public class WorkController extends ProductBaseController {
 
         WxEmpVo wxEmpVo = getWxLoginUser();
 
-        if (wxEmpVo.getWorkName().equals("检验")) {
+        if (!wxEmpVo.getWorkName().equals("检验")) {
             return XaResult.error("身份错误");
         }
         if (orderId == null || orderNo == null || productNo == null)

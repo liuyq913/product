@@ -1,7 +1,6 @@
 package com.btjf.controller.weixin;
 
 import com.btjf.application.util.XaResult;
-import com.btjf.business.common.exception.BusinessException;
 import com.btjf.common.utils.DateUtil;
 import com.btjf.controller.base.ProductBaseController;
 import com.btjf.controller.weixin.vo.WxEmpVo;
@@ -13,7 +12,6 @@ import com.btjf.service.order.ProductionProcedureConfirmService;
 import com.btjf.service.sys.SysDeptService;
 import com.btjf.vo.weixin.*;
 import com.wordnik.swagger.annotations.Api;
-import org.apache.commons.collections.list.AbstractLinkedList;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,7 +42,7 @@ public class MineController  extends ProductBaseController {
      */
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public XaResult<MineIndexVo> importExcel(){
-        WxEmpVo vo = getWXLoginUser();
+        WxEmpVo vo = getWxLoginUser();
         MineIndexVo mineIndexVo = null;
         if(vo != null){
             mineIndexVo = new MineIndexVo();
@@ -72,7 +70,7 @@ public class MineController  extends ProductBaseController {
             return XaResult.error("月份不能为空");
         }
         //TODO 本部门订单
-        WxEmpVo vo = getWXLoginUser();
+        WxEmpVo vo = getWxLoginUser();
         if(vo.getIsLeader() == null || vo.getIsLeader() != 1){
             return XaResult.error("当前人员没有权限进行该操作");
         }
@@ -107,7 +105,7 @@ public class MineController  extends ProductBaseController {
         if (StringUtils.isEmpty(productNo)){
             return XaResult.error("产品型号不能为空");
         }
-        WxEmpVo vo = getWXLoginUser();
+        WxEmpVo vo = getWxLoginUser();
         if(vo.getIsLeader() == null || vo.getIsLeader() != 1){
             return XaResult.error("当前人员没有权限进行该操作");
         }
@@ -175,7 +173,7 @@ public class MineController  extends ProductBaseController {
             list.add(vo);
         }
 
-        WxEmpVo vo = getWXLoginUser();
+        WxEmpVo vo = getWxLoginUser();
         if(vo.getIsLeader() == null || vo.getIsLeader() != 1){
             return XaResult.error("当前人员没有权限进行该操作");
         }
@@ -205,7 +203,7 @@ public class MineController  extends ProductBaseController {
         if (StringUtils.isEmpty(date)){
             return XaResult.error("月份不能为空");
         }
-        WxEmpVo vo = getWXLoginUser();
+        WxEmpVo vo = getWxLoginUser();
         //TODO 质检员 工作量另算
         EmpWorkVo empWorkVo = new EmpWorkVo();
         double total = 0.0;
