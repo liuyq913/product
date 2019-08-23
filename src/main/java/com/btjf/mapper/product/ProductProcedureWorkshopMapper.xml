@@ -446,4 +446,15 @@
         </foreach>
         and isDelete = 0;
     </select>
+
+    <select id="getInspactPriceByWorkShapAndProductNo" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_Product_Procedure_Workshop
+        WHERE
+        1=1
+        AND productNo = #{productNo} and workshop =#{deptName}
+        and procedureName ='质检'
+        and isDelete = 0;
+    </select>
 </mapper>

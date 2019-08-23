@@ -346,7 +346,7 @@ CREATE TABLE t_Production_Order(
    printer varchar(100) COMMENT '打印人',
    printTime DATE COMMENT '打印时间',
   `printCount` int(11) DEFAULT '0' COMMENT '打印次数',
-   codeUrl varchar(100) comment '二维码地址',
+   codeUrl varchar(255) comment '二维码地址',
    createTime datetime,
 	 lastModifyTime datetime,
 	 isDelete int NOT NULL
@@ -420,7 +420,7 @@ CREATE TABLE t_Production_Luo(
   productNo varchar(100) NOT NULL comment '产品型号',
   num int(11) NOT NULL comment '数量',
   maxNum int comment '上限数量',
-  codeUrl varchar(100) DEFAULT NULL comment '二维码地址',
+  codeUrl varchar(255) DEFAULT NULL comment '二维码地址',
   createTime datetime,
 	isDelete int NOT NULL,
 	sort int NOT NULL

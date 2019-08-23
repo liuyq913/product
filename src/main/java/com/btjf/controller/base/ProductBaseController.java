@@ -33,23 +33,6 @@ public abstract class ProductBaseController {
     private LoginInfoCache loginInfoCache;
 
     /**
-     * 获取当前登录的微信用户
-     *
-     * @return
-     */
-    public WxEmpVo getWXLoginUser() {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
-                .getRequestAttributes()).getRequest();
-        String secretKey = request.getHeader(LoginInterceptor.SECRETKEY);
-        WxEmpVo wxEmpVo = (WxEmpVo) loginInfoCache.get(secretKey);
-        if (null == wxEmpVo) {
-            throw new BusinessException("请登录之后重试");
-        } else {
-            return wxEmpVo;
-        }
-    }
-
-    /**
      * 获取当前登录的角色ID
      *
      * @return

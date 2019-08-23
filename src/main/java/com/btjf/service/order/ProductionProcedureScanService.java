@@ -2,12 +2,14 @@ package com.btjf.service.order;
 
 import com.alibaba.druid.util.StringUtils;
 import com.btjf.business.common.exception.BusinessException;
+import com.btjf.common.utils.BeanUtil;
 import com.btjf.controller.order.vo.WorkShopVo;
 import com.btjf.controller.weixin.vo.WxEmpVo;
 import com.btjf.mapper.order.ProductionProcedureConfirmMapper;
 import com.btjf.mapper.order.ProductionProcedureScanMapper;
 import com.btjf.model.order.ProductionLuo;
 import com.btjf.model.order.ProductionOrder;
+import com.btjf.model.order.ProductionProcedureConfirm;
 import com.btjf.model.order.ProductionProcedureScan;
 import com.btjf.model.pm.PmOutBill;
 import com.btjf.model.product.ProductProcedure;
@@ -58,7 +60,7 @@ public class ProductionProcedureScanService {
         if ((StringUtils.isEmpty(productionNo) && StringUtils.isEmpty(billOutNo)) || (!StringUtils.isEmpty(productionNo) && !StringUtils.isEmpty(billOutNo)))
             throw new BusinessException("生成单和领料单不能存在，且不能同时未空");
         Integer num = 0;
-        if(productionNo != null) {
+        if (productionNo != null) {
             ProductionOrder productionOrder = productionOrderService.getByNo(productionNo);
             if (null == productionOrder) throw new BusinessException(productionNo + "  生产单不存在");
             num = productionOrder.getAssignNum();
@@ -68,9 +70,9 @@ public class ProductionProcedureScanService {
             if (productionLuo == null) throw new BusinessException(louId + " 分萝记录不存在");
             num = productionLuo.getNum();
         }
-        if(billOutNo != null){
+        if (billOutNo != null) {
             PmOutBill pmOutBill = pmOutService.getByBillNo(billOutNo);
-            if(pmOutBill == null) throw new BusinessException(billOutNo +"领料单记录不存在");
+            if (pmOutBill == null) throw new BusinessException(billOutNo + "领料单记录不存在");
             num = pmOutBill.getDistributionNum();
         }
 
@@ -112,5 +114,16 @@ public class ProductionProcedureScanService {
 
     public Integer updateStatue(ProductionProcedureScan t) {
         return productionProcedureScanMapper.updateSatue(t.getId(), t.getStatus());
+    }
+
+    public Boolean selectLastMonthIsPass(ProductionProcedureConfirm productionProcedureConfirm) {
+
+        ProductionProcedureScan productionProcedureScan = productionProcedureScanMapper.selectLastMonth(BeanUtil.convert(productionProcedureConfirm, ProductionProcedureScan.class));
+        if (null == productionProcedureScan || productionProcedureScan.getStatus() == 0){
+            return false;
+        }else if(productionProcedureScan.getStatus() == 1){
+            return true;
+        }
+        return false;
     }
 }

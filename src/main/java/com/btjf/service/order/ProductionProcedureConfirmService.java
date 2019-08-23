@@ -8,6 +8,9 @@ import com.btjf.model.order.Order;
 import com.btjf.model.order.ProductionProcedureConfirm;
 import com.btjf.model.order.ProductionProcedureScan;
 import com.btjf.model.product.ProductProcedure;
+import com.btjf.model.product.ProductProcedureWorkshop;
+import com.btjf.service.productpm.ProductWorkshopService;
+import com.btjf.util.BigDecimalUtil;
 import com.btjf.vo.weixin.EmpProcedureDetailVo;
 import com.btjf.vo.weixin.EmpProcedureListVo;
 import com.btjf.vo.weixin.OrderProductVo;
@@ -36,6 +39,9 @@ public class ProductionProcedureConfirmService {
 
     @Resource
     private ProductionProcedureScanService productionProcedureScanService;
+
+    @Resource
+    private ProductWorkshopService productWorkshopService;
 
     public List<Order> getOrderByMouth(String date,String deptName) {
         return productionProcedureConfirmMapper.getOrderByMouth(date, deptName);
@@ -106,6 +112,28 @@ public class ProductionProcedureConfirmService {
             //扫码记录改成已质检
             productionProcedureScanService.updateStatue(t);
         });
+
+        //新增质检工资记录
+        ProductionProcedureScan productionProcedureScan = productionProcedureScans.get(0);
+        //获取质检    //获取负责车间质检工序的价格
+        ProductProcedureWorkshop productProcedureWorkshop = productWorkshopService.getInspactPriceByWorkShapAndProductNo(wxEmpVo.getDeptName(), productNo);
+        if(productProcedureWorkshop == null) throw new BusinessException("请再您所在车间设置好质检工序之后重试");
+        ProductionProcedureConfirm productionProcedureConfirm = new ProductionProcedureConfirm();
+        productionProcedureConfirm.setOrderNo(productionProcedureScan.getOrderNo());
+        productionProcedureConfirm.setType(3);
+        productionProcedureConfirm.setIsDelete(0);
+        productionProcedureConfirm.setEmpId(productionProcedureScan.getEmpId());
+        productionProcedureConfirm.setNum(productionProcedureScan.getNum());
+        productionProcedureConfirm.setPrice(productProcedureWorkshop.getPrice());
+        productionProcedureConfirm.setOperator(wxEmpVo.getName());
+        productionProcedureConfirm.setIsChange(0);
+        productionProcedureConfirm.setMoney(BigDecimal.valueOf(BigDecimalUtil.mul(Double.valueOf(productionProcedureScan.getNum()), productProcedureWorkshop.getPrice().doubleValue())));
+        productionProcedureConfirm.setLastModifyTime(new Date());
+        productionProcedureConfirm.setCreateTime(new Date());
+        productionProcedureConfirm.setCompleteTime(productionProcedureScan.getCreateTime());
+        productionProcedureConfirm.setProductNo(productNo);
+        productionProcedureConfirmMapper.insertSelective(productionProcedureConfirm);
+
         return productionProcedureScans.size();
     }
 
