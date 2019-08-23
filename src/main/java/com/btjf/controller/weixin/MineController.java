@@ -71,6 +71,9 @@ public class MineController  extends ProductBaseController {
         }
         //TODO 本部门订单
         WxEmpVo vo = getWxLoginUser();
+        if(vo.getIsLeader() == null || vo.getIsLeader() != 1){
+            return XaResult.error("当前人员没有权限进行该操作");
+        }
         List<Order> list = productionProcedureConfirmService.getOrderByMouth(date, vo.getDeptName());
         List<OrderVo> voList = null;
         if(list != null && list.size() >0){
@@ -103,6 +106,9 @@ public class MineController  extends ProductBaseController {
             return XaResult.error("产品型号不能为空");
         }
         WxEmpVo vo = getWxLoginUser();
+        if(vo.getIsLeader() == null || vo.getIsLeader() != 1){
+            return XaResult.error("当前人员没有权限进行该操作");
+        }
         List<EmpProcedureListVo> list = productionProcedureConfirmService.getEmpNum(orderNo, productNo, vo.getDeptName());
 
         return XaResult.success(list);
@@ -168,6 +174,9 @@ public class MineController  extends ProductBaseController {
         }
 
         WxEmpVo vo = getWxLoginUser();
+        if(vo.getIsLeader() == null || vo.getIsLeader() != 1){
+            return XaResult.error("当前人员没有权限进行该操作");
+        }
 
         Integer changeNum = productionProcedureConfirmService.getChangeNum(orderNo, productNo, procedureId, vo.getDeptName());
         if(num < changeNum){
@@ -189,12 +198,43 @@ public class MineController  extends ProductBaseController {
      * @return
      */
     @RequestMapping(value = "/work", method = RequestMethod.GET)
-    public XaResult<List<EmpProcedureListVo>> detail(String date){
+    public XaResult<EmpWorkVo> work(String date){
+        //2019-08
+        if (StringUtils.isEmpty(date)){
+            return XaResult.error("月份不能为空");
+        }
         WxEmpVo vo = getWxLoginUser();
+        //TODO 质检员 工作量另算
+        EmpWorkVo empWorkVo = new EmpWorkVo();
+        double total = 0.0;
+
+        if(vo.getIsLeader() != null && vo.getIsLeader() == 1){
+
+        }else{
+            List<EmpDayWorkVo> dayWorkVos = productionProcedureConfirmService.analyseForDay(date, vo.getId());
+            if(dayWorkVos == null || dayWorkVos.size() <1){
+                return XaResult.error("查无数据");
+            }
+            for (EmpDayWorkVo dayWorkVo:dayWorkVos) {
+                List<EmpDayWorkDetailVo> dayWorkDetailVoList =
+                        productionProcedureConfirmService.getWorkForDay(dayWorkVo.getDate(), vo.getId());
+                for (EmpDayWorkDetailVo dayWorkDetailVo:dayWorkDetailVoList) {
+                    //TODO 根据 type 罗ID  精确搜索工序
+                    List<ProcedureInfoVo> procedureInfoVos =
+                            productionProcedureConfirmService.getWorkProcedureInfo(dayWorkVo.getDate(), vo.getId(),
+                            dayWorkDetailVo.getOrderNo(), dayWorkDetailVo.getProductNo(),dayWorkDetailVo.getBillNo());
+                    dayWorkDetailVo.setProcedureInfoVoList(procedureInfoVos);
+                }
+                dayWorkVo.setDayWorkDetailVoList(dayWorkDetailVoList);
+                total = total + dayWorkVo.getSum();
+            }
+            empWorkVo.setTotal(total);
+            empWorkVo.setDayWorkVoList(dayWorkVos);
+        }
 
 
 
-        return null;
+        return XaResult.success(empWorkVo);
     }
 
 }

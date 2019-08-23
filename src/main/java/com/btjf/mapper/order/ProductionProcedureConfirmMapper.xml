@@ -613,7 +613,107 @@
         and p.type =1
          and p.isDelete = 0
          and p.workshop = #{deptName,jdbcType=VARCHAR}
-
+        and p.isDelete = 0
+    </select>
+    <select id="analyseForDay" resultType="com.btjf.vo.weixin.EmpDayWorkVo">
+        SELECT
+            DATE_FORMAT(a.completeTime, "%Y-%m-%d") date,
+            SUM(a.money) total
+        FROM
+            (
+                (
+                    SELECT
+                        p.completeTime,
+                        p.money
+                    FROM
+                        t_Production_Procedure_Confirm p
+                    WHERE
+                        DATE_FORMAT(p.completeTime, '%Y-%m') = #{date}
+                    AND p.empId = #{empId}
+                    AND p.isChange=0
+                    AND p.isDelete = 0
+                )
+                UNION ALL
+                    (
+                        SELECT
+                            s.createTime,
+                            s.money
+                        FROM
+                            t_Production_Procedure_Scan s
+                        WHERE
+                            DATE_FORMAT(s.createTime, '%Y-%m') = #{date}
+                        AND s.empId = #{empId}
+                        AND s.status = 0
+                        AND s.isDelete = 0
+                    )
+            ) a
+        GROUP BY
+            DATE_FORMAT(a.completeTime, "%Y-%m-%d")
+        ORDER BY
+            DATE_FORMAT(a.completeTime, "%Y-%m-%d")
+    </select>
+    <select id="getWorkForDay" resultType="com.btjf.vo.weixin.EmpDayWorkDetailVo">
+		(
+			SELECT
+					p.orderNo,
+					p.productNo,
+					p.luoId,
+				CASE
+				WHEN p.luoId IS NOT NULL THEN
+					CONCAT(p.productionNo, '-', l.sort)
+				WHEN p.luoId IS NULL
+				AND p.productionNo IS NOT NULL THEN
+					p.productionNo
+				WHEN p.pmOutBillNo IS NOT NULL THEN
+					p.pmOutBillNo
+				END AS billNo,
+				CASE
+				WHEN p.luoId IS NOT NULL THEN 2
+				WHEN p.luoId IS NULL
+				AND p.productionNo IS NOT NULL THEN 1
+				WHEN p.pmOutBillNo IS NOT NULL THEN 0
+				END AS type,
+				'已质检' AS statusDesc
+			FROM
+				t_Production_Procedure_Confirm p
+			LEFT JOIN t_Production_Luo l ON p.luoId = l.id
+			WHERE
+				DATE_FORMAT(p.completeTime, "%Y-%m-%d") = #{date}
+            AND p.empId = #{empId}
+			AND p.isChange = 0
+			AND p.isDelete = 0
+		)
+		UNION ALL
+			(
+				SELECT
+						s.orderNo,
+						s.productNo,
+						s.luoId,
+					CASE
+					WHEN s.luoId IS NOT NULL THEN
+						CONCAT(s.productionNo, '-', ll.sort)
+					WHEN s.luoId IS NULL
+					AND s.productionNo IS NOT NULL THEN
+						s.productionNo
+					WHEN s.pmOutBillNo IS NOT NULL THEN
+						s.pmOutBillNo
+					END AS billNo,
+					CASE
+					WHEN s.luoId IS NOT NULL THEN 2
+					WHEN s.luoId IS NULL
+					AND s.productionNo IS NOT NULL THEN 1
+					WHEN s.pmOutBillNo IS NOT NULL THEN 0
+					END AS type,
+					'未质检' AS statusDesc
+				FROM
+					t_Production_Procedure_Scan s
+				LEFT JOIN t_Production_Luo ll ON s.luoId = ll.id
+				WHERE
+					DATE_FORMAT(s.createTime, "%Y-%m-%d") = #{date}
+                AND s.empId = #{empId}
+				AND s. STATUS = 0
+				AND s.isDelete = 0
+			)
     </select>
 
 
@@ -642,7 +742,8 @@
         where  p.productNo = #{productNo,jdbcType=VARCHAR}
         and p.orderNo = #{orderNo,jdbcType=VARCHAR}
         and p.procedureId = #{id,jdbcType=INTEGER}
-        and((p.type = 2 and p.isChange=0) or (p.type =1 and p.isChange=0))
+        and p.type = 2
+        and p.isChange=0
          and p.isDelete = 0
          and p.workshop = #{deptName,jdbcType=VARCHAR}
     </update>
