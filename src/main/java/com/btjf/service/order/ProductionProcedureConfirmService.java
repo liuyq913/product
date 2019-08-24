@@ -123,7 +123,7 @@ public class ProductionProcedureConfirmService {
         productionProcedureConfirm.setOrderNo(productionProcedureScan.getOrderNo());
         productionProcedureConfirm.setType(3);
         productionProcedureConfirm.setIsDelete(0);
-        productionProcedureConfirm.setEmpId(productionProcedureScan.getEmpId());
+        productionProcedureConfirm.setEmpId(wxEmpVo.getId());
         productionProcedureConfirm.setNum(productionProcedureScan.getNum());
         productionProcedureConfirm.setPrice(productProcedureWorkshop.getPrice());
         productionProcedureConfirm.setOperator(wxEmpVo.getName());
