@@ -518,13 +518,14 @@
 ;
     </select>
     <select id="getOrderProductByMouth" resultType="com.btjf.vo.weixin.OrderProductVo">
-        select DISTINCT p.productNo, sum(p.num) AS num
+        select DISTINCT p.productNo, sum(p.num) AS num, pp.unit
         from t_Production_Procedure_Confirm p
+        LEFT JOIN t_Product pp ON p.productNo = pp.productNo
         where ((p.type = 2 and p.isChange=0) or (p.type =1 and p.isChange=0))
          and p.isDelete = 0
         and p.orderNo = #{orderNo,jdbcType=VARCHAR}
         and p.workshop = #{deptName,jdbcType=VARCHAR}
-        group by p.productNo,p.procedureId
+        group by p.productNo,p.procedureId, pp.unit
     </select>
     <select id="getByOrderAndProduct" resultType="com.btjf.model.product.ProductProcedure">
         SELECT DISTINCT
@@ -618,7 +619,7 @@
     <select id="analyseForDay" resultType="com.btjf.vo.weixin.EmpDayWorkVo">
         SELECT
             DATE_FORMAT(a.completeTime, "%Y-%m-%d") date,
-            SUM(a.money) total
+            SUM(a.money) sum
         FROM
             (
                 (
@@ -650,11 +651,11 @@
         GROUP BY
             DATE_FORMAT(a.completeTime, "%Y-%m-%d")
         ORDER BY
-            DATE_FORMAT(a.completeTime, "%Y-%m-%d")
+            DATE_FORMAT(a.completeTime, "%Y-%m-%d") DESC
     </select>
     <select id="getWorkForDay" resultType="com.btjf.vo.weixin.EmpDayWorkDetailVo">
 		(
-			SELECT
+			SELECT DISTINCT
 					p.orderNo,
 					p.productNo,
 					p.luoId,
@@ -685,7 +686,7 @@
 		)
 		UNION ALL
 			(
-				SELECT
+				SELECT DISTINCT
 						s.orderNo,
 						s.productNo,
 						s.luoId,
@@ -714,6 +715,59 @@
 				AND s. STATUS = 0
 				AND s.isDelete = 0
 			)
+    </select>
+    <select id="getWorkProcedureInfo" resultType="com.btjf.vo.weixin.ProcedureInfoVo">
+    (
+        SELECT
+            p.procedureName NAME,
+            p.num,
+            p.price,
+            p.money
+        FROM
+            t_Production_Procedure_Confirm p
+        WHERE
+            DATE_FORMAT(p.completeTime, "%Y-%m-%d") = #{date}
+        AND p.empId = #{empId}
+        AND p.orderNo = #{orderNo}
+        AND p.productNo = #{productNo}
+        <if test="type == 0 ">
+            AND p.pmOutBillNo = #{billNo}
+        </if>
+        <if test="type == 1 ">
+            AND p.productionNo = #{billNo}
+        </if>
+        <if test="type == 2 ">
+            AND p.productionNo = #{billNo} AND p.luoId = #{luoId}
+        </if>
+        AND p.isChange = 0
+        AND p.isDelete = 0
+    )
+    UNION ALL
+	(
+		SELECT
+			s.procedureName NAME,
+			s.num,
+			s.price,
+			s.money
+		FROM
+			t_Production_Procedure_Scan s
+		WHERE
+			DATE_FORMAT(s.createTime, "%Y-%m-%d") = #{date}
+		AND s.empId = #{empId}
+        AND s.orderNo = #{orderNo}
+        AND s.productNo = #{productNo}
+        <if test="type == 0 ">
+            AND s.pmOutBillNo = #{billNo}
+        </if>
+        <if test="type == 1 ">
+            AND s.productionNo = #{billNo}
+        </if>
+        <if test="type == 2 ">
+            AND s.productionNo = #{billNo} AND s.luoId = #{luoId}
+        </if>
+		AND s. STATUS = 0
+		AND s.isDelete = 0
+	)
     </select>
 
 

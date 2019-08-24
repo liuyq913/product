@@ -4,6 +4,7 @@ public class OrderProductVo {
 
     private String productNo;
     private Integer num;
+    private String unit;
 
     public String getProductNo() {
         return productNo;
@@ -19,5 +20,13 @@ public class OrderProductVo {
 
     public void setNum(Integer num) {
         this.num = num;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 }

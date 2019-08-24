@@ -4,10 +4,7 @@ import com.btjf.model.order.Order;
 import com.btjf.model.order.ProductionProcedureConfirm;
 import com.btjf.model.order.ProductionProcedureConfirmExample;
 import com.btjf.model.product.ProductProcedure;
-import com.btjf.vo.weixin.EmpDayWorkDetailVo;
-import com.btjf.vo.weixin.EmpDayWorkVo;
-import com.btjf.vo.weixin.EmpProcedureDetailVo;
-import com.btjf.vo.weixin.OrderProductVo;
+import com.btjf.vo.weixin.*;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -126,4 +123,9 @@ public interface ProductionProcedureConfirmMapper {
     List<EmpDayWorkVo> analyseForDay(@Param("date")String date, @Param("empId")Integer empId);
 
     List<EmpDayWorkDetailVo> getWorkForDay(@Param("date")String date, @Param("empId")Integer empId);
+
+    List<ProcedureInfoVo> getWorkProcedureInfo(@Param("date")String date, @Param("empId")Integer empId,
+                                               @Param("orderNo")String orderNo, @Param("productNo")String productNo,
+                                               @Param("billNo")String billNo, @Param("luoId")Integer luoId,
+                                               @Param("type")Integer type);
 }
