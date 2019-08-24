@@ -159,7 +159,7 @@ public class MineController  extends ProductBaseController {
         }
 
         List<EmpProcedureDetailVo> list = new ArrayList<>();
-        Integer num = 0;//上报的总数
+        Double num = 0.0;//上报的总数
         for (int i=0; i<content.length; i++){
             String ep = content[i];
             String[] s = ep.split("\\|");
@@ -168,7 +168,7 @@ public class MineController  extends ProductBaseController {
             }
             EmpProcedureDetailVo vo = new EmpProcedureDetailVo();
             vo.setEmpId(Integer.valueOf(s[0]));
-            vo.setNum(Integer.valueOf(s[1]));
+            vo.setNum(Double.valueOf(s[1]));
             num = num + vo.getNum();
             list.add(vo);
         }

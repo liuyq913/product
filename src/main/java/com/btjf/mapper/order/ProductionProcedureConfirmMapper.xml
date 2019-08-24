@@ -550,7 +550,7 @@
          and p.workshop = #{deptName,jdbcType=VARCHAR}
     </select>
 
-    <select id="getChangeNum" resultType="java.lang.Integer">
+    <select id="getChangeNum" resultType="java.lang.Double">
         SELECT
         sum(p.num)
         from t_Production_Procedure_Confirm p

@@ -112,7 +112,7 @@ public interface ProductionProcedureConfirmMapper {
                @Param("productNo") String productNo, @Param("productionNo") String productionNo,
                @Param("louId") Integer louId,@Param("billOutNo") String billOutNo, @Param("procedureId") Integer procedureId);
 
-    Integer getChangeNum(@Param("orderNo")String orderNo, @Param("productNo")String productNo, @Param("id")Integer id, @Param("deptName")String deptName);
+    Double getChangeNum(@Param("orderNo")String orderNo, @Param("productNo")String productNo, @Param("id")Integer id, @Param("deptName")String deptName);
 
     void deleteType2(@Param("orderNo")String orderNo, @Param("productNo")String productNo, @Param("id")Integer id, @Param("deptName")String deptName);
 

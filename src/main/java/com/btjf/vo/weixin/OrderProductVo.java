@@ -3,7 +3,7 @@ package com.btjf.vo.weixin;
 public class OrderProductVo {
 
     private String productNo;
-    private Integer num;
+    private Double num;
     private String unit;
 
     public String getProductNo() {
@@ -14,11 +14,11 @@ public class OrderProductVo {
         this.productNo = productNo;
     }
 
-    public Integer getNum() {
+    public Double getNum() {
         return num;
     }
 
-    public void setNum(Integer num) {
+    public void setNum(Double num) {
         this.num = num;
     }
 
