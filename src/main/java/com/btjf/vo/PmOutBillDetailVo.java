@@ -44,7 +44,7 @@ public class PmOutBillDetailVo {
         this.num = orderProduct.getNum();
         this.assignedNum = pmOutBill.getDistributionNum();
         this.maxNum = orderProduct.getMaxNum();
-        this.url = "/wx/work/getConfirmList?orderId=" + orderProduct.getOrderId() + "&orderNo=" + orderProduct.getOrderNo()
+        this.url = "/wx/work/getConfirmList?orderId=" + orderProduct.getId() + "&orderNo=" + orderProduct.getOrderNo()
                 + "&productNo=" + orderProduct.getProductNo() + "&billNo=" + pmOutBill.getBillNo();
         this.billDate = DateUtil.dateToString(pmOutBill.getCreateTime(), DateUtil.ymdFormat);
         if (plist != null && plist.size() > 0) {
