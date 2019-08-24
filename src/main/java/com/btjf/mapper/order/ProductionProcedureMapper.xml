@@ -361,7 +361,7 @@
     </select>
 
     <select id="getConfigProcedure" resultMap="BaseResultMap">
-        SELECT tpp.*
+       <!-- SELECT tpp.*
         FROM t_Production_Procedure tpp LEFT JOIN t_Product_Procedure_Workshop tppw on  tpp.procedureId = tppw.procedureId
         WHERE 1=1
         <if test="deptName != null">
@@ -370,6 +370,16 @@
         <if test="productionNo != null">
           and  tpp.productionNo = #{productionNo}
         </if>
-        and tpp.isDelete = 0 and tppw.isDelete = 0 and tpp.procedureName &lt;&gt;'质检'
+        and tpp.isDelete = 0 and tppw.isDelete = 0 and tpp.procedureName &lt;&gt;'质检'-->
+
+
+
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_Production_Procedure
+        WHERE 1=1
+        <if test="productionNo != null">
+            and productionNo = #{productionNo}
+        </if>
+        and isDelete = 0 and procedureName &lt;&gt;'质检'
     </select>
 </mapper>
