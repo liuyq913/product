@@ -25,7 +25,7 @@ import java.util.Date;
 @RestController
 @Api(value = "WxLoginController", description = "小程序 登入", position = 1)
 @RequestMapping(value = "/wx/")
-public class WxLoginController extends ProductBaseController{
+public class WxLoginController extends ProductBaseController {
 
     @Resource
     private LoginInfoCache loginInfoCache;
@@ -46,7 +46,7 @@ public class WxLoginController extends ProductBaseController{
 
             wxEmpVo = empService.login(phone, MD5Util.getMD5String(password));
             if (wxEmpVo == null) {
-               return XaResult.error("用户名或密码错误");
+                return XaResult.error("用户名或密码错误");
             }
         } else {
             wxEmpVo = empService.login(phone, null);
@@ -62,16 +62,29 @@ public class WxLoginController extends ProductBaseController{
 
     @RequestMapping(value = "checkPhoneAndIdCar", method = RequestMethod.GET)
     public XaResult<Emp> checkPhoneAndIdCar(String phone, String idCar) {
-        if (phone == null) return XaResult.error("请输入手机号码");
+        XaResult xaResult = new XaResult();
+        if (phone == null) {
+            xaResult.setError(1001, "请输入手机号码");
+            return xaResult;
+        }
 
-        if (!RegUtil.isMobile(phone)) return XaResult.error("请输入正确的手机号码");
+        if (!RegUtil.isMobile(phone)) {
+            xaResult.setError(1002, "请输入正确的手机号码");
+            return xaResult;
+        }
         Emp emp = null;
         if (StringUtils.isEmpty(idCar)) {
             emp = empService.getByPhoneOrIdCard(phone, null);
-            if (emp == null) return XaResult.error("您填写的手机号错误，请修改");
+            if (emp == null) {
+                xaResult.setError(1003, "您填写的手机号错误，请修改");
+                return xaResult;
+            }
         } else {
             emp = empService.getByPhoneOrIdCard(phone, idCar);
-            if (emp == null) return XaResult.error("输入的身份证号错误，请修改");
+            if (emp == null) {
+                xaResult.setError(1004,"输入的身份证号错误，请修改");
+                return xaResult;
+            }
         }
         return XaResult.success(emp);
     }
@@ -84,7 +97,7 @@ public class WxLoginController extends ProductBaseController{
         Emp emp = empService.getByID(id);
         if (emp == null) return XaResult.error("该用户不存在");
 
-        if(newPassword.length() < 6) return XaResult.error("密码长度最少6位");
+        if (newPassword.length() < 6) return XaResult.error("密码长度最少6位");
 
         newPassword = MD5Utils.ecodeByMD5(newPassword);
 

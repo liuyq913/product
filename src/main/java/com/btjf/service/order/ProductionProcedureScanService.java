@@ -119,9 +119,9 @@ public class ProductionProcedureScanService {
     public Boolean selectLastMonthIsPass(ProductionProcedureConfirm productionProcedureConfirm) {
 
         ProductionProcedureScan productionProcedureScan = productionProcedureScanMapper.selectLastMonth(BeanUtil.convert(productionProcedureConfirm, ProductionProcedureScan.class));
-        if (null == productionProcedureScan || productionProcedureScan.getStatus() == 0){
+        if (null == productionProcedureScan || productionProcedureScan.getStatus() == 0) {
             return false;
-        }else if(productionProcedureScan.getStatus() == 1){
+        } else if (productionProcedureScan.getStatus() == 1) {
             return true;
         }
         return false;

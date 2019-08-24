@@ -243,11 +243,25 @@ public class WorkController extends ProductBaseController {
         if (!wxEmpVo.getWorkName().equals("检验")) {
             return XaResult.error("身份错误");
         }
+
         if (orderId == null || orderNo == null || productNo == null)
             return XaResult.error("orderId，orderNo， productNo，必填");
 
         if (productionNo == null && billOutNo == null) return XaResult.error("生产单号和领料单号不能同时为空");
         if (productionNo != null && billOutNo != null) return XaResult.error("生产单号和领料单号不能同时存在");
+
+        if(productionNo != null){
+            ProductionOrder productionOrder =  productionOrderService.getByNo(productionNo);
+            if(productionOrder == null) return XaResult.error("生产单号不存在");
+            if(!wxEmpVo.getDeptName().equals(productionOrder.getWorkshop())) return XaResult.error("您无法质检不属于自己部门的单子");
+        }
+
+        if(billOutNo != null){
+            PmOutBill pmOutBill =  pmOutService.getByBillNo(billOutNo);
+            if(pmOutBill == null) return XaResult.error("生产单不存在");
+            if(!wxEmpVo.getDeptName().equals(pmOutBill.getWorkshop())) return XaResult.error("您无法质检不属于自己部门的单子");
+        }
+
 
         ProductionProcedureConfirm productionProcedureConfirm = new ProductionProcedureConfirm();
         productionProcedureConfirm.setOrderNo(orderNo);

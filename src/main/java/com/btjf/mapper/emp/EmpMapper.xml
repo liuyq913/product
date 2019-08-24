@@ -745,7 +745,7 @@
         FROM t_Emp
         WHERE phone = #{phone}
         <if test="idCard != null">
-            and idCard like '${idCard}%'
+            and right(idCard,6) = #{idCard}
         </if>
         and isDelete = 0 limit 1
     </select>

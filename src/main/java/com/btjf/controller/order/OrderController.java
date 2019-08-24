@@ -129,7 +129,7 @@ public class OrderController extends ProductBaseController {
         } else {
             product.setType(type);
             product.setLastModifyTime(new Date());
-            productService.update(product);
+            productId = productService.update(product);
         }
 
         OrderProduct orderProduct1 = new OrderProduct(orderID, orderNo, productId,
