@@ -393,7 +393,7 @@ CREATE TABLE t_Production_Procedure_Confirm(
   procedureId int(11) comment '工序ID',
   procedureName varchar(50) comment '工序名称',
   empId int(11) comment '员工ID',
-  num int(11) comment '员工计件数目',
+  num decimal(5,2) comment '员工计件数目',
   price decimal(5,2) comment '价格',
   money decimal(6,2) comment '工资',
   completeTime datetime comment '员工扫码时间',

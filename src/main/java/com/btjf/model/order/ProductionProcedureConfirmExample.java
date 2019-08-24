@@ -596,52 +596,52 @@ public class ProductionProcedureConfirmExample {
             return (Criteria) this;
         }
 
-        public Criteria andNumEqualTo(Integer value) {
+        public Criteria andNumEqualTo(BigDecimal value) {
             addCriterion("num =", value, "num");
             return (Criteria) this;
         }
 
-        public Criteria andNumNotEqualTo(Integer value) {
+        public Criteria andNumNotEqualTo(BigDecimal value) {
             addCriterion("num <>", value, "num");
             return (Criteria) this;
         }
 
-        public Criteria andNumGreaterThan(Integer value) {
+        public Criteria andNumGreaterThan(BigDecimal value) {
             addCriterion("num >", value, "num");
             return (Criteria) this;
         }
 
-        public Criteria andNumGreaterThanOrEqualTo(Integer value) {
+        public Criteria andNumGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("num >=", value, "num");
             return (Criteria) this;
         }
 
-        public Criteria andNumLessThan(Integer value) {
+        public Criteria andNumLessThan(BigDecimal value) {
             addCriterion("num <", value, "num");
             return (Criteria) this;
         }
 
-        public Criteria andNumLessThanOrEqualTo(Integer value) {
+        public Criteria andNumLessThanOrEqualTo(BigDecimal value) {
             addCriterion("num <=", value, "num");
             return (Criteria) this;
         }
 
-        public Criteria andNumIn(List<Integer> values) {
+        public Criteria andNumIn(List<BigDecimal> values) {
             addCriterion("num in", values, "num");
             return (Criteria) this;
         }
 
-        public Criteria andNumNotIn(List<Integer> values) {
+        public Criteria andNumNotIn(List<BigDecimal> values) {
             addCriterion("num not in", values, "num");
             return (Criteria) this;
         }
 
-        public Criteria andNumBetween(Integer value1, Integer value2) {
+        public Criteria andNumBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("num between", value1, value2, "num");
             return (Criteria) this;
         }
 
-        public Criteria andNumNotBetween(Integer value1, Integer value2) {
+        public Criteria andNumNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("num not between", value1, value2, "num");
             return (Criteria) this;
         }

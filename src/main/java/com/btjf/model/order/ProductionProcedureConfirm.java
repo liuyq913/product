@@ -66,7 +66,7 @@ public class ProductionProcedureConfirm implements Serializable {
      *
      * @mbg.generated
      */
-    private Integer num;
+    private BigDecimal num;
 
     /**
      *
@@ -345,7 +345,7 @@ public class ProductionProcedureConfirm implements Serializable {
      *
      * @mbg.generated
      */
-    public Integer getNum() {
+    public BigDecimal getNum() {
         return num;
     }
 
@@ -357,7 +357,7 @@ public class ProductionProcedureConfirm implements Serializable {
      *
      * @mbg.generated
      */
-    public void setNum(Integer num) {
+    public void setNum(BigDecimal num) {
         this.num = num;
     }
 

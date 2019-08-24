@@ -96,7 +96,7 @@ public class ProductionProcedureConfirmService {
             productionProcedureConfirm.setProductionNo(t.getProductionNo());
             productionProcedureConfirm.setOrderNo(t.getOrderNo());
             productionProcedureConfirm.setProductNo(t.getProductNo());
-            productionProcedureConfirm.setNum(t.getNum());
+            productionProcedureConfirm.setNum(BigDecimal.valueOf(t.getNum()));
             productionProcedureConfirm.setEmpId(t.getEmpId());
             productionProcedureConfirm.setIsChange(0);
             productionProcedureConfirm.setMoney(t.getMoney());
@@ -124,7 +124,7 @@ public class ProductionProcedureConfirmService {
         productionProcedureConfirm.setType(3);
         productionProcedureConfirm.setIsDelete(0);
         productionProcedureConfirm.setEmpId(wxEmpVo.getId());
-        productionProcedureConfirm.setNum(productionProcedureScan.getNum());
+        productionProcedureConfirm.setNum(BigDecimal.valueOf(productionProcedureScan.getNum()));
         productionProcedureConfirm.setPrice(productProcedureWorkshop.getPrice());
         productionProcedureConfirm.setOperator(wxEmpVo.getName());
         productionProcedureConfirm.setIsChange(0);
@@ -153,7 +153,7 @@ public class ProductionProcedureConfirmService {
             productionProcedureConfirm.setIsDelete(0);
             productionProcedureConfirm.setOrderNo(t.getOrderNo());
             productionProcedureConfirm.setProductNo(t.getProductNo());
-            productionProcedureConfirm.setNum(list.get(i).getNum());
+            productionProcedureConfirm.setNum(BigDecimal.valueOf(list.get(i).getNum()));
             productionProcedureConfirm.setEmpId(list.get(i).getEmpId());
             productionProcedureConfirm.setIsChange(0);
             productionProcedureConfirm.setMoney(t.getPrice().multiply(BigDecimal.valueOf(list.get(i).getNum())));
