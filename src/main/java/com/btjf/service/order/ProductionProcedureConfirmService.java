@@ -181,7 +181,7 @@ public class ProductionProcedureConfirmService {
     }
 
     public List<ProcedureInfoVo> getWorkProcedureInfo(String date, Integer empId, String orderNo, String productNo,
-                                                      String billNo) {
-        return null;
+                                                      String billNo, Integer luoId, Integer type) {
+        return productionProcedureConfirmMapper.getWorkProcedureInfo(date,empId,orderNo,productNo,billNo,luoId,type);
     }
 }

@@ -178,16 +178,16 @@ public class MineController  extends ProductBaseController {
             return XaResult.error("当前人员没有权限进行该操作");
         }
 
-        Integer changeNum = productionProcedureConfirmService.getChangeNum(orderNo, productNo, procedureId, vo.getDeptName());
-        if(num < changeNum){
-            XaResult xaResult = new XaResult();
-            xaResult.setError(1002,"您设置的产量未达到上限数量，确认保存吗？");
-            return xaResult;
-        }else if(num > changeNum){
-            XaResult xaResult = new XaResult();
-            xaResult.setError(1001,"您设置的计件产量工序超过{" + changeNum + "}，请修改");
-            return xaResult;
-        }
+//        Integer changeNum = productionProcedureConfirmService.getChangeNum(orderNo, productNo, procedureId, vo.getDeptName());
+//        if(num < changeNum){
+//            XaResult xaResult = new XaResult();
+//            xaResult.setError(1002,"您设置的产量未达到上限数量，确认保存吗？");
+//            return xaResult;
+//        }else if(num > changeNum){
+//            XaResult xaResult = new XaResult();
+//            xaResult.setError(1001,"您设置的计件产量工序超过{" + changeNum + "}，请修改");
+//            return xaResult;
+//        }
 
         productionProcedureConfirmService.change(orderNo, productNo, procedureId, list, vo);
         return XaResult.success();
@@ -208,31 +208,30 @@ public class MineController  extends ProductBaseController {
         EmpWorkVo empWorkVo = new EmpWorkVo();
         double total = 0.0;
 
-        if(vo.getIsLeader() != null && vo.getIsLeader() == 1){
-
-        }else{
-            List<EmpDayWorkVo> dayWorkVos = productionProcedureConfirmService.analyseForDay(date, vo.getId());
-            if(dayWorkVos == null || dayWorkVos.size() <1){
-                return XaResult.error("查无数据");
-            }
-            for (EmpDayWorkVo dayWorkVo:dayWorkVos) {
-                List<EmpDayWorkDetailVo> dayWorkDetailVoList =
-                        productionProcedureConfirmService.getWorkForDay(dayWorkVo.getDate(), vo.getId());
-                for (EmpDayWorkDetailVo dayWorkDetailVo:dayWorkDetailVoList) {
-                    //TODO 根据 type 罗ID  精确搜索工序
-                    List<ProcedureInfoVo> procedureInfoVos =
-                            productionProcedureConfirmService.getWorkProcedureInfo(dayWorkVo.getDate(), vo.getId(),
-                            dayWorkDetailVo.getOrderNo(), dayWorkDetailVo.getProductNo(),dayWorkDetailVo.getBillNo());
-                    dayWorkDetailVo.setProcedureInfoVoList(procedureInfoVos);
-                }
-                dayWorkVo.setDayWorkDetailVoList(dayWorkDetailVoList);
-                total = total + dayWorkVo.getSum();
-            }
-            empWorkVo.setTotal(total);
-            empWorkVo.setDayWorkVoList(dayWorkVos);
+        List<EmpDayWorkVo> dayWorkVos = productionProcedureConfirmService.analyseForDay(date, vo.getId());
+        if(dayWorkVos == null || dayWorkVos.size() <1){
+            return XaResult.error("查无数据");
         }
-
-
+        for (EmpDayWorkVo dayWorkVo:dayWorkVos) {
+            List<EmpDayWorkDetailVo> dayWorkDetailVoList =
+                    productionProcedureConfirmService.getWorkForDay(dayWorkVo.getDate(), vo.getId());
+            for (EmpDayWorkDetailVo dayWorkDetailVo:dayWorkDetailVoList) {
+                //TODO 根据 type 罗ID  精确搜索工序
+                String billNo = dayWorkDetailVo.getBillNo();
+                if(dayWorkDetailVo.getLuoId() != null){
+                    billNo = StringUtils.substringBefore(billNo, "-");
+                }
+                List<ProcedureInfoVo> procedureInfoVos =
+                        productionProcedureConfirmService.getWorkProcedureInfo(dayWorkVo.getDate(), vo.getId(),
+                        dayWorkDetailVo.getOrderNo(), dayWorkDetailVo.getProductNo(),billNo, dayWorkDetailVo.getLuoId(),
+                                dayWorkDetailVo.getType());
+                dayWorkDetailVo.setProcedureInfoVoList(procedureInfoVos);
+            }
+            dayWorkVo.setDayWorkDetailVoList(dayWorkDetailVoList);
+            total = total + dayWorkVo.getSum();
+        }
+        empWorkVo.setTotal(total);
+        empWorkVo.setDayWorkVoList(dayWorkVos);
 
         return XaResult.success(empWorkVo);
     }
