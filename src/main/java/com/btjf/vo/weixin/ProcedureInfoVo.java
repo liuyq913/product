@@ -3,7 +3,7 @@ package com.btjf.vo.weixin;
 public class ProcedureInfoVo {
 
     private String name;
-    private Integer num;
+    private Double num;
     private Double price;
     private Double money;
 
@@ -15,11 +15,11 @@ public class ProcedureInfoVo {
         this.name = name;
     }
 
-    public Integer getNum() {
+    public Double getNum() {
         return num;
     }
 
-    public void setNum(Integer num) {
+    public void setNum(Double num) {
         this.num = num;
     }
 

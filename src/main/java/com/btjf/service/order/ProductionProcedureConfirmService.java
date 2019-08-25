@@ -168,7 +168,7 @@ public class ProductionProcedureConfirmService {
         }
     }
 
-    public Integer getChangeNum(String orderNo, String productNo, Integer procedureId, String deptName) {
+    public Double getChangeNum(String orderNo, String productNo, Integer procedureId, String deptName) {
         return productionProcedureConfirmMapper.getChangeNum(orderNo, productNo, procedureId, deptName);
     }
 

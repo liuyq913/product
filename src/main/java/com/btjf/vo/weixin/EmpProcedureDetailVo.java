@@ -4,7 +4,7 @@ public class EmpProcedureDetailVo {
 
     private Integer empId;
     private String empName;
-    private Integer num;
+    private Double num;
 
     public String getEmpName() {
         return empName;
@@ -14,11 +14,11 @@ public class EmpProcedureDetailVo {
         this.empName = empName;
     }
 
-    public Integer getNum() {
+    public Double getNum() {
         return num;
     }
 
-    public void setNum(Integer num) {
+    public void setNum(Double num) {
         this.num = num;
     }
 
