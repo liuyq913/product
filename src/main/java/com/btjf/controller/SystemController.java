@@ -3,10 +3,12 @@ package com.btjf.controller;
 import com.btjf.application.util.XaResult;
 import com.btjf.controller.order.vo.WorkShopVo;
 import com.btjf.model.emp.Emp;
+import com.btjf.model.emp.EmpWork;
 import com.btjf.model.product.ProductProcedureWorkshop;
 import com.btjf.model.sys.Sysdept;
 import com.btjf.service.dictionary.DictionaryService;
 import com.btjf.service.emp.EmpService;
+import com.btjf.service.emp.EmpWorkService;
 import com.btjf.service.order.BillNoService;
 import com.btjf.service.productpm.ProductWorkshopService;
 import com.btjf.service.sys.SysDeptService;
@@ -44,6 +46,8 @@ public class SystemController {
     private ProductWorkshopService productWorkshopService;
     @Resource
     private BillNoService billNoService;
+    @Resource
+    private EmpWorkService empWorkService;
 
     /**
      * 获取数据
@@ -69,6 +73,18 @@ public class SystemController {
         List<Sysdept> list = sysDeptService.getList();
         return XaResult.success(list);
     }
+
+    /**
+     * 获取工种
+     *
+     * @return
+     */
+    @RequestMapping(value = "/work", method = RequestMethod.GET)
+    public XaResult<List<EmpWork>> work() {
+        List<EmpWork> list = empWorkService.getList();
+        return XaResult.success(list);
+    }
+
 
     /**
      * 获取单号
