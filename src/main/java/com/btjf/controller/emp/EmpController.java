@@ -43,7 +43,7 @@ public class EmpController {
      *
      * @return
      */
-    @RequestMapping(value = "/detail", method = RequestMethod.POST)
+    @RequestMapping(value = "/detail", method = RequestMethod.GET)
     public XaResult<Emp> detail(Integer id){
         Emp emp = empService.getByID(id);
         return XaResult.success(emp);
