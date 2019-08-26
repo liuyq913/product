@@ -2,8 +2,9 @@ package com.btjf.mapper.emp;
 
 import com.btjf.model.emp.EmpWork;
 import com.btjf.model.emp.EmpWorkExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface EmpWorkMapper {
     /**
@@ -95,4 +96,6 @@ public interface EmpWorkMapper {
     int updateByPrimaryKey(EmpWork record);
 
     List<EmpWork> getList();
+
+    EmpWork getByName(@Param("name") String name);
 }

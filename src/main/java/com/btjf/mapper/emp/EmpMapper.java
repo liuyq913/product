@@ -3,8 +3,10 @@ package com.btjf.mapper.emp;
 import com.btjf.controller.weixin.vo.WxEmpVo;
 import com.btjf.model.emp.Emp;
 import com.btjf.model.emp.EmpExample;
-import java.util.List;
+import com.btjf.vo.weixin.EmpVo;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface EmpMapper {
     /**
@@ -102,4 +104,7 @@ public interface EmpMapper {
     WxEmpVo selectByPhone(@Param("phone") String phone, @Param("password") String password);
 
     Emp getByPhoneOrIdCard(@Param("phone") String phone, @Param("idCard") String idCard);
+
+    List<EmpVo> getList(@Param("name") String name, @Param("deptId") Integer deptId, @Param("nativeSource") String nativeSource,
+                        @Param("startEntryDate") String startEntryDate, @Param("endEntryDate") String endEntryDate);
 }
