@@ -45,7 +45,14 @@ public class EmpController {
      */
     @RequestMapping(value = "/detail", method = RequestMethod.GET)
     public XaResult<Emp> detail(Integer id){
+        if(id == null){
+            return XaResult.error("id不能为空");
+        }
         Emp emp = empService.getByID(id);
+        if (emp == null){
+            return XaResult.error("该员工不存在");
+        }
+        emp.setPassword(null);
         return XaResult.success(emp);
     }
 
