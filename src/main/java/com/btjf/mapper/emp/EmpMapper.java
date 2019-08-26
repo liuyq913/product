@@ -105,6 +105,8 @@ public interface EmpMapper {
 
     Emp getByPhoneOrIdCard(@Param("phone") String phone, @Param("idCard") String idCard);
 
+    Emp getByIdCard(@Param("idCard")String idCard);
+
     List<EmpVo> getList(@Param("name") String name, @Param("deptId") Integer deptId, @Param("nativeSource") String nativeSource,
                         @Param("startEntryDate") String startEntryDate, @Param("endEntryDate") String endEntryDate);
 }

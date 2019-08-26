@@ -27,4 +27,8 @@ public class SysDeptService {
     public List<Sysdept> getWorkshopList() {
         return sysdeptMapper.getWorkshopList();
     }
+
+    public Sysdept getByName(String name) {
+        return sysdeptMapper.getByName(name);
+    }
 }

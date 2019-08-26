@@ -97,5 +97,5 @@ public interface EmpWorkMapper {
 
     List<EmpWork> getList();
 
-    EmpWork getByName(@Param("name") String name);
+    EmpWork getByName(@Param("name")String name);
 }

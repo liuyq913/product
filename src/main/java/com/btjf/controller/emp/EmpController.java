@@ -40,15 +40,29 @@ public class EmpController {
 
     @Resource
     private EmpService empService;
-    @Resource
-    private SysDeptService sysDeptService;
-    @Resource
-    private SysRoleService sysRoleService;
-    @Resource
-    private LoginInfoCache loginInfoCache;
+
 
     /**
-     * 登录
+     * 详情
+     *
+     * @return
+     */
+    @RequestMapping(value = "/detail", method = RequestMethod.GET)
+    public XaResult<Emp> detail(Integer id){
+        if(id == null){
+            return XaResult.error("id不能为空");
+        }
+        Emp emp = empService.getByID(id);
+        if (emp == null){
+            return XaResult.error("该员工不存在");
+        }
+        emp.setPassword(null);
+        return XaResult.success(emp);
+    }
+
+
+    /**
+     * 添加、修改
      *
      * @return
      */

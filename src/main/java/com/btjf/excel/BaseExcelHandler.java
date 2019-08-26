@@ -56,6 +56,8 @@ public abstract class BaseExcelHandler {
                 errResponse.add("第" + (j +1) + "行数据 " + e.getMessage() );
             }
         }
+        //检验要导入的数据重复问题
+
         if(errResponse.size() > 0){
             int sum = sheet.getLastRowNum() - errResponse.size();
             response.add("导入失败，以下数据请修改后再重新上传");

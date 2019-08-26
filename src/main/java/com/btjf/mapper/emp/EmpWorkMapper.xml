@@ -272,7 +272,6 @@
     <select id="getList" resultType="com.btjf.model.emp.EmpWork">
       select * from t_Emp_work where isDelete = 0
     </select>
-
   <select id="getByName" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>
     from t_Emp_work

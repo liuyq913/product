@@ -55,6 +55,10 @@ public class EmpService {
         empMapper.insert(emp);
     }
 
+    public Emp getByIdCard(String idCard) {
+        return empMapper.getByIdCard(idCard);
+    }
+
     public Page<EmpVo> getPage(String name, Integer deptId, String nativeSource, String startEntryDate, String endEntryDate, Page page) {
 
         PageHelper.startPage(page.getPage(), page.getRp());

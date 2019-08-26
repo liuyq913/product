@@ -98,4 +98,6 @@ public interface SysdeptMapper {
     List<Sysdept> getList();
 
     List<Sysdept> getWorkshopList();
+
+    Sysdept getByName(@Param("name") String name);
 }
