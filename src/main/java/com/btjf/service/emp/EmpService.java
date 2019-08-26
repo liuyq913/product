@@ -46,4 +46,8 @@ public class EmpService {
         if (emp == null) return 0;
         return empMapper.updateByPrimaryKey(emp);
     }
+
+    public void create(Emp emp) {
+        empMapper.insert(emp);
+    }
 }

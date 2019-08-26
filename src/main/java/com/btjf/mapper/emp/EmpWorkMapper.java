@@ -93,4 +93,6 @@ public interface EmpWorkMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(EmpWork record);
+
+    List<EmpWork> getList();
 }

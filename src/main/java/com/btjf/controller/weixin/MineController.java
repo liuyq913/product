@@ -49,9 +49,9 @@ public class MineController  extends ProductBaseController {
             mineIndexVo.setName(vo.getName());
             mineIndexVo.setEmpId(vo.getId());
             mineIndexVo.setDeptName(vo.getDeptName());
+            mineIndexVo.setPosition(vo.getWorkName());
             if (vo.getIsLeader() == 1){
                 mineIndexVo.setIsShowMenu(1);
-                mineIndexVo.setPosition("车间主任");
             }
         }
         return XaResult.success(mineIndexVo);
