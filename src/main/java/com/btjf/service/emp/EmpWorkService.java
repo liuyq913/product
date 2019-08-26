@@ -20,4 +20,8 @@ public class EmpWorkService {
     public List<EmpWork> getList() {
         return empWorkMapper.getList();
     }
+
+    public EmpWork getByName(String name) {
+        return empWorkMapper.getByName(name);
+    }
 }

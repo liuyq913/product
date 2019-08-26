@@ -50,4 +50,8 @@ public class EmpService {
     public void create(Emp emp) {
         empMapper.insert(emp);
     }
+
+    public Emp getByIdCard(String idCard) {
+        return empMapper.getByIdCard(idCard);
+    }
 }

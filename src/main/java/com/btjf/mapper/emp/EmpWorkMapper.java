@@ -95,4 +95,6 @@ public interface EmpWorkMapper {
     int updateByPrimaryKey(EmpWork record);
 
     List<EmpWork> getList();
+
+    EmpWork getByName(@Param("name")String name);
 }

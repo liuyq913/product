@@ -36,15 +36,22 @@ public class EmpController {
 
     @Resource
     private EmpService empService;
-    @Resource
-    private SysDeptService sysDeptService;
-    @Resource
-    private SysRoleService sysRoleService;
-    @Resource
-    private LoginInfoCache loginInfoCache;
+
 
     /**
-     * 登录
+     * 详情
+     *
+     * @return
+     */
+    @RequestMapping(value = "/detail", method = RequestMethod.POST)
+    public XaResult<Emp> detail(Integer id){
+        Emp emp = empService.getByID(id);
+        return XaResult.success(emp);
+    }
+
+
+    /**
+     * 添加、修改
      *
      * @return
      */

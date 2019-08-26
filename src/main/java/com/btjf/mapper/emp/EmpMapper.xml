@@ -764,4 +764,7 @@
         </if>
         and isDelete = 0 limit 1
     </select>
+    <select id="getByIdCard" resultType="com.btjf.model.emp.Emp">
+        select * from t_Emp where idCard = #{idCard,jdbcType=VARCHAR} and isDelete = 0
+    </select>
 </mapper>
