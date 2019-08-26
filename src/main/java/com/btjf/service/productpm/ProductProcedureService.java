@@ -1,5 +1,6 @@
 package com.btjf.service.productpm;
 
+import com.btjf.common.page.Page;
 import com.btjf.common.utils.BeanUtil;
 import com.btjf.constant.WorkShopProductionMapEnum;
 import com.btjf.controller.order.vo.WorkShopVo;
@@ -7,6 +8,9 @@ import com.btjf.mapper.product.ProductProcedureMapper;
 import com.btjf.mapper.product.ProductProcedureWorkshopMapper;
 import com.btjf.model.product.ProductProcedure;
 import com.btjf.model.product.ProductProcedureWorkshop;
+import com.btjf.model.sys.SysUser;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -28,16 +32,18 @@ public class ProductProcedureService {
 
 
     public Integer addOrUpdate(ProductProcedure productProcedure) {
-        if(productProcedure.getId() == null){
+
+        if (productProcedure.getId() == null) {
             productProcedureMapper.insertSelective(productProcedure);
-        }else{
+        } else {
             productProcedureWorkshopMapper.deleteByProcedureId(productProcedure.getId());
+            productProcedureMapper.updateByPrimaryKeySelective(productProcedure);
         }
         productProcedureWorkshopMapper.insertSelective(build(productProcedure));
         return productProcedure.getId();
     }
 
-    public Integer add(ProductProcedure productProcedure){
+    public Integer add(ProductProcedure productProcedure) {
         productProcedureMapper.insertSelective(productProcedure);
         return productProcedure.getId();
     }
@@ -49,7 +55,7 @@ public class ProductProcedureService {
         productProcedureWorkshop.setOperator("系统");
         productProcedureWorkshop.setIsDelete(0);
         productProcedureWorkshop.setCreateTime(new Date());
-        productProcedureWorkshop.setWorkshop(workShopProductionMapEnum.getContent());
+        productProcedureWorkshop.setWorkshop(workShopProductionMapEnum == null ? null : workShopProductionMapEnum.getContent());
         productProcedureWorkshop.setProcedureName(productProcedure.getProcedureName());
         productProcedureWorkshop.setProcedureId(productProcedure.getId());
         productProcedureWorkshop.setLastModifyTime(new Date());
@@ -60,16 +66,36 @@ public class ProductProcedureService {
         return productProcedureWorkshop;
     }
 
-    public ProductProcedure getById(Integer id){
+    public ProductProcedure getById(Integer id) {
         return productProcedureMapper.selectByPrimaryKey(id);
     }
 
-    public Integer update(ProductProcedure productProcedure){
+    public Integer update(ProductProcedure productProcedure) {
         return productProcedureMapper.updateByPrimaryKeySelective(productProcedure);
     }
 
     public List<WorkShopVo.Procedure> getByWorkShopAndProductNo(String workShop, String productNo) {
         List<ProductProcedureWorkshop> productProcedures = productProcedureWorkshopMapper.getByWorkShopAndProductNo(workShop, productNo);
         return BeanUtil.convertList(productProcedures, WorkShopVo.Procedure.class);
+    }
+
+    public synchronized Integer getSort() {
+        return productProcedureMapper.getMaxSort() + 1;
+    }
+
+    public Page<ProductProcedure> listPage(String productNo, String procedureName, String price, Page page) {
+        PageHelper.startPage(page.getPage(), page.getRp());
+        List<ProductProcedure> productProcedures = productProcedureMapper.findList(procedureName, price, productNo);
+        PageInfo pageInfo = new PageInfo(productProcedures);
+        return new Page<>(pageInfo);
+    }
+
+    public List<ProductProcedure> list(String productNo, String procedureName, String price){
+        List<ProductProcedure> productProcedures = productProcedureMapper.findList(procedureName, price, productNo);
+        return productProcedures;
+    }
+
+    public Integer sameProductNoAdd(String oldProductNo, String newProduct, SysUser sysUser) {
+       return productProcedureMapper.sameProductNoAdd(oldProductNo, newProduct, sysUser.getUserName());
     }
 }

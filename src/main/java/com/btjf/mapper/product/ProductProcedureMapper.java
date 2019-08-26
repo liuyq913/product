@@ -96,4 +96,11 @@ public interface ProductProcedureMapper {
     int updateByPrimaryKey(ProductProcedure record);
 
     List<ProductProcedure> getByWorkShopAndProductNo(@Param("workShop") String workShop, @Param("productNo") String productNo);
+
+    Integer getMaxSort();
+
+    List<ProductProcedure> findList(@Param("procedureName")
+                                            String procedureName, @Param("price") String price, @Param("productNo") String productNo);
+
+    Integer sameProductNoAdd(@Param("oldProductNo") String oldProductNo, @Param("newProduct") String newProduct, @Param("userName") String userName);
 }
