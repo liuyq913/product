@@ -5,6 +5,7 @@ import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.btjf.application.components.xaresult.AppXaResultHelper;
 import com.btjf.application.util.XaResult;
 import com.btjf.common.page.Page;
+import com.btjf.constant.WorkShopProductionMapEnum;
 import com.btjf.controller.base.ProductBaseController;
 import com.btjf.controller.order.vo.WorkShopVo;
 import com.btjf.controller.productpm.vo.ProductWorkShopVo;
@@ -102,6 +103,8 @@ public class ProductWorkshopController extends ProductBaseController {
         if (StringUtils.isEmpty(workShop) || StringUtils.isEmpty(procedureName) || price == null || null == sort || StringUtils.isEmpty(productNo)) {
             return XaResult.error("请输入完整信息");
         }
+
+        if (null == WorkShopProductionMapEnum.get(sort)) return XaResult.error("请填写正确的序号(序号对应车间)");
         ProductProcedureWorkshop productProcedureWorkshop = new ProductProcedureWorkshop();
         productProcedureWorkshop.setWorkshop(workShop);
         productProcedureWorkshop.setProcedureName(procedureName);

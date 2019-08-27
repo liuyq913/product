@@ -75,7 +75,7 @@ public class ProductWorkshopExcelHandler extends BaseExcelHandler {
                 case 3:
                     String sort = getCellValue(row.getCell(i), i);
                     if (StringUtils.isEmpty(sort)) throw new BusinessException("工序序号未填写");
-                    if (null == WorkShopProductionMapEnum.get(new Integer(sort))) throw new BusinessException("工序序号错误");
+                    if (null == WorkShopProductionMapEnum.get(new Integer(sort))) throw new BusinessException("请填写正确的序号(序号对应车间)");
                     productProcedureWorkshop.setSort(Integer.valueOf(sort));
                     break;
 

@@ -756,7 +756,7 @@
 
     <select id="getByPhoneOrIdCard" resultMap="BaseResultMap">
         SELECT
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         FROM t_Emp
         WHERE phone = #{phone}
         <if test="idCard != null">
@@ -767,4 +767,39 @@
     <select id="getByIdCard" resultType="com.btjf.model.emp.Emp">
         select * from t_Emp where idCard = #{idCard,jdbcType=VARCHAR} and isDelete = 0
     </select>
+
+    <select id="getList" resultType="com.btjf.vo.weixin.EmpVo">
+        SELECT
+        te.id as id,
+        te.name as name,
+        case te.sex when 1 then '男' else '女' end  as sex,
+        ts.deptName as deptName,
+        case te.type when 1 then '计件工' else '固定工' end as type,
+        te.education as education,
+        te.nativeSource as nativeSource,
+        te.idCard as idCard,
+        te.birthday as birthday,
+        te.entryDate as entryDate,
+        tew.name as workName
+        FROM t_Emp te LEFT JOIN t_SysDept ts ON te.deptId = ts.id
+        LEFT JOIN t_Emp_work tew ON  te.workId = tew.id AND tew.isDelete = 0
+        WHERE 1=1
+        <if test="name != null">
+            AND te.name LIKE '%${name}%'
+        </if>
+        <if test="deptId != null">
+            AND te.deptId = #{deptId}
+        </if>
+        <if test="nativeSource != null">
+            AND te.nativeSource LIKE '%${nativeSource}%'
+        </if>
+        <if test="endEntryDate != null">
+            AND te.entryDate &lt;= #{endEntryDate}
+        </if>
+        <if test="startEntryDate != null">
+            AND te.entryDate &gt;= #{startEntryDate}
+        </if>
+        and te.isDelete = 0
+    </select>
+
 </mapper>
