@@ -532,7 +532,7 @@
             and o.productNo
             in (select DISTINCT productNo from t_ProductPM where isDelete=0 and status = 1)
         </if>
-
+        order by o.createTime desc
     </select>
     <select id="count" resultType="java.lang.Integer">
 

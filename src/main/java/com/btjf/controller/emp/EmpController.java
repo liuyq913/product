@@ -114,7 +114,6 @@ public class EmpController {
         Emp emp = new Emp();
         emp.setId(id);
         emp.setName(name);
-        ;
         emp.setPhone(phone);
         emp.setDeptId(deptId);
         emp.setWorkId(workId);
