@@ -169,9 +169,6 @@ public class ProductPmController extends ProductBaseController {
             productPm.setId(id);
             productPmService.update(productPm);
         } else {
-            if (null != productPmService.getByNo(productNo)) {
-                return XaResult.error("型号已经已经存在");
-            }
             if(null != productPmService.getByNoAndPmNo(productNo, pmNo)){
                 return XaResult.error("该型号已经存在该物料");
             }
