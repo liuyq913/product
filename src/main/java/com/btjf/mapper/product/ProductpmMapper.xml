@@ -474,7 +474,7 @@
             AND status = #{status}
         </if>
         AND isDelete = 0
-        order by sequence desc
+        order by createTime desc,sequence desc
     </select>
 
     <select id="selectByNo" resultMap="BaseResultMap">

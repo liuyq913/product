@@ -370,6 +370,6 @@
         <if test="type != null">
             AND type = #{type}
         </if>
-        and isDelete = 0
+        and isDelete = 0 order by createTime desc
     </select>
 </mapper>
