@@ -114,39 +114,41 @@ public class ProductPmService {
         return row;
     }
 
-    public Integer saveList(List<ProductPm> productPms){
+    public Integer saveList(List<ProductPm> productPms) {
         //初始化产品表
-        if(!CollectionUtils.isEmpty(productPms)){
-            for(ProductPm productPm : productPms){
-                if(null == productMapper.getByNo(productPm.getPmNo())){
-                    productPm.setProductId(insertProduct(productPm));
-                }
+        if (!CollectionUtils.isEmpty(productPms)) {
+            for (ProductPm productPm : productPms) {
+                productPm.setProductId(insertProduct(productPm));
             }
         }
 
-       return productpmMapper.saveList(productPms);
+        return productpmMapper.saveList(productPms);
     }
 
-    public Integer insertProduct(ProductPm productPm){
-        Product product = new Product();
-        product.setCreateTime(new Date());
-        product.setOperator("系统");
-        product.setProductNo(productPm.getProductNo());
-        product.setType(productPm.getType());
-        product.setLastModifyTime(new Date());
-        product.setIsDelete(0);
-        product.setName(productPm.getProductNo());
-        product.setUnit(productPm.getUnit());
-        productMapper.insertSelective(product);
-        return product.getId();
+    public Integer insertProduct(ProductPm productPm) {
+        if (null == productMapper.getByNo(productPm.getProductNo())) {
+            Product product = new Product();
+            product.setCreateTime(new Date());
+            product.setOperator("系统");
+            product.setProductNo(productPm.getProductNo());
+            product.setType(productPm.getType());
+            product.setLastModifyTime(new Date());
+            product.setIsDelete(0);
+            product.setName(productPm.getProductNo());
+            product.setUnit(productPm.getUnit());
+            productMapper.insertSelective(product);
+            return product.getId();
+        } else {
+            return 0;
+        }
     }
 
     public List<ProductPm> findListByProductNoAndType(String productNo, String type) {
-        return productpmMapper.findListByProductNoAndType(productNo,type);
+        return productpmMapper.findListByProductNoAndType(productNo, type);
     }
 
     public Integer deleteByPmNo(String pmNo) {
-       return productpmMapper.deleteByPmNo(pmNo);
+        return productpmMapper.deleteByPmNo(pmNo);
     }
 
 
