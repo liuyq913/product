@@ -39,7 +39,7 @@ public class WxLoginInterceptor implements HandlerInterceptor {
 			response.getOutputStream().write(JSONUtils.toJSONByJackson(XaResult.unloginForNoAccessToken()).getBytes("UTF-8"));
 			return false;
 		}
-		WxEmpVo wxEmpVo = (WxEmpVo) loginInfoCache.get(secretKey);
+		WxEmpVo wxEmpVo = (WxEmpVo) loginInfoCache.getForever(secretKey);
 		if(wxEmpVo == null){
 			response.setStatus(HttpStatus.PAYMENT_REQUIRED.value());
 			response.setContentType("text/xml;charset=UTF-8");
