@@ -48,7 +48,7 @@ public class EmpService {
 
     public Integer update(Emp emp) {
         if (emp == null) return 0;
-        return empMapper.updateByPrimaryKey(emp);
+        return empMapper.updateByPrimaryKeySelective(emp);
     }
 
     public void create(Emp emp) {

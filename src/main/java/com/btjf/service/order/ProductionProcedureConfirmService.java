@@ -160,6 +160,7 @@ public class ProductionProcedureConfirmService {
             productionProcedureConfirm.setOperator(vo.getName());
             productionProcedureConfirm.setLastModifyTime(new Date());
             productionProcedureConfirm.setCreateTime(new Date());
+            productionProcedureConfirm.setCompleteTime(new Date());
             productionProcedureConfirm.setPrice(t.getPrice());
             productionProcedureConfirm.setWorkshop(vo.getDeptName());
             productionProcedureConfirm.setProcedureId(procedureId);

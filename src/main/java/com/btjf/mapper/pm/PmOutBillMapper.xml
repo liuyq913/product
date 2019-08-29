@@ -498,6 +498,7 @@
     <if test="billNo != null">
       and o.billNo = #{billNo,jdbcType=VARCHAR}
     </if>
+      order by o.createTime desc
   </select>
 
     <select id="getByBillNo" resultType="com.btjf.model.pm.PmOutBill">
