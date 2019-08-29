@@ -586,7 +586,7 @@
         <if test="customerId != null">
             and customerId = #{customerId}
         </if>
-        and isDelete = 0
+        and isDelete = 0 order by createTime desc
     </select>
 
     <update id="deleteById">

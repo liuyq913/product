@@ -58,7 +58,7 @@ public class ProductionOrderService {
         if (null == productionOrder) return 0;
 
         productionOrder.setProductionNo("P" + billNoService.getNo(4));
-        productionOrder.setCodeUrl("/wx/work/getConfirmList?orderId=" + productionOrder.getId() + "&orderNo=" + productionOrder.getOrderNo()
+        productionOrder.setCodeUrl("/wx/work/getConfirmList?orderId=" + productionOrder.getOrderProductId() + "&orderNo=" + productionOrder.getOrderNo()
                 + "&productNo=" + productionOrder.getProductNo() + "&productionNo=" + productionOrder.getProductionNo());
         productionOrderMapper.insertSelective(productionOrder);
         //更新  订单 型号表 分配数量信息

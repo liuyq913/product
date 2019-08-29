@@ -799,7 +799,7 @@
         <if test="startEntryDate != null">
             AND te.entryDate &gt;= #{startEntryDate}
         </if>
-        and te.isDelete = 0
+        and te.isDelete = 0 order by te.createTime desc
     </select>
 
 </mapper>
