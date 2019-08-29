@@ -96,9 +96,11 @@ public class EmpController {
         if (StringUtils.isEmpty(entryDate)) {
             return XaResult.error("进场日期不能为空");
         }
-        Emp emp1 = empService.getByName(name);
-        if (emp1 != null) {
-            return XaResult.error("系统中该姓名：" + name + " 已存在");
+        if(id == null) {
+            Emp emp1 = empService.getByName(name);
+            if (emp1 != null) {
+                return XaResult.error("系统中该姓名：" + name + " 已存在");
+            }
         }
         if (salary == null) salary = 0.0;
         if (ylbx == null) ylbx = 0.0;
