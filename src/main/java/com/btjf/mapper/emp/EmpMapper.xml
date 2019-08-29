@@ -754,6 +754,17 @@
         and te.isDelete = 0
     </select>
 
+
+  <select id="getAll" resultType="com.btjf.controller.weixin.vo.WxEmpVo">
+    SELECT te.*,
+    ts.deptName as deptName,
+    tew.name as workName
+    FROM t_Emp te LEFT JOIN t_SysDept ts on te.deptId = ts.id LEFT JOIN t_Emp_work tew on te.workId = tew.id and
+    tew.isDelete = 0
+    where 1=1
+    and te.isDelete = 0
+  </select>
+
     <select id="getByPhoneOrIdCard" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
