@@ -103,6 +103,8 @@ public interface EmpMapper {
 
     WxEmpVo selectByPhone(@Param("phone") String phone, @Param("password") String password);
 
+    List<WxEmpVo> getAll();
+
     Emp getByPhoneOrIdCard(@Param("phone") String phone, @Param("idCard") String idCard);
 
     Emp getByIdCard(@Param("idCard")String idCard);

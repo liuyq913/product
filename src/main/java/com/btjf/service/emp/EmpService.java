@@ -28,7 +28,7 @@ public class EmpService {
 
     public Emp getByName(String empName) {
         List<Emp> list = empMapper.getByName(empName);
-        return (list == null || list.size() ==0)? null:list.get(0);
+        return (list == null || list.size() == 0) ? null : list.get(0);
     }
 
     public WxEmpVo login(String phone, String password) {
@@ -71,5 +71,9 @@ public class EmpService {
     public List<EmpVo> getList(String name, Integer deptId, String nativeSource, String startEntryDate, String endEntryDate) {
         return empMapper.getList(name, deptId, nativeSource, startEntryDate, endEntryDate);
 
+    }
+
+    public List<WxEmpVo> getAll() {
+        return empMapper.getAll();
     }
 }
