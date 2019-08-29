@@ -25,7 +25,7 @@ import java.util.stream.Stream;
 @Component
 public class ProductWorkshopExcelHandler extends BaseExcelHandler {
 
-    public final static List<String> fields = Stream.of("型号", "工序号", "单价", "序号").collect(Collectors.toList());
+    public final static List<String> fields = Stream.of("型号", "工序名称", "单价", "序号").collect(Collectors.toList());
 
     @Resource
     private ProductService productService;
