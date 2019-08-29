@@ -292,7 +292,11 @@ public class PmOutController extends ProductBaseController {
             vo.setPmNo(s[0]);
             vo.setAllowNum(Double.valueOf(s[1]));
             if(s.length >2) {
-                vo.setPmBatchNo(s[2]);
+                if(s[2] == null || s[2].equals("undefind")){
+                    vo.setPmBatchNo("");
+                }else{
+                    vo.setPmBatchNo(s[2]);
+                }
             }
             list.add(vo);
         }
