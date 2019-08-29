@@ -58,7 +58,7 @@ public abstract class ProductBaseController {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
                 .getRequestAttributes()).getRequest();
         String secretKey = request.getHeader(LoginInterceptor.SECRETKEY);
-        WxEmpVo wxEmpVo = (WxEmpVo) loginInfoCache.get(secretKey);
+        WxEmpVo wxEmpVo = (WxEmpVo) loginInfoCache.getForever(secretKey);
         if (null == wxEmpVo) {
             throw new BusinessException("请登录之后重试");
         } else {

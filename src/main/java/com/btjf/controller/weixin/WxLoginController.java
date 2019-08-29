@@ -54,7 +54,7 @@ public class WxLoginController extends ProductBaseController {
         }
         String json = JSONUtils.toJSON(wxEmpVo);
         String key = MD5Utils.ecodeByMD5(json);
-        loginInfoCache.add(key, wxEmpVo);
+        loginInfoCache.foreverAdd(key, wxEmpVo);
         wxEmpVo.setSecretKey(key);
         return XaResult.success(wxEmpVo);
     }

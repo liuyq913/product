@@ -4,10 +4,13 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 @Component
 public class LoginInfoCache {
+
+    private static ConcurrentHashMap<String ,Object> foreverCashe = new ConcurrentHashMap();
 
     private final static Cache<String, Object> cache = CacheBuilder.newBuilder()
             //设置cache的初始大小为10，要合理设置该值
@@ -30,6 +33,14 @@ public class LoginInfoCache {
 
     public void delete(String key){
         //map.remove(key);
+    }
+
+    public void foreverAdd(String key, Object value){
+        foreverCashe.put(key, value);
+    }
+
+    public Object getForever(String key){
+        return foreverCashe.get(key);
     }
 
 }
