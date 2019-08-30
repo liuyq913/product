@@ -133,6 +133,12 @@ public class ProductionProcedureConfirmService {
         productionProcedureConfirm.setCreateTime(new Date());
         productionProcedureConfirm.setCompleteTime(productionProcedureScan.getCreateTime());
         productionProcedureConfirm.setProductNo(productNo);
+        productionProcedureConfirm.setProcedureId(productProcedureWorkshop.getProcedureId());
+        productionProcedureConfirm.setProcedureName(productProcedureWorkshop.getProcedureName());
+        productionProcedureConfirm.setPmOutBillNo(billOutNo);
+        productionProcedureConfirm.setLuoId(louId);
+        productionProcedureConfirm.setProductionNo(productionNo);
+
         productionProcedureConfirmMapper.insertSelective(productionProcedureConfirm);
 
         return productionProcedureScans.size();
