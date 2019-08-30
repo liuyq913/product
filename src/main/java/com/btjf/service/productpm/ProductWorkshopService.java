@@ -40,9 +40,8 @@ public class ProductWorkshopService {
         PageHelper.startPage(page.getPage(), page.getRp());
         List<Product> pmList = productMapper.getList(type, productNo);
         List<ProductWorkShopVo> productWorkShopVos = build(pmList);
-        PageInfo pageInfo = new PageInfo(productWorkShopVos);
+        PageInfo pageInfo = new PageInfo(pmList);
         pageInfo.setList(productWorkShopVos);
-
         return new Page<>(pageInfo);
     }
 
