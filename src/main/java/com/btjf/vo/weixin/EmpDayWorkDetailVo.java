@@ -1,5 +1,6 @@
 package com.btjf.vo.weixin;
 
+import java.util.Date;
 import java.util.List;
 
 public class EmpDayWorkDetailVo {
@@ -10,6 +11,7 @@ public class EmpDayWorkDetailVo {
     private Integer type;//0 领料单 1生产单 2罗
     private Integer luoId;
     private String statusDesc;
+    private Date time;
     private List<ProcedureInfoVo> procedureInfoVoList;
 
 
@@ -67,5 +69,13 @@ public class EmpDayWorkDetailVo {
 
     public void setLuoId(Integer luoId) {
         this.luoId = luoId;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
     }
 }
