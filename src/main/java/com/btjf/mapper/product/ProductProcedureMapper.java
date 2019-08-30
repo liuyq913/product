@@ -103,4 +103,8 @@ public interface ProductProcedureMapper {
                                             String procedureName, @Param("price") String price, @Param("productNo") String productNo);
 
     Integer sameProductNoAdd(@Param("oldProductNo") String oldProductNo, @Param("newProduct") String newProduct, @Param("userName") String userName);
+
+
+    List<ProductProcedure> getByProductNo(@Param("productNo") String productNo);
+
 }

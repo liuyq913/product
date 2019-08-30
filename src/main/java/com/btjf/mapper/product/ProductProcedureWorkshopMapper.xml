@@ -418,7 +418,14 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM t_Product_Procedure_Workshop
-        WHERE productNo = #{productNo} and isDelete = 0;
+        WHERE 1=1
+        <if test="productNo != null">
+          AND  productNo = #{productNo}
+        </if>
+        <if test="procedureId != null">
+          AND procedureId = #{procedureId}
+        </if>
+         and isDelete = 0;
     </select>
 
     <update id="deleteByProcedureId">

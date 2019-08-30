@@ -1,11 +1,13 @@
 package com.btjf.service.productpm;
 
+import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.btjf.common.page.Page;
 import com.btjf.common.utils.BeanUtil;
 import com.btjf.constant.WorkShopProductionMapEnum;
 import com.btjf.controller.order.vo.WorkShopVo;
 import com.btjf.mapper.product.ProductProcedureMapper;
 import com.btjf.mapper.product.ProductProcedureWorkshopMapper;
+import com.btjf.model.product.Product;
 import com.btjf.model.product.ProductProcedure;
 import com.btjf.model.product.ProductProcedureWorkshop;
 import com.btjf.model.sys.SysUser;
@@ -29,6 +31,9 @@ public class ProductProcedureService {
 
     @Resource
     private ProductProcedureWorkshopMapper productProcedureWorkshopMapper;
+
+    @Resource
+    private ProductService productService;
 
 
     public Integer addOrUpdate(ProductProcedure productProcedure) {
@@ -90,12 +95,40 @@ public class ProductProcedureService {
         return new Page<>(pageInfo);
     }
 
-    public List<ProductProcedure> list(String productNo, String procedureName, String price){
+    public List<ProductProcedure> list(String productNo, String procedureName, String price) {
         List<ProductProcedure> productProcedures = productProcedureMapper.findList(procedureName, price, productNo);
         return productProcedures;
     }
 
     public Integer sameProductNoAdd(String oldProductNo, String newProduct, SysUser sysUser) {
-       return productProcedureMapper.sameProductNoAdd(oldProductNo, newProduct, sysUser.getUserName());
+        Product product = productService.getByNO(newProduct);
+        List<ProductProcedure> productProcedures = productProcedureMapper.getByProductNo(oldProductNo);
+        if (!CollectionUtils.isEmpty(productProcedures)) {
+            for (ProductProcedure productProcedure : productProcedures){
+                if(productProcedure == null) continue;
+                List<ProductProcedureWorkshop>  productProcedureWorkshops = productProcedureWorkshopMapper.getWorkShop(productProcedure.getProductNo(), productProcedure.getId());
+                if(CollectionUtils.isEmpty(productProcedureWorkshops)) continue;
+                ProductProcedureWorkshop productProcedureWorkshop = productProcedureWorkshops.get(0);
+
+                //新增工序
+                productProcedure.setOperator(sysUser.getUserName());
+                productProcedure.setCreateTime(new Date());
+                productProcedure.setLastModifyTime(new Date());
+                productProcedure.setProductNo(newProduct);
+                productProcedure.setProductId(product.getId());
+                Integer productProcedureId = this.add(productProcedure);
+
+                //新增型号工序
+                productProcedureWorkshop.setProcedureId(productProcedureId);
+                productProcedureWorkshop.setCreateTime(new Date());
+                productProcedureWorkshop.setOperator(sysUser.getUserName());
+                productProcedureWorkshop.setProductId(product.getId());
+                productProcedureWorkshop.setProductNo(newProduct);
+                productProcedureWorkshop.setLastModifyTime(new Date());
+
+                productProcedureWorkshopMapper.insertSelective(productProcedureWorkshop);
+            }
+        }
+        return productProcedures.size();
     }
 }
