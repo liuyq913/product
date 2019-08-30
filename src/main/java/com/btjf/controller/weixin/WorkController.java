@@ -97,7 +97,7 @@ public class WorkController extends ProductBaseController {
                 return XaResult.error("无效的二维码");
             }
             assignNum = productionOrder.getAssignNum();
-            List<WorkShopVo.Procedure> list = productionProcedureService.getConfigProcedure(deptName, productionNo);
+            List<WorkShopVo.Procedure> list = productionProcedureService.getConfigProcedure(null, productionNo);
             if (louId != null) {
                 ProductionLuo productionLuo = productionLuoService.getById(louId);
                 if (productionLuo != null) {
