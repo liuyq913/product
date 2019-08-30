@@ -401,4 +401,11 @@
      from t_Product_Procedure
      where productNo =#{oldProductNo} and isDelete = 0
   </insert>
+
+
+    <select id="getByProductNo" resultMap="BaseResultMap">
+      select <include refid="Base_Column_List"/>
+      from t_Product_Procedure
+      WHERE  productNo =#{productNo} and isDelete = 0
+    </select>
 </mapper>

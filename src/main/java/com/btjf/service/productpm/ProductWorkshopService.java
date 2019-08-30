@@ -60,7 +60,7 @@ public class ProductWorkshopService {
     }
 
     public List<ProductProcedureWorkshop> getWorkShop(String productNo) {
-        return productProcedureWorkshopMapper.getWorkShop(productNo);
+        return productProcedureWorkshopMapper.getWorkShop(productNo, null);
     }
 
     public ProductProcedureWorkshop getById(Integer id) {
