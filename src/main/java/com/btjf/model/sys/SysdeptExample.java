@@ -384,6 +384,66 @@ public class SysdeptExample {
             return (Criteria) this;
         }
 
+        public Criteria andIsWorkShopIsNull() {
+            addCriterion("isWorkShop is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsWorkShopIsNotNull() {
+            addCriterion("isWorkShop is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsWorkShopEqualTo(Integer value) {
+            addCriterion("isWorkShop =", value, "isWorkShop");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsWorkShopNotEqualTo(Integer value) {
+            addCriterion("isWorkShop <>", value, "isWorkShop");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsWorkShopGreaterThan(Integer value) {
+            addCriterion("isWorkShop >", value, "isWorkShop");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsWorkShopGreaterThanOrEqualTo(Integer value) {
+            addCriterion("isWorkShop >=", value, "isWorkShop");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsWorkShopLessThan(Integer value) {
+            addCriterion("isWorkShop <", value, "isWorkShop");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsWorkShopLessThanOrEqualTo(Integer value) {
+            addCriterion("isWorkShop <=", value, "isWorkShop");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsWorkShopIn(List<Integer> values) {
+            addCriterion("isWorkShop in", values, "isWorkShop");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsWorkShopNotIn(List<Integer> values) {
+            addCriterion("isWorkShop not in", values, "isWorkShop");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsWorkShopBetween(Integer value1, Integer value2) {
+            addCriterion("isWorkShop between", value1, value2, "isWorkShop");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsWorkShopNotBetween(Integer value1, Integer value2) {
+            addCriterion("isWorkShop not between", value1, value2, "isWorkShop");
+            return (Criteria) this;
+        }
+
         public Criteria andDeptNameLikeInsensitive(String value) {
             addCriterion("upper(deptName) like", value.toUpperCase(), "deptName");
             return (Criteria) this;

@@ -47,33 +47,34 @@ INSERT INTO `product`.`t_Dictionary` (`type`, `value`) VALUES ('3', '其他类')
 CREATE TABLE t_SysDept(
 	id int primary key auto_increment,
 	deptName varchar(50),
-	deptOrder int
+	deptOrder int,
+	isWorkShop int NOT NULL comment '0 不是车间   1 是车间',
 	);
 
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('经理室', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('人事部', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('劳资部', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('出货部', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('后勤部', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('验货部', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('外加工部', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('质检部-成品检验', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('外协质检', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('行政部', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('技术部', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('生产部', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('采购部', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('下料车间', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('一车间', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('二车间', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('信息中心', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('后道车间-车工', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('后道车间-中辅工', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('后道车间-大辅工', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('包装车间', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('财务部', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('仓库', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('样品间', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('经理室', NULL ,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('人事部', NULL, 0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('劳资部', NULL, 0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('出货部', NULL,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('后勤部', NULL,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('验货部', NULL,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('外加工部', NULL,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('质检部-成品质检', NULL,1);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('外协质检', NULL,1);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('行政部', NULL,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('技术部', NULL,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('生产部', NULL,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('采购部', NULL,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('下料车间', NULL,1);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('一车间', NULL,1);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('二车间', NULL,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('信息中心', NULL,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('后道车间-车工', NULL,1);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('后道车间-中辅工', NULL,1);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('后道车间-大辅工', NULL,1);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('包装车间', NULL,1);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('财务部', NULL,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('仓库', NULL,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('样品间', NULL,0);
 
 update t_SysDept set deptOrder = id;
 
