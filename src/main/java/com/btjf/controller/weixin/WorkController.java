@@ -93,8 +93,8 @@ public class WorkController extends ProductBaseController {
                 return XaResult.error("没有您所需处理的工序。(如有疑问，请咨询客服)");
             }
             if (!deptName.equals(productionOrder.getWorkshop())) {
-                LOGGER.info(wxEmpVo.getName() + "扫码生产单:" + productionNo + "无效的二维码");
-                return XaResult.error("无效的二维码");
+                LOGGER.info(wxEmpVo.getName() + "扫码生产单:" + productionNo + "没有您所需处理的工序。(如有疑问，请咨询客服)");
+                return XaResult.error("没有您所需处理的工序。(如有疑问，请咨询客服)");
             }
             assignNum = productionOrder.getAssignNum();
             List<WorkShopVo.Procedure> list = productionProcedureService.getConfigProcedure(null, productionNo);
@@ -115,11 +115,11 @@ public class WorkController extends ProductBaseController {
                 return XaResult.error("没有您所需处理的工序。(如有疑问，请咨询客服)");
             }
             if (!deptName.equals(bill.getWorkshop())) {
-                LOGGER.info(wxEmpVo.getName() + "扫码领料单:" + billNo + "无效的二维码");
-                return XaResult.error("无效的二维码");
+                LOGGER.info(wxEmpVo.getName() + "扫码领料单:" + billNo + "没有您所需处理的工序。(如有疑问，请咨询客服)");
+                return XaResult.error("没有您所需处理的工序。(如有疑问，请咨询客服)");
             }
             assignNum = bill.getDistributionNum();
-            List<WorkShopVo.Procedure> list = productWorkshopService.getBySort(Arrays.asList(0, 1, 2, 3));
+            List<WorkShopVo.Procedure> list = productWorkshopService.getBySort(productNo,Arrays.asList(0, 1, 2, 3));
             workListVo.setProcedures(list);
             workListVo.setBillNo(billNo);
         } else {

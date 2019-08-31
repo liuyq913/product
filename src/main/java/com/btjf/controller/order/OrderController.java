@@ -14,10 +14,12 @@ import com.btjf.model.order.OrderProduct;
 import com.btjf.model.product.Product;
 import com.btjf.model.product.ProductProcedureWorkshop;
 import com.btjf.model.sys.SysUser;
+import com.btjf.model.sys.Sysdept;
 import com.btjf.service.order.OrderProductService;
 import com.btjf.service.order.OrderService;
 import com.btjf.service.productpm.ProductService;
 import com.btjf.service.productpm.ProductWorkshopService;
+import com.btjf.service.sys.SysDeptService;
 import com.google.common.collect.Lists;
 import com.heige.aikajinrong.base.exception.BusinessException;
 import com.wordnik.swagger.annotations.Api;
@@ -33,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Date;
@@ -57,6 +60,9 @@ public class OrderController extends ProductBaseController {
 
     @Resource
     private ProductWorkshopService productWorkshopService;
+
+    @Resource
+    private SysDeptService sysDeptService;
 
 
     private static final Logger LOGGER = Logger
@@ -126,6 +132,24 @@ public class OrderController extends ProductBaseController {
             productNew.setOperator(sysUser.getUserName());
             productNew.setType(type);
             productId = productService.add(productNew);
+            //为所有车间添加质检工序
+            List<Sysdept> sysdepts = sysDeptService.getWorkshopList();
+            if (!CollectionUtils.isEmpty(sysdepts)) {
+                for(Sysdept sysdept : sysdepts){
+                    if(null == sysdept) continue;
+                    ProductProcedureWorkshop productProcedureWorkshop = new ProductProcedureWorkshop();
+                    productProcedureWorkshop.setOperator(sysUser.getUserName());
+                    productProcedureWorkshop.setProductId(productId);
+                    productProcedureWorkshop.setProductNo(productNo);
+                    productProcedureWorkshop.setSort(0);
+                    productProcedureWorkshop.setProcedureName("质检");
+                    productProcedureWorkshop.setWorkshop(sysdept.getDeptName());
+                    productProcedureWorkshop.setPrice(BigDecimal.valueOf(0));
+                    productProcedureWorkshop.setIsDelete(0);
+                    productWorkshopService.add(productProcedureWorkshop);
+                }
+            }
+
         } else {
             product.setType(type);
             product.setLastModifyTime(new Date());
@@ -185,7 +209,7 @@ public class OrderController extends ProductBaseController {
 
         OrderProduct orderProduct = orderProductService.getByID(id);
         if (null == orderProduct) return XaResult.error("订单不存在");
-            orderProduct.setCompleteDateStr(DateUtil.dateToString(orderProduct.getCompleteDate(), DateUtil.ymdFormat));
+        orderProduct.setCompleteDateStr(DateUtil.dateToString(orderProduct.getCompleteDate(), DateUtil.ymdFormat));
         return XaResult.success(orderProduct);
     }
 

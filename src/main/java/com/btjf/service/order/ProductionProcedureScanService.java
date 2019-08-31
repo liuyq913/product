@@ -77,11 +77,14 @@ public class ProductionProcedureScanService {
         }
 
         Integer row = 0;
+
+        Integer deleteRow = productionProcedureConfirmMapper.delete(orderNo, productNo, productionNo, louId, billOutNo, null);
+        if (deleteRow > 0) LOGGER.info("员工确认工序 删除之前质检的工序条数：" + deleteRow);
         for (WorkShopVo.Procedure procedure : procedures) {
             if (procedure == null) continue;
             row++;
             //删除扫码数据   质检数据
-            productionProcedureConfirmMapper.delete(orderNo, productNo, productionNo, louId, billOutNo, procedure.getProcedureId());
+            //productionProcedureConfirmMapper.delete(orderNo, productNo, productionNo, louId, billOutNo, procedure.getProcedureId());
             productionProcedureScanMapper.delete(orderNo, productNo, productionNo, louId, billOutNo, procedure.getProcedureId());
 
 
