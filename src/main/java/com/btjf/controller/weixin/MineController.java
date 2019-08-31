@@ -10,6 +10,7 @@ import com.btjf.model.sys.Sysdept;
 import com.btjf.service.emp.EmpService;
 import com.btjf.service.order.ProductionProcedureConfirmService;
 import com.btjf.service.sys.SysDeptService;
+import com.btjf.util.BigDecimalUtil;
 import com.btjf.vo.weixin.*;
 import com.wordnik.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
@@ -228,7 +229,7 @@ public class MineController  extends ProductBaseController {
                 dayWorkDetailVo.setProcedureInfoVoList(procedureInfoVos);
             }
             dayWorkVo.setDayWorkDetailVoList(dayWorkDetailVoList);
-            total = total + dayWorkVo.getSum();
+            total = BigDecimalUtil.add(total, dayWorkVo.getSum());
         }
         empWorkVo.setTotal(total);
         empWorkVo.setDayWorkVoList(dayWorkVos);
