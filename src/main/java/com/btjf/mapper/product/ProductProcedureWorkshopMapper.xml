@@ -447,7 +447,7 @@
         <include refid="Base_Column_List"/>
         FROM t_Product_Procedure_Workshop
         WHERE
-        1=1 and sort in
+        1=1 and productNo = #{productNo} and sort in
         <foreach collection="integers" index="index" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>

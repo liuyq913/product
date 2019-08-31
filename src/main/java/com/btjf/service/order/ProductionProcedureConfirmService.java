@@ -79,11 +79,6 @@ public class ProductionProcedureConfirmService {
 
     public Integer add(Integer orderId, String orderNo, Integer louId, String billOutNo, String productNo, String productionNo, WxEmpVo wxEmpVo) {
 
-
-        Integer row = productionProcedureConfirmMapper.delete(orderNo, productNo, productionNo, louId, billOutNo, null);
-        if (row > 0) LOGGER.info("质检员确认工序 删除之前质检的工序条数：" + row);
-
-
         List<ProductionProcedureScan> productionProcedureScans = productionProcedureScanService.select(orderNo, productNo, productionNo, louId, billOutNo, null);
         if(CollectionUtils.isEmpty(productionProcedureScans)) throw new BusinessException("该订单工序还没有员工处理");
         productionProcedureScans.stream().filter(t -> t != null).forEach(t -> {

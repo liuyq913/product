@@ -155,8 +155,8 @@ public class ProductWorkshopService {
         return productProcedureWorkshopMapper.updateByPrimaryKeySelective(productProcedureWorkshop);
     }
 
-    public List<WorkShopVo.Procedure> getBySort(List<Integer> integers) {
-        List<ProductProcedureWorkshop> productProcedureWorkshops = productProcedureWorkshopMapper.getBySort(integers);
+    public List<WorkShopVo.Procedure> getBySort(String productNo, List<Integer> integers) {
+        List<ProductProcedureWorkshop> productProcedureWorkshops = productProcedureWorkshopMapper.getBySort(productNo, integers);
         if (CollectionUtils.isEmpty(productProcedureWorkshops)) return null;
         return BeanUtil.convertList(productProcedureWorkshops, WorkShopVo.Procedure.class);
     }
