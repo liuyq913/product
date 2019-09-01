@@ -617,7 +617,7 @@
         </if>
         )
         ) a
-        ORDER BY a.date, a.dateTime desc
+        ORDER BY a.date DESC, a.dateTime desc
 
     </select>
     <select id="findInList" resultType="com.btjf.vo.PmInAndOutVo">
@@ -650,7 +650,7 @@
         <if test="endDate != null">
             and i.inDate &lt;= #{endDate}
         </if>
-        order by i.inDate,i.createTime desc
+        order by i.inDate DESC,i.createTime desc
     </select>
     <select id="findOutList" resultType="com.btjf.vo.PmInAndOutVo">
         select
@@ -687,7 +687,7 @@
         <if test="orderNo != null">
             and b.orderNo = #{orderNo}
         </if>
-        order by o.outDate,o.createTime desc
+        order by o.outDate DESC,o.createTime desc
     </select>
     <select id="findPlanOutList" resultType="com.btjf.vo.PmPlanOutVo">
         select
@@ -713,6 +713,6 @@
         <if test="endDate != null">
             and o.outDate &lt;= #{endDate}
         </if>
-        order by o.outDate,o.createTime desc
+        order by o.outDate DESC,o.createTime desc
     </select>
 </mapper>
