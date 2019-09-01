@@ -96,7 +96,7 @@ public class PmInController extends ProductBaseController {
         pmIn.setNum(BigDecimal.valueOf(num));
         pmIn.setPerNum(pm.getNum());
         pmIn.setBackNum(BigDecimal.valueOf(BigDecimalUtil.add(pm.getNum().doubleValue(), num)));
-        pmIn.setOperator(sysUser.getLoginName());
+        pmIn.setOperator(sysUser.getUserName());
         pmIn.setCreateTime(new Date());
         pmIn.setIsDelete(0);
         pmInService.create(pmIn);

@@ -555,6 +555,7 @@
         i.supplier,
         i.remark,
         i.inDate date,
+        i.createTime dateTime,
         i.operator,
         i.backNum num,
         i.num inNum,
@@ -585,7 +586,8 @@
         o.pmName name,
         null AS supplier,
         o.remark,
-        o.createTime date,
+        o.outDate date,
+        o.createTime dateTime,
         o.operator,
         o.backNum num,
         null AS inNum,
@@ -605,17 +607,17 @@
             and o.operator like '%${operator}%'
         </if>
         <if test="startDate != null">
-            and o.createTime &gt;= #{startDate}
+            and o.outDate &gt;= #{startDate}
         </if>
         <if test="endDate != null">
-            and o.createTime &lt;= #{endDate}
+            and o.outDate &lt;= #{endDate}
         </if>
         <if test="orderNo != null">
             and b.orderNo = #{orderNo}
         </if>
         )
         ) a
-        ORDER BY a.date desc
+        ORDER BY a.date, a.dateTime desc
 
     </select>
     <select id="findInList" resultType="com.btjf.vo.PmInAndOutVo">
@@ -648,7 +650,7 @@
         <if test="endDate != null">
             and i.inDate &lt;= #{endDate}
         </if>
-        order by i.inDate desc
+        order by i.inDate,i.createTime desc
     </select>
     <select id="findOutList" resultType="com.btjf.vo.PmInAndOutVo">
         select
@@ -657,7 +659,7 @@
         o.pmName name,
         null AS supplier,
         o.remark,
-        o.createTime date,
+        o.outDate date,
         o.operator,
         o.backNum num,
         null AS inNum,
@@ -677,15 +679,15 @@
             and o.operator like '%${operator}%'
         </if>
         <if test="startDate != null">
-            and o.createTime &gt;= #{startDate}
+            and o.outDate &gt;= #{startDate}
         </if>
         <if test="endDate != null">
-            and o.createTime &lt;= #{endDate}
+            and o.outDate &lt;= #{endDate}
         </if>
         <if test="orderNo != null">
             and b.orderNo = #{orderNo}
         </if>
-        order by o.createTime desc
+        order by o.outDate,o.createTime desc
     </select>
     <select id="findPlanOutList" resultType="com.btjf.vo.PmPlanOutVo">
         select
@@ -693,7 +695,7 @@
         o.pmNo,
         o.pmName name,
         o.remark outInfo,
-        o.createTime date,
+        o.outDate date,
         o.operator,
         o.num AS outNum
         from t_PMout_Bill b LEFT JOIN t_PMout_Bill_Detail o on b.id = o.billId
@@ -706,11 +708,11 @@
             and o.operator like '%${operator}%'
         </if>
         <if test="startDate != null">
-            and o.createTime &gt;= #{startDate}
+            and o.outDate &gt;= #{startDate}
         </if>
         <if test="endDate != null">
-            and o.createTime &lt;= #{endDate}
+            and o.outDate &lt;= #{endDate}
         </if>
-        order by o.createTime desc
+        order by o.outDate,o.createTime desc
     </select>
 </mapper>

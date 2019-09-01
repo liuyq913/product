@@ -11,6 +11,7 @@ import com.btjf.service.productpm.ProductPmService;
 import com.btjf.vo.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,6 +74,7 @@ public class PmOutService {
             pmOutBillDetail.setUnit(pm.getUnit());
             pmOutBillDetail.setRemark(pm.getRemark());
             pmOutBillDetail.setIsDelete(0);
+            pmOutBillDetail.setOutDate(new Date());
             pmOutBillDetail.setCreateTime(new Date());
             pmOutBillDetail.setLastModifyTime(new Date());
             pmOutBillDetail.setOperator(pmOutBill.getOperator());
@@ -123,8 +125,12 @@ public class PmOutService {
         PageHelper.startPage(page.getPage(), page.getRp());
         List<PmInAndOutVo> pmList = null;
         if(inOrOut == null){
-            //出库加入库
-            pmList = mapper.findInAndOutList(pmNo,pmName,orderNo,operator,startDate,endDate);
+            if(StringUtils.isNotEmpty(orderNo)){//只要出库记录
+                pmList = mapper.findOutList(pmNo,pmName,orderNo,operator,startDate,endDate);
+            }else{
+                //出库加入库
+                pmList = mapper.findInAndOutList(pmNo,pmName,orderNo,operator,startDate,endDate);
+            }
         }else if(inOrOut == 1){
             //入库
             pmList = mapper.findInList(pmNo,pmName,orderNo,operator,startDate,endDate);
@@ -141,8 +147,12 @@ public class PmOutService {
     public List<PmInAndOutVo> findInAndOutList(String pmNo, String pmName, String orderNo, Integer inOrOut, String operator, String startDate, String endDate) {
         List<PmInAndOutVo> pmList = null;
         if(inOrOut == null){
-            //出库加入库
-            pmList = mapper.findInAndOutList(pmNo,pmName,orderNo,operator,startDate,endDate);
+            if(StringUtils.isNotEmpty(orderNo)){//只要出库记录
+                pmList = mapper.findOutList(pmNo,pmName,orderNo,operator,startDate,endDate);
+            }else{
+                //出库加入库
+                pmList = mapper.findInAndOutList(pmNo,pmName,orderNo,operator,startDate,endDate);
+            }
         }else if(inOrOut == 1){
             //入库
             pmList = mapper.findInList(pmNo,pmName,orderNo,operator,startDate,endDate);

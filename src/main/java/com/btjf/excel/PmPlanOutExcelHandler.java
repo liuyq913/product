@@ -1,11 +1,13 @@
 package com.btjf.excel;
 
 import com.btjf.business.common.exception.BusinessException;
+import com.btjf.common.utils.DateUtil;
 import com.btjf.model.pm.Pm;
 import com.btjf.model.pm.PmOutBill;
 import com.btjf.model.pm.PmOutBillDetail;
 import com.btjf.service.pm.PmOutService;
 import com.btjf.service.pm.PmService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.springframework.stereotype.Component;
@@ -26,7 +28,7 @@ import java.util.stream.Stream;
 //@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
 public class PmPlanOutExcelHandler extends BaseExcelHandler{
 
-    public final static List<String> fields = Stream.of("物料编号", "物料名称", "出库数量",
+    public final static List<String> fields = Stream.of("物料编号", "物料名称", "出库数量","出库日期",
             "出库说明").collect(Collectors.toList());
 
     @Resource
@@ -81,6 +83,7 @@ public class PmPlanOutExcelHandler extends BaseExcelHandler{
     protected List create(XSSFRow row) throws BusinessException {
         List<PmOutBillDetail> list = new ArrayList<>();
         PmOutBillDetail pmOut = new PmOutBillDetail();
+        String errMsg = "";
         for(int i=0; i< fields.size(); i++){
             switch (i){
                 case 0:
@@ -93,11 +96,23 @@ public class PmPlanOutExcelHandler extends BaseExcelHandler{
                     pmOut.setNum(BigDecimal.valueOf(Double.parseDouble(getCellValue(row.getCell(i), i))));
                     break;
                 case 3:
+                    if(isRightDateStr(getCellValue(row.getCell(i), i),"yyyy-MM-dd")){
+                        Date outDate = DateUtil.string2Date(getCellValue(row.getCell(i), i), DateUtil.ymdFormat);
+                        pmOut.setOutDate(outDate);
+                    }else{
+                        errMsg = errMsg + "第" + 4 +"列" + fields.get(3) + " 填写错误,时间格式yyyy-MM-dd";
+                    }
+
+                    break;
+                case 4:
                     pmOut.setRemark(getCellValue(row.getCell(i), i));
                     break;
                 default:
                         break;
             }
+        }
+        if (StringUtils.isNotEmpty(errMsg)){
+            throw new BusinessException(errMsg);
         }
         Pm pm = pmService.getByNo(pmOut.getPmNo());
         if(pm == null){
