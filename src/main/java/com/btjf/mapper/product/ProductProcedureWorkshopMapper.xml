@@ -461,7 +461,7 @@
         WHERE
         1=1
         AND productNo = #{productNo} and workshop =#{deptName}
-        and procedureName ='质检'
+        and procedureName like '%质检%'
         and isDelete = 0;
     </select>
 </mapper>

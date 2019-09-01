@@ -455,7 +455,8 @@ CREATE TABLE t_Product_Procedure_Workshop(
 	operator varchar(100) NOT NULL comment '添加人',
 	createTime datetime,
 	lastModifyTime datetime,
-	isDelete int NOT NULL
+	isDelete int NOT NULL,
+	KEY `index_workName` (`workshop`) USING HASH
 );	
 
 ##产品 工序 价格

@@ -17,6 +17,7 @@
         <result column="lastModifyTime" jdbcType="TIMESTAMP" property="lastModifyTime"/>
         <result column="isDelete" jdbcType="INTEGER" property="isDelete"/>
         <result column="sumPrice" jdbcType="DECIMAL" property="sumPrice"/>
+        <result column="workshop" jdbcType="VARCHAR" property="workshop"/>
     </resultMap>
     <sql id="Example_Where_Clause">
         <!--
@@ -377,11 +378,14 @@
     <select id="findList" resultMap="BaseResultMap">
         SELECT
         t1.*,
-        t2.sumPrice as sumPrice
+        t2.sumPrice as sumPrice,
+        t3.workshop as workshop
         FROM
         t_Product_Procedure t1
         LEFT JOIN ( SELECT productNo, sum( price ) AS sumPrice FROM t_Product_Procedure GROUP BY productNo ) t2
         ON t1.productNo = t2.productNo
+        LEFT JOIN t_Product_Procedure_Workshop t3
+        ON t1.id = t3.procedureId
         where 1=1
         <if test="procedureName != null">
             AND t1.procedureName LIKE '%${procedureName}%'
@@ -392,7 +396,7 @@
         <if test="productNo != null">
             AND t1.productNo LIKE '%${productNo}%'
         </if>
-        AND t1.isDelete = 0
+        AND t1.isDelete = 0 AND t3.isDelete = 0
     </select>
 
     <insert id="sameProductNoAdd">
@@ -404,8 +408,9 @@
 
 
     <select id="getByProductNo" resultMap="BaseResultMap">
-      select <include refid="Base_Column_List"/>
-      from t_Product_Procedure
-      WHERE  productNo =#{productNo} and isDelete = 0
+        select
+        <include refid="Base_Column_List"/>
+        from t_Product_Procedure
+        WHERE productNo =#{productNo} and isDelete = 0
     </select>
 </mapper>
