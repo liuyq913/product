@@ -142,7 +142,7 @@ public class OrderController extends ProductBaseController {
                     productProcedureWorkshop.setProductId(productId);
                     productProcedureWorkshop.setProductNo(productNo);
                     productProcedureWorkshop.setSort(0);
-                    productProcedureWorkshop.setProcedureName("质检");
+                    productProcedureWorkshop.setProcedureName(sysdept.getDeptName()+"质检");
                     productProcedureWorkshop.setWorkshop(sysdept.getDeptName());
                     productProcedureWorkshop.setPrice(BigDecimal.valueOf(0));
                     productProcedureWorkshop.setIsDelete(0);

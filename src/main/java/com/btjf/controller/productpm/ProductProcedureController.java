@@ -118,12 +118,14 @@ public class ProductProcedureController extends ProductBaseController {
 
         sheet.setColumnWidth(0, (int) ((20 + 0.72) * 256));
         sheet.setColumnWidth(1, (int) ((20 + 0.72) * 256));
+        sheet.setColumnWidth(1, (int) ((20 + 0.72) * 256));
         sheet.setColumnWidth(2, (int) ((10 + 0.72) * 256));
         sheet.setColumnWidth(3, (int) ((20 + 0.72) * 256));
         sheet.setColumnWidth(4, (int) ((20 + 0.72) * 256));
         int j = 0;
         header.createCell(j++).setCellValue("序号");
         header.createCell(j++).setCellValue("型号");
+        header.createCell(j++).setCellValue("车间名称");
         header.createCell(j++).setCellValue("工序名称");
         header.createCell(j++).setCellValue("单价");
         header.createCell(j++).setCellValue("型号合计");
@@ -135,6 +137,7 @@ public class ProductProcedureController extends ProductBaseController {
                 j = 0;
                 row.createCell(j++).setCellValue(productProcedure.getSort());
                 row.createCell(j++).setCellValue(productProcedure.getProductNo());
+                row.createCell(j++).setCellValue(productProcedure.getWorkshop());
                 row.createCell(j++).setCellValue(productProcedure.getProcedureName());
                 row.createCell(j++).setCellValue(productProcedure.getPrice() + "元");
                 row.createCell(j++).setCellValue(productProcedure.getSumPrice() + "元");
