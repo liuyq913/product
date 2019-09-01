@@ -1,12 +1,7 @@
 package com.btjf.interceptor;
 
-import com.alibaba.druid.util.StringUtils;
-import com.btjf.application.util.XaResult;
-import com.btjf.common.utils.JSONUtils;
-import com.btjf.model.sys.SysUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,7 +27,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		String secretKey = request.getHeader(SECRETKEY);
+		/*String secretKey = request.getHeader(SECRETKEY);
 		if(StringUtils.isEmpty(secretKey)){
 			response.setStatus(HttpStatus.PAYMENT_REQUIRED.value());
 			response.setContentType("text/xml;charset=UTF-8");
@@ -45,7 +40,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 			response.setContentType("text/xml;charset=UTF-8");
 			response.getOutputStream().write(JSONUtils.toJSONByJackson(XaResult.unloginForNoAccessToken()).getBytes("UTF-8"));
 			return false;
-		}
+		}*/
 		return true;
 	}
 
