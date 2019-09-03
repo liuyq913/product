@@ -2,9 +2,8 @@ package com.btjf.mapper.pm;
 
 import com.btjf.model.pm.PmOutBillDetail;
 import com.btjf.model.pm.PmOutBillDetailExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface PmOutBillDetailMapper {
     /**

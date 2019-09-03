@@ -264,6 +264,7 @@ CREATE TABLE t_PMout_Bill_Detail(
 	receiver varchar(100) comment '领用人',
 	sender varchar(100)comment '发料人',
 	operator varchar(100) NOT NULL comment '添加人',
+  outDate  date NULL COMMENT '出库时间',
 	createTime datetime,
 	lastModifyTime datetime,
 	isDelete int NOT NULL

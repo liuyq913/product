@@ -24,6 +24,8 @@ public class PmInAndOutVo {
 
     private String date;
 
+    private String dateTime;
+
     private String supplier;
 
     private String operator;
@@ -128,5 +130,11 @@ public class PmInAndOutVo {
         this.date =  DateUtil.dateToString(date, new SimpleDateFormat("yyyy/MM/dd"));
     }
 
+    public String getDateTime() {
+        return dateTime;
+    }
 
+    public void setDateTime(Date dateTime) {
+        this.dateTime = DateUtil.dateToString(dateTime, new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"));
+    }
 }
