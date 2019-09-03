@@ -11,15 +11,11 @@ import com.btjf.controller.order.vo.OrderProductVo;
 import com.btjf.controller.order.vo.OrderVo;
 import com.btjf.model.order.Order;
 import com.btjf.model.order.OrderProduct;
-import com.btjf.model.product.Product;
 import com.btjf.model.product.ProductProcedureWorkshop;
 import com.btjf.model.sys.SysUser;
-import com.btjf.model.sys.Sysdept;
 import com.btjf.service.order.OrderProductService;
 import com.btjf.service.order.OrderService;
-import com.btjf.service.productpm.ProductService;
 import com.btjf.service.productpm.ProductWorkshopService;
-import com.btjf.service.sys.SysDeptService;
 import com.google.common.collect.Lists;
 import com.heige.aikajinrong.base.exception.BusinessException;
 import com.wordnik.swagger.annotations.Api;
@@ -35,7 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Date;
@@ -56,13 +51,7 @@ public class OrderController extends ProductBaseController {
     private OrderProductService orderProductService;
 
     @Resource
-    private ProductService productService;
-
-    @Resource
     private ProductWorkshopService productWorkshopService;
-
-    @Resource
-    private SysDeptService sysDeptService;
 
 
     private static final Logger LOGGER = Logger
@@ -112,51 +101,7 @@ public class OrderController extends ProductBaseController {
         }
 
         Integer orderID = null;
-        Order order = orderService.getByNo(orderNo);
-        if (null == order) {
-            orderID = orderService.insert(new Order(orderNo, new Date(), new Date(), 0));
-        } else {
-            orderID = order.getId();
-        }
-        Integer productId = null;
-        //新增产品
-        Product product = productService.getByNO(productNo);
-        if (product == null) {
-            Product productNew = new Product();
-            productNew.setUnit(unit);
-            productNew.setIsDelete(0);
-            productNew.setName(productNo);
-            productNew.setProductNo(productNo);
-            productNew.setLastModifyTime(new Date());
-            productNew.setCreateTime(new Date());
-            productNew.setOperator(sysUser.getUserName());
-            productNew.setType(type);
-            productId = productService.add(productNew);
-            //为所有车间添加质检工序
-            List<Sysdept> sysdepts = sysDeptService.getWorkshopList();
-            if (!CollectionUtils.isEmpty(sysdepts)) {
-                for(Sysdept sysdept : sysdepts){
-                    if(null == sysdept) continue;
-                    ProductProcedureWorkshop productProcedureWorkshop = new ProductProcedureWorkshop();
-                    productProcedureWorkshop.setOperator(sysUser.getUserName());
-                    productProcedureWorkshop.setProductId(productId);
-                    productProcedureWorkshop.setProductNo(productNo);
-                    productProcedureWorkshop.setSort(0);
-                    productProcedureWorkshop.setProcedureName(sysdept.getDeptName()+"质检");
-                    productProcedureWorkshop.setWorkshop(sysdept.getDeptName());
-                    productProcedureWorkshop.setPrice(BigDecimal.valueOf(0));
-                    productProcedureWorkshop.setIsDelete(0);
-                    productWorkshopService.add(productProcedureWorkshop);
-                }
-            }
-
-        } else {
-            product.setType(type);
-            product.setLastModifyTime(new Date());
-            productId = productService.update(product);
-        }
-
-        OrderProduct orderProduct1 = new OrderProduct(orderID, orderNo, productId,
+        OrderProduct orderProduct1 = new OrderProduct(null, orderNo, null,
                 productNo, type, num, maxNum, unit, DateUtil.string2Date(completeDate, DateUtil.ymdFormat), customerId, customerName, null, null,
                 null, null, null, new Date(), new Date(), 0);
         if (id != null) {
@@ -170,7 +115,9 @@ public class OrderController extends ProductBaseController {
             orderProduct1.setAssignedNum(0);
             orderProduct1.setIsMore(isMore);
             orderProduct1.setUrgentLevel(urgentLevel);
-            orderID = orderProductService.insert(orderProduct1);
+            orderID = orderProductService.insert(orderProduct1, sysUser.getUserName());
+
+
         }
         return XaResult.success(orderID);
 

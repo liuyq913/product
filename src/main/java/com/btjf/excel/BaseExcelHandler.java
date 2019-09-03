@@ -1,6 +1,7 @@
 package com.btjf.excel;
 
 
+import com.alibaba.druid.util.StringUtils;
 import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -21,9 +22,9 @@ import java.util.List;
  */
 public abstract class BaseExcelHandler {
 
-    public abstract  List<String> execute(MultipartFile file, Boolean isCover, String operator)throws Exception;
+    public abstract List<String> execute(MultipartFile file, Boolean isCover, String operator) throws Exception;
 
-    public  List<String> checkLayout(MultipartFile file, List<String> fields, String operator) throws Exception{
+    public List<String> checkLayout(MultipartFile file, List<String> fields, String operator) throws Exception {
 
         InputStream is = file.getInputStream();
         Workbook wb = WorkbookFactory.create(is);
@@ -38,10 +39,10 @@ public abstract class BaseExcelHandler {
         for (int f = 0; f < celllength; f++) {
             XSSFCell cell = firstRow.getCell(f);
             String field = cell.getStringCellValue().trim();
-            if(!fields.get(f).equals(field)){
+            if (!fields.get(f).equals(field)) {
                 wb.close();
                 response.add("导入文档数据格式不符，请重选文件");
-                response.add("Excel格式出错,第" + (f+1) +"列表头应该为:" + fields.get(f));
+                response.add("Excel格式出错,第" + (f + 1) + "列表头应该为:" + fields.get(f));
                 return response;
             }
         }
@@ -49,22 +50,24 @@ public abstract class BaseExcelHandler {
         List<T> result = new ArrayList<>();
         for (int j = 1; j <= sheet.getLastRowNum(); j++) {
             XSSFRow row = (XSSFRow) sheet.getRow(j);
+            if (StringUtils.isEmpty(getCellValue(row.getCell(0))) && StringUtils.isEmpty(getCellValue(row.getCell(1))))
+                continue;
             try {
                 result.addAll(create(row));
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
-                errResponse.add("第" + (j +1) + "行数据 " + e.getMessage() );
+                errResponse.add("第" + (j + 1) + "行数据 " + e.getMessage());
             }
         }
         //检验要导入的数据重复问题
 
-        if(errResponse.size() > 0){
+        if (errResponse.size() > 0) {
             int sum = sheet.getLastRowNum() - errResponse.size();
             response.add("导入失败，以下数据请修改后再重新上传");
             response.addAll(errResponse);
-        }else{
+        } else {
             insert(result, operator);
-            response.add("提交成功！新增导入" + sheet.getLastRowNum() + "条数据！" );
+            response.add("提交成功！新增导入" + sheet.getLastRowNum() + "条数据！");
         }
         wb.close();
         return response;
@@ -72,7 +75,7 @@ public abstract class BaseExcelHandler {
 
     protected abstract void insert(List<T> list, String operator);
 
-    protected abstract List<T> create(XSSFRow row)throws Exception;
+    protected abstract List<T> create(XSSFRow row) throws Exception;
 
 
     public String getCellValue(Cell cell) {
