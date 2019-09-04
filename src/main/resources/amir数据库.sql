@@ -471,7 +471,8 @@ CREATE TABLE t_Product_Procedure(
 	operator varchar(100) NOT NULL comment '添加人',
 	createTime datetime,
 	lastModifyTime datetime,
-	isDelete int NOT NULL
+	isDelete int NOT NULL,
+	isConfirm int(11) DEFAULT 0 comment '是否确认'
 );	
 
 

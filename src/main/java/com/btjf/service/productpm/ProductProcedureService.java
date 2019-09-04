@@ -1,6 +1,7 @@
 package com.btjf.service.productpm;
 
 import com.alibaba.dubbo.common.utils.CollectionUtils;
+import com.btjf.business.common.exception.BusinessException;
 import com.btjf.common.page.Page;
 import com.btjf.common.utils.BeanUtil;
 import com.btjf.constant.WorkShopProductionMapEnum;
@@ -39,6 +40,10 @@ public class ProductProcedureService {
     public Integer addOrUpdate(ProductProcedure productProcedure, String optionName) {
 
         if (productProcedure.getId() == null) {
+            ProductProcedureWorkshop productProcedureWorkshop = productProcedureWorkshopMapper.getByWorkShopAndProductNoAndName(WorkShopProductionMapEnum.get(productProcedure.getSort()).getContent(), productProcedure.getProductNo(), productProcedure.getProcedureName());
+            if(productProcedureWorkshop != null){
+                throw new BusinessException(productProcedureWorkshop.getWorkshop()+"已经存在该工序");
+            }
             productProcedureMapper.insertSelective(productProcedure);
         } else {
             productProcedureWorkshopMapper.deleteByProcedureId(productProcedure.getId());
@@ -88,15 +93,15 @@ public class ProductProcedureService {
         return productProcedureMapper.getMaxSort() + 1;
     }
 
-    public Page<ProductProcedure> listPage(String productNo, String procedureName, String price, Page page) {
+    public Page<ProductProcedure> listPage(String productNo, String procedureName, String price, Integer isConfirm, Page page) {
         PageHelper.startPage(page.getPage(), page.getRp());
-        List<ProductProcedure> productProcedures = productProcedureMapper.findList(procedureName, price, productNo);
+        List<ProductProcedure> productProcedures = productProcedureMapper.findList(procedureName, price, productNo, isConfirm);
         PageInfo pageInfo = new PageInfo(productProcedures);
         return new Page<>(pageInfo);
     }
 
-    public List<ProductProcedure> list(String productNo, String procedureName, String price) {
-        List<ProductProcedure> productProcedures = productProcedureMapper.findList(procedureName, price, productNo);
+    public List<ProductProcedure> list(String productNo, String procedureName, String price, Integer isConfirm) {
+        List<ProductProcedure> productProcedures = productProcedureMapper.findList(procedureName, price, productNo, isConfirm);
         return productProcedures;
     }
 
@@ -106,7 +111,7 @@ public class ProductProcedureService {
         if (!CollectionUtils.isEmpty(productProcedures)) {
             for (ProductProcedure productProcedure : productProcedures){
                 if(productProcedure == null) continue;
-                List<ProductProcedureWorkshop>  productProcedureWorkshops = productProcedureWorkshopMapper.getWorkShop(productProcedure.getProductNo(), productProcedure.getId());
+                List<ProductProcedureWorkshop>  productProcedureWorkshops = productProcedureWorkshopMapper.getWorkShop(productProcedure.getProductNo(), productProcedure.getId(),null);
                 if(CollectionUtils.isEmpty(productProcedureWorkshops)) continue;
                 ProductProcedureWorkshop productProcedureWorkshop = productProcedureWorkshops.get(0);
 
@@ -130,5 +135,21 @@ public class ProductProcedureService {
             }
         }
         return productProcedures.size();
+    }
+
+    public Integer updateConfirmStatue(List<Integer> integers) {
+        try {
+            integers.stream().forEach(t -> {
+                ProductProcedure productpm = new ProductProcedure();
+                productpm.setId(t);
+                productpm.setLastModifyTime(new Date());
+                productpm.setIsConfirm(1);
+                productProcedureMapper.updateByPrimaryKeySelective(productpm);
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+        return integers.size();
     }
 }

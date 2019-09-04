@@ -60,7 +60,6 @@ public class PmInExcelHandler extends BaseExcelHandler{
                 pmService.updateByID(pm1);
             }
         }
-        pmInList.clear();
     }
 
     @Override

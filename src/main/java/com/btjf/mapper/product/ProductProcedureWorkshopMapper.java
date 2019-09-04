@@ -99,13 +99,16 @@ public interface ProductProcedureWorkshopMapper {
 
     List<ProductProcedureWorkshop> findByWorkshopName(@Param("name") String name);
 
-    List<ProductProcedureWorkshop> getWorkShop(@Param("productNo") String productNo, @Param("procedureId") Integer procedureId);
+    List<ProductProcedureWorkshop> getWorkShop(@Param("productNo") String productNo, @Param("procedureId") Integer procedureId, @Param("isConfirm") Integer isConfirm);
 
-    Integer deleteByProcedureId (@Param("procedureId") Integer procedureId);
+    Integer deleteByProcedureId(@Param("procedureId") Integer procedureId);
 
     List<ProductProcedureWorkshop> getByWorkShopAndProductNo(@Param("workShop") String workShop, @Param("productNo") String productNo);
 
-    List<ProductProcedureWorkshop> getBySort(@Param("productNo")String productNo, @Param("integers") List<Integer> integers);
+    ProductProcedureWorkshop getByWorkShopAndProductNoAndName(@Param("workShop") String workShop, @Param("productNo") String productNo, @Param("name") String name);
+
+
+    List<ProductProcedureWorkshop> getBySort(@Param("productNo") String productNo, @Param("integers") List<Integer> integers);
 
     ProductProcedureWorkshop getInspactPriceByWorkShapAndProductNo(@Param("deptName") String deptName, @Param("productNo") String productNo);
 }

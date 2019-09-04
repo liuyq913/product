@@ -12,6 +12,7 @@ import com.btjf.model.product.ProductProcedure;
 import com.btjf.model.sys.SysUser;
 import com.btjf.service.productpm.ProductProcedureService;
 import com.btjf.service.productpm.ProductService;
+import com.google.common.collect.Lists;
 import com.heige.aikajinrong.base.exception.BusinessException;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
@@ -26,6 +27,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -84,7 +86,7 @@ public class ProductProcedureController extends ProductBaseController {
     }
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
-    public XaResult<List<ProductProcedure>> list(String productNo, String procedureName, String price, Integer pageSize, Integer currentPage) {
+    public XaResult<List<ProductProcedure>> list(String productNo, String procedureName, String price, Integer pageSize, Integer currentPage, Integer isConfirm) {
         if (currentPage == null || currentPage < 1) {
             currentPage = 1;
         }
@@ -92,11 +94,25 @@ public class ProductProcedureController extends ProductBaseController {
             pageSize = 25;
         }
         Page page = new Page(pageSize, currentPage);
-        Page<ProductProcedure> listPage = productProcedureService.listPage(productNo, procedureName, price, page);
+        Page<ProductProcedure> listPage = productProcedureService.listPage(productNo, procedureName, price, isConfirm, page);
         XaResult<List<ProductProcedure>> result = AppXaResultHelper.success(listPage, listPage.getRows());
         return result;
     }
 
+    @RequestMapping(value = "confirm", method = RequestMethod.POST)
+    public XaResult<Integer> confirm(String[] ids){
+        LOGGER.info(getRequestParamsAndUrl());
+
+        if (null == ids || Arrays.asList(ids).size() <= 0) {
+            return XaResult.error("请选择要确认的记录");
+        }
+        List<Integer> integers = Lists.newArrayList();
+        Arrays.asList(ids).stream().forEach(t -> {
+            integers.add(new Integer(t));
+        });
+        Integer row = productProcedureService.updateConfirmStatue(integers);
+        return XaResult.success(row);
+    }
 
     @RequestMapping(value = "detail", method = RequestMethod.GET)
     public XaResult<ProductProcedure> detail(Integer id) {
@@ -108,9 +124,9 @@ public class ProductProcedureController extends ProductBaseController {
 
 
     @RequestMapping(value = "/export", method = RequestMethod.GET)
-    public void export(String productNo, String procedureName, String price, HttpServletResponse response) {
+    public void export(String productNo, String procedureName, String price, Integer isConfirm, HttpServletResponse response) {
 
-        List<ProductProcedure> productProcedures = productProcedureService.list(productNo, procedureName, price);
+        List<ProductProcedure> productProcedures = productProcedureService.list(productNo, procedureName, price, isConfirm);
 
         Workbook wb = new XSSFWorkbook();
         Sheet sheet = wb.createSheet();
@@ -122,6 +138,7 @@ public class ProductProcedureController extends ProductBaseController {
         sheet.setColumnWidth(2, (int) ((10 + 0.72) * 256));
         sheet.setColumnWidth(3, (int) ((20 + 0.72) * 256));
         sheet.setColumnWidth(4, (int) ((20 + 0.72) * 256));
+        sheet.setColumnWidth(4, (int) ((20 + 0.72) * 256));
         int j = 0;
         header.createCell(j++).setCellValue("序号");
         header.createCell(j++).setCellValue("型号");
@@ -129,6 +146,7 @@ public class ProductProcedureController extends ProductBaseController {
         header.createCell(j++).setCellValue("工序名称");
         header.createCell(j++).setCellValue("单价");
         header.createCell(j++).setCellValue("型号合计");
+        header.createCell(j++).setCellValue("确认状态");
         ProductProcedure productProcedure = null;
         if (productProcedures != null && productProcedures.size() >= 1) {
             for (int i = 0; i < productProcedures.size(); i++) {
@@ -141,6 +159,7 @@ public class ProductProcedureController extends ProductBaseController {
                 row.createCell(j++).setCellValue(productProcedure.getProcedureName());
                 row.createCell(j++).setCellValue(productProcedure.getPrice() + "元");
                 row.createCell(j++).setCellValue(productProcedure.getSumPrice() + "元");
+                row.createCell(j++).setCellValue(productProcedure.getIsConfirm() == 1 ? "已确认" : "未确认");
 
             }
         }
@@ -164,7 +183,7 @@ public class ProductProcedureController extends ProductBaseController {
     public XaResult<Integer> sameProductNoAdd(String oldProductNo, String newProductNo) throws BusinessException {
         SysUser sysUser = getLoginUser();
 
-        if(StringUtils.isEmpty(oldProductNo) || StringUtils.isEmpty(newProductNo)){
+        if (StringUtils.isEmpty(oldProductNo) || StringUtils.isEmpty(newProductNo)) {
             return XaResult.error("输入参数不完整");
         }
         if (null == productProcedure.getByNO(oldProductNo)) {

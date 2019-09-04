@@ -82,7 +82,7 @@ public class ProductWorkshopController extends ProductBaseController {
     public XaResult<List<ProductProcedureWorkshop>> getWorkShop(String productNo) {
         if (productNo == null) return XaResult.error("产品型号不能为空");
 
-        return XaResult.success(productWorkshopService.getWorkShop(productNo));
+        return XaResult.success(productWorkshopService.getWorkShop(productNo, null));
     }
 
     @RequestMapping(value = "/detail", method = RequestMethod.GET)
@@ -117,6 +117,11 @@ public class ProductWorkshopController extends ProductBaseController {
             productProcedureWorkshop.setCreateTime(new Date());
             productProcedureWorkshop.setLastModifyTime(new Date());
             productProcedureWorkshop.setIsDelete(0);
+            ProductProcedureWorkshop productProcedureWorkshop1 = productWorkshopService.getByWorkShopAndProductNoAndName(productProcedureWorkshop.getWorkshop(), productProcedureWorkshop.getProductNo(), productProcedureWorkshop.getProcedureName());
+            if(productProcedureWorkshop1 != null){
+                return XaResult.error("该车间已经存在这个工序");
+            }
+
             id = productWorkshopService.add(productProcedureWorkshop);
         } else {
             id = productWorkshopService.udpate(productProcedureWorkshop);

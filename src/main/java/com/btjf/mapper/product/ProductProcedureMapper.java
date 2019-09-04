@@ -100,7 +100,7 @@ public interface ProductProcedureMapper {
     Integer getMaxSort();
 
     List<ProductProcedure> findList(@Param("procedureName")
-                                            String procedureName, @Param("price") String price, @Param("productNo") String productNo);
+                                            String procedureName, @Param("price") String price, @Param("productNo") String productNo, @Param("isConfirm") Integer isConfirm);
 
     Integer sameProductNoAdd(@Param("oldProductNo") String oldProductNo, @Param("newProduct") String newProduct, @Param("userName") String userName);
 

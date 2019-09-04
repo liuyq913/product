@@ -181,7 +181,7 @@ public class OrderController extends ProductBaseController {
         if (!CollectionUtils.isEmpty(products)) {
             products.stream().filter(t -> t != null).forEach(t -> {
                 List<ProductProcedureWorkshop> productProcedureWorkshops =
-                        productWorkshopService.getWorkShop(t.getProductNo());
+                        productWorkshopService.getWorkShop(t.getProductNo(), 1);
                 OrderProductVo orderProductVo = new OrderProductVo(t, productProcedureWorkshops);
                 productVos.add(orderProductVo);
             });
