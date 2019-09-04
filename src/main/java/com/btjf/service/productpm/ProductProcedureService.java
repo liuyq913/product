@@ -36,7 +36,7 @@ public class ProductProcedureService {
     private ProductService productService;
 
 
-    public Integer addOrUpdate(ProductProcedure productProcedure) {
+    public Integer addOrUpdate(ProductProcedure productProcedure, String optionName) {
 
         if (productProcedure.getId() == null) {
             productProcedureMapper.insertSelective(productProcedure);
@@ -44,7 +44,7 @@ public class ProductProcedureService {
             productProcedureWorkshopMapper.deleteByProcedureId(productProcedure.getId());
             productProcedureMapper.updateByPrimaryKeySelective(productProcedure);
         }
-        productProcedureWorkshopMapper.insertSelective(build(productProcedure));
+        productProcedureWorkshopMapper.insertSelective(build(productProcedure, optionName));
         return productProcedure.getId();
     }
 
@@ -54,10 +54,10 @@ public class ProductProcedureService {
     }
 
 
-    public ProductProcedureWorkshop build(ProductProcedure productProcedure) {
+    public ProductProcedureWorkshop build(ProductProcedure productProcedure, String optionName) {
         ProductProcedureWorkshop productProcedureWorkshop = new ProductProcedureWorkshop();
         WorkShopProductionMapEnum workShopProductionMapEnum = WorkShopProductionMapEnum.get(productProcedure.getSort());
-        productProcedureWorkshop.setOperator("系统");
+        productProcedureWorkshop.setOperator(optionName);
         productProcedureWorkshop.setIsDelete(0);
         productProcedureWorkshop.setCreateTime(new Date());
         productProcedureWorkshop.setWorkshop(workShopProductionMapEnum == null ? null : workShopProductionMapEnum.getContent());

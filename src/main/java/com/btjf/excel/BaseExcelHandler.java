@@ -70,7 +70,7 @@ public abstract class BaseExcelHandler {
             response.addAll(errResponse);
         } else {
             insert(result, operator);
-            response.add("提交成功！新增导入" + sheet.getLastRowNum() + "条数据！");
+            response.add("提交成功！新增导入" + result.size() + "条数据！");
         }
         wb.close();
         return response;

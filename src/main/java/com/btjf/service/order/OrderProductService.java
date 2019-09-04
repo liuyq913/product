@@ -86,6 +86,8 @@ public class OrderProductService {
                     productProcedureWorkshop.setWorkshop(sysdept.getDeptName());
                     productProcedureWorkshop.setPrice(BigDecimal.valueOf(0));
                     productProcedureWorkshop.setIsDelete(0);
+                    productProcedureWorkshop.setCreateTime(new Date());
+                    productProcedureWorkshop.setLastModifyTime(new Date());
                     productWorkshopService.add(productProcedureWorkshop);
                 }
             }
