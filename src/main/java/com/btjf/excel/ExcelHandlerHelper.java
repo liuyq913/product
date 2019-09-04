@@ -29,8 +29,11 @@ public class ExcelHandlerHelper {
     @Resource
     private EmpExcelHandler empExcelHandler;
 
+    @Resource
+    private OrderExcelHandler orderExcelHandler;
+
     public BaseExcelHandler getHandler(Integer type) throws BusinessException {
-        switch (type){
+        switch (type) {
             case 1:
                 //材料导入
                 return pmExcelHandler;
@@ -46,6 +49,8 @@ public class ExcelHandlerHelper {
                 return productWorkshopExcelHandler;
             case 6:
                 return empExcelHandler;
+            case 7:
+                return orderExcelHandler;
             default:
                 throw new BusinessException("文件类型不存在");
         }
