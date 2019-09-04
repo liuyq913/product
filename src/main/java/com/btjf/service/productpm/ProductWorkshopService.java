@@ -58,8 +58,8 @@ public class ProductWorkshopService {
         return productProcedureWorkshopMapper.findByWorkshopName(name);
     }
 
-    public List<ProductProcedureWorkshop> getWorkShop(String productNo) {
-        return productProcedureWorkshopMapper.getWorkShop(productNo, null);
+    public List<ProductProcedureWorkshop> getWorkShop(String productNo, Integer isConfirm) {
+        return productProcedureWorkshopMapper.getWorkShop(productNo, null, isConfirm);
     }
 
     public ProductProcedureWorkshop getById(Integer id) {
@@ -131,17 +131,28 @@ public class ProductWorkshopService {
                 productProcedure.setOperator(t.getOperator() == null ? "系统" : t.getOperator());
                 productProcedure.setIsDelete(0);
                 productProcedure.setProcedureName(t.getProcedureName());
-                productProcedure.setCreateTime(new Date());
                 productProcedure.setLastModifyTime(new Date());
-
-                Integer productProcedureId = productProcedureService.add(productProcedure);
                 t.setOperator(t.getOperator() == null ? "系统" : t.getOperator());
-                t.setCreateTime(new Date());
                 t.setLastModifyTime(new Date());
-                t.setProcedureId(productProcedureId);
                 t.setIsDelete(0);
+                t.setProductId(product.getId());
                 t.setWorkshop(WorkShopProductionMapEnum.get(t.getSort()).getContent());
-                productProcedureWorkshopMapper.insertSelective(t);
+                ProductProcedureWorkshop productProcedureWorkshop = productProcedureWorkshopMapper.getByWorkShopAndProductNoAndName(WorkShopProductionMapEnum.get(t.getSort()).getContent(), t.getProductNo(), t.getProcedureName());
+
+                if (productProcedureWorkshop != null) {
+                    productProcedure.setId(productProcedureWorkshop.getProcedureId());
+                    productProcedureService.update(productProcedure); //更新工序
+
+                    //更新型号工序
+                    t.setId(productProcedureWorkshop.getId());
+                    productProcedureWorkshopMapper.updateByPrimaryKeySelective(t);
+                } else {
+                    t.setCreateTime(new Date());
+                    productProcedure.setCreateTime(new Date());
+                    Integer productProcedureId = productProcedureService.add(productProcedure);
+                    t.setProcedureId(productProcedureId);
+                    productProcedureWorkshopMapper.insertSelective(t);
+                }
             });
         }
     }
@@ -164,5 +175,9 @@ public class ProductWorkshopService {
 
     public ProductProcedureWorkshop getInspactPriceByWorkShapAndProductNo(String deptName, String productNo) {
         return productProcedureWorkshopMapper.getInspactPriceByWorkShapAndProductNo(deptName, productNo);
+    }
+
+    public ProductProcedureWorkshop getByWorkShopAndProductNoAndName(String workShop,String productNo, String name){
+        return productProcedureWorkshopMapper.getByWorkShopAndProductNoAndName(workShop, productNo, name);
     }
 }

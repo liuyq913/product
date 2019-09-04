@@ -1,7 +1,6 @@
 package com.btjf.excel;
 
 
-import com.alibaba.druid.util.StringUtils;
 import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -53,8 +52,7 @@ public abstract class BaseExcelHandler {
         List<T> result = new ArrayList<>();
         for (int j = 1; j <= sheet.getLastRowNum(); j++) {
             XSSFRow row = (XSSFRow) sheet.getRow(j);
-            if (StringUtils.isEmpty(getCellValue(row.getCell(0))) && StringUtils.isEmpty(getCellValue(row.getCell(1))))
-                continue;
+
             try {
                 result.addAll(create(row));
             } catch (Exception e) {

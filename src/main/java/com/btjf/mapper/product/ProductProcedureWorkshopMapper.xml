@@ -416,16 +416,19 @@
 
     <select id="getWorkShop" resultMap="BaseResultMap">
         SELECT
-        <include refid="Base_Column_List"/>
-        FROM t_Product_Procedure_Workshop
+        tppw.*
+        FROM t_Product_Procedure_Workshop tppw LEFT JOIN t_Product_Procedure tpp on tppw.procedureId = tpp.id
         WHERE 1=1
         <if test="productNo != null">
-          AND  productNo = #{productNo}
+          AND  tppw.productNo = #{productNo}
         </if>
         <if test="procedureId != null">
-          AND procedureId = #{procedureId}
+          AND tppw.procedureId = #{procedureId}
         </if>
-         and isDelete = 0;
+        <if test="isConfirm != null">
+            AND tpp.isConfirm = #{isConfirm}
+        </if>
+         and tppw.isDelete = 0;
     </select>
 
     <update id="deleteByProcedureId">
@@ -441,6 +444,13 @@
         WHERE productNo = #{productNo} and workshop =#{workShop} and isDelete = 0;
     </select>
 
+
+    <select id="getByWorkShopAndProductNoAndName" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_Product_Procedure_Workshop
+        WHERE productNo = #{productNo} and workshop =#{workShop} and procedureName=#{name} and isDelete = 0 limit 1;
+    </select>
 
     <select id="getBySort" resultMap="BaseResultMap">
         SELECT
