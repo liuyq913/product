@@ -73,7 +73,7 @@ public class ProductProcedureController extends ProductBaseController {
         productProcedure.setOperator(sysUser.getUserName());
         productProcedure.setId(id);
 
-        return XaResult.success(productProcedureService.addOrUpdate(productProcedure));
+        return XaResult.success(productProcedureService.addOrUpdate(productProcedure, sysUser.getUserName()));
     }
 
     @RequestMapping(value = "getByWorkShopAndProductNo", method = RequestMethod.GET)

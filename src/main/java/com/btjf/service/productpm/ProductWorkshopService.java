@@ -95,6 +95,7 @@ public class ProductWorkshopService {
         productProcedure.setLastModifyTime(new Date());
         productProcedure.setProcedureName(productProcedureWorkshop.getProcedureName());
         productProcedure.setProductNo(productProcedureWorkshop.getProductNo());
+        productProcedure.setProductId(productProcedureWorkshop.getProductId());
         productProcedure.setPrice(productProcedureWorkshop.getPrice());
         productProcedure.setSort(productProcedureWorkshop.getSort());
         Integer productId = productProcedureService.add(productProcedure);
