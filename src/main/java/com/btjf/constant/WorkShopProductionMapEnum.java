@@ -45,4 +45,14 @@ public enum WorkShopProductionMapEnum implements ContentEnum {
         }
         return null;
     }
+
+    public static WorkShopProductionMapEnum getByName(String name) {
+        WorkShopProductionMapEnum[] list = values();
+        for (Integer i = 0; i < list.length; i++) {
+            if (list[i].getContent().equals(name)) {
+                return list[i];
+            }
+        }
+        return null;
+    }
 }
