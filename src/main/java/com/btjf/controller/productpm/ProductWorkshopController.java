@@ -119,7 +119,7 @@ public class ProductWorkshopController extends ProductBaseController {
             productProcedureWorkshop.setIsDelete(0);
             ProductProcedureWorkshop productProcedureWorkshop1 = productWorkshopService.getByWorkShopAndProductNoAndName(productProcedureWorkshop.getWorkshop(), productProcedureWorkshop.getProductNo(), productProcedureWorkshop.getProcedureName());
             if(productProcedureWorkshop1 != null){
-                return XaResult.error("该车间已经存在这个工序");
+                return XaResult.error(productProcedureWorkshop1.getWorkshop()+"已经存在该工序");
             }
 
             id = productWorkshopService.add(productProcedureWorkshop);

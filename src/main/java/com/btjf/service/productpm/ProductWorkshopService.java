@@ -131,12 +131,11 @@ public class ProductWorkshopService {
                 productProcedure.setOperator(t.getOperator() == null ? "系统" : t.getOperator());
                 productProcedure.setIsDelete(0);
                 productProcedure.setProcedureName(t.getProcedureName());
-                productProcedure.setCreateTime(new Date());
                 productProcedure.setLastModifyTime(new Date());
                 t.setOperator(t.getOperator() == null ? "系统" : t.getOperator());
-                t.setCreateTime(new Date());
                 t.setLastModifyTime(new Date());
                 t.setIsDelete(0);
+                t.setProductId(product.getId());
                 t.setWorkshop(WorkShopProductionMapEnum.get(t.getSort()).getContent());
                 ProductProcedureWorkshop productProcedureWorkshop = productProcedureWorkshopMapper.getByWorkShopAndProductNoAndName(WorkShopProductionMapEnum.get(t.getSort()).getContent(), t.getProductNo(), t.getProcedureName());
 
@@ -148,6 +147,8 @@ public class ProductWorkshopService {
                     t.setId(productProcedureWorkshop.getId());
                     productProcedureWorkshopMapper.updateByPrimaryKeySelective(t);
                 } else {
+                    t.setCreateTime(new Date());
+                    productProcedure.setCreateTime(new Date());
                     Integer productProcedureId = productProcedureService.add(productProcedure);
                     t.setProcedureId(productProcedureId);
                     productProcedureWorkshopMapper.insertSelective(t);
