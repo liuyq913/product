@@ -100,7 +100,13 @@ public abstract class BaseExcelHandler {
                 cellValue = cell.getBooleanCellValue() + "";
                 break;
             case 2: // 公式
-                cellValue = cell.getCellFormula() + "";
+                //cellValue = cell.getCellFormula() + "";
+                try {
+                    cellValue = cell.getStringCellValue();
+                } catch (IllegalStateException e) {
+                    cellValue = String.valueOf(cell.getNumericCellValue());
+                }
+
                 break;
             case 3: // 空值
                 cellValue = "";

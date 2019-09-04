@@ -84,12 +84,12 @@ public class OrderExcelHandler extends BaseExcelHandler {
                 case 3:
                     String maxNum = getCellValue(row.getCell(i), i);
                     if (StringUtils.isEmpty(maxNum)) {
-                        throw new BusinessException("上线数量为空");
+                        throw new BusinessException("上限数量为空");
                     }
                     if (!StringUtils.isNumber(maxNum)) {
-                        throw new BusinessException("上线数量有误");
+                        throw new BusinessException("上限数量有误");
                     }
-                    orderProduct.setMaxNum(StringUtils.stringToInteger(maxNum));
+                    orderProduct.setMaxNum((int) Double.parseDouble(maxNum));
                     orderProduct.setAssignedNum(0);
                     break;
                 case 4:
@@ -109,12 +109,12 @@ public class OrderExcelHandler extends BaseExcelHandler {
                 case 6:
                     String completeDate = getCellValue(row.getCell(i), i);
                     if (StringUtils.isEmpty(completeDate)) {
-                        throw new BusinessException("完成时间为空");
+                        throw new BusinessException("出货日期为空");
                     }
                     try {
                         orderProduct.setCompleteDate(DateUtil.string2Date(completeDate, DateUtil.ymdFormat));
                     } catch (Exception e) {
-                        throw new BusinessException("完成时间格式错误,应该为：yyyy-MM-dd");
+                        throw new BusinessException("出货日期格式错误,应该为：yyyy-MM-dd");
                     }
                     break;
                 case 7:
@@ -155,7 +155,7 @@ public class OrderExcelHandler extends BaseExcelHandler {
 
     private String getCellValue(XSSFCell cell, int i) {
         String value = null;
-        if (cell == null && i == 6) {
+        if (cell == null && (i == 8 || i == 9)) {
             //备注列 允许为空
             return null;
         }
