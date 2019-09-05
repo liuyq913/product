@@ -530,6 +530,7 @@ CREATE TABLE t_Salary_Monthly(
 	expectWorkDay int comment '规定上班天数',
 	realityWorkDay int comment '正常上班天数',
 	basicSalary decimal(8,2) comment '基本工资',
+  hourlyWage decimal(4,2) comment '时薪',
 	createTime datetime,
 	lastModifyTime datetime,
 	isDelete int NOT NULL
