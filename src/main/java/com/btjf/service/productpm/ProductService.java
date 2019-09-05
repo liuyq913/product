@@ -29,7 +29,8 @@ public class ProductService {
 
     public Integer update(Product product) {
         return Optional.ofNullable(product).map(v -> {
-            return productMapper.updateByPrimaryKeySelective(product);
+             productMapper.updateByPrimaryKeySelective(product);
+             return product.getId();
         }).orElse(0);
     }
 }
