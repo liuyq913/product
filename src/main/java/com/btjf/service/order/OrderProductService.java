@@ -16,6 +16,7 @@ import com.btjf.service.sys.SysDeptService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -49,6 +50,7 @@ public class OrderProductService {
         return orderProductMapper.getByOrderNoAndProductNo(orderNo, productNo);
     }
 
+    @Transactional(propagation= Propagation.NOT_SUPPORTED)
     public Integer insert(OrderProduct orderProduct, String sysUser) {
 
         Integer orderID = null;

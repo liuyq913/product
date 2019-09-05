@@ -472,6 +472,6 @@
         1=1
         AND productNo = #{productNo} and workshop =#{deptName}
         and procedureName like '%质检%'
-        and isDelete = 0;
+        and isDelete = 0 limit 1;
     </select>
 </mapper>
