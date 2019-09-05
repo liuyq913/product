@@ -2,6 +2,7 @@ package com.btjf.service.order;
 
 import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.btjf.common.page.Page;
+import com.btjf.constant.WorkShopProductionMapEnum;
 import com.btjf.controller.order.vo.OrderVo;
 import com.btjf.mapper.order.OrderProductMapper;
 import com.btjf.model.order.Order;
@@ -81,7 +82,7 @@ public class OrderProductService {
                     productProcedureWorkshop.setOperator(sysUser);
                     productProcedureWorkshop.setProductId(productId);
                     productProcedureWorkshop.setProductNo(orderProduct.getProductNo());
-                    productProcedureWorkshop.setSort(0);
+                    productProcedureWorkshop.setSort(WorkShopProductionMapEnum.getByName(sysdept.getDeptName()).getValue());
                     productProcedureWorkshop.setProcedureName(sysdept.getDeptName() + "质检");
                     productProcedureWorkshop.setWorkshop(sysdept.getDeptName());
                     productProcedureWorkshop.setPrice(BigDecimal.valueOf(0));
