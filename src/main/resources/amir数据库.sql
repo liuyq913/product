@@ -563,7 +563,7 @@ CREATE TABLE t_Emp_Salary_Monthly(
 	dayWorkHoliday decimal(4,1) comment '节假日白班',
 	nightWorkHoliay decimal(4,1) comment '节假日晚班',
 	dayWorkLegal decimal(4,1) comment '法假日白班',
-	nigthWorkLegal decimal(4,1) coment '法假日晚班',
+	nigthWorkLegal decimal(4,1) comment '法假日晚班',
 	isDelete int NOT NULL
 );	
 

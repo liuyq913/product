@@ -409,9 +409,9 @@
 
     <select id="findByWorkshopName" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
-        from t_Product_Procedure_Workshop
-        WHERE workshop = #{name} and isDelete = 0;
+        tppw.*
+        from t_Product_Procedure_Workshop tppw LEFT JOIN t_Product_Procedure tpp ON tppw.procedureId = tpp.id
+        WHERE tppw.workshop = #{name} and tppw.isDelete = 0 and tpp.isConfirm = 1;
     </select>
 
     <select id="getWorkShop" resultMap="BaseResultMap">
@@ -420,15 +420,15 @@
         FROM t_Product_Procedure_Workshop tppw LEFT JOIN t_Product_Procedure tpp on tppw.procedureId = tpp.id
         WHERE 1=1
         <if test="productNo != null">
-          AND  tppw.productNo = #{productNo}
+            AND tppw.productNo = #{productNo}
         </if>
         <if test="procedureId != null">
-          AND tppw.procedureId = #{procedureId}
+            AND tppw.procedureId = #{procedureId}
         </if>
         <if test="isConfirm != null">
             AND tpp.isConfirm = #{isConfirm}
         </if>
-         and tppw.isDelete = 0;
+        and tppw.isDelete = 0;
     </select>
 
     <update id="deleteByProcedureId">
