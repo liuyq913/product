@@ -34,4 +34,8 @@ public class EmpWorkService {
     public Integer update(EmpWork empWork) {
         return Optional.ofNullable(empWork).map(t -> empWorkMapper.updateByPrimaryKeySelective(t)).orElse(0);
     }
+
+    public EmpWork getByID(Integer id){
+        return Optional.ofNullable(id).map(t -> empWorkMapper.selectByPrimaryKey(t)).orElse(null);
+    }
 }

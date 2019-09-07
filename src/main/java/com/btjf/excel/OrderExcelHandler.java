@@ -91,6 +91,7 @@ public class OrderExcelHandler extends BaseExcelHandler {
                     }
                     orderProduct.setMaxNum((int) Double.parseDouble(maxNum));
                     orderProduct.setAssignedNum(0);
+                    orderProduct.setNotAssignNum(orderProduct.getMaxNum());
                     break;
                 case 4:
                     String type = getCellValue(row.getCell(i), i);
