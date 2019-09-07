@@ -76,7 +76,6 @@ public class PmPlanOutExcelHandler extends BaseExcelHandler{
                 pmService.updateByID(pm1);
             }
         }
-        pmOutList.clear();
     }
 
     @Override
