@@ -76,7 +76,6 @@ public class EmpExcelHandler extends BaseExcelHandler{
 
             }
         }
-        emps.clear();
     }
 
     @Override
