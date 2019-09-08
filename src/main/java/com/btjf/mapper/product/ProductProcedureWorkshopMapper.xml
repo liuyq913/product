@@ -439,9 +439,9 @@
 
     <select id="getByWorkShopAndProductNo" resultMap="BaseResultMap">
         SELECT
-        <include refid="Base_Column_List"/>
-        FROM t_Product_Procedure_Workshop
-        WHERE productNo = #{productNo} and workshop =#{workShop} and isDelete = 0;
+        tppw.*
+        FROM t_Product_Procedure_Workshop tppw LEFT JOIN t_Product_Procedure tpp on tppw.procedureId = tpp.id
+        WHERE tppw.productNo = #{productNo} and tppw.workshop =#{workShop} and tppw.isDelete = 0 and tpp.isConfirm = 1 and tpp.isDelete = 0;
     </select>
 
 
