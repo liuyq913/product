@@ -1,23 +1,31 @@
 package com.btjf.excel;
 
+import com.btjf.common.utils.DateUtil;
 import com.btjf.model.emp.Emp;
 import com.btjf.model.emp.EmpSalaryMonthly;
 import com.btjf.model.emp.EmpSalaryMothlyPojo;
+import com.btjf.model.salary.SalaryMonthly;
+import com.btjf.service.emp.EmpSalaryMonthlyService;
 import com.btjf.service.emp.EmpService;
 import com.btjf.service.emp.EmpWorkService;
+import com.btjf.service.salary.SalaryMonthlyService;
 import com.btjf.service.sys.SysDeptService;
+import com.btjf.util.BigDecimalUtil;
 import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,6 +33,7 @@ import java.util.stream.Collectors;
 /**
  * Created by liuyq on 2019/9/7.
  */
+@Service
 public class EmpSalaryMothlyHandler extends BaseExcelHandler {
 
     @Resource
@@ -36,15 +45,44 @@ public class EmpSalaryMothlyHandler extends BaseExcelHandler {
     @Resource
     private EmpWorkService empWorkService;
 
+    @Resource
+    private SalaryMonthlyService salaryMonthlyService;
+
+    @Resource
+    private EmpSalaryMonthlyService empSalaryMonthlyService;
+
+    private static ThreadLocal<String> yearMonthCash = ThreadLocal.withInitial(() -> DateUtil.dateToString(new Date(), DateUtil.ymFormat));
+
+
     @Override
     public List<String> checkLayout(MultipartFile file, List<String> fields, String operator) throws Exception {
+
+        List<String> response = new ArrayList<>();
+        List<String> errResponse = new ArrayList<>();
+        //文件名
+        String fileName = file.getOriginalFilename();
+        if (!fileName.endsWith(".xlsx")) {
+            response.add("导入失败，以下数据请修改后再重新上传");
+            response.add("请导入后缀为xlsx的文件");
+            return response;
+        }
 
         InputStream is = file.getInputStream();
         Workbook wb = WorkbookFactory.create(is);
         Sheet sheet = wb.getSheetAt(0);
 
-        List<String> response = new ArrayList<>();
-        List<String> errResponse = new ArrayList<>();
+
+        String yearMonth = null;
+        try {
+            yearMonth = fileName.split("考勤数据")[0];
+            yearMonthCash.set(yearMonth);
+        } catch (Exception e) {
+            errResponse.add("文件名称格式不正确，请以 （yyyy-MM 考勤数据） 命名");
+        }
+
+        //多次导入删除之前的数据
+        empSalaryMonthlyService.deleteByYearMonth(yearMonth);
+
         // 日期
         XSSFRow dateRow = (XSSFRow) sheet.getRow(0);
         //星期
@@ -54,8 +92,8 @@ public class EmpSalaryMothlyHandler extends BaseExcelHandler {
         //晚班
         XSSFRow nightRow = (XSSFRow) sheet.getRow(3);
 
-
         List<EmpSalaryMothlyPojo> result = new ArrayList<>();
+
 
         String name = null;
         for (int i = 4; i < sheet.getLastRowNum(); i++) {
@@ -68,7 +106,7 @@ public class EmpSalaryMothlyHandler extends BaseExcelHandler {
                 name = getCellValue(row.getCell(0));//名称
                 Emp emp = empService.getByName(name);
                 if (emp == null) {
-                    errResponse.add("第" + i + "行，名称为：" + name + "的员工不存在");
+                    errResponse.add("第" + i + 1 + "行，名称为：" + name + "的员工不存在");
                 }
             }
 
@@ -79,13 +117,16 @@ public class EmpSalaryMothlyHandler extends BaseExcelHandler {
                 model.setDate(getCellValue(dateRow.getCell(index)));
                 model.setName(name);
                 model.setNum(new Double(row.getCell(index) == null || StringUtils.isEmpty(getCellValue(row.getCell(index))) ? "0" : getCellValue(row.getCell(index))));
-                model.setIsLegal("法假".equals(getCellValue(blackRow.getCell(index))));
-                model.setIsHoliday("节假".equals(getCellValue(blackRow.getCell(index))));
+                model.setYearMonth(yearMonth);
                 //白班
                 if (i % 2 == 0) {
+                    model.setIsLegal("法假".equals(getCellValue(blackRow.getCell(index))));
+                    model.setIsHoliday("节假".equals(getCellValue(blackRow.getCell(index))));
                     model.setIsBlack(Boolean.TRUE);
                     //晚班
                 } else {
+                    model.setIsLegal("法假".equals(getCellValue(nightRow.getCell(index))));
+                    model.setIsHoliday("节假".equals(getCellValue(nightRow.getCell(index))));
                     model.setIsBlack(Boolean.FALSE);
                 }
                 result.add(model);
@@ -99,20 +140,27 @@ public class EmpSalaryMothlyHandler extends BaseExcelHandler {
             response.addAll(errResponse);
         } else {
             insert(result, operator);
-            response.add("提交成功！新增导入" + result.size() + "条数据！");
+            response.add("提交成功！新增导入" + (sheet.getLastRowNum() - 4) + "条数据！");
         }
         wb.close();
         return response;
     }
 
     @Override
-    public List<String> execute(MultipartFile file, Boolean isCover, String operator) throws Exception {
+    protected List<T> create(XSSFRow row) throws Exception {
         return null;
+    }
+
+    @Override
+    public List<String> execute(MultipartFile file, Boolean isCover, String operator) throws Exception {
+        return checkLayout(file, null, operator);
     }
 
     @Override
     protected void insert(List list, String operator) {
         if (!CollectionUtils.isEmpty(list)) {
+            String yearMonth = yearMonthCash.get();
+            yearMonthCash.remove(); //防止内存泄漏
             //按名称分组
             Map<String, List<EmpSalaryMothlyPojo>> modelMap = (Map<String, List<EmpSalaryMothlyPojo>>) list.stream().filter(t -> t != null).
                     collect(Collectors.groupingBy(EmpSalaryMothlyPojo::getName));
@@ -126,14 +174,70 @@ public class EmpSalaryMothlyHandler extends BaseExcelHandler {
                 monthly.setEmpId(emp.getId());
                 monthly.setDeptName(sysDeptService.get(emp.getDeptId()).getDeptName());
                 monthly.setWorkName(empWorkService.getByID(emp.getWorkId()).getName());
+                monthly.setSalary(emp.getSalary());
+                monthly.setYearMonth(yearMonth);
+                SalaryMonthly salaryMonthly = salaryMonthlyService.getByYearMonth(monthly.getYearMonth());
 
+                Double blackNum = BigDecimal.ZERO.doubleValue(); //白班天数 （非法假 假期）
+                Double nightNum = BigDecimal.ZERO.doubleValue();  //晚班天数 （非法假 假期）
+                Double holidayBlackNum = BigDecimal.ZERO.doubleValue(); //假期白班天数
+                Double holidayNightNum = BigDecimal.ZERO.doubleValue(); //假期晚班天数
+                Double legalBlackNum = BigDecimal.ZERO.doubleValue(); //法假白班天数
+                Double legalNightNum = BigDecimal.ZERO.doubleValue(); //法假晚班天数
+                for (EmpSalaryMothlyPojo empSalaryMothlyPojo : entry.getValue()) {
+                    if (empSalaryMothlyPojo == null) continue;
+                    //白班
+                    if (empSalaryMothlyPojo.getIsBlack() && !empSalaryMothlyPojo.getIsHoliday() && !empSalaryMothlyPojo.getIsLegal()) {
+                        blackNum = BigDecimalUtil.add(blackNum, empSalaryMothlyPojo.getNum());
+                    }
+                    //晚班
+                    if (!empSalaryMothlyPojo.getIsBlack() && !empSalaryMothlyPojo.getIsHoliday() && !empSalaryMothlyPojo.getIsLegal()) {
+                        nightNum = BigDecimalUtil.add(nightNum, empSalaryMothlyPojo.getNum());
+                    }
+                    //假期白班天数
+                    if (empSalaryMothlyPojo.getIsBlack() && empSalaryMothlyPojo.getIsHoliday() && !empSalaryMothlyPojo.getIsLegal()) {
+                        holidayBlackNum = BigDecimalUtil.add(holidayBlackNum, empSalaryMothlyPojo.getNum());
+                    }
+                    //假期晚班
+                    if (!empSalaryMothlyPojo.getIsBlack() && empSalaryMothlyPojo.getIsHoliday() && !empSalaryMothlyPojo.getIsLegal()) {
+                        holidayNightNum = BigDecimalUtil.add(holidayNightNum, empSalaryMothlyPojo.getNum());
+                    }
+                    //法假白班
+                    if (empSalaryMothlyPojo.getIsBlack() && !empSalaryMothlyPojo.getIsHoliday() && empSalaryMothlyPojo.getIsLegal()) {
+                        legalBlackNum = BigDecimalUtil.add(legalBlackNum, empSalaryMothlyPojo.getNum());
+                    }
+                    //法假晚班
+                    if (!empSalaryMothlyPojo.getIsBlack() && !empSalaryMothlyPojo.getIsHoliday() && empSalaryMothlyPojo.getIsLegal()) {
+                        legalNightNum = BigDecimalUtil.add(legalNightNum, empSalaryMothlyPojo.getNum());
+                    }
+
+                }
+
+                //真实总天数  白班+晚班*0.5+公休=总天数    公休 = 白班是“法假”的数字之和
+                Double sumWorkDay = BigDecimalUtil.add(blackNum, BigDecimalUtil.mul(nightNum, 0.5), legalBlackNum);
+                //工作日   ① 工作日>总天数，工作日不调整；② 工作日<=总天数，工作日=总天数
+                monthly.setWorkDay(BigDecimal.valueOf(salaryMonthly != null ? salaryMonthly.getExpectWorkDay() > sumWorkDay ? salaryMonthly.getExpectWorkDay() : sumWorkDay : sumWorkDay));
+                monthly.setDayWork(BigDecimal.valueOf(blackNum));
+                monthly.setNightWork(BigDecimal.valueOf(nightNum));
+                monthly.setRestDay(BigDecimal.valueOf(legalBlackNum));
+                monthly.setSumDay(BigDecimal.valueOf(sumWorkDay));
+                monthly.setDayWorkHoliday(BigDecimal.valueOf(holidayBlackNum));
+                monthly.setNightWorkHoliay(BigDecimal.valueOf(holidayNightNum));
+                monthly.setDayWorkLegal(BigDecimal.valueOf(legalBlackNum));
+                monthly.setNigthWorkLegal(BigDecimal.valueOf(legalNightNum));
+                //四个分 默认0
+                monthly.setScore(BigDecimal.ZERO);
+                monthly.setFiveScore(BigDecimal.ZERO);
+                monthly.setCoordinationScore(BigDecimal.ZERO);
+                monthly.setQualityScore(BigDecimal.ZERO);
+                //取固定工资/总天数，保留2位小数，四舍五入
+                monthly.setDaySalary(BigDecimal.valueOf(BigDecimalUtil.div(monthly.getSalary().doubleValue(), sumWorkDay)));
+                monthly.setRealSalary(BigDecimal.ZERO);
+                monthly.setCreateTime(new Date());
+                monthly.setLastModifyTime(new Date());
+                empSalaryMonthlyService.save(monthly);
             }
 
         }
-    }
-
-    @Override
-    protected List<T> create(XSSFRow row) throws Exception {
-        return null;
     }
 }

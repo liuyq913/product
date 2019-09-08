@@ -26,6 +26,7 @@
     <result column="isDelete" jdbcType="INTEGER" property="isDelete" />
     <result column="isChange" jdbcType="INTEGER" property="isChange" />
     <result column="workshop" jdbcType="VARCHAR" property="workshop" />
+    <result column="inspectionor" jdbcType="VARCHAR" property="inspectionor" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--
@@ -100,7 +101,7 @@
     -->
     id, orderNo, productNo, procedureId, procedureName, empId, num, price, money, completeTime, 
     createTime, lastModifyTime, type, operator, productionNo, luoId, pmOutBillNo, isDelete, 
-    isChange, workshop
+    isChange, workshop, inspectionor
   </sql>
   <select id="selectByExample" parameterType="com.btjf.model.order.ProductionProcedureConfirmExample" resultMap="BaseResultMap">
     <!--
@@ -162,14 +163,14 @@
       createTime, lastModifyTime, type, 
       operator, productionNo, luoId, 
       pmOutBillNo, isDelete, isChange, 
-      workshop)
+      workshop, inspectionor)
     values (#{orderNo,jdbcType=VARCHAR}, #{productNo,jdbcType=VARCHAR}, #{procedureId,jdbcType=INTEGER}, 
       #{procedureName,jdbcType=VARCHAR}, #{empId,jdbcType=INTEGER}, #{num,jdbcType=DECIMAL}, 
       #{price,jdbcType=DECIMAL}, #{money,jdbcType=DECIMAL}, #{completeTime,jdbcType=TIMESTAMP}, 
       #{createTime,jdbcType=TIMESTAMP}, #{lastModifyTime,jdbcType=TIMESTAMP}, #{type,jdbcType=INTEGER}, 
       #{operator,jdbcType=VARCHAR}, #{productionNo,jdbcType=VARCHAR}, #{luoId,jdbcType=INTEGER}, 
       #{pmOutBillNo,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER}, #{isChange,jdbcType=INTEGER}, 
-      #{workshop,jdbcType=VARCHAR})
+      #{workshop,jdbcType=VARCHAR}, #{inspectionor,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.btjf.model.order.ProductionProcedureConfirm">
     <!--
@@ -238,6 +239,9 @@
       <if test="workshop != null">
         workshop,
       </if>
+      <if test="inspectionor != null">
+        inspectionor,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="orderNo != null">
@@ -296,6 +300,9 @@
       </if>
       <if test="workshop != null">
         #{workshop,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionor != null">
+        #{inspectionor,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -376,6 +383,9 @@
       <if test="record.workshop != null">
         workshop = #{record.workshop,jdbcType=VARCHAR},
       </if>
+      <if test="record.inspectionor != null">
+        inspectionor = #{record.inspectionor,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -406,7 +416,8 @@
       pmOutBillNo = #{record.pmOutBillNo,jdbcType=VARCHAR},
       isDelete = #{record.isDelete,jdbcType=INTEGER},
       isChange = #{record.isChange,jdbcType=INTEGER},
-      workshop = #{record.workshop,jdbcType=VARCHAR}
+      workshop = #{record.workshop,jdbcType=VARCHAR},
+      inspectionor = #{record.inspectionor,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -475,6 +486,9 @@
       <if test="workshop != null">
         workshop = #{workshop,jdbcType=VARCHAR},
       </if>
+      <if test="inspectionor != null">
+        inspectionor = #{inspectionor,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -502,7 +516,8 @@
       pmOutBillNo = #{pmOutBillNo,jdbcType=VARCHAR},
       isDelete = #{isDelete,jdbcType=INTEGER},
       isChange = #{isChange,jdbcType=INTEGER},
-      workshop = #{workshop,jdbcType=VARCHAR}
+      workshop = #{workshop,jdbcType=VARCHAR},
+      inspectionor = #{inspectionor,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 

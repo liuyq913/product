@@ -84,7 +84,7 @@ public class EmpSalaryMonthly implements Serializable {
      *
      * @mbg.generated
      */
-    private Integer workDay;
+    private BigDecimal workDay;
 
     /**
      *
@@ -156,7 +156,7 @@ public class EmpSalaryMonthly implements Serializable {
      *
      * @mbg.generated
      */
-    private Integer restDay;
+    private BigDecimal restDay;
 
     /**
      *
@@ -165,7 +165,7 @@ public class EmpSalaryMonthly implements Serializable {
      *
      * @mbg.generated
      */
-    private Integer sumDay;
+    private BigDecimal sumDay;
 
     /**
      *
@@ -456,7 +456,7 @@ public class EmpSalaryMonthly implements Serializable {
      *
      * @mbg.generated
      */
-    public Integer getWorkDay() {
+    public BigDecimal getWorkDay() {
         return workDay;
     }
 
@@ -468,7 +468,7 @@ public class EmpSalaryMonthly implements Serializable {
      *
      * @mbg.generated
      */
-    public void setWorkDay(Integer workDay) {
+    public void setWorkDay(BigDecimal workDay) {
         this.workDay = workDay;
     }
 
@@ -648,7 +648,7 @@ public class EmpSalaryMonthly implements Serializable {
      *
      * @mbg.generated
      */
-    public Integer getRestDay() {
+    public BigDecimal getRestDay() {
         return restDay;
     }
 
@@ -660,7 +660,7 @@ public class EmpSalaryMonthly implements Serializable {
      *
      * @mbg.generated
      */
-    public void setRestDay(Integer restDay) {
+    public void setRestDay(BigDecimal restDay) {
         this.restDay = restDay;
     }
 
@@ -672,7 +672,7 @@ public class EmpSalaryMonthly implements Serializable {
      *
      * @mbg.generated
      */
-    public Integer getSumDay() {
+    public BigDecimal getSumDay() {
         return sumDay;
     }
 
@@ -684,7 +684,7 @@ public class EmpSalaryMonthly implements Serializable {
      *
      * @mbg.generated
      */
-    public void setSumDay(Integer sumDay) {
+    public void setSumDay(BigDecimal sumDay) {
         this.sumDay = sumDay;
     }
 

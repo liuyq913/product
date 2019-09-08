@@ -103,6 +103,7 @@ public class ProductionProcedureConfirmService {
             productionProcedureConfirm.setWorkshop(wxEmpVo.getDeptName());
             productionProcedureConfirm.setProcedureId(t.getProcedureId());
             productionProcedureConfirm.setProcedureName(t.getProcedureName());
+            productionProcedureConfirm.setInspectionor(wxEmpVo.getName()); //质检员
             productionProcedureConfirmMapper.insertSelective(productionProcedureConfirm);
             t.setStatus(1);
             //扫码记录改成已质检
@@ -133,6 +134,7 @@ public class ProductionProcedureConfirmService {
         productionProcedureConfirm.setPmOutBillNo(billOutNo);
         productionProcedureConfirm.setLuoId(louId);
         productionProcedureConfirm.setProductionNo(productionNo);
+        productionProcedureConfirm.setInspectionor(wxEmpVo.getName()); //质检员
 
         productionProcedureConfirmMapper.insertSelective(productionProcedureConfirm);
 
