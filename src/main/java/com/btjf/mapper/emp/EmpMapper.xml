@@ -815,7 +815,7 @@
     <select id="phoneSubsidyList" resultType="com.btjf.vo.EmpSubsidyVo">
         select e.id,
         e.name,
-        d.name dept,
+        d.deptName dept,
         w.name work,
         e.phoneSubsidy subsidy
         from t_Emp e left join t_SysDept d on e.deptId = d.id
@@ -833,7 +833,7 @@
     <select id="socialSubsidyList" resultType="com.btjf.vo.EmpSubsidyVo">
         select e.id,
         e.name,
-        d.name dept,
+        d.deptName dept,
         w.name work,
         e.socialSubsidy subsidy
         from t_Emp e left join t_SysDept d on e.deptId = d.id
