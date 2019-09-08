@@ -4,6 +4,7 @@ import com.btjf.common.page.Page;
 import com.btjf.controller.weixin.vo.WxEmpVo;
 import com.btjf.mapper.emp.EmpMapper;
 import com.btjf.model.emp.Emp;
+import com.btjf.vo.EmpSubsidyVo;
 import com.btjf.vo.weixin.EmpVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -75,5 +76,21 @@ public class EmpService {
 
     public List<WxEmpVo> getAll() {
         return empMapper.getAll();
+    }
+
+    public Page<EmpSubsidyVo> phoneSubsidyList(String name, Integer deptId, Page page) {
+        PageHelper.startPage(page.getPage(), page.getRp());
+        List<EmpSubsidyVo> pmList = empMapper.phoneSubsidyList(name, deptId);
+        PageInfo pageInfo = new PageInfo(pmList);
+        pageInfo.setList(pmList);
+        return new Page<>(pageInfo);
+    }
+
+    public Page<EmpSubsidyVo> socialSubsidyList(String name, Integer deptId, Page page) {
+        PageHelper.startPage(page.getPage(), page.getRp());
+        List<EmpSubsidyVo> pmList = empMapper.socialSubsidyList(name, deptId);
+        PageInfo pageInfo = new PageInfo(pmList);
+        pageInfo.setList(pmList);
+        return new Page<>(pageInfo);
     }
 }

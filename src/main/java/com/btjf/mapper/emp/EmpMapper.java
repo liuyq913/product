@@ -3,6 +3,7 @@ package com.btjf.mapper.emp;
 import com.btjf.controller.weixin.vo.WxEmpVo;
 import com.btjf.model.emp.Emp;
 import com.btjf.model.emp.EmpExample;
+import com.btjf.vo.EmpSubsidyVo;
 import com.btjf.vo.weixin.EmpVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -111,4 +112,8 @@ public interface EmpMapper {
 
     List<EmpVo> getList(@Param("name") String name, @Param("deptId") Integer deptId, @Param("nativeSource") String nativeSource,
                         @Param("startEntryDate") String startEntryDate, @Param("endEntryDate") String endEntryDate);
+
+    List<EmpSubsidyVo> phoneSubsidyList(@Param("name")String name, @Param("deptId")Integer deptId);
+
+    List<EmpSubsidyVo> socialSubsidyList(@Param("name")String name, @Param("deptId")Integer deptId);
 }

@@ -812,5 +812,42 @@
         </if>
         and te.isDelete = 0 order by te.createTime desc
     </select>
+    <select id="phoneSubsidyList" resultType="com.btjf.vo.EmpSubsidyVo">
+        select e.id,
+        e.name,
+        d.name dept,
+        w.name work,
+        e.phoneSubsidy subsidy
+        from t_Emp e left join t_SysDept d on e.deptId = d.id
+        left JOIN  t_Emp_work w on e.workId = w.id
+        where e.type = 2
+        and e.isDelete = 0
+        and e.phoneSubsidy >0
+        <if test="name != null">
+            AND e.name LIKE '%${name}%'
+        </if>
+        <if test="deptId != null">
+            AND e.deptId = #{deptId}
+        </if>
+    </select>
+    <select id="socialSubsidyList" resultType="com.btjf.vo.EmpSubsidyVo">
+        select e.id,
+        e.name,
+        d.name dept,
+        w.name work,
+        e.socialSubsidy subsidy
+        from t_Emp e left join t_SysDept d on e.deptId = d.id
+        left JOIN  t_Emp_work w on e.workId = w.id
+        where e.type = 2
+        and e.isDelete = 0
+        and e.socialSubsidy >0
+        <if test="name != null">
+            AND e.name LIKE '%${name}%'
+        </if>
+        <if test="deptId != null">
+            AND e.deptId = #{deptId}
+        </if>
+
+    </select>
 
 </mapper>

@@ -13,10 +13,12 @@ import com.btjf.model.salary.SalaryMonthly;
 import com.btjf.model.sys.SysRole;
 import com.btjf.model.sys.SysUser;
 import com.btjf.model.sys.Sysdept;
+import com.btjf.service.emp.EmpService;
 import com.btjf.service.salary.SalaryMonthlyService;
 import com.btjf.service.sys.SysDeptService;
 import com.btjf.service.sys.SysRoleService;
 import com.btjf.service.sys.SysUserService;
+import com.btjf.vo.EmpSubsidyVo;
 import com.btjf.vo.UserInfoVo;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -42,7 +44,7 @@ public class LaborBasicController {
     @Resource
     private SalaryMonthlyService salaryMonthlyService;
     @Resource
-    private SysDeptService sysDeptService;
+    private EmpService empService;
     @Resource
     private SysRoleService sysRoleService;
     @Resource
@@ -143,5 +145,45 @@ public class LaborBasicController {
         //TODO 判断salaryMonthly.getYearMonth()  这个月份 是否结算  如果已经结算  也不允许再改
 
         return XaResult.success();
+    }
+
+    /**
+     * 话费补贴 列表
+     *
+     * @return
+     */
+    @RequestMapping(value = "/phoneSubsidy/list", method = RequestMethod.GET)
+    public XaResult<List<EmpSubsidyVo>> phoneSubsidyList(String name, Integer deptId,
+                                                         Integer pageSize, Integer currentPage) {
+        if(currentPage == null || currentPage < 1){
+            currentPage =1;
+        }
+        if(pageSize == null || pageSize < 1){
+            pageSize = 25;
+        }
+        Page page = new Page(pageSize, currentPage);
+        Page<EmpSubsidyVo> listPage = empService.phoneSubsidyList(name, deptId, page);
+        XaResult<List<EmpSubsidyVo>> result = AppXaResultHelper.success(listPage, listPage.getRows());
+        return result;
+    }
+
+    /**
+     * 社保补贴 列表
+     *
+     * @return
+     */
+    @RequestMapping(value = "/socialSubsidy/list", method = RequestMethod.GET)
+    public XaResult<List<EmpSubsidyVo>> socialSubsidyList(String name, Integer deptId,
+                                                         Integer pageSize, Integer currentPage) {
+        if(currentPage == null || currentPage < 1){
+            currentPage =1;
+        }
+        if(pageSize == null || pageSize < 1){
+            pageSize = 25;
+        }
+        Page page = new Page(pageSize, currentPage);
+        Page<EmpSubsidyVo> listPage = empService.socialSubsidyList(name, deptId, page);
+        XaResult<List<EmpSubsidyVo>> result = AppXaResultHelper.success(listPage, listPage.getRows());
+        return result;
     }
 }

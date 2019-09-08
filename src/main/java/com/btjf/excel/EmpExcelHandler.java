@@ -41,9 +41,10 @@ public class EmpExcelHandler extends BaseExcelHandler{
 
     //姓名	性别	出生日期	学历	部门	人员类别	工种	固定工资	身份证号	家庭地址	进场日期	手机	开水费	夜餐费	备注
 
-    public final static List<String> fields = Stream.of("姓名", "性别", "出生日期",
-            "学历", "部门", "人员类别", "工种","固定工资","身份证号","家庭地址",
-            "进场日期","手机","开水费","夜餐费","备注").collect(Collectors.toList());
+    public final static List<String> fields = Stream.of("姓名", "性别", "出生日期","籍贯",
+            "学历", "部门", "人员类别", "工种","固定工资","养老保险","医疗保险","失业保险",
+            "住房公积金","社保补贴","电话费补贴","身份证号","家庭地址",
+            "进厂日期","手机","开水费","夜餐费","备注").collect(Collectors.toList());
 
     @Resource
     private EmpService empService;
@@ -113,35 +114,38 @@ public class EmpExcelHandler extends BaseExcelHandler{
 
                     break;
                 case 3:
-                    emp.setEducation(getCellValue(row.getCell(i), i));
+                    emp.setNativeSource(getCellValue(row.getCell(i), i));
                     break;
                 case 4:
+                    emp.setEducation(getCellValue(row.getCell(i), i));
+                    break;
+                case 5:
                     Sysdept dept = sysDeptService.getByName(getCellValue(row.getCell(i), i));
                     if (dept == null){
-                        errMsg = errMsg + "第" + 5 +"列" + fields.get(4) + " 填写错误,";
+                        errMsg = errMsg + "第" + 6 +"列" + fields.get(5) + " 填写错误,";
                     }else{
                         emp.setDeptId(dept.getId());
                     }
                     break;
-                case 5:
+                case 6:
                     String type = getCellValue(row.getCell(i), i);
                     if("计件工".equals(type)){
                         emp.setType(1);
                     }else if("合同工".equals(type)){
                         emp.setType(2);
                     }else{
-                        errMsg = errMsg + "第" + 6 +"列" + fields.get(5) + " 填写错误,";
+                        errMsg = errMsg + "第" + 7 +"列" + fields.get(6) + " 填写错误,";
                     }
                     break;
-                case 6:
+                case 7:
                     EmpWork empWork = empWorkService.getByName(getCellValue(row.getCell(i), i));
                     if (empWork == null){
-                        errMsg = errMsg + "第" + 7 +"列" + fields.get(6) + " 填写错误,";
+                        errMsg = errMsg + "第" + 8 +"列" + fields.get(7) + " 填写错误,";
                     }else{
                         emp.setWorkId(empWork.getId());
                     }
                     break;
-                case 7:
+                case 8:
                     String salary = getCellValue(row.getCell(i), i);
                     if (StringUtils.isEmpty(salary)){
                         emp.setSalary(BigDecimal.valueOf(0.0));
@@ -149,30 +153,78 @@ public class EmpExcelHandler extends BaseExcelHandler{
                         emp.setSalary(BigDecimal.valueOf(Double.parseDouble(salary)));
                     }
                     break;
-                case 8:
+                case 9:
+                    String ylbx = getCellValue(row.getCell(i), i);
+                    if (StringUtils.isEmpty(ylbx)){
+                        emp.setYlbx(BigDecimal.valueOf(0.0));
+                    }else{
+                        emp.setYlbx(BigDecimal.valueOf(Double.parseDouble(ylbx)));
+                    }
+                    break;
+                case 10:
+                    String yiliaobx = getCellValue(row.getCell(i), i);
+                    if (StringUtils.isEmpty(yiliaobx)){
+                        emp.setYiliaobx(BigDecimal.valueOf(0.0));
+                    }else{
+                        emp.setYiliaobx(BigDecimal.valueOf(Double.parseDouble(yiliaobx)));
+                    }
+                    break;
+                case 11:
+                    String sybx = getCellValue(row.getCell(i), i);
+                    if (StringUtils.isEmpty(sybx)){
+                        emp.setSybx(BigDecimal.valueOf(0.0));
+                    }else{
+                        emp.setSybx(BigDecimal.valueOf(Double.parseDouble(sybx)));
+                    }
+                    break;
+                case 12:
+                    String gjj = getCellValue(row.getCell(i), i);
+                    if (StringUtils.isEmpty(gjj)){
+                        emp.setGjj(BigDecimal.valueOf(0.0));
+                    }else{
+                        emp.setGjj(BigDecimal.valueOf(Double.parseDouble(gjj)));
+                    }
+                    break;
+                case 13:
+                    String sbbt = getCellValue(row.getCell(i), i);
+                    if (StringUtils.isEmpty(sbbt)){
+                        emp.setSocialSubsidy(BigDecimal.valueOf(0.0));
+                    }else{
+                        emp.setSocialSubsidy(BigDecimal.valueOf(Double.parseDouble(sbbt)));
+                    }
+                    break;
+                case 14:
+                    String phonebt = getCellValue(row.getCell(i), i);
+                    if (StringUtils.isEmpty(phonebt)){
+                        emp.setPhoneSubsidy(BigDecimal.valueOf(0.0));
+                    }else{
+                        emp.setPhoneSubsidy(BigDecimal.valueOf(Double.parseDouble(phonebt)));
+                    }
+                    break;
+                case 15:
                     String idCard = getCellValue(row.getCell(i), i);
                     if(StringUtils.isNotEmpty(idCard)) {
                         Emp emp2 = empService.getByIdCard(idCard);
                         if (emp2 != null) {
-                            errMsg = errMsg + "第" + 9 + "列" + fields.get(8) + " 填写错误,";
+                            errMsg = errMsg + "第" + 16 + "列" + fields.get(15) + " 填写错误,";
                         }
                     }
                     emp.setIdCard(getCellValue(row.getCell(i), i));
                     break;
-                case 9:
+                case 16:
                     emp.setAddress(getCellValue(row.getCell(i), i));
                     break;
-                case 10:
+                case 17:
                     if(isRightDateStr(getCellValue(row.getCell(i), i),"yyyyMMdd")){
                         emp.setEntryDate(getCellValue(row.getCell(i), i));
                     }else{
-                        errMsg = errMsg + "第" + 11 +"列" + fields.get(10) + " 填写错误,";
+                        errMsg = errMsg + "第" + 18 +"列" + fields.get(17) + " 填写错误,";
                     }
                     break;
-                case 11:
+                case 18:
                     emp.setPhone(getCellValue(row.getCell(i), i));
                     break;
-                case 12:
+                case 19:
                     String water = getCellValue(row.getCell(i), i);
                     if (StringUtils.isEmpty(water)){
                         emp.setWaterSubsidy(BigDecimal.valueOf(0.0));
@@ -180,7 +232,7 @@ public class EmpExcelHandler extends BaseExcelHandler{
                         emp.setWaterSubsidy(BigDecimal.valueOf(Double.parseDouble(water)));
                     }
                     break;
-                case 13:
+                case 20:
                     String food = getCellValue(row.getCell(i), i);
                     if (StringUtils.isEmpty(food)){
                         emp.setFoodSubsidy(BigDecimal.valueOf(0.0));
@@ -188,7 +240,7 @@ public class EmpExcelHandler extends BaseExcelHandler{
                         emp.setFoodSubsidy(BigDecimal.valueOf(Double.parseDouble(food)));
                     }
                     break;
-                case 14:
+                case 21:
                     emp.setRemark(getCellValue(row.getCell(i), i));
                     break;
 
@@ -204,12 +256,7 @@ public class EmpExcelHandler extends BaseExcelHandler{
         }else{
             emp.setIsLeader(2);
         }
-        emp.setYlbx(BigDecimal.valueOf(0.0));
-        emp.setSybx(BigDecimal.valueOf(0.0));
-        emp.setYiliaobx(BigDecimal.valueOf(0.0));
-        emp.setGjj(BigDecimal.valueOf(0.0));
-        emp.setPhoneSubsidy(BigDecimal.valueOf(0.0));
-        emp.setSocialSubsidy(BigDecimal.valueOf(0.0));
+
         emp.setPassword(MD5Utils.ecodeByMD5("123456"));
         emp.setIsDelete(0);
         emp.setCreateTime(new Date());
@@ -220,8 +267,7 @@ public class EmpExcelHandler extends BaseExcelHandler{
 
     private String getCellValue(XSSFCell cell, int i) {
         String value = null;
-        if(cell == null && (i == 1 || i == 3 || i == 7 || i ==8 || i == 9 || i == 11
-                || i == 12 || i == 13 || i == 14)){
+        if(cell == null && (i == 1 || i == 3 || i == 4 || ( i>=8 && i <= 16) || i >= 18)){
             //备注列 允许为空
             return null;
         }
