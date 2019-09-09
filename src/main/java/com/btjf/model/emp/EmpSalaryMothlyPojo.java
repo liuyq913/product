@@ -23,6 +23,8 @@ public class EmpSalaryMothlyPojo implements Serializable{
 
     private Double num;  //数量
 
+    private String yearMonth;
+
     public String getName() {
         return name;
     }
@@ -65,6 +67,14 @@ public class EmpSalaryMothlyPojo implements Serializable{
 
     public Double getNum() {
         return num;
+    }
+
+    public String getYearMonth() {
+        return yearMonth;
+    }
+
+    public void setYearMonth(String yearMonth) {
+        this.yearMonth = yearMonth;
     }
 
     public void setNum(Double num) {

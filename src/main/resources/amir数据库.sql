@@ -408,7 +408,8 @@ CREATE TABLE t_Production_Procedure_Confirm(
   pmOutBillNo varchar(50) comment '领料单编号',
   isDelete int NOT NULL,
   isChange int NOT NULL comment '主任是否调整',
-  workshop  varchar(30) comment '车间'
+  workshop  varchar(30) comment '车间',
+  inspectionor varchar(100) DEFAULT NULL comment '质检员',
 );
 
 
@@ -546,16 +547,15 @@ CREATE TABLE t_Emp_Salary_Monthly(
 	deptName varchar(30) comment '部门名字',
 	workName varchar(30) comment '工种',
 	salary decimal(8,2) comment '工资',
-	workDay int comment '上班天数',
+	workDay decimal(4,1) comment '上班天数',
 	dayWork decimal(4,1) comment '正常白班',
 	nightWork decimal(4,1) comment '正常晚班',
 	score decimal(8,2) comment '考勤分',
 	fiveScore decimal(8,2) comment '5s分',
 	coordinationScore decimal(8,2) comment '配合分',
 	qualityScore decimal(8,2) comment '质量分',
-  checkWorkScore decimal(8,2) comment '考勤分',
-	restDay int comment '公休',
-	sumDay int comment '总天数',
+	restDay decimal(4,1) comment '公休',
+	sumDay decimal(4,1) comment '总天数',
 	daySalary decimal(8,2) comment '日工资',
 	realSalary decimal(8,2) comment '应发工资',
 	createTime datetime,

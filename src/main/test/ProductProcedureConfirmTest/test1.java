@@ -1,7 +1,7 @@
 package ProductProcedureConfirmTest;
 
 import com.btjf.controller.order.vo.WorkShopVo;
-import com.btjf.service.order.ProductionProcedureService;
+import com.btjf.service.productpm.ProductProcedureService;
 import org.junit.Test;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
@@ -15,9 +15,9 @@ public class test1 {
     public void test(){
         FileSystemXmlApplicationContext f  = new FileSystemXmlApplicationContext("classpath:applicationContext.xml");
 
-        ProductionProcedureService productionProcedureService = (ProductionProcedureService) f.getBean("productionProcedureService");
+        ProductProcedureService productProcedureService = (ProductProcedureService) f.getBean("productProcedureService");
 
-        List<WorkShopVo.Procedure> procedures =  productionProcedureService.getConfigProcedure("下料车间","P201908200001");
+        List<WorkShopVo.Procedure> procedures =  productProcedureService.getByWorkShopAndProductNo("下料车间","XH00002");
         System.out.println(procedures);
     }
 

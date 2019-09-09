@@ -2,8 +2,9 @@ package com.btjf.mapper.emp;
 
 import com.btjf.model.emp.EmpSalaryMonthly;
 import com.btjf.model.emp.EmpSalaryMonthlyExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface EmpSalaryMonthlyMapper {
     /**
@@ -93,4 +94,8 @@ public interface EmpSalaryMonthlyMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(EmpSalaryMonthly record);
+
+    Integer deleteByYearMonth(@Param("yearMonth") String yearMonth);
+
+    List<EmpSalaryMonthly> getList(@Param("yearMonth") String yearMonth, @Param("empName") String empName, @Param("deptName") String deptName);
 }

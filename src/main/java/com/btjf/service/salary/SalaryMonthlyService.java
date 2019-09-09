@@ -36,4 +36,8 @@ public class SalaryMonthlyService {
         pageInfo.setList(pmList);
         return new Page<>(pageInfo);
     }
+
+    public SalaryMonthly getByYearMonth(String yearMonth){
+        return salaryMonthlyMapper.getByYearMonth(yearMonth);
+    }
 }

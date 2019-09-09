@@ -726,52 +726,52 @@ public class EmpSalaryMonthlyExample {
             return (Criteria) this;
         }
 
-        public Criteria andWorkDayEqualTo(Integer value) {
+        public Criteria andWorkDayEqualTo(BigDecimal value) {
             addCriterion("workDay =", value, "workDay");
             return (Criteria) this;
         }
 
-        public Criteria andWorkDayNotEqualTo(Integer value) {
+        public Criteria andWorkDayNotEqualTo(BigDecimal value) {
             addCriterion("workDay <>", value, "workDay");
             return (Criteria) this;
         }
 
-        public Criteria andWorkDayGreaterThan(Integer value) {
+        public Criteria andWorkDayGreaterThan(BigDecimal value) {
             addCriterion("workDay >", value, "workDay");
             return (Criteria) this;
         }
 
-        public Criteria andWorkDayGreaterThanOrEqualTo(Integer value) {
+        public Criteria andWorkDayGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("workDay >=", value, "workDay");
             return (Criteria) this;
         }
 
-        public Criteria andWorkDayLessThan(Integer value) {
+        public Criteria andWorkDayLessThan(BigDecimal value) {
             addCriterion("workDay <", value, "workDay");
             return (Criteria) this;
         }
 
-        public Criteria andWorkDayLessThanOrEqualTo(Integer value) {
+        public Criteria andWorkDayLessThanOrEqualTo(BigDecimal value) {
             addCriterion("workDay <=", value, "workDay");
             return (Criteria) this;
         }
 
-        public Criteria andWorkDayIn(List<Integer> values) {
+        public Criteria andWorkDayIn(List<BigDecimal> values) {
             addCriterion("workDay in", values, "workDay");
             return (Criteria) this;
         }
 
-        public Criteria andWorkDayNotIn(List<Integer> values) {
+        public Criteria andWorkDayNotIn(List<BigDecimal> values) {
             addCriterion("workDay not in", values, "workDay");
             return (Criteria) this;
         }
 
-        public Criteria andWorkDayBetween(Integer value1, Integer value2) {
+        public Criteria andWorkDayBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("workDay between", value1, value2, "workDay");
             return (Criteria) this;
         }
 
-        public Criteria andWorkDayNotBetween(Integer value1, Integer value2) {
+        public Criteria andWorkDayNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("workDay not between", value1, value2, "workDay");
             return (Criteria) this;
         }
@@ -1206,52 +1206,52 @@ public class EmpSalaryMonthlyExample {
             return (Criteria) this;
         }
 
-        public Criteria andRestDayEqualTo(Integer value) {
+        public Criteria andRestDayEqualTo(BigDecimal value) {
             addCriterion("restDay =", value, "restDay");
             return (Criteria) this;
         }
 
-        public Criteria andRestDayNotEqualTo(Integer value) {
+        public Criteria andRestDayNotEqualTo(BigDecimal value) {
             addCriterion("restDay <>", value, "restDay");
             return (Criteria) this;
         }
 
-        public Criteria andRestDayGreaterThan(Integer value) {
+        public Criteria andRestDayGreaterThan(BigDecimal value) {
             addCriterion("restDay >", value, "restDay");
             return (Criteria) this;
         }
 
-        public Criteria andRestDayGreaterThanOrEqualTo(Integer value) {
+        public Criteria andRestDayGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("restDay >=", value, "restDay");
             return (Criteria) this;
         }
 
-        public Criteria andRestDayLessThan(Integer value) {
+        public Criteria andRestDayLessThan(BigDecimal value) {
             addCriterion("restDay <", value, "restDay");
             return (Criteria) this;
         }
 
-        public Criteria andRestDayLessThanOrEqualTo(Integer value) {
+        public Criteria andRestDayLessThanOrEqualTo(BigDecimal value) {
             addCriterion("restDay <=", value, "restDay");
             return (Criteria) this;
         }
 
-        public Criteria andRestDayIn(List<Integer> values) {
+        public Criteria andRestDayIn(List<BigDecimal> values) {
             addCriterion("restDay in", values, "restDay");
             return (Criteria) this;
         }
 
-        public Criteria andRestDayNotIn(List<Integer> values) {
+        public Criteria andRestDayNotIn(List<BigDecimal> values) {
             addCriterion("restDay not in", values, "restDay");
             return (Criteria) this;
         }
 
-        public Criteria andRestDayBetween(Integer value1, Integer value2) {
+        public Criteria andRestDayBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("restDay between", value1, value2, "restDay");
             return (Criteria) this;
         }
 
-        public Criteria andRestDayNotBetween(Integer value1, Integer value2) {
+        public Criteria andRestDayNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("restDay not between", value1, value2, "restDay");
             return (Criteria) this;
         }
@@ -1266,52 +1266,52 @@ public class EmpSalaryMonthlyExample {
             return (Criteria) this;
         }
 
-        public Criteria andSumDayEqualTo(Integer value) {
+        public Criteria andSumDayEqualTo(BigDecimal value) {
             addCriterion("sumDay =", value, "sumDay");
             return (Criteria) this;
         }
 
-        public Criteria andSumDayNotEqualTo(Integer value) {
+        public Criteria andSumDayNotEqualTo(BigDecimal value) {
             addCriterion("sumDay <>", value, "sumDay");
             return (Criteria) this;
         }
 
-        public Criteria andSumDayGreaterThan(Integer value) {
+        public Criteria andSumDayGreaterThan(BigDecimal value) {
             addCriterion("sumDay >", value, "sumDay");
             return (Criteria) this;
         }
 
-        public Criteria andSumDayGreaterThanOrEqualTo(Integer value) {
+        public Criteria andSumDayGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("sumDay >=", value, "sumDay");
             return (Criteria) this;
         }
 
-        public Criteria andSumDayLessThan(Integer value) {
+        public Criteria andSumDayLessThan(BigDecimal value) {
             addCriterion("sumDay <", value, "sumDay");
             return (Criteria) this;
         }
 
-        public Criteria andSumDayLessThanOrEqualTo(Integer value) {
+        public Criteria andSumDayLessThanOrEqualTo(BigDecimal value) {
             addCriterion("sumDay <=", value, "sumDay");
             return (Criteria) this;
         }
 
-        public Criteria andSumDayIn(List<Integer> values) {
+        public Criteria andSumDayIn(List<BigDecimal> values) {
             addCriterion("sumDay in", values, "sumDay");
             return (Criteria) this;
         }
 
-        public Criteria andSumDayNotIn(List<Integer> values) {
+        public Criteria andSumDayNotIn(List<BigDecimal> values) {
             addCriterion("sumDay not in", values, "sumDay");
             return (Criteria) this;
         }
 
-        public Criteria andSumDayBetween(Integer value1, Integer value2) {
+        public Criteria andSumDayBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("sumDay between", value1, value2, "sumDay");
             return (Criteria) this;
         }
 
-        public Criteria andSumDayNotBetween(Integer value1, Integer value2) {
+        public Criteria andSumDayNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("sumDay not between", value1, value2, "sumDay");
             return (Criteria) this;
         }

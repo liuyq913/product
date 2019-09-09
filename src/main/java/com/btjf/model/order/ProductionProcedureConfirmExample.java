@@ -1466,6 +1466,76 @@ public class ProductionProcedureConfirmExample {
             return (Criteria) this;
         }
 
+        public Criteria andInspectionorIsNull() {
+            addCriterion("inspectionor is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInspectionorIsNotNull() {
+            addCriterion("inspectionor is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInspectionorEqualTo(String value) {
+            addCriterion("inspectionor =", value, "inspectionor");
+            return (Criteria) this;
+        }
+
+        public Criteria andInspectionorNotEqualTo(String value) {
+            addCriterion("inspectionor <>", value, "inspectionor");
+            return (Criteria) this;
+        }
+
+        public Criteria andInspectionorGreaterThan(String value) {
+            addCriterion("inspectionor >", value, "inspectionor");
+            return (Criteria) this;
+        }
+
+        public Criteria andInspectionorGreaterThanOrEqualTo(String value) {
+            addCriterion("inspectionor >=", value, "inspectionor");
+            return (Criteria) this;
+        }
+
+        public Criteria andInspectionorLessThan(String value) {
+            addCriterion("inspectionor <", value, "inspectionor");
+            return (Criteria) this;
+        }
+
+        public Criteria andInspectionorLessThanOrEqualTo(String value) {
+            addCriterion("inspectionor <=", value, "inspectionor");
+            return (Criteria) this;
+        }
+
+        public Criteria andInspectionorLike(String value) {
+            addCriterion("inspectionor like", value, "inspectionor");
+            return (Criteria) this;
+        }
+
+        public Criteria andInspectionorNotLike(String value) {
+            addCriterion("inspectionor not like", value, "inspectionor");
+            return (Criteria) this;
+        }
+
+        public Criteria andInspectionorIn(List<String> values) {
+            addCriterion("inspectionor in", values, "inspectionor");
+            return (Criteria) this;
+        }
+
+        public Criteria andInspectionorNotIn(List<String> values) {
+            addCriterion("inspectionor not in", values, "inspectionor");
+            return (Criteria) this;
+        }
+
+        public Criteria andInspectionorBetween(String value1, String value2) {
+            addCriterion("inspectionor between", value1, value2, "inspectionor");
+            return (Criteria) this;
+        }
+
+        public Criteria andInspectionorNotBetween(String value1, String value2) {
+            addCriterion("inspectionor not between", value1, value2, "inspectionor");
+            return (Criteria) this;
+        }
+
         public Criteria andOrderNoLikeInsensitive(String value) {
             addCriterion("upper(orderNo) like", value.toUpperCase(), "orderNo");
             return (Criteria) this;
@@ -1498,6 +1568,11 @@ public class ProductionProcedureConfirmExample {
 
         public Criteria andWorkshopLikeInsensitive(String value) {
             addCriterion("upper(workshop) like", value.toUpperCase(), "workshop");
+            return (Criteria) this;
+        }
+
+        public Criteria andInspectionorLikeInsensitive(String value) {
+            addCriterion("upper(inspectionor) like", value.toUpperCase(), "inspectionor");
             return (Criteria) this;
         }
     }
