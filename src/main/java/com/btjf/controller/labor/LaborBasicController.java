@@ -186,4 +186,6 @@ public class LaborBasicController {
         XaResult<List<EmpSubsidyVo>> result = AppXaResultHelper.success(listPage, listPage.getRows());
         return result;
     }
+
+
 }
