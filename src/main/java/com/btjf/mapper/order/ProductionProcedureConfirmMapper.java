@@ -4,6 +4,7 @@ import com.btjf.model.order.Order;
 import com.btjf.model.order.ProductionProcedureConfirm;
 import com.btjf.model.order.ProductionProcedureConfirmExample;
 import com.btjf.model.product.ProductProcedure;
+import com.btjf.vo.ProcedureYieldVo;
 import com.btjf.vo.weixin.*;
 import org.apache.ibatis.annotations.Param;
 
@@ -128,4 +129,8 @@ public interface ProductionProcedureConfirmMapper {
                                                @Param("orderNo")String orderNo, @Param("productNo")String productNo,
                                                @Param("billNo")String billNo, @Param("luoId")Integer luoId,
                                                @Param("type")Integer type);
+
+    List<ProcedureYieldVo> yieldList(@Param("name")String name, @Param("deptId")Integer deptId, @Param("workId")Integer workId,
+                                     @Param("orderNo")String orderNo,@Param("productNo")String productNo, @Param("procedureName")String procedureName,
+                                     @Param("yearMonth")String yearMonth,@Param("startDate")String startDate, @Param("endDate")String endDate);
 }

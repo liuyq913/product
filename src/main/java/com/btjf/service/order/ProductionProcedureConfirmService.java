@@ -1,7 +1,9 @@
 package com.btjf.service.order;
 
 import com.alibaba.dubbo.common.utils.CollectionUtils;
+import com.alibaba.dubbo.common.utils.StringUtils;
 import com.btjf.business.common.exception.BusinessException;
+import com.btjf.common.page.Page;
 import com.btjf.controller.weixin.vo.WxEmpVo;
 import com.btjf.mapper.order.ProductionProcedureConfirmMapper;
 import com.btjf.model.order.Order;
@@ -11,10 +13,13 @@ import com.btjf.model.product.ProductProcedure;
 import com.btjf.model.product.ProductProcedureWorkshop;
 import com.btjf.service.productpm.ProductWorkshopService;
 import com.btjf.util.BigDecimalUtil;
+import com.btjf.vo.ProcedureYieldVo;
 import com.btjf.vo.weixin.EmpProcedureDetailVo;
 import com.btjf.vo.weixin.EmpProcedureListVo;
 import com.btjf.vo.weixin.OrderProductVo;
 import com.btjf.vo.weixin.*;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -149,6 +154,16 @@ public class ProductionProcedureConfirmService {
         productionProcedureConfirmMapper.updateChange(orderNo, productNo, procedureId, vo.getDeptName());
         //插入 调整后的数据
         ProductionProcedureConfirm t = clist.get(0);
+        String inspectionor = null;
+        for (int i = 0; i < clist.size(); i++){
+            if(inspectionor == null) {
+                inspectionor = clist.get(i).getInspectionor();
+                continue;
+            }
+            if(StringUtils.isNotEmpty(clist.get(i).getInspectionor()) && !inspectionor.contains(clist.get(i).getInspectionor())){
+                inspectionor = inspectionor + "," + clist.get(i).getInspectionor();
+            }
+        }
         for (int i = 0; i < list.size(); i++){
             ProductionProcedureConfirm productionProcedureConfirm = new ProductionProcedureConfirm();
             productionProcedureConfirm.setOrderNo(t.getOrderNo());
@@ -168,6 +183,7 @@ public class ProductionProcedureConfirmService {
             productionProcedureConfirm.setWorkshop(vo.getDeptName());
             productionProcedureConfirm.setProcedureId(procedureId);
             productionProcedureConfirm.setProcedureName(t.getProcedureName());
+            productionProcedureConfirm.setInspectionor(inspectionor);
             productionProcedureConfirmMapper.insertSelective(productionProcedureConfirm);
         }
     }
@@ -187,5 +203,15 @@ public class ProductionProcedureConfirmService {
     public List<ProcedureInfoVo> getWorkProcedureInfo(String date, Integer empId, String orderNo, String productNo,
                                                       String billNo, Integer luoId, Integer type) {
         return productionProcedureConfirmMapper.getWorkProcedureInfo(date,empId,orderNo,productNo,billNo,luoId,type);
+    }
+
+    public Page<ProcedureYieldVo> yieldList(String name, Integer deptId, Integer workId, String orderNo,
+          String productNo, String procedureName, String yearMonth, String startDate, String endDate, Page page) {
+        PageHelper.startPage(page.getPage(), page.getRp());
+        List<ProcedureYieldVo> pmList = productionProcedureConfirmMapper.yieldList(name, deptId, workId,
+                orderNo, productNo, procedureName, yearMonth, startDate, endDate);
+        PageInfo pageInfo = new PageInfo(pmList);
+        pageInfo.setList(pmList);
+        return new Page<>(pageInfo);
     }
 }

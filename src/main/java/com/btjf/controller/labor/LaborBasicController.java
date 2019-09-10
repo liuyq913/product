@@ -14,11 +14,13 @@ import com.btjf.model.sys.SysRole;
 import com.btjf.model.sys.SysUser;
 import com.btjf.model.sys.Sysdept;
 import com.btjf.service.emp.EmpService;
+import com.btjf.service.order.ProductionProcedureConfirmService;
 import com.btjf.service.salary.SalaryMonthlyService;
 import com.btjf.service.sys.SysDeptService;
 import com.btjf.service.sys.SysRoleService;
 import com.btjf.service.sys.SysUserService;
 import com.btjf.vo.EmpSubsidyVo;
+import com.btjf.vo.ProcedureYieldVo;
 import com.btjf.vo.UserInfoVo;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -46,7 +48,7 @@ public class LaborBasicController {
     @Resource
     private EmpService empService;
     @Resource
-    private SysRoleService sysRoleService;
+    private ProductionProcedureConfirmService productionProcedureConfirmService;
     @Resource
     private LoginInfoCache loginInfoCache;
 
@@ -184,6 +186,29 @@ public class LaborBasicController {
         Page page = new Page(pageSize, currentPage);
         Page<EmpSubsidyVo> listPage = empService.socialSubsidyList(name, deptId, page);
         XaResult<List<EmpSubsidyVo>> result = AppXaResultHelper.success(listPage, listPage.getRows());
+        return result;
+    }
+
+
+    /**
+     * 工序 产量 列表
+     *
+     * @return
+     */
+    @RequestMapping(value = "/yield/list", method = RequestMethod.GET)
+    public XaResult<List<ProcedureYieldVo>> yieldList(String name, Integer deptId,Integer workId,
+        String orderNo, String productNo, String procedureName, String yearMonth,
+        String startDate, String endDate, Integer pageSize, Integer currentPage) {
+        if(currentPage == null || currentPage < 1){
+            currentPage =1;
+        }
+        if(pageSize == null || pageSize < 1){
+            pageSize = 25;
+        }
+        Page page = new Page(pageSize, currentPage);
+        Page<ProcedureYieldVo> listPage = productionProcedureConfirmService.yieldList(name, deptId, workId,
+                orderNo, productNo, procedureName, yearMonth, startDate, endDate, page);
+        XaResult<List<ProcedureYieldVo>> result = AppXaResultHelper.success(listPage, listPage.getRows());
         return result;
     }
 
