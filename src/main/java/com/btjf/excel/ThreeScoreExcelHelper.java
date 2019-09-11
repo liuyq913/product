@@ -7,6 +7,7 @@ import com.btjf.service.emp.ScoreService;
 import com.btjf.model.emp.Emp;
 import com.btjf.model.emp.Score;
 import com.btjf.service.emp.EmpService;
+import com.btjf.service.sys.SysDeptService;
 import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -31,6 +32,9 @@ public class ThreeScoreExcelHelper extends BaseExcelHandler {
 
     @Resource
     private ScoreService scoreService;
+
+    @Resource
+    private SysDeptService sysDeptService;
 
     public final static List<String> fields = Stream.of("姓名", "5S分", "配合分", "质量分").collect(Collectors.toList());
 
@@ -68,6 +72,8 @@ public class ThreeScoreExcelHelper extends BaseExcelHandler {
                     if (emp == null) throw new BusinessException("名称为：" + getCellValue(row.getCell(i)) + "的员工不存在");
                     score.setEmpName(emp.getName());
                     score.setEmpId(emp.getId());
+                    score.setDeptId(emp.getDeptId());
+                    score.setDeptName(sysDeptService.get(emp.getDeptId()).getDeptName());
                     break;
                 case 1:
                     String fiveSore = getCellValue(row.getCell(i), i);

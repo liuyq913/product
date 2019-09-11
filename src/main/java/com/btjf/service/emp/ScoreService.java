@@ -1,13 +1,18 @@
 package com.btjf.service.emp;
 
+import com.btjf.business.common.exception.BusinessException;
 import com.btjf.mapper.emp.ScoreMapper;
+import com.btjf.model.emp.Emp;
 import com.btjf.model.emp.EmpSalaryMonthly;
+import com.btjf.model.emp.EmpSubsibyMonthly;
 import com.btjf.model.emp.Score;
+import com.btjf.service.sys.SysDeptService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -21,6 +26,18 @@ public class ScoreService {
 
     @Resource
     private EmpSalaryMonthlyService empSalaryMonthlyService;
+
+    @Resource
+    private EmpService empService;
+
+    @Resource
+    private SysDeptService sysDeptService;
+
+    @Resource
+    private EmpWorkService empWorkService;
+
+    @Resource
+    private EmpSubsibyMonthlyService empSubsibyMonthlyService;
 
     public Score getByNameAndYearMonth(String name, String yearMonth) {
         return scoreMapper.getByNameAndYearMonth(name, yearMonth);
@@ -50,9 +67,9 @@ public class ScoreService {
                 && score.getFiveScore() != null) {
             //平均值
             BigDecimal avgSorce = BigDecimal.valueOf(Stream.of(score.getCheckworkScore(),
-                                                     score.getQualityScore(),
-                                                     score.getCoordinationScore(),
-                                                     score.getFiveScore())
+                    score.getQualityScore(),
+                    score.getCoordinationScore(),
+                    score.getFiveScore())
                     .mapToDouble(BigDecimal::doubleValue).average().getAsDouble());
             Score score1 = new Score();
             score1.setId(score.getId());
@@ -61,7 +78,7 @@ public class ScoreService {
 
             //更新考勤表里的分
             EmpSalaryMonthly empSalaryMonthly = empSalaryMonthlyService.getByYearMonthAndName(score.getYearMonth(), score.getEmpName());
-            if(null != empSalaryMonthly){
+            if (null != empSalaryMonthly) {
                 EmpSalaryMonthly empSalaryMonthly1 = new EmpSalaryMonthly();
                 empSalaryMonthly1.setId(empSalaryMonthly.getId());
                 empSalaryMonthly1.setScore(avgSorce);
@@ -70,7 +87,25 @@ public class ScoreService {
             }
             //todo 各种补贴
             //固定住房补贴
+            EmpSubsibyMonthly empSubsibyMonthly = new EmpSubsibyMonthly();
+            Emp emp = empService.getByName(score.getEmpName());
+            if (emp == null) throw new BusinessException("生成补贴时，用户不存在");
+            empSubsibyMonthly.setCreateTime(new Date());
+            empSubsibyMonthly.setLastModifyTime(new Date());
+            empSubsibyMonthly.setDeptId(emp.getDeptId());
+            empSubsibyMonthly.setDeptName(sysDeptService.get(emp.getDeptId()).getDeptName());
+            empSubsibyMonthly.setEmpId(emp.getId());
+            empSubsibyMonthly.setEmpName(emp.getName());
+            empSubsibyMonthly.setYearMonth(score.getYearMonth());
+            empSubsibyMonthly.setIsDelete(0);
+            empSubsibyMonthly.setMoney(avgSorce);
+            empSubsibyMonthly.setWorkName(empWorkService.getByID(emp.getWorkId()).getName());
+            empSubsibyMonthlyService.save(empSubsibyMonthly);
         }
         return null;
+    }
+
+    public List<Score> getList(String yearMonth, String empName, String deptName) {
+       return scoreMapper.getList(yearMonth, empName, deptName);
     }
 }

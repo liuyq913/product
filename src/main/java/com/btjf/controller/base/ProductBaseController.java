@@ -41,11 +41,7 @@ public abstract class ProductBaseController {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
                 .getRequestAttributes()).getRequest();
         String secretKey = request.getHeader(LoginInterceptor.SECRETKEY);
-        //SysUser sysUser = (SysUser) loginInfoCache.get(secretKey);
-        SysUser sysUser = new SysUser();
-        sysUser.setUserName("liuyq1");
-        sysUser.setId(1);
-        sysUser.setLoginName("liuyq1");
+        SysUser sysUser = (SysUser) loginInfoCache.get(secretKey);
         if (null == sysUser) {
             throw new BusinessException("请登录之后重试");
         } else {

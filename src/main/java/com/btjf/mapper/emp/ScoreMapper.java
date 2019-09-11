@@ -96,4 +96,6 @@ public interface ScoreMapper {
     int updateByPrimaryKey(Score record);
 
     Score getByNameAndYearMonth(@Param("name") String name, @Param("yearMonth") String yearMonth);
+
+    List<Score> getList(@Param("yearMonth") String yearMonth,@Param("empName") String empName, @Param("deptName") String deptName);
 }

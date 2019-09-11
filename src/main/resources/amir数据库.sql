@@ -572,6 +572,8 @@ CREATE TABLE t_Score(
 	yearMonth varchar(30) NOT NULL comment '年月',
 	empId int NOT NULL comment '员工ID',
 	empName varchar(30) NOT NULL comment '名字',
+	deptId int comment '部门ID',
+	deptName varchar(30) comment '部门名字',
   fiveScore decimal(8,2)  comment '5s分',
   coordinationScore decimal(8,2) comment '配合分',
   qualityScore decimal(8,2) comment '质量分',
