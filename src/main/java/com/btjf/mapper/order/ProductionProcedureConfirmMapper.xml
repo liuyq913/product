@@ -798,9 +798,36 @@
 	)
     </select>
     <select id="yieldList" resultType="com.btjf.vo.ProcedureYieldVo">
-        select
-        p.*
+        SELECT
+        a.*
+        FROM
+        (
+        ( select
+        DATE_FORMAT(p.completeTime, "%Y-%m") yearMonth,
+        e.name name,
+        p.workshop dept,
+        w.name work,
+        p.orderNo orderNo,
+        p.productNo productNo,
+        CASE
+        WHEN p.luoId IS NOT NULL THEN
+        CONCAT(p.productionNo, '-', l.sort)
+        WHEN p.luoId IS NULL
+        AND p.productionNo IS NOT NULL THEN
+        p.productionNo
+        WHEN p.pmOutBillNo IS NOT NULL THEN
+        p.pmOutBillNo
+        END AS productionNo,
+        p.procedureName procedureName,
+        p.num num,
+        p.price price,
+        p.money money,
+        p.createTime date,
+        p.inspectionor checker,
+        p.createTime sortTime
         from  t_Production_Procedure_Confirm p LEFT JOIN t_Emp e ON p.empId = e.id
+        LEFT JOIN t_Emp_work w ON w.id = e.workId
+        LEFT JOIN t_Production_Luo l ON p.luoId = l.id
         where p.isChange = 0
         AND p.isDelete = 0
         <if test="name != null ">
@@ -830,7 +857,71 @@
         <if test="endDate != null ">
             AND p.createTime &lt;= #{endDate}
         </if>
-        ORDER  BY p.createTime DESC
+        )
+        UNION ALL
+        (
+        SELECT
+        DATE_FORMAT(s.createTime, "%Y-%m") yearMonth,
+        e.name name,
+        d.deptName dept,
+        w.name work,
+        s.orderNo orderNo,
+        s.productNo productNo,
+        CASE
+        WHEN s.luoId IS NOT NULL THEN
+        CONCAT(s.productionNo, '-', l.sort)
+        WHEN s.luoId IS NULL
+        AND s.productionNo IS NOT NULL THEN
+        s.productionNo
+        WHEN s.pmOutBillNo IS NOT NULL THEN
+        s.pmOutBillNo
+        END AS productionNo,
+        s.procedureName procedureName,
+        s.num num,
+        s.price price,
+        s.money money,
+        null as date,
+        null as checker,
+        s.createTime sortTime
+        FROM
+        t_Production_Procedure_Scan s
+        LEFT JOIN t_Emp e ON s.empId = e.id
+        LEFT JOIN t_Emp_work w ON w.id = e.workId
+        LEFT JOIN t_Production_Luo l ON s.luoId = l.id
+        LEFT JOIN t_SysDept d ON d.id = e.deptId
+        WHERE
+        s. STATUS = 0
+        AND s.isDelete = 0
+        <if test="name != null ">
+            AND e.name = #{name}
+        </if>
+        <if test="deptId != null ">
+            AND e.deptId = #{deptId}
+        </if>
+        <if test="workId != null ">
+            AND e.workId = #{workId}
+        </if>
+        <if test="orderNo != null ">
+            AND s.orderNo = #{orderNo}
+        </if>
+        <if test="productNo != null ">
+            AND s.productNo = #{productNo}
+        </if>
+        <if test="procedureName != null ">
+            AND s.procedureName = #{procedureName}
+        </if>
+        <if test="yearMonth != null ">
+            AND DATE_FORMAT(s.createTime, "%Y-%m") = #{yearMonth}
+        </if>
+        <if test="startDate != null ">
+            AND 1 !=1
+        </if>
+        <if test="endDate != null ">
+            AND 1 !=1
+        </if>
+        )
+        ) a
+        ORDER  BY a.sortTime DESC
     </select>
 
 

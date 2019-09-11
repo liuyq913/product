@@ -1,5 +1,8 @@
 package com.btjf.vo;
 
+import com.btjf.common.utils.DateUtil;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ProcedureYieldVo {
@@ -15,8 +18,10 @@ public class ProcedureYieldVo {
     private Double num;
     private Double price;
     private Double money;
-    private Date date;
+    private String date;
     private String checker;
+
+    private Date sortTime;
 
     public String getYearMonth() {
         return yearMonth;
@@ -106,12 +111,12 @@ public class ProcedureYieldVo {
         this.money = money;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
     public void setDate(Date date) {
-        this.date = date;
+        this.date = DateUtil.dateToString(date, DateUtil.ymdhmFormat);
     }
 
     public String getChecker() {
@@ -120,5 +125,14 @@ public class ProcedureYieldVo {
 
     public void setChecker(String checker) {
         this.checker = checker;
+    }
+
+    public Date getSortTime() {
+        return sortTime;
+    }
+
+    public void setSortTime(Date sortTime) {
+        //纯排序字段  不需要返回值
+        this.sortTime = sortTime;
     }
 }
