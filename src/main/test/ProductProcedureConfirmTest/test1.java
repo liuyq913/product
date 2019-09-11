@@ -1,7 +1,6 @@
 package ProductProcedureConfirmTest;
 
-import com.btjf.controller.order.vo.WorkShopVo;
-import com.btjf.service.productpm.ProductProcedureService;
+import com.btjf.service.emp.EmpSalaryMonthlyService;
 import org.junit.Test;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
@@ -15,10 +14,10 @@ public class test1 {
     public void test(){
         FileSystemXmlApplicationContext f  = new FileSystemXmlApplicationContext("classpath:applicationContext.xml");
 
-        ProductProcedureService productProcedureService = (ProductProcedureService) f.getBean("productProcedureService");
+        EmpSalaryMonthlyService empSalaryMonthlyService = (EmpSalaryMonthlyService) f.getBean("empSalaryMonthlyService");
 
-        List<WorkShopVo.Procedure> procedures =  productProcedureService.getByWorkShopAndProductNo("下料车间","XH00002");
-        System.out.println(procedures);
+        List<String>  empSalaryMonthlyServiceYearMonth  =  empSalaryMonthlyService.getYearMonth();
+        System.out.println(empSalaryMonthlyServiceYearMonth);
     }
 
 }
