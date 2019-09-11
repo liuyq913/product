@@ -628,7 +628,6 @@
         and p.type =1
          and p.isDelete = 0
          and p.workshop = #{deptName,jdbcType=VARCHAR}
-        and p.isDelete = 0
     </select>
     <select id="analyseForDay" resultType="com.btjf.vo.weixin.EmpDayWorkVo">
         SELECT
@@ -797,6 +796,41 @@
 		AND s. STATUS = 0
 		AND s.isDelete = 0
 	)
+    </select>
+    <select id="yieldList" resultType="com.btjf.vo.ProcedureYieldVo">
+        select
+        p.*
+        from  t_Production_Procedure_Confirm p LEFT JOIN t_Emp e ON p.empId = e.id
+        where p.isChange = 0
+        AND p.isDelete = 0
+        <if test="name != null ">
+          AND e.name = #{name}
+        </if>
+        <if test="deptId != null ">
+            AND e.deptId = #{deptId}
+        </if>
+        <if test="workId != null ">
+            AND e.workId = #{workId}
+        </if>
+        <if test="orderNo != null ">
+            AND p.orderNo = #{orderNo}
+        </if>
+        <if test="productNo != null ">
+            AND p.productNo = #{productNo}
+        </if>
+        <if test="procedureName != null ">
+            AND p.procedureName = #{procedureName}
+        </if>
+        <if test="yearMonth != null ">
+            AND DATE_FORMAT(p.completeTime, "%Y-%m") = #{yearMonth}
+        </if>
+        <if test="startDate != null ">
+            AND p.createTime &gt;= #{startDate}
+        </if>
+        <if test="endDate != null ">
+            AND p.createTime &lt;= #{endDate}
+        </if>
+        ORDER  BY p.createTime DESC
     </select>
 
 

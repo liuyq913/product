@@ -213,9 +213,9 @@ CREATE TABLE t_PMIn(
 	remark varchar(200) comment '备注',
 	supplier varchar(200) comment '供应商',
   inDate  date NULL COMMENT '入库时间',
-	num decimal(8,4) comment '入库数量',
-	perNum decimal(8,4) comment '入库前数量',
-	backNum decimal(8,4) comment '入库后数量',
+	num decimal(12,4) comment '入库数量',
+	perNum decimal(12,4) comment '入库前数量',
+	backNum decimal(12,4) comment '入库后数量',
 	operator varchar(100) NOT NULL comment '添加人',
 	createTime datetime,
 	lastModifyTime datetime,
@@ -255,9 +255,9 @@ CREATE TABLE t_PMout_Bill_Detail(
 	pmNo varchar(100) NOT NULL comment '物料编号',
 	pmName varchar(100) NOT NULL comment '物料名称',
 	pmBatchNo varchar(100) comment '物料批次编号',
-	num decimal(8,4) comment '数量',
-	perNum decimal(8,4) comment '出库前数量',
-	backNum decimal(8,4) comment '出库后数量',
+	num decimal(12,4) comment '数量',
+	perNum decimal(12,4) comment '出库前数量',
+	backNum decimal(12,4) comment '出库后数量',
 	unit varchar(30) NOT NULL comment '单位 双、套、箱、只、件、米、SF、并、张、KG、个、卷、跟、片、m2、颗、付、顶、条、块',
 	remark varchar(200) comment '备注',
 	outInfo varchar(200) comment '出库说明',
@@ -409,7 +409,7 @@ CREATE TABLE t_Production_Procedure_Confirm(
   isDelete int NOT NULL,
   isChange int NOT NULL comment '主任是否调整',
   workshop  varchar(30) comment '车间',
-  inspectionor varchar(100) DEFAULT NULL comment '质检员',
+  inspectionor varchar(100) DEFAULT NULL comment '质检员'
 );
 
 
