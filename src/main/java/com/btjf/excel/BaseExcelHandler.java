@@ -1,6 +1,7 @@
 package com.btjf.excel;
 
 
+import com.btjf.common.utils.DateUtil;
 import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -23,6 +24,9 @@ import java.util.List;
  * Created by yj on 2019/7/31.
  */
 public abstract class BaseExcelHandler {
+
+    public static ThreadLocal<String> yearMonthCash = ThreadLocal.withInitial(() -> DateUtil.dateToString(new Date(), DateUtil.ymFormat));
+
 
     public abstract List<String> execute(MultipartFile file, Boolean isCover, String operator) throws Exception;
 
@@ -56,6 +60,7 @@ public abstract class BaseExcelHandler {
             try {
                 result.addAll(create(row));
             } catch (Exception e) {
+                yearMonthCash.remove();
                 e.printStackTrace();
                 errResponse.add("第" + (j + 1) + "行数据 " + e.getMessage());
             }
@@ -70,6 +75,7 @@ public abstract class BaseExcelHandler {
             insert(result, operator);
             response.add("提交成功！新增导入" + result.size() + "条数据！");
         }
+        yearMonthCash.remove();
         wb.close();
         return response;
     }
@@ -122,22 +128,23 @@ public abstract class BaseExcelHandler {
 
     /**
      * 判断是否是对应的格式的日期字符串
+     *
      * @param dateStr
      * @param datePattern
      * @return
      */
-    public static boolean isRightDateStr(String dateStr,String datePattern){
-        DateFormat dateFormat  = new SimpleDateFormat(datePattern);
+    public static boolean isRightDateStr(String dateStr, String datePattern) {
+        DateFormat dateFormat = new SimpleDateFormat(datePattern);
         try {
             //采用严格的解析方式，防止类似 “2017-05-35” 类型的字符串通过
             dateFormat.setLenient(false);
             dateFormat.parse(dateStr);
-            Date date = (Date)dateFormat.parse(dateStr);
+            Date date = (Date) dateFormat.parse(dateStr);
             //重复比对一下，防止类似 “2017-5-15” 类型的字符串通过
             String newDateStr = dateFormat.format(date);
-            if(dateStr.equals(newDateStr)){
+            if (dateStr.equals(newDateStr)) {
                 return true;
-            }else {
+            } else {
                 return false;
             }
         } catch (ParseException e) {

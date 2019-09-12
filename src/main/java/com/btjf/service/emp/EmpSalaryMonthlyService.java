@@ -22,15 +22,17 @@ public class EmpSalaryMonthlyService {
 
     public Integer save(EmpSalaryMonthly empSalaryMonthly) {
         return Optional.ofNullable(empSalaryMonthly).map(t -> {
+            //多次导入删除之前的数据
+            empSalaryMonthlyMapper.deleteByYearMonthAndName(t.getYearMonth(), t.getEmpName());
             empSalaryMonthlyMapper.insertSelective(t);
             return t.getId();
         }).orElse(0);
     }
 
-    public Integer deleteByYearMonth(String yearMonth) {
-        return Optional.ofNullable(yearMonth).map(t -> {
-            return empSalaryMonthlyMapper.deleteByYearMonth(t);
-        }).orElse(0);
+    public EmpSalaryMonthly getById(Integer id) {
+        return Optional.ofNullable(id).map(t -> {
+            return empSalaryMonthlyMapper.selectByPrimaryKey(t);
+        }).orElse(null);
     }
 
     public Page<EmpSalaryMonthly> getPage(String yearMonth, String empName, String deptName, Page page) {
@@ -41,7 +43,21 @@ public class EmpSalaryMonthlyService {
         return new Page<>(pageInfo);
     }
 
+    public EmpSalaryMonthly getByYearMonthAndName(String yearMonth, String name){
+        return empSalaryMonthlyMapper.getByYearMonthAndName(yearMonth, name);
+    }
+
     public List<EmpSalaryMonthly> getList(String yearMonth, String empName, String deptName) {
         return empSalaryMonthlyMapper.getList(yearMonth, empName, deptName);
+    }
+
+    public List<String> getYearMonth(){
+        return empSalaryMonthlyMapper.getYearMonth();
+    }
+
+
+    public Integer update(EmpSalaryMonthly empSalaryMonthly){
+        if(empSalaryMonthly == null) return 0;
+        return empSalaryMonthlyMapper.updateByPrimaryKeySelective(empSalaryMonthly);
     }
 }
