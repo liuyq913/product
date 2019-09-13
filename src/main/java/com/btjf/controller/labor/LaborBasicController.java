@@ -223,12 +223,12 @@ public class LaborBasicController extends ProductBaseController{
     }
 
     /**
-     * 新增 计时工资
+     * 新增\修改 计时工资
      *
      * @return
      */
-    @RequestMapping(value = "/hourlywage/add", method = RequestMethod.POST)
-    public XaResult<String> hourlywageAdd(String yearMonth, Integer empId,
+    @RequestMapping(value = "/hourlywage/addOrUpdate", method = RequestMethod.POST)
+    public XaResult<String> hourlywageAdd(Integer id, String yearMonth, Integer empId,
                                           String billNo, String content, Double price,
                                           Double num, String remark) {
         if(StringUtils.isEmpty(yearMonth)){
@@ -252,37 +252,63 @@ public class LaborBasicController extends ProductBaseController{
         if(num == null || num <= 0){
             return XaResult.error("数量必须大于0");
         }
-        EmpTimesalaryMonthly empTimesalaryMonthly = empTimeSalaryService.findByBillNo(billNo);
-        if(empTimesalaryMonthly != null){
-            return XaResult.error("单据编号重复，请修改");
-        }
-        Emp emp = empService.getByID(empId);
-        if (emp == null){
-            return XaResult.error("该员工不存在");
-        }
-        Sysdept sysdept = sysDeptService.get(emp.getDeptId());
-        EmpWork empWork = empWorkService.getByID(emp.getWorkId());
+        if(id != null){
+            EmpTimesalaryMonthly empTimesalaryMonthly = empTimeSalaryService.get(id);
+            Emp emp = empService.getByID(empId);
+            if (emp == null){
+                return XaResult.error("该员工不存在");
+            }
+            Sysdept sysdept = sysDeptService.get(emp.getDeptId());
+            EmpWork empWork = empWorkService.getByID(emp.getWorkId());
+            empTimesalaryMonthly.setYearMonth(yearMonth);
+            empTimesalaryMonthly.setEmpId(empId);
+            empTimesalaryMonthly.setEmpName(emp.getName());
+            empTimesalaryMonthly.setBillNo(billNo);
+            empTimesalaryMonthly.setContent(content);
+            empTimesalaryMonthly.setPrice(BigDecimal.valueOf(price));
+            empTimesalaryMonthly.setNum(BigDecimal.valueOf(num));
+            empTimesalaryMonthly.setMoney(empTimesalaryMonthly.getPrice().multiply(empTimesalaryMonthly.getNum()));
+            empTimesalaryMonthly.setDeptId(emp.getDeptId());
+            empTimesalaryMonthly.setDeptName(sysdept == null ? "" : sysdept.getDeptName());
+            empTimesalaryMonthly.setDrawer(getLoginUser().getUserName());
+            empTimesalaryMonthly.setDrawTime(new Date());
+            empTimesalaryMonthly.setLastModifyTime(new Date());
+            empTimesalaryMonthly.setRemark(remark);
+            empTimesalaryMonthly.setWorkName(empWork == null ? "" : empWork.getName());
+            empTimeSalaryService.update(empTimesalaryMonthly);
+        }else {
+            EmpTimesalaryMonthly empTimesalaryMonthly = empTimeSalaryService.findByBillNo(billNo);
+            if (empTimesalaryMonthly != null) {
+                return XaResult.error("单据编号重复，请修改");
+            }
+            Emp emp = empService.getByID(empId);
+            if (emp == null) {
+                return XaResult.error("该员工不存在");
+            }
+            Sysdept sysdept = sysDeptService.get(emp.getDeptId());
+            EmpWork empWork = empWorkService.getByID(emp.getWorkId());
 
-        empTimesalaryMonthly = new EmpTimesalaryMonthly();
-        empTimesalaryMonthly.setYearMonth(yearMonth);
-        empTimesalaryMonthly.setEmpId(empId);
-        empTimesalaryMonthly.setEmpName(emp.getName());
-        empTimesalaryMonthly.setBillNo(billNo);
-        empTimesalaryMonthly.setContent(content);
-        empTimesalaryMonthly.setPrice(BigDecimal.valueOf(price));
-        empTimesalaryMonthly.setNum(BigDecimal.valueOf(num));
-        empTimesalaryMonthly.setMoney(empTimesalaryMonthly.getPrice().multiply(empTimesalaryMonthly.getNum()));
-        empTimesalaryMonthly.setDeptId(emp.getDeptId());
-        empTimesalaryMonthly.setDeptName(sysdept== null?"":sysdept.getDeptName());
-        empTimesalaryMonthly.setDrawer(getLoginUser().getUserName());
-        empTimesalaryMonthly.setDrawTime(new Date());
-        empTimesalaryMonthly.setCreateTime(new Date());
-        empTimesalaryMonthly.setLastModifyTime(new Date());
-        empTimesalaryMonthly.setRemark(remark);
-        empTimesalaryMonthly.setIsDelete(0);
-        empTimesalaryMonthly.setIsConfirm(0);
-        empTimesalaryMonthly.setWorkName(empWork==null?"":empWork.getName());
-        empTimeSalaryService.create(empTimesalaryMonthly);
+            empTimesalaryMonthly = new EmpTimesalaryMonthly();
+            empTimesalaryMonthly.setYearMonth(yearMonth);
+            empTimesalaryMonthly.setEmpId(empId);
+            empTimesalaryMonthly.setEmpName(emp.getName());
+            empTimesalaryMonthly.setBillNo(billNo);
+            empTimesalaryMonthly.setContent(content);
+            empTimesalaryMonthly.setPrice(BigDecimal.valueOf(price));
+            empTimesalaryMonthly.setNum(BigDecimal.valueOf(num));
+            empTimesalaryMonthly.setMoney(empTimesalaryMonthly.getPrice().multiply(empTimesalaryMonthly.getNum()));
+            empTimesalaryMonthly.setDeptId(emp.getDeptId());
+            empTimesalaryMonthly.setDeptName(sysdept == null ? "" : sysdept.getDeptName());
+            empTimesalaryMonthly.setDrawer(getLoginUser().getUserName());
+            empTimesalaryMonthly.setDrawTime(new Date());
+            empTimesalaryMonthly.setCreateTime(new Date());
+            empTimesalaryMonthly.setLastModifyTime(new Date());
+            empTimesalaryMonthly.setRemark(remark);
+            empTimesalaryMonthly.setIsDelete(0);
+            empTimesalaryMonthly.setIsConfirm(0);
+            empTimesalaryMonthly.setWorkName(empWork == null ? "" : empWork.getName());
+            empTimeSalaryService.create(empTimesalaryMonthly);
+        }
         return XaResult.success();
     }
 

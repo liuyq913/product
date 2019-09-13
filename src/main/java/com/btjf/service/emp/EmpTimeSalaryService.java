@@ -45,4 +45,12 @@ public class EmpTimeSalaryService {
         pageInfo.setList(pmList);
         return new Page<>(pageInfo);
     }
+
+    public void update(EmpTimesalaryMonthly empTimesalaryMonthly) {
+        empTimesalaryMonthlyMapper.updateByPrimaryKey(empTimesalaryMonthly);
+    }
+
+    public EmpTimesalaryMonthly get(Integer id) {
+        return empTimesalaryMonthlyMapper.selectByPrimaryKey(id);
+    }
 }
