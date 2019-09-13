@@ -34,6 +34,8 @@ public class ExcelHandlerHelper {
 
     @Resource
     private EmpSalaryMothlyHandler empSalaryMothlyHandler;
+    @Resource
+    private EmpTimeSalaryExcelHandler empTimeSalaryExcelHandler;
 
     public BaseExcelHandler getHandler(Integer type) throws BusinessException {
         switch (type) {
@@ -56,6 +58,8 @@ public class ExcelHandlerHelper {
                 return orderExcelHandler;
             case 8:
                 return empSalaryMothlyHandler;
+            case 10:
+                return empTimeSalaryExcelHandler;
             default:
                 throw new BusinessException("文件类型不存在");
         }

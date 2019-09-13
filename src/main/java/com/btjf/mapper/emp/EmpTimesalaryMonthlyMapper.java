@@ -93,4 +93,12 @@ public interface EmpTimesalaryMonthlyMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(EmpTimesalaryMonthly record);
+
+    List<EmpTimesalaryMonthly> findByBillNo(@Param("billNo")String billNo);
+
+    void confirm(@Param("list")List<Integer> list);
+
+    List<EmpTimesalaryMonthly> findList(@Param("yearMonth")String yearMonth, @Param("empName")String empName,
+                                        @Param("deptName")String deptName, @Param("billNo")String billNo,
+                                        @Param("isConfirm")Integer isConfirm);
 }

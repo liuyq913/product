@@ -601,7 +601,7 @@ CREATE TABLE t_Emp_TimeSalary_Monthly(
 	workName varchar(30) comment '工种',
 	num decimal(8,3) comment '计算数量',
 	price decimal(8,3) comment '单价',
-	money decimal(8,2) comment '金额',
+	money decimal(10,2) comment '金额',
 	billNo varchar(30) comment '票据编号',
 	content varchar(300) comment '工作内容',
 	drawer varchar(300) comment '开票人',

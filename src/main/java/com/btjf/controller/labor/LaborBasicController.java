@@ -7,13 +7,19 @@ import com.btjf.common.page.Page;
 import com.btjf.common.utils.DateUtil;
 import com.btjf.common.utils.JSONUtils;
 import com.btjf.common.utils.MD5Utils;
+import com.btjf.controller.base.ProductBaseController;
 import com.btjf.excel.BaseExcelHandler;
 import com.btjf.interceptor.LoginInfoCache;
+import com.btjf.model.emp.Emp;
+import com.btjf.model.emp.EmpTimesalaryMonthly;
+import com.btjf.model.emp.EmpWork;
 import com.btjf.model.salary.SalaryMonthly;
 import com.btjf.model.sys.SysRole;
 import com.btjf.model.sys.SysUser;
 import com.btjf.model.sys.Sysdept;
 import com.btjf.service.emp.EmpService;
+import com.btjf.service.emp.EmpTimeSalaryService;
+import com.btjf.service.emp.EmpWorkService;
 import com.btjf.service.order.ProductionProcedureConfirmService;
 import com.btjf.service.salary.SalaryMonthlyService;
 import com.btjf.service.sys.SysDeptService;
@@ -41,7 +47,7 @@ import java.util.List;
 @Api(value = "LaborBasicController", description = "劳资管理基础接口", position = 1)
 @RequestMapping(value = "/labor/")
 @RestController("laborBasicController")
-public class LaborBasicController {
+public class LaborBasicController extends ProductBaseController{
 
     @Resource
     private SalaryMonthlyService salaryMonthlyService;
@@ -50,7 +56,11 @@ public class LaborBasicController {
     @Resource
     private ProductionProcedureConfirmService productionProcedureConfirmService;
     @Resource
-    private LoginInfoCache loginInfoCache;
+    private EmpTimeSalaryService empTimeSalaryService;
+    @Resource
+    private SysDeptService sysDeptService;
+    @Resource
+    private EmpWorkService empWorkService;
 
     /**
      * 工资月度 新增 修改
@@ -212,5 +222,105 @@ public class LaborBasicController {
         return result;
     }
 
+    /**
+     * 新增 计时工资
+     *
+     * @return
+     */
+    @RequestMapping(value = "/hourlywage/add", method = RequestMethod.POST)
+    public XaResult<String> hourlywageAdd(String yearMonth, Integer empId,
+                                          String billNo, String content, Double price,
+                                          Double num, String remark) {
+        if(StringUtils.isEmpty(yearMonth)){
+            return XaResult.error("工资年月不能为空");
+        }
+        if(!BaseExcelHandler.isRightDateStr(yearMonth,"yyyy-MM")){
+            return XaResult.error("年月格式不符，请更正为yyyy-MM");
+        }
+        if(empId == null){
+            return XaResult.error("员工ID不能为空");
+        }
+        if(StringUtils.isEmpty(billNo)){
+            return XaResult.error("单据编号不能为空");
+        }
+        if(StringUtils.isEmpty(content)){
+            return XaResult.error("工作内容不能为空");
+        }
+        if(price == null || price <= 0){
+            return XaResult.error("单价必须大于0");
+        }
+        if(num == null || num <= 0){
+            return XaResult.error("数量必须大于0");
+        }
+        EmpTimesalaryMonthly empTimesalaryMonthly = empTimeSalaryService.findByBillNo(billNo);
+        if(empTimesalaryMonthly != null){
+            return XaResult.error("单据编号重复，请修改");
+        }
+        Emp emp = empService.getByID(empId);
+        if (emp == null){
+            return XaResult.error("该员工不存在");
+        }
+        Sysdept sysdept = sysDeptService.get(emp.getDeptId());
+        EmpWork empWork = empWorkService.getByID(emp.getWorkId());
+
+        empTimesalaryMonthly = new EmpTimesalaryMonthly();
+        empTimesalaryMonthly.setYearMonth(yearMonth);
+        empTimesalaryMonthly.setEmpId(empId);
+        empTimesalaryMonthly.setEmpName(emp.getName());
+        empTimesalaryMonthly.setBillNo(billNo);
+        empTimesalaryMonthly.setContent(content);
+        empTimesalaryMonthly.setPrice(BigDecimal.valueOf(price));
+        empTimesalaryMonthly.setNum(BigDecimal.valueOf(num));
+        empTimesalaryMonthly.setMoney(empTimesalaryMonthly.getPrice().multiply(empTimesalaryMonthly.getNum()));
+        empTimesalaryMonthly.setDeptId(emp.getDeptId());
+        empTimesalaryMonthly.setDeptName(sysdept== null?"":sysdept.getDeptName());
+        empTimesalaryMonthly.setDrawer(getLoginUser().getUserName());
+        empTimesalaryMonthly.setDrawTime(new Date());
+        empTimesalaryMonthly.setCreateTime(new Date());
+        empTimesalaryMonthly.setLastModifyTime(new Date());
+        empTimesalaryMonthly.setRemark(remark);
+        empTimesalaryMonthly.setIsDelete(0);
+        empTimesalaryMonthly.setIsConfirm(0);
+        empTimesalaryMonthly.setWorkName(empWork==null?"":empWork.getName());
+        empTimeSalaryService.create(empTimesalaryMonthly);
+        return XaResult.success();
+    }
+
+    /**
+     * 确认 计时工资
+     *
+     * @return
+     */
+    @RequestMapping(value = "/hourlywage/confirm", method = RequestMethod.POST)
+    public XaResult<String> hourlywageAdd(Integer[] ids) {
+        if(ids == null || ids.length < 1){
+            return XaResult.error("ID不能为空");
+        }
+        empTimeSalaryService.confirm(ids);
+        return XaResult.success();
+    }
+
+
+    /**
+     * 计时工资 列表
+     * @return
+     */
+    @RequestMapping(value = "/hourlywage/list", method = RequestMethod.GET)
+    public XaResult<List<EmpTimesalaryMonthly>> hourlywageList(String yearMonth,String empName, String deptName,String billNo,
+                                                      Integer isConfirm, Integer pageSize, Integer currentPage) {
+        if(yearMonth!= null && !BaseExcelHandler.isRightDateStr(yearMonth,"yyyy-MM")){
+            return XaResult.error("年月格式不符，请更正为yyyy-MM");
+        }
+        if(currentPage == null || currentPage < 1){
+            currentPage =1;
+        }
+        if(pageSize == null || pageSize < 1){
+            pageSize = 25;
+        }
+        Page page = new Page(pageSize, currentPage);
+        Page<EmpTimesalaryMonthly> listPage = empTimeSalaryService.findList(yearMonth,empName,deptName,billNo,isConfirm,page);
+        XaResult<List<EmpTimesalaryMonthly>> result = AppXaResultHelper.success(listPage, listPage.getRows());
+        return result;
+    }
 
 }
