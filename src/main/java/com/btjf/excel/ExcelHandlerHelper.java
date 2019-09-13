@@ -68,7 +68,7 @@ public class ExcelHandlerHelper {
                 return threeScoreExcelHelper;
             case 10:
                 return checkWorkScoreExcelHelper;
-            case 10:
+            case 11:
                 return empTimeSalaryExcelHandler;
             default:
                 throw new BusinessException("文件类型不存在");
