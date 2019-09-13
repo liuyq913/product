@@ -1,9 +1,12 @@
 package com.btjf.excel;
 
+import com.btjf.business.common.exception.BusinessException;
 import com.btjf.common.utils.DateUtil;
+import com.btjf.service.emp.ScoreService;
 import com.btjf.model.emp.Emp;
 import com.btjf.model.emp.EmpSalaryMonthly;
 import com.btjf.model.emp.EmpSalaryMothlyPojo;
+import com.btjf.model.emp.Score;
 import com.btjf.model.salary.SalaryMonthly;
 import com.btjf.service.emp.EmpSalaryMonthlyService;
 import com.btjf.service.emp.EmpService;
@@ -51,6 +54,9 @@ public class EmpSalaryMothlyHandler extends BaseExcelHandler {
     @Resource
     private EmpSalaryMonthlyService empSalaryMonthlyService;
 
+    @Resource
+    private ScoreService scoreService;
+
     private static ThreadLocal<String> yearMonthCash = ThreadLocal.withInitial(() -> DateUtil.dateToString(new Date(), DateUtil.ymFormat));
 
 
@@ -75,13 +81,14 @@ public class EmpSalaryMothlyHandler extends BaseExcelHandler {
         String yearMonth = null;
         try {
             yearMonth = fileName.split("考勤数据")[0];
-            yearMonthCash.set(yearMonth);
+            if (yearMonth.contains("-")) {
+                yearMonthCash.set(yearMonth);
+            } else {
+                throw new BusinessException("文件格式错误");
+            }
         } catch (Exception e) {
             errResponse.add("文件名称格式不正确，请以 （yyyy-MM 考勤数据） 命名");
         }
-
-        //多次导入删除之前的数据
-        empSalaryMonthlyService.deleteByYearMonth(yearMonth);
 
         // 日期
         XSSFRow dateRow = (XSSFRow) sheet.getRow(0);
@@ -96,13 +103,13 @@ public class EmpSalaryMothlyHandler extends BaseExcelHandler {
 
 
         String name = null;
-        for (int i = 4; i < sheet.getLastRowNum(); i++) {
+        for (int i = 4; i <= sheet.getLastRowNum(); i++) {
             XSSFRow row = (XSSFRow) sheet.getRow(i);
 
             if (row == null) break;
-            if (row.getCell(0) == null) continue;
 
-            if (!StringUtils.isEmpty(getCellValue(row.getCell(0)))) {
+            if (row.getCell(0) != null && !StringUtils.isEmpty(getCellValue(row.getCell(0)))
+                    && i % 2 == 0) {
                 name = getCellValue(row.getCell(0));//名称
                 Emp emp = empService.getByName(name);
                 if (emp == null) {
@@ -140,7 +147,7 @@ public class EmpSalaryMothlyHandler extends BaseExcelHandler {
             response.addAll(errResponse);
         } else {
             insert(result, operator);
-            response.add("提交成功！新增导入" + (sheet.getLastRowNum() - 4) + "条数据！");
+            response.add("提交成功！新增导入" + (sheet.getLastRowNum() - 3) + "条数据！");
         }
         wb.close();
         return response;
@@ -225,16 +232,23 @@ public class EmpSalaryMothlyHandler extends BaseExcelHandler {
                 monthly.setNightWorkHoliay(BigDecimal.valueOf(holidayNightNum));
                 monthly.setDayWorkLegal(BigDecimal.valueOf(legalBlackNum));
                 monthly.setNigthWorkLegal(BigDecimal.valueOf(legalNightNum));
-                //四个分 默认0
+                //考勤分 默认0
+                //查询考勤分
+                Score score = scoreService.getByNameAndYearMonth(emp.getName(), monthly.getYearMonth());
                 monthly.setScore(BigDecimal.ZERO);
-                monthly.setFiveScore(BigDecimal.ZERO);
-                monthly.setCoordinationScore(BigDecimal.ZERO);
-                monthly.setQualityScore(BigDecimal.ZERO);
+                if (score != null && score.getScore() != null) {
+                    monthly.setScore(score.getScore());
+                }
+
                 //取固定工资/总天数，保留2位小数，四舍五入
                 monthly.setDaySalary(BigDecimal.valueOf(BigDecimalUtil.div(monthly.getSalary().doubleValue(), sumWorkDay)));
                 monthly.setRealSalary(BigDecimal.ZERO);
                 monthly.setCreateTime(new Date());
                 monthly.setLastModifyTime(new Date());
+                monthly.setType(emp.getType());
+                if (monthly.getType() == 1) { //计件工
+                    monthly.setNigthSnack(BigDecimal.valueOf(monthly.getNightWork() != null ? BigDecimalUtil.mul(monthly.getNightWork().doubleValue(), 2) : 0));
+                }
                 empSalaryMonthlyService.save(monthly);
             }
 

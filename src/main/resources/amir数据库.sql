@@ -194,8 +194,8 @@ CREATE TABLE t_ProductPM(
 	unit varchar(30) NOT NULL comment '单位 双、套、箱、只、件、米、SF、并、张、KG、个、卷、跟、片、m2、颗、付、顶、条、块',
 	remark varchar(200) comment '备注',
 	status int(11) comment '0未确认  1确认',
-	num decimal(5,2) comment '数量(耗料/双)',
-	unitNum decimal(5,4) comment '数量(双/单位)',
+	num decimal(12,4) comment '数量(耗料/双)',
+	unitNum decimal(12,4) comment '数量(双/单位)',
 	operator varchar(100) NOT NULL comment '添加人',
 	createTime datetime,
 	lastModifyTime datetime,
@@ -468,7 +468,7 @@ CREATE TABLE t_Product_Procedure(
 	productId int(11),
 	productNo varchar(100) NOT NULL comment '产品型号',
 	sort int(11) comment '排序',
-	price decimal(5,2) comment '价格',
+	price decimal(8,2) comment '价格',
 	operator varchar(100) NOT NULL comment '添加人',
 	createTime datetime,
 	lastModifyTime datetime,
@@ -550,10 +550,7 @@ CREATE TABLE t_Emp_Salary_Monthly(
 	workDay decimal(4,1) comment '上班天数',
 	dayWork decimal(4,1) comment '正常白班',
 	nightWork decimal(4,1) comment '正常晚班',
-	score decimal(8,2) comment '考勤分',
-	fiveScore decimal(8,2) comment '5s分',
-	coordinationScore decimal(8,2) comment '配合分',
-	qualityScore decimal(8,2) comment '质量分',
+	score decimal(8,2) comment '考核分',
 	restDay decimal(4,1) comment '公休',
 	sumDay decimal(4,1) comment '总天数',
 	daySalary decimal(8,2) comment '日工资',
@@ -564,8 +561,26 @@ CREATE TABLE t_Emp_Salary_Monthly(
 	nightWorkHoliay decimal(4,1) comment '节假日晚班',
 	dayWorkLegal decimal(4,1) comment '法假日白班',
 	nigthWorkLegal decimal(4,1) comment '法假日晚班',
-	isDelete int NOT NULL
-);	
+	isDelete int NOT NULL,
+	type int comment '类别 1计件工 2固定工',
+	nigthSnack decimal(4,1) DEFAULT NULL COMMENT '夜餐'
+);
+
+-- 考勤分明细
+CREATE TABLE t_Score(
+  id int(11) primary key AUTO_INCREMENT,
+	yearMonth varchar(30) NOT NULL comment '年月',
+	empId int NOT NULL comment '员工ID',
+	empName varchar(30) NOT NULL comment '名字',
+	deptId int comment '部门ID',
+	deptName varchar(30) comment '部门名字',
+  fiveScore decimal(8,2)  comment '5s分',
+  coordinationScore decimal(8,2) comment '配合分',
+  qualityScore decimal(8,2) comment '质量分',
+  score decimal(8,2) comment '考核分',
+  checkworkScore decimal(8,2) comment '考勤分',
+  isDelete int NOT NULL
+	)
 
 
 ## 员工 月度各种补贴、扣款表

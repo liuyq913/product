@@ -95,7 +95,11 @@ public interface EmpSalaryMonthlyMapper {
      */
     int updateByPrimaryKey(EmpSalaryMonthly record);
 
-    Integer deleteByYearMonth(@Param("yearMonth") String yearMonth);
+    Integer deleteByYearMonthAndName(@Param("yearMonth") String yearMonth, @Param("name") String empName);
 
     List<EmpSalaryMonthly> getList(@Param("yearMonth") String yearMonth, @Param("empName") String empName, @Param("deptName") String deptName);
+
+    List<String> getYearMonth();
+
+    EmpSalaryMonthly getByYearMonthAndName(@Param("yearMonth") String yearMonth, @Param("name") String name);
 }

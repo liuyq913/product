@@ -956,246 +956,6 @@ public class EmpSalaryMonthlyExample {
             return (Criteria) this;
         }
 
-        public Criteria andFiveScoreIsNull() {
-            addCriterion("fiveScore is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andFiveScoreIsNotNull() {
-            addCriterion("fiveScore is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andFiveScoreEqualTo(BigDecimal value) {
-            addCriterion("fiveScore =", value, "fiveScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andFiveScoreNotEqualTo(BigDecimal value) {
-            addCriterion("fiveScore <>", value, "fiveScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andFiveScoreGreaterThan(BigDecimal value) {
-            addCriterion("fiveScore >", value, "fiveScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andFiveScoreGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("fiveScore >=", value, "fiveScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andFiveScoreLessThan(BigDecimal value) {
-            addCriterion("fiveScore <", value, "fiveScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andFiveScoreLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("fiveScore <=", value, "fiveScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andFiveScoreIn(List<BigDecimal> values) {
-            addCriterion("fiveScore in", values, "fiveScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andFiveScoreNotIn(List<BigDecimal> values) {
-            addCriterion("fiveScore not in", values, "fiveScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andFiveScoreBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("fiveScore between", value1, value2, "fiveScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andFiveScoreNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("fiveScore not between", value1, value2, "fiveScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andCoordinationScoreIsNull() {
-            addCriterion("coordinationScore is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCoordinationScoreIsNotNull() {
-            addCriterion("coordinationScore is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCoordinationScoreEqualTo(BigDecimal value) {
-            addCriterion("coordinationScore =", value, "coordinationScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andCoordinationScoreNotEqualTo(BigDecimal value) {
-            addCriterion("coordinationScore <>", value, "coordinationScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andCoordinationScoreGreaterThan(BigDecimal value) {
-            addCriterion("coordinationScore >", value, "coordinationScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andCoordinationScoreGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("coordinationScore >=", value, "coordinationScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andCoordinationScoreLessThan(BigDecimal value) {
-            addCriterion("coordinationScore <", value, "coordinationScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andCoordinationScoreLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("coordinationScore <=", value, "coordinationScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andCoordinationScoreIn(List<BigDecimal> values) {
-            addCriterion("coordinationScore in", values, "coordinationScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andCoordinationScoreNotIn(List<BigDecimal> values) {
-            addCriterion("coordinationScore not in", values, "coordinationScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andCoordinationScoreBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("coordinationScore between", value1, value2, "coordinationScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andCoordinationScoreNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("coordinationScore not between", value1, value2, "coordinationScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andQualityScoreIsNull() {
-            addCriterion("qualityScore is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andQualityScoreIsNotNull() {
-            addCriterion("qualityScore is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andQualityScoreEqualTo(BigDecimal value) {
-            addCriterion("qualityScore =", value, "qualityScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andQualityScoreNotEqualTo(BigDecimal value) {
-            addCriterion("qualityScore <>", value, "qualityScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andQualityScoreGreaterThan(BigDecimal value) {
-            addCriterion("qualityScore >", value, "qualityScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andQualityScoreGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("qualityScore >=", value, "qualityScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andQualityScoreLessThan(BigDecimal value) {
-            addCriterion("qualityScore <", value, "qualityScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andQualityScoreLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("qualityScore <=", value, "qualityScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andQualityScoreIn(List<BigDecimal> values) {
-            addCriterion("qualityScore in", values, "qualityScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andQualityScoreNotIn(List<BigDecimal> values) {
-            addCriterion("qualityScore not in", values, "qualityScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andQualityScoreBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("qualityScore between", value1, value2, "qualityScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andQualityScoreNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("qualityScore not between", value1, value2, "qualityScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andCheckWorkScoreIsNull() {
-            addCriterion("checkWorkScore is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCheckWorkScoreIsNotNull() {
-            addCriterion("checkWorkScore is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCheckWorkScoreEqualTo(BigDecimal value) {
-            addCriterion("checkWorkScore =", value, "checkWorkScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andCheckWorkScoreNotEqualTo(BigDecimal value) {
-            addCriterion("checkWorkScore <>", value, "checkWorkScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andCheckWorkScoreGreaterThan(BigDecimal value) {
-            addCriterion("checkWorkScore >", value, "checkWorkScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andCheckWorkScoreGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("checkWorkScore >=", value, "checkWorkScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andCheckWorkScoreLessThan(BigDecimal value) {
-            addCriterion("checkWorkScore <", value, "checkWorkScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andCheckWorkScoreLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("checkWorkScore <=", value, "checkWorkScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andCheckWorkScoreIn(List<BigDecimal> values) {
-            addCriterion("checkWorkScore in", values, "checkWorkScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andCheckWorkScoreNotIn(List<BigDecimal> values) {
-            addCriterion("checkWorkScore not in", values, "checkWorkScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andCheckWorkScoreBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("checkWorkScore between", value1, value2, "checkWorkScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andCheckWorkScoreNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("checkWorkScore not between", value1, value2, "checkWorkScore");
-            return (Criteria) this;
-        }
-
         public Criteria andRestDayIsNull() {
             addCriterion("restDay is null");
             return (Criteria) this;
@@ -1853,6 +1613,126 @@ public class EmpSalaryMonthlyExample {
 
         public Criteria andIsDeleteNotBetween(Integer value1, Integer value2) {
             addCriterion("isDelete not between", value1, value2, "isDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIsNull() {
+            addCriterion("type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIsNotNull() {
+            addCriterion("type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeEqualTo(Integer value) {
+            addCriterion("type =", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotEqualTo(Integer value) {
+            addCriterion("type <>", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThan(Integer value) {
+            addCriterion("type >", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("type >=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThan(Integer value) {
+            addCriterion("type <", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("type <=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIn(List<Integer> values) {
+            addCriterion("type in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotIn(List<Integer> values) {
+            addCriterion("type not in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeBetween(Integer value1, Integer value2) {
+            addCriterion("type between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("type not between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andNigthSnackIsNull() {
+            addCriterion("nigthSnack is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNigthSnackIsNotNull() {
+            addCriterion("nigthSnack is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNigthSnackEqualTo(BigDecimal value) {
+            addCriterion("nigthSnack =", value, "nigthSnack");
+            return (Criteria) this;
+        }
+
+        public Criteria andNigthSnackNotEqualTo(BigDecimal value) {
+            addCriterion("nigthSnack <>", value, "nigthSnack");
+            return (Criteria) this;
+        }
+
+        public Criteria andNigthSnackGreaterThan(BigDecimal value) {
+            addCriterion("nigthSnack >", value, "nigthSnack");
+            return (Criteria) this;
+        }
+
+        public Criteria andNigthSnackGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("nigthSnack >=", value, "nigthSnack");
+            return (Criteria) this;
+        }
+
+        public Criteria andNigthSnackLessThan(BigDecimal value) {
+            addCriterion("nigthSnack <", value, "nigthSnack");
+            return (Criteria) this;
+        }
+
+        public Criteria andNigthSnackLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("nigthSnack <=", value, "nigthSnack");
+            return (Criteria) this;
+        }
+
+        public Criteria andNigthSnackIn(List<BigDecimal> values) {
+            addCriterion("nigthSnack in", values, "nigthSnack");
+            return (Criteria) this;
+        }
+
+        public Criteria andNigthSnackNotIn(List<BigDecimal> values) {
+            addCriterion("nigthSnack not in", values, "nigthSnack");
+            return (Criteria) this;
+        }
+
+        public Criteria andNigthSnackBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("nigthSnack between", value1, value2, "nigthSnack");
+            return (Criteria) this;
+        }
+
+        public Criteria andNigthSnackNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("nigthSnack not between", value1, value2, "nigthSnack");
             return (Criteria) this;
         }
 
