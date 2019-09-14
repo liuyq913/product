@@ -54,7 +54,7 @@ public class ScoreService {
             } else {
                 score1.setCheckworkScore(score.getCheckworkScore());
             }
-            scoreMapper.updateByPrimaryKey(score1);
+            scoreMapper.updateByPrimaryKeySelective(score1);
             saveSubsidy(score1);
         } else {
             scoreMapper.insertSelective(score);
@@ -74,7 +74,7 @@ public class ScoreService {
             Score score1 = new Score();
             score1.setId(score.getId());
             score1.setScore(avgSorce);
-            scoreMapper.updateByPrimaryKey(score1);
+            scoreMapper.updateByPrimaryKeySelective(score1);
 
             //更新考勤表里的分
             EmpSalaryMonthly empSalaryMonthly = empSalaryMonthlyService.getByYearMonthAndName(score.getYearMonth(), score.getEmpName());

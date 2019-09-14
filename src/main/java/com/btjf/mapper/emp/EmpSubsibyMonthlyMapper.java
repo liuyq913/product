@@ -2,8 +2,9 @@ package com.btjf.mapper.emp;
 
 import com.btjf.model.emp.EmpSubsibyMonthly;
 import com.btjf.model.emp.EmpSubsibyMonthlyExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface EmpSubsibyMonthlyMapper {
     /**
@@ -93,4 +94,6 @@ public interface EmpSubsibyMonthlyMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(EmpSubsibyMonthly record);
+
+    public EmpSubsibyMonthly getByNo(@Param("billNo") String billNo);
 }

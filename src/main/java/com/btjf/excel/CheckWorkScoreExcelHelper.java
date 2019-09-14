@@ -5,8 +5,10 @@ import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.btjf.business.common.exception.BusinessException;
 import com.btjf.model.emp.Emp;
 import com.btjf.model.emp.Score;
+import com.btjf.model.sys.Sysdept;
 import com.btjf.service.emp.EmpService;
 import com.btjf.service.emp.ScoreService;
+import com.btjf.service.sys.SysDeptService;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.springframework.stereotype.Service;
@@ -31,14 +33,17 @@ public class CheckWorkScoreExcelHelper extends BaseExcelHandler {
     @Resource
     private EmpService empService;
 
-    public final static List<String> fields = Stream.of("姓名", "考核分").collect(Collectors.toList());
+    @Resource
+    private SysDeptService sysDeptService;
+
+    public final static List<String> fields = Stream.of("姓名", "考勤分").collect(Collectors.toList());
 
     @Override
     public List<String> execute(MultipartFile file, Boolean isCover, String operator) throws Exception {
         String yearMonth = null;
         String fileName = file.getOriginalFilename();
         //todo
-        yearMonth = fileName.split("考勤数据")[0];
+        yearMonth = fileName.split("考勤分导入")[0];
         if (yearMonth.contains("-")) {
             yearMonthCash.set(yearMonth);
         } else {
@@ -67,18 +72,23 @@ public class CheckWorkScoreExcelHelper extends BaseExcelHandler {
                     if (emp == null) throw new BusinessException("名称为：" + getCellValue(row.getCell(i)) + "的员工不存在");
                     score.setEmpName(emp.getName());
                     score.setEmpId(emp.getId());
+                    score.setDeptId(emp.getDeptId());
+                    Sysdept sysdept = sysDeptService.get(emp.getDeptId());
+                    score.setDeptName(sysdept != null ? sysdept.getDeptName() : null);
                     break;
                 case 1:
-                    String fiveSore = getCellValue(row.getCell(i), i);
-                    if (StringUtils.isEmpty(fiveSore)) {
+                    String checkworkScore = getCellValue(row.getCell(i), i);
+                    if (StringUtils.isEmpty(checkworkScore)) {
                         score.setCheckworkScore(BigDecimal.ZERO);
                     } else {
-                        score.setFiveScore(BigDecimal.valueOf(Double.parseDouble(fiveSore)));
+                        score.setCheckworkScore(BigDecimal.valueOf(Double.parseDouble(checkworkScore)));
                     }
                     break;
             }
 
         }
+        score.setYearMonth(yearMonthCash.get());
+        score.setIsDelete(0);
         sores.add(score);
         return sores;
     }

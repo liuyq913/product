@@ -235,7 +235,6 @@ public class EmpSalaryMothlyHandler extends BaseExcelHandler {
                 //考勤分 默认0
                 //查询考勤分
                 Score score = scoreService.getByNameAndYearMonth(emp.getName(), monthly.getYearMonth());
-                monthly.setScore(BigDecimal.ZERO);
                 if (score != null && score.getScore() != null) {
                     monthly.setScore(score.getScore());
                 }
