@@ -32,7 +32,7 @@ public class ScoreController extends ProductBaseController {
     @Resource
     private ScoreService scoreService;
 
-    @RequestMapping(value = "/exportThreeScore", method = RequestMethod.GET)
+    @RequestMapping(value = "/exportFiveScore", method = RequestMethod.GET)
     public void exportThreeScore(String yearMonth, String empName, String deptName, HttpServletResponse response) {
 
         List<Score> scores = scoreService.getList(yearMonth, empName, deptName);
@@ -44,11 +44,15 @@ public class ScoreController extends ProductBaseController {
         sheet.setColumnWidth(1, (int) ((20 + 0.72) * 256));
         sheet.setColumnWidth(2, (int) ((10 + 0.72) * 256));
         sheet.setColumnWidth(3, (int) ((20 + 0.72) * 256));
+        sheet.setColumnWidth(4, (int) ((10 + 0.72) * 256));
+        sheet.setColumnWidth(5, (int) ((20 + 0.72) * 256));
         int j = 0;
         header.createCell(j++).setCellValue("名称");
+        header.createCell(j++).setCellValue("考勤分");
         header.createCell(j++).setCellValue("五S分");
         header.createCell(j++).setCellValue("配合分");
         header.createCell(j++).setCellValue("质量分");
+        header.createCell(j++).setCellValue("考核分");
         Score score = null;
         if (scores != null && scores.size() >= 1) {
             for (int i = 0; i < scores.size(); i++) {
@@ -56,16 +60,18 @@ public class ScoreController extends ProductBaseController {
                 Row row = sheet.createRow(i + 1);
                 j = 0;
                 row.createCell(j++).setCellValue(score.getEmpName());
+                row.createCell(j++).setCellValue(score.getCheckworkScore().toString());
                 row.createCell(j++).setCellValue(score.getFiveScore().toString());
                 row.createCell(j++).setCellValue(score.getCoordinationScore().toString());
                 row.createCell(j++).setCellValue(score.getQualityScore().toString());
+                row.createCell(j++).setCellValue(score.getScore().toString());
             }
         }
         try {
             sheet.setForceFormulaRecalculation(true);
             response.setHeader("Pragma", "no-cache");
             response.setHeader("Cache-Control", "no-cache");
-            response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode("3个分.xlsx", "UTF-8"));
+            response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode("5个分.xlsx", "UTF-8"));
             response.setDateHeader("Expires", 0);
             response.setHeader("Connection", "close");
             response.setHeader("Content-Type", "application/vnd.ms-excel");
@@ -73,7 +79,7 @@ public class ScoreController extends ProductBaseController {
             wb.close();
         } catch (Exception e) {
             e.printStackTrace();
-            LOGGER.error("3个分导出excel异常");
+            LOGGER.error("5个分导出excel异常");
         }
     }
 

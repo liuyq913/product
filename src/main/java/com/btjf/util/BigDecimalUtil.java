@@ -7,7 +7,7 @@ import java.math.BigDecimal;
  */
 public class BigDecimalUtil {
 
-	private static int DEF_DIV_SCALE = 10; // 默认精确的小数位
+	private  static int DEF_DIV_SCALE = 10; // 默认精确的小数位
 
 	private static int DIV_SCALE_TWO = 2; // 默认精确的小数位
 
@@ -190,6 +190,6 @@ public class BigDecimalUtil {
     		str = "0";
     	}
     	BigDecimal decimal = new  BigDecimal(str);
-    	return decimal.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+    	return decimal.setScale(4, BigDecimal.ROUND_HALF_EVEN);
     }
 }

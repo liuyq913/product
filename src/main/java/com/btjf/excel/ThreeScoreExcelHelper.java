@@ -3,10 +3,11 @@ package com.btjf.excel;
 import com.alibaba.druid.util.StringUtils;
 import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.btjf.business.common.exception.BusinessException;
-import com.btjf.service.emp.ScoreService;
 import com.btjf.model.emp.Emp;
 import com.btjf.model.emp.Score;
+import com.btjf.model.sys.Sysdept;
 import com.btjf.service.emp.EmpService;
+import com.btjf.service.emp.ScoreService;
 import com.btjf.service.sys.SysDeptService;
 import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -36,14 +37,14 @@ public class ThreeScoreExcelHelper extends BaseExcelHandler {
     @Resource
     private SysDeptService sysDeptService;
 
-    public final static List<String> fields = Stream.of("姓名", "5S分", "配合分", "质量分").collect(Collectors.toList());
+    public final static List<String> fields = Stream.of("姓名", "五S分", "配合分", "质量分").collect(Collectors.toList());
 
     @Override
     public List<String> execute(MultipartFile file, Boolean isCover, String operator) throws Exception {
         String yearMonth = null;
         String fileName = file.getOriginalFilename();
         //todo
-        yearMonth = fileName.split("考勤数据")[0];
+        yearMonth = fileName.split("3个分导入")[0];
         if (yearMonth.contains("-")) {
             yearMonthCash.set(yearMonth);
         } else {
@@ -73,7 +74,8 @@ public class ThreeScoreExcelHelper extends BaseExcelHandler {
                     score.setEmpName(emp.getName());
                     score.setEmpId(emp.getId());
                     score.setDeptId(emp.getDeptId());
-                    score.setDeptName(sysDeptService.get(emp.getDeptId()).getDeptName());
+                    Sysdept sysdept = sysDeptService.get(emp.getDeptId());
+                    score.setDeptName(sysdept != null ? sysdept.getDeptName() : null);
                     break;
                 case 1:
                     String fiveSore = getCellValue(row.getCell(i), i);
@@ -103,8 +105,8 @@ public class ThreeScoreExcelHelper extends BaseExcelHandler {
                     break;
 
             }
-            sores.add(score);
         }
+        sores.add(score);
         return sores;
     }
 

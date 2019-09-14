@@ -22,4 +22,11 @@ public class EmpSubsibyMonthlyService {
             return t.getId();
         }).orElse(0);
     }
+
+    public EmpSubsibyMonthly getByNo(String billNo) {
+        return Optional.ofNullable(billNo).map(t -> {
+            EmpSubsibyMonthly empSubsibyMonthly = empSubsibyMonthlyMapper.getByNo(t);
+            return empSubsibyMonthly;
+        }).orElse(null);
+    }
 }
