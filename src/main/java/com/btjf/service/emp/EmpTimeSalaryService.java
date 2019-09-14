@@ -56,4 +56,12 @@ public class EmpTimeSalaryService {
     public EmpTimesalaryMonthly get(Integer id) {
         return empTimesalaryMonthlyMapper.selectByPrimaryKey(id);
     }
+
+    public List<EmpTimesalaryMonthlyVo> findExceptList(String yearMonth, String empName, String deptName,
+                                                       String billNo, Integer isConfirm) {
+
+        List<EmpTimesalaryMonthly> pmList = empTimesalaryMonthlyMapper.findList(yearMonth,empName,deptName,billNo,isConfirm);
+        List<EmpTimesalaryMonthlyVo> voList = BeanUtil.convertList(pmList, EmpTimesalaryMonthlyVo.class);
+        return voList;
+    }
 }

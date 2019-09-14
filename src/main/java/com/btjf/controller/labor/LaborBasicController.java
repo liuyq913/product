@@ -32,14 +32,23 @@ import com.btjf.vo.UserInfoVo;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 /**
@@ -49,6 +58,9 @@ import java.util.List;
 @RequestMapping(value = "/labor/")
 @RestController("laborBasicController")
 public class LaborBasicController extends ProductBaseController{
+
+    private static final Logger LOGGER = Logger
+            .getLogger(LaborBasicController.class);
 
     @Resource
     private SalaryMonthlyService salaryMonthlyService;
@@ -361,4 +373,58 @@ public class LaborBasicController extends ProductBaseController{
         return result;
     }
 
+    /**
+     * 计时工资 列表
+     * @return
+     */
+    @RequestMapping(value = "/hourlywage/except", method = RequestMethod.GET)
+    public void except(String yearMonth,String empName, String deptName,String billNo,
+                                                                 Integer isConfirm,HttpServletResponse response) {
+        List<EmpTimesalaryMonthlyVo> list = empTimeSalaryService.findExceptList(yearMonth,empName,deptName,billNo,isConfirm);
+        Workbook wb = new XSSFWorkbook();
+        Sheet sheet = wb.createSheet();
+        Row header = sheet.createRow(0);
+        List<String> fields = Stream.of("工资月份","人员姓名", "所在部门","工种","票据编号", "工作内容","单价",
+                "计算数量", "所得金额","开票人","开票时间", "备注", "是否确认").collect(Collectors.toList());
+        for(int i=0; i< fields.size(); i++) {
+            header.createCell(i).setCellValue(fields.get(i));
+        }
+
+        EmpTimesalaryMonthlyVo pm = null;
+        if (list != null && list.size() >= 1) {
+            for (int i = 0; i < list.size(); i++) {
+                pm = list.get(i);
+                Row row = sheet.createRow(i + 1);
+                int j = 0;
+                row.createCell(j++).setCellValue(pm.getYearMonth());
+                row.createCell(j++).setCellValue(pm.getEmpName());
+                row.createCell(j++).setCellValue(pm.getDeptName());
+                row.createCell(j++).setCellValue(pm.getWorkName());
+                row.createCell(j++).setCellValue(pm.getBillNo());
+                row.createCell(j++).setCellValue(pm.getContent());
+                row.createCell(j++).setCellValue(pm.getPrice().toString());
+                row.createCell(j++).setCellValue(pm.getNum().toString() + pm.getUnit());
+                row.createCell(j++).setCellValue(pm.getMoney().toString());
+                row.createCell(j++).setCellValue(pm.getDrawer());
+                row.createCell(j++).setCellValue(pm.getDrawTime());
+                row.createCell(j++).setCellValue(pm.getRemark());
+                row.createCell(j++).setCellValue(pm.getIsConfirm().equals(1)?"已确认":"未确认");
+            }
+        }
+        try {
+            sheet.setForceFormulaRecalculation(true);
+            response.setHeader("Pragma", "no-cache");
+            response.setHeader("Cache-Control", "no-cache");
+            response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode("计时工资导出.xlsx", "UTF-8"));
+            response.setDateHeader("Expires", 0);
+            response.setHeader("Connection", "close");
+            response.setHeader("Content-Type", "application/vnd.ms-excel");
+            wb.write(response.getOutputStream());
+            wb.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error("计时工资导出excel异常");
+        }
+
+    }
 }
