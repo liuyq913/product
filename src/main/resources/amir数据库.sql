@@ -622,6 +622,7 @@ CREATE TABLE t_Emp_TimeSalary_Monthly(
 	drawer varchar(300) comment '开票人',
 	drawTime datetime comment '开票时间',
 	remark varchar(200) comment '备注',
+  unit varchar(50) comment '单位',
 	isConfirm int comment '是否确认 1确认 2未确认',
 	createTime datetime,
 	lastModifyTime datetime,

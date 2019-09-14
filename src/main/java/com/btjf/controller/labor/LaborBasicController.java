@@ -26,6 +26,7 @@ import com.btjf.service.sys.SysDeptService;
 import com.btjf.service.sys.SysRoleService;
 import com.btjf.service.sys.SysUserService;
 import com.btjf.vo.EmpSubsidyVo;
+import com.btjf.vo.EmpTimesalaryMonthlyVo;
 import com.btjf.vo.ProcedureYieldVo;
 import com.btjf.vo.UserInfoVo;
 import com.wordnik.swagger.annotations.Api;
@@ -230,7 +231,7 @@ public class LaborBasicController extends ProductBaseController{
     @RequestMapping(value = "/hourlywage/addOrUpdate", method = RequestMethod.POST)
     public XaResult<String> hourlywageAdd(Integer id, String yearMonth, Integer empId,
                                           String billNo, String content, Double price,
-                                          Double num, String remark) {
+                                          Double num, String remark, String unit) {
         if(StringUtils.isEmpty(yearMonth)){
             return XaResult.error("工资年月不能为空");
         }
@@ -246,6 +247,9 @@ public class LaborBasicController extends ProductBaseController{
         if(StringUtils.isEmpty(content)){
             return XaResult.error("工作内容不能为空");
         }
+        if(StringUtils.isEmpty(unit)){
+            return XaResult.error("单位不能为空");
+        }
         if(price == null || price <= 0){
             return XaResult.error("单价必须大于0");
         }
@@ -254,6 +258,12 @@ public class LaborBasicController extends ProductBaseController{
         }
         if(id != null){
             EmpTimesalaryMonthly empTimesalaryMonthly = empTimeSalaryService.get(id);
+            if(empTimesalaryMonthly == null){
+                return XaResult.error("修改记录不存在");
+            }
+            if(empTimesalaryMonthly.getIsConfirm() == 1){
+                return XaResult.error("该记录已确认，不能修改");
+            }
             Emp emp = empService.getByID(empId);
             if (emp == null){
                 return XaResult.error("该员工不存在");
@@ -274,6 +284,7 @@ public class LaborBasicController extends ProductBaseController{
             empTimesalaryMonthly.setDrawTime(new Date());
             empTimesalaryMonthly.setLastModifyTime(new Date());
             empTimesalaryMonthly.setRemark(remark);
+            empTimesalaryMonthly.setUnit(unit);
             empTimesalaryMonthly.setWorkName(empWork == null ? "" : empWork.getName());
             empTimeSalaryService.update(empTimesalaryMonthly);
         }else {
@@ -304,6 +315,7 @@ public class LaborBasicController extends ProductBaseController{
             empTimesalaryMonthly.setCreateTime(new Date());
             empTimesalaryMonthly.setLastModifyTime(new Date());
             empTimesalaryMonthly.setRemark(remark);
+            empTimesalaryMonthly.setUnit(unit);
             empTimesalaryMonthly.setIsDelete(0);
             empTimesalaryMonthly.setIsConfirm(0);
             empTimesalaryMonthly.setWorkName(empWork == null ? "" : empWork.getName());
@@ -332,7 +344,7 @@ public class LaborBasicController extends ProductBaseController{
      * @return
      */
     @RequestMapping(value = "/hourlywage/list", method = RequestMethod.GET)
-    public XaResult<List<EmpTimesalaryMonthly>> hourlywageList(String yearMonth,String empName, String deptName,String billNo,
+    public XaResult<List<EmpTimesalaryMonthlyVo>> hourlywageList(String yearMonth,String empName, String deptName,String billNo,
                                                       Integer isConfirm, Integer pageSize, Integer currentPage) {
         if(yearMonth!= null && !BaseExcelHandler.isRightDateStr(yearMonth,"yyyy-MM")){
             return XaResult.error("年月格式不符，请更正为yyyy-MM");
@@ -344,8 +356,8 @@ public class LaborBasicController extends ProductBaseController{
             pageSize = 25;
         }
         Page page = new Page(pageSize, currentPage);
-        Page<EmpTimesalaryMonthly> listPage = empTimeSalaryService.findList(yearMonth,empName,deptName,billNo,isConfirm,page);
-        XaResult<List<EmpTimesalaryMonthly>> result = AppXaResultHelper.success(listPage, listPage.getRows());
+        Page<EmpTimesalaryMonthlyVo> listPage = empTimeSalaryService.findList(yearMonth,empName,deptName,billNo,isConfirm,page);
+        XaResult<List<EmpTimesalaryMonthlyVo>> result = AppXaResultHelper.success(listPage, listPage.getRows());
         return result;
     }
 

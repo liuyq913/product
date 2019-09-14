@@ -9,6 +9,7 @@ import com.btjf.service.emp.EmpService;
 import com.btjf.service.emp.EmpTimeSalaryService;
 import com.btjf.service.emp.EmpWorkService;
 import com.btjf.service.sys.SysDeptService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.springframework.stereotype.Component;
@@ -26,7 +27,7 @@ import java.util.stream.Stream;
 public class EmpTimeSalaryExcelHandler extends BaseExcelHandler {
 
     public final static List<String> fields = Stream.of("月份","姓名", "票据编号", "工作内容","单价",
-            "数量", "金额", "备注").collect(Collectors.toList());
+            "数量","单位", "金额", "备注").collect(Collectors.toList());
 
     @Resource
     private EmpTimeSalaryService empTimeSalaryService;
@@ -82,7 +83,13 @@ public class EmpTimeSalaryExcelHandler extends BaseExcelHandler {
         for(int i=0; i< fields.size(); i++) {
             switch (i) {
                 case 0:
-                    empTimesalaryMonthly.setYearMonth(getCellValue(row.getCell(i), i));
+                    //YYYY-MM
+                    if(isRightDateStr(getCellValue(row.getCell(i), i),"yyyy-MM")){
+                        empTimesalaryMonthly.setYearMonth(getCellValue(row.getCell(i), i));
+                    }else{
+                        errMsg = errMsg + "第" + 1 +"列" + fields.get(0) + " 填写错误,";
+                    }
+
                     break;
                 case 1:
                     empTimesalaryMonthly.setEmpName(getCellValue(row.getCell(i), i));
@@ -100,14 +107,24 @@ public class EmpTimeSalaryExcelHandler extends BaseExcelHandler {
                     empTimesalaryMonthly.setNum(BigDecimal.valueOf(Double.parseDouble(getCellValue(row.getCell(i), i))));
                     break;
                 case 6:
-                    empTimesalaryMonthly.setMoney(BigDecimal.valueOf(Double.parseDouble(getCellValue(row.getCell(i), i))));
+                    empTimesalaryMonthly.setUnit(getCellValue(row.getCell(i), i));
                     break;
                 case 7:
+                    empTimesalaryMonthly.setMoney(BigDecimal.valueOf(Double.parseDouble(getCellValue(row.getCell(i), i))));
+                    break;
+                case 8:
                     empTimesalaryMonthly.setRemark(getCellValue(row.getCell(i), i));
                     break;
                 default:
                     break;
             }
+        }
+        EmpTimesalaryMonthly emp1 = empTimeSalaryService.findByBillNo(empTimesalaryMonthly.getBillNo());
+        if (emp1 != null){
+            errMsg = errMsg + "第" + 3 +"列" + fields.get(2) + "重复，无法新增";
+        }
+        if (StringUtils.isNotEmpty(errMsg)){
+            throw new BusinessException(errMsg);
         }
         empTimesalaryMonthlies.add(empTimesalaryMonthly);
         return empTimesalaryMonthlies;
@@ -115,7 +132,7 @@ public class EmpTimeSalaryExcelHandler extends BaseExcelHandler {
 
     private String getCellValue(XSSFCell cell, int i) {
         String value = null;
-        if(cell == null && (i == 7)){
+        if(cell == null && (i == 8)){
             //备注列 允许为空
             return null;
         }

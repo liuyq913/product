@@ -1,8 +1,10 @@
 package com.btjf.service.emp;
 
 import com.btjf.common.page.Page;
+import com.btjf.common.utils.BeanUtil;
 import com.btjf.mapper.emp.EmpTimesalaryMonthlyMapper;
 import com.btjf.model.emp.EmpTimesalaryMonthly;
+import com.btjf.vo.EmpTimesalaryMonthlyVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -37,12 +39,13 @@ public class EmpTimeSalaryService {
         empTimesalaryMonthlyMapper.confirm(list);
     }
 
-    public Page<EmpTimesalaryMonthly> findList(String yearMonth, String empName, String deptName, String billNo,
-                                               Integer isConfirm, Page page) {
+    public Page<EmpTimesalaryMonthlyVo> findList(String yearMonth, String empName, String deptName, String billNo,
+                                                 Integer isConfirm, Page page) {
         PageHelper.startPage(page.getPage(), page.getRp());
         List<EmpTimesalaryMonthly> pmList = empTimesalaryMonthlyMapper.findList(yearMonth,empName,deptName,billNo,isConfirm);
-        PageInfo pageInfo = new PageInfo(pmList);
-        pageInfo.setList(pmList);
+        List<EmpTimesalaryMonthlyVo> voList = BeanUtil.convertList(pmList, EmpTimesalaryMonthlyVo.class);
+        PageInfo pageInfo = new PageInfo(voList);
+        pageInfo.setList(voList);
         return new Page<>(pageInfo);
     }
 
