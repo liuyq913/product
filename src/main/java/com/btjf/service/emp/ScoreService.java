@@ -1,6 +1,7 @@
 package com.btjf.service.emp;
 
 import com.btjf.business.common.exception.BusinessException;
+import com.btjf.constant.SubsidyTypeEnum;
 import com.btjf.mapper.emp.ScoreMapper;
 import com.btjf.model.emp.Emp;
 import com.btjf.model.emp.EmpSalaryMonthly;
@@ -100,6 +101,8 @@ public class ScoreService {
             empSubsibyMonthly.setIsDelete(0);
             empSubsibyMonthly.setMoney(avgSorce);
             empSubsibyMonthly.setWorkName(empWorkService.getByID(emp.getWorkId()).getName());
+            empSubsibyMonthly.setType(SubsidyTypeEnum.FIX_HOUS.getValue());
+            empSubsibyMonthly.setIsConfirm(0);
             empSubsibyMonthlyService.save(empSubsibyMonthly);
         }
         return null;

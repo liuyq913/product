@@ -1,10 +1,15 @@
 package com.btjf.service.emp;
 
+import com.btjf.common.page.Page;
+import com.btjf.controller.emp.vo.EmpSubsibyMonthlyVo;
 import com.btjf.mapper.emp.EmpSubsibyMonthlyMapper;
 import com.btjf.model.emp.EmpSubsibyMonthly;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -23,10 +28,45 @@ public class EmpSubsibyMonthlyService {
         }).orElse(0);
     }
 
-    public EmpSubsibyMonthly getByNo(String billNo) {
+    public EmpSubsibyMonthly getByNoAndType(String billNo, Integer type) {
         return Optional.ofNullable(billNo).map(t -> {
-            EmpSubsibyMonthly empSubsibyMonthly = empSubsibyMonthlyMapper.getByNo(t);
+            EmpSubsibyMonthly empSubsibyMonthly = empSubsibyMonthlyMapper.getByNo(t, type);
             return empSubsibyMonthly;
         }).orElse(null);
+    }
+
+    public Integer update(EmpSubsibyMonthly empSubsibyMonthly) {
+        return Optional.ofNullable(empSubsibyMonthly).map(t -> {
+            empSubsibyMonthlyMapper.updateByPrimaryKey(t);
+            return t.getId();
+        }).orElse(0);
+    }
+
+    public EmpSubsibyMonthly getByID(Integer id) {
+        return Optional.ofNullable(id).map(t -> {
+            EmpSubsibyMonthly empSubsibyMonthly = empSubsibyMonthlyMapper.selectByPrimaryKey(t);
+            return empSubsibyMonthly;
+        }).orElse(null);
+    }
+
+
+    public Page<EmpSubsibyMonthlyVo> listPage(String yearMonth, String empName, String billNo, String deptName, Integer isConfirm,
+                                             Integer type, Page page) {
+        PageHelper.startPage(page.getPage(), page.getRp());
+        List<EmpSubsibyMonthlyVo> empSubsibyMonthlyVos = empSubsibyMonthlyMapper.list(yearMonth, empName, billNo, deptName, isConfirm, type);
+        PageInfo pageInfo = new PageInfo(empSubsibyMonthlyVos);
+        pageInfo.setList(empSubsibyMonthlyVos);
+        return new Page<>(pageInfo);
+    }
+
+    public List<EmpSubsibyMonthlyVo> list(String yearMonth, String empName, String billNo, String deptName, Integer isConfirm,
+                                          Integer type) {
+
+        return empSubsibyMonthlyMapper.list(yearMonth, empName, billNo, deptName, isConfirm,
+                type);
+    }
+
+    public Integer confirm(List<String> ids) {
+        return empSubsibyMonthlyMapper.confirm(ids);
     }
 }

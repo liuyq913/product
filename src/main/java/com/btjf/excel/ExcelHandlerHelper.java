@@ -43,6 +43,9 @@ public class ExcelHandlerHelper {
     @Resource
     private CheckWorkScoreExcelHelper checkWorkScoreExcelHelper;
 
+    @Resource
+    private OtherSubsidyExcelHandler otherSubsidyExcelHandler;
+
     public BaseExcelHandler getHandler(Integer type) throws BusinessException {
         switch (type) {
             case 1:
@@ -70,6 +73,8 @@ public class ExcelHandlerHelper {
                 return checkWorkScoreExcelHelper;
             case 11:
                 return empTimeSalaryExcelHandler;
+            case 12:
+                return otherSubsidyExcelHandler;
             default:
                 throw new BusinessException("文件类型不存在");
         }

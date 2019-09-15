@@ -127,7 +127,7 @@
         select
         <include refid="Base_Column_List"/>
         from t_Emp_Subsidy_Monthly
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER} and isDelete = 0
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         <!--
@@ -479,6 +479,60 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM t_Emp_Subsidy_Monthly
-        WHERE billNo = #{billNo} and isDelete = 0 limit 1;
+        WHERE billNo = #{billNo}
+        <if test="type != null">
+            and type = #{type}
+        </if>
+        and isDelete = 0 limit 1;
     </select>
+
+    <select id="list" resultType="com.btjf.controller.emp.vo.EmpSubsibyMonthlyVo">
+        SELECT
+        id as id,
+        yearMonth as yearMonth,
+        empId as empId,
+        empName as empName,
+        deptId as deptId,
+        deptName as deptName,
+        workName as workName,
+        type as type,
+        money as money,
+        billNo as billNo,
+        reason as reason,
+        drawer as drawer,
+        remark as remark,
+        isConfirm as isConfirm,
+        DATE_FORMAT(createTime,'%Y/%m/%d') as drawTime
+        FROM t_Emp_Subsidy_Monthly
+        WHERE 1=1
+        <if test="yearMonth != null">
+            and yearMonth = #{yearMonth}
+        </if>
+        <if test="billNo != null">
+            and billNo like '%${billNo}%'
+        </if>
+        <if test="deptName != null">
+            and deptName = #{deptName}
+        </if>
+        <if test="empName != null">
+            and empName like '%${empName}%'
+        </if>
+        <if test="isComfig != null">
+            and isConfirm = #{isConfirm}
+        </if>
+        <if test="type != null">
+            and type = #{type}
+        </if>
+        and isDelete = 0 order by createTime desc
+    </select>
+
+    <update id="confirm">
+        UPDATE t_Emp_Subsidy_Monthly SET isConfirm = 1
+        WHERE 1=1 and id in
+        (
+        <foreach collection="ids" index="index" item="item" separator=",">
+            #{item, jdbcType=INTEGER}
+        </foreach>
+        )
+    </update>
 </mapper>
