@@ -39,7 +39,7 @@ public enum SubsidyTypeEnum implements ContentEnum {
     public static SubsidyTypeEnum getByValue(Integer value) {
         SubsidyTypeEnum[] subsidyTypeEnums = SubsidyTypeEnum.values();
         for (Integer i = 0; i < subsidyTypeEnums.length; i++) {
-            if (subsidyTypeEnums[i].getContent().equals(value)) {
+            if (subsidyTypeEnums[i].getValue().equals(value)) {
                 return subsidyTypeEnums[i];
             }
         }
