@@ -630,6 +630,49 @@ CREATE TABLE t_Emp_TimeSalary_Monthly(
 );	
 
 
+## 工资月度数据汇总
+CREATE TABLE t_Summary_Salary_Monthly(
+  id int(11) primary key AUTO_INCREMENT,
+	yearMonth varchar(30) comment '年月',
+	empId int comment '员工ID',
+	empName varchar(30) comment '名字',
+	deptId int comment '部门ID',
+	deptName varchar(30) comment '部门名字',
+	workName varchar(30) comment '工种',
+	dayWork decimal(4,1) comment '正常白班',
+	nightWork decimal(4,1) comment '正常晚班',
+	score decimal(8,2) comment '考核分',
+  sumWorkHour decimal(4,2) comment '总工时',
+  hourSalary  decimal(4,2)  comment '时薪=应发工资/总工时',
+  restDay decimal(4,1) comment '公休',
+  sumDay decimal(4,1) comment '总天数',
+  daySalary  decimal(4,2)  comment '日工资 = 固定工资/总天数',
+	dhbt decimal(8,2) comment '工资',
+	type int comment '类别 1计件工 2固定工',
+	timeSalary decimal(8,2) comment '计时工资',
+	nigthSnack decimal(4,1) DEFAULT NULL comment '夜餐',
+  phoneSubsidy decimal(8,2) comment '电话补贴',
+  mealSubsidy decimal(8,2) comment '餐补',
+  socialSubsidy decimal(8,2) comment '社保补贴',
+  hourSubsidy decimal(8,2) comment '住房补贴',
+  otherSubsidy decimal(8,2) comment '其他补贴',
+  sumSusbsidy decimal(12,2) comment '补贴合计',
+  realSalary decimal(8,2) comment '应发工资',
+  ylbx decimal(8,2) comment '养老保险',
+	sybx decimal(8,2) comment '失业保险',
+	yiliaobx decimal(8,2) comment '医疗保险',
+	gjj decimal(8,2) comment '住房公积金',
+	otherDeduction decimal(8,2) comment '其他扣款',
+	sumDeduction decimal(8,2) comment '扣款合计',
+	trueSalary decimal(8,2) comment '实发工资',
+	normalOvertime decimal(4,2) comment '正常加班工时',
+	holiayOvertime decimal(4,2) comment '假日加班工时',
+	legalOvertime decimal(4,2) comment '法假加班工时',
+	createTime datetime,
+	lastModifyTime datetime,
+	isDelete int NOT NULL
+);
+
 ## 文件
 CREATE TABLE t_File(
 	id int(11) primary key AUTO_INCREMENT,
