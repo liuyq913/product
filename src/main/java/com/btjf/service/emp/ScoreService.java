@@ -9,6 +9,7 @@ import com.btjf.model.emp.EmpSubsibyMonthly;
 import com.btjf.model.emp.Score;
 import com.btjf.service.sys.SysDeptService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -44,6 +45,7 @@ public class ScoreService {
         return scoreMapper.getByNameAndYearMonth(name, yearMonth);
     }
 
+    @Transactional(readOnly = false, rollbackFor = Exception.class)
     public Integer saveOrUpate(Score score) {
         if (score == null) return 0;
         Score score1 = this.getByNameAndYearMonth(score.getEmpName(), score.getYearMonth());
