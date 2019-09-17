@@ -35,7 +35,7 @@
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 
-		<table tableName="t_Score" domainObjectName="Score">
+		<table tableName="t_summary_salary_monthly" domainObjectName="SummarySalaryMonthly">
 		<property name="useActualColumnNames" value="true"/>
 		<generatedKey column="id" sqlStatement="MySql" identity="true"/>
 		<columnRenamingRule searchString="^F" replaceString="" />
