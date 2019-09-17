@@ -563,7 +563,8 @@ CREATE TABLE t_Emp_Salary_Monthly(
 	nigthWorkLegal decimal(4,1) comment '法假日晚班',
 	isDelete int NOT NULL,
 	type int comment '类别 1计件工 2固定工',
-	nigthSnack decimal(4,1) DEFAULT NULL COMMENT '夜餐'
+	nigthSnack decimal(4,1) DEFAULT NULL COMMENT '夜餐',
+	isCalculation int  comment '是否结算 0  未结算 1 已结算'
 );
 
 -- 考勤分明细
@@ -640,6 +641,7 @@ CREATE TABLE t_Summary_Salary_Monthly(
 	deptName varchar(30) comment '部门名字',
 	workName varchar(30) comment '工种',
 	dayWork decimal(4,1) comment '正常白班',
+	workDay decimal(4,1) comment '上班天数',
 	nightWork decimal(4,1) comment '正常晚班',
 	score decimal(8,2) comment '考核分',
   sumWorkHour decimal(4,2) comment '总工时',
@@ -658,6 +660,7 @@ CREATE TABLE t_Summary_Salary_Monthly(
   otherSubsidy decimal(8,2) comment '其他补贴',
   sumSusbsidy decimal(12,2) comment '补贴合计',
   realSalary decimal(8,2) comment '应发工资',
+  basicSalary decimal(8,2) comment '基本工资',
   ylbx decimal(8,2) comment '养老保险',
 	sybx decimal(8,2) comment '失业保险',
 	yiliaobx decimal(8,2) comment '医疗保险',

@@ -2576,6 +2576,126 @@ public class SummarySalaryMonthlyExample {
             return (Criteria) this;
         }
 
+        public Criteria andWorkDayIsNull() {
+            addCriterion("workDay is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDayIsNotNull() {
+            addCriterion("workDay is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDayEqualTo(BigDecimal value) {
+            addCriterion("workDay =", value, "workDay");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDayNotEqualTo(BigDecimal value) {
+            addCriterion("workDay <>", value, "workDay");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDayGreaterThan(BigDecimal value) {
+            addCriterion("workDay >", value, "workDay");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDayGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("workDay >=", value, "workDay");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDayLessThan(BigDecimal value) {
+            addCriterion("workDay <", value, "workDay");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDayLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("workDay <=", value, "workDay");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDayIn(List<BigDecimal> values) {
+            addCriterion("workDay in", values, "workDay");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDayNotIn(List<BigDecimal> values) {
+            addCriterion("workDay not in", values, "workDay");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDayBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("workDay between", value1, value2, "workDay");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDayNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("workDay not between", value1, value2, "workDay");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicSalaryIsNull() {
+            addCriterion("basicSalary is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicSalaryIsNotNull() {
+            addCriterion("basicSalary is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicSalaryEqualTo(BigDecimal value) {
+            addCriterion("basicSalary =", value, "basicSalary");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicSalaryNotEqualTo(BigDecimal value) {
+            addCriterion("basicSalary <>", value, "basicSalary");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicSalaryGreaterThan(BigDecimal value) {
+            addCriterion("basicSalary >", value, "basicSalary");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicSalaryGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("basicSalary >=", value, "basicSalary");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicSalaryLessThan(BigDecimal value) {
+            addCriterion("basicSalary <", value, "basicSalary");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicSalaryLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("basicSalary <=", value, "basicSalary");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicSalaryIn(List<BigDecimal> values) {
+            addCriterion("basicSalary in", values, "basicSalary");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicSalaryNotIn(List<BigDecimal> values) {
+            addCriterion("basicSalary not in", values, "basicSalary");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicSalaryBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("basicSalary between", value1, value2, "basicSalary");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicSalaryNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("basicSalary not between", value1, value2, "basicSalary");
+            return (Criteria) this;
+        }
+
         public Criteria andYearMonthLikeInsensitive(String value) {
             addCriterion("upper(yearMonth) like", value.toUpperCase(), "yearMonth");
             return (Criteria) this;
