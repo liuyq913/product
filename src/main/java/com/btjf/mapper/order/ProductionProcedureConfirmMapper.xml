@@ -644,7 +644,7 @@
                     WHERE
                         DATE_FORMAT(p.completeTime, '%Y-%m') = #{date}
                     AND p.empId = #{empId}
-                    AND p.isChange=0
+                    AND (p.isChange=0 or p.isChange=2)
                     AND p.isDelete = 0
                 )
                 UNION ALL
@@ -694,7 +694,11 @@
                 WHEN p.pmOutBillNo IS NOT NULL THEN
                     0
                 END AS type,
-                '已质检' AS statusDesc,
+                CASE
+                    WHEN p.isChange=0 THEN '已质检'
+                    WHEN p.isChange=2 THEN '已结算'
+                    END
+                 AS statusDesc,
                 p.completeTime time
             FROM
                 t_Production_Procedure_Confirm p
@@ -702,7 +706,7 @@
             WHERE
                 DATE_FORMAT(p.completeTime, "%Y-%m-%d") = #{date}
             AND p.empId = #{empId}
-            AND p.isChange = 0
+            AND (p.isChange=0 or p.isChange=2)
             AND p.isDelete = 0
                 )
                 UNION ALL
@@ -767,7 +771,7 @@
         <if test="type == 2 ">
             AND p.productionNo = #{billNo} AND p.luoId = #{luoId}
         </if>
-        AND p.isChange = 0
+        AND (p.isChange=0 or p.isChange=2)
         AND p.isDelete = 0
     )
     UNION ALL
@@ -828,7 +832,7 @@
         from  t_Production_Procedure_Confirm p LEFT JOIN t_Emp e ON p.empId = e.id
         LEFT JOIN t_Emp_work w ON w.id = e.workId
         LEFT JOIN t_Production_Luo l ON p.luoId = l.id
-        where p.isChange = 0
+        where (p.isChange=0 or p.isChange=2)
         AND p.isDelete = 0
         <if test="name != null ">
           AND e.name = #{name}
@@ -923,6 +927,14 @@
         ) a
         ORDER  BY a.sortTime DESC
     </select>
+    <select id="getUnSettlement" resultType="com.btjf.model.order.ProductionProcedureConfirm">
+        select * from t_Production_Procedure_Confirm
+        where  DATE_FORMAT(createTime, "%Y-%m") = #{yearMonth}
+        and empId = #{empId}
+        and isDelete = 0
+        and isChange in (0,2)
+
+    </select>
 
 
     <update id="delete">
@@ -964,5 +976,15 @@
         and p.type =1
         and p.isDelete = 0
         and p.workshop = #{deptName,jdbcType=VARCHAR}
+    </update>
+    <update id="updateSettlement">
+        update t_Production_Procedure_Confirm
+        set isChange = 2
+        where id in
+        (
+        <foreach collection="ids" index="index" item="no" separator=",">
+            #{no}
+        </foreach>
+        )
     </update>
 </mapper>

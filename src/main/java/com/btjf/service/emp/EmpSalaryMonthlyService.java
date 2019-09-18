@@ -6,8 +6,11 @@ import com.btjf.mapper.emp.EmpSalaryMonthlyMapper;
 import com.btjf.model.emp.Emp;
 import com.btjf.model.emp.EmpSalaryMonthly;
 import com.btjf.model.emp.SummarySalaryMonthly;
+import com.btjf.model.order.ProductionProcedureConfirm;
+import com.btjf.service.order.ProductionProcedureConfirmService;
 import com.btjf.util.BigDecimalUtil;
 import com.btjf.util.ThreadPoolExecutorUtil;
+import com.btjf.vo.weixin.EmpDayWorkVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.stream.Collectors;
 
 /**
  * Created by liuyq on 2019/9/8.
@@ -30,6 +34,9 @@ public class EmpSalaryMonthlyService {
 
     @Resource
     private EmpService empService;
+
+    @Resource
+    private ProductionProcedureConfirmService productionProcedureConfirmService;
 
     public Integer save(EmpSalaryMonthly empSalaryMonthly) {
         return Optional.ofNullable(empSalaryMonthly).map(t -> {
@@ -81,6 +88,21 @@ public class EmpSalaryMonthlyService {
                     if (null == empSalaryMonthly) continue;
                     if (1 == empSalaryMonthly.getType()) {
                         //todo 计件工
+                        //获取计件工资
+                        List<ProductionProcedureConfirm> list = productionProcedureConfirmService.getUnSettlement(
+                                empSalaryMonthly.getYearMonth(),empSalaryMonthly.getEmpId());
+                        BigDecimal sum = BigDecimal.valueOf(0.0);
+                        if(CollectionUtils.isNotEmpty(list)){
+                            sum = list.stream().map(ProductionProcedureConfirm::getMoney).reduce(BigDecimal.ZERO, BigDecimal::add);
+                        }
+
+
+
+                        //将记录改为已结算
+                        if(CollectionUtils.isNotEmpty(list)){
+                            List<Integer> ids=list.stream().map(ProductionProcedureConfirm::getId).collect(Collectors.toList());
+                            productionProcedureConfirmService.updateSettlement(ids);
+                        }
                     } else if (2 == empSalaryMonthly.getType()) {
                         //固定工
                         this.calculationFixed(empSalaryMonthly);
