@@ -5,8 +5,10 @@ import com.btjf.common.utils.DateUtil;
 import com.btjf.controller.base.ProductBaseController;
 import com.btjf.controller.weixin.vo.WxEmpVo;
 import com.btjf.model.emp.Emp;
+import com.btjf.model.emp.EmpSalaryMonthly;
 import com.btjf.model.order.Order;
 import com.btjf.model.sys.Sysdept;
+import com.btjf.service.emp.EmpSalaryMonthlyService;
 import com.btjf.service.emp.EmpService;
 import com.btjf.service.order.ProductionProcedureConfirmService;
 import com.btjf.service.sys.SysDeptService;
@@ -34,6 +36,8 @@ public class MineController  extends ProductBaseController {
     private SysDeptService sysDeptService;
     @Resource
     private ProductionProcedureConfirmService productionProcedureConfirmService;
+    @Resource
+    private EmpSalaryMonthlyService empSalaryMonthlyService;
 
 
     /**
@@ -236,5 +240,25 @@ public class MineController  extends ProductBaseController {
 
         return XaResult.success(empWorkVo);
     }
+
+    /**
+     * 我的薪资
+     * @return
+     */
+    @RequestMapping(value = "/salary", method = RequestMethod.GET)
+    public XaResult<SalaryVo> salary(String yearMonth){
+        //2019-08
+        if (StringUtils.isEmpty(yearMonth)){
+            return XaResult.error("月份不能为空");
+        }
+        WxEmpVo vo = getWxLoginUser();
+        EmpSalaryMonthly empSalaryMonthly = empSalaryMonthlyService.getByYearMonthAndName(yearMonth, vo.getName());
+        if (empSalaryMonthly == null){
+            return XaResult.error("未结算");
+        }
+        //TODO 实体未转
+        return XaResult.success();
+    }
+
 
 }
