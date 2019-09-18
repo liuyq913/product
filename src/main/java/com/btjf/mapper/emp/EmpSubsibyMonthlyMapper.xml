@@ -535,4 +535,9 @@
         </foreach>
         )
     </update>
+
+    <select id="getSumSubsiby" resultType="double">
+        SELECT sum(money) FROM t_Emp_Subsidy_Monthly where isDelete = 0 and isConfirm = 1 and yearMonth = #{yearMonth}
+        and empId = #{empId} and type = #{type};
+    </select>
 </mapper>

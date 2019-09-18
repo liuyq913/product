@@ -2,7 +2,6 @@ package com.btjf.excel;
 
 import com.btjf.business.common.exception.BusinessException;
 import com.btjf.common.utils.DateUtil;
-import com.btjf.service.emp.ScoreService;
 import com.btjf.model.emp.Emp;
 import com.btjf.model.emp.EmpSalaryMonthly;
 import com.btjf.model.emp.EmpSalaryMothlyPojo;
@@ -11,6 +10,7 @@ import com.btjf.model.salary.SalaryMonthly;
 import com.btjf.service.emp.EmpSalaryMonthlyService;
 import com.btjf.service.emp.EmpService;
 import com.btjf.service.emp.EmpWorkService;
+import com.btjf.service.emp.ScoreService;
 import com.btjf.service.salary.SalaryMonthlyService;
 import com.btjf.service.sys.SysDeptService;
 import com.btjf.util.BigDecimalUtil;
@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by liuyq on 2019/9/7.
@@ -58,6 +59,9 @@ public class EmpSalaryMothlyHandler extends BaseExcelHandler {
     private ScoreService scoreService;
 
     private static ThreadLocal<String> yearMonthCash = ThreadLocal.withInitial(() -> DateUtil.dateToString(new Date(), DateUtil.ymFormat));
+
+    private final static List<String> neetNigthSnack = Stream.of("车工", "辅工", "大辅工", "杂工", "下料工", "印刷", "剪辅料", "切包边条",
+            "分料", "电脑车工", "包装工", "新学徒车工", "新熟练车工", "小辅工", "整形，打包", "中辅工").collect(Collectors.toList());
 
 
     @Override
@@ -245,7 +249,7 @@ public class EmpSalaryMothlyHandler extends BaseExcelHandler {
                 monthly.setCreateTime(new Date());
                 monthly.setLastModifyTime(new Date());
                 monthly.setType(emp.getType());
-                if (monthly.getType() == 1) { //计件工
+                if (neetNigthSnack.contains(monthly.getWorkName())) { //计件工
                     monthly.setNigthSnack(BigDecimal.valueOf(monthly.getNightWork() != null ? BigDecimalUtil.mul(monthly.getNightWork().doubleValue(), 2) : 0));
                 }
                 empSalaryMonthlyService.save(monthly);

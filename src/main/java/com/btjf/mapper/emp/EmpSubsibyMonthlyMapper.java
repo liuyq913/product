@@ -103,4 +103,7 @@ public interface EmpSubsibyMonthlyMapper {
                                    @Param("isComfig") Integer isConfirm, @Param("type") Integer type);
 
     public Integer confirm(@Param("ids") List<String> ids);
+
+
+    public Double getSumSubsiby(@Param("yearMonth") String yearMonth, @Param("empId") Integer empId, @Param("type") Integer type);
 }
