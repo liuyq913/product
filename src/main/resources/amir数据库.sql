@@ -645,11 +645,11 @@ CREATE TABLE t_Summary_Salary_Monthly(
 	workDay decimal(4,1) comment '上班天数',
 	nightWork decimal(4,1) comment '正常晚班',
 	score decimal(8,2) comment '考核分',
-  sumWorkHour decimal(4,2) comment '总工时',
-  hourSalary  decimal(4,2)  comment '时薪=应发工资/总工时',
+  sumWorkHour decimal(8,2) comment '总工时',
+  hourSalary  decimal(8,2)  comment '时薪=应发工资/总工时',
   restDay decimal(4,1) comment '公休',
   sumDay decimal(4,1) comment '总天数',
-  daySalary  decimal(4,2)  comment '日工资 = 固定工资/总天数',
+  daySalary  decimal(8,2)  comment '日工资 = 固定工资/总天数',
 	dhbt decimal(8,2) comment '工资',
 	type int comment '类别 1计件工 2固定工',
 	timeSalary decimal(8,2) comment '计时工资',
@@ -674,7 +674,12 @@ CREATE TABLE t_Summary_Salary_Monthly(
 	legalOvertime decimal(4,2) comment '法假加班工时',
 	createTime datetime,
 	lastModifyTime datetime,
-	isDelete int NOT NULL
+	isDelete int NOT NULL,
+	workYearSubsidy decimal(4,2) comment '工龄补贴',
+	percentSubsidy decimal(4,2) comment '计件10% 补贴',
+	latheWorkerSubsidy decimal(4,2) comment '车工 补贴',
+	newLatheWorkerSubsidy decimal(4,2) comment '新车工 补贴',
+	twoSideSubsidy decimal(4,2) comment '覆面 补贴'
 );
 
 ## 文件

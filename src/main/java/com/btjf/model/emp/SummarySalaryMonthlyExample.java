@@ -716,6 +716,66 @@ public class SummarySalaryMonthlyExample {
             return (Criteria) this;
         }
 
+        public Criteria andWorkDayIsNull() {
+            addCriterion("workDay is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDayIsNotNull() {
+            addCriterion("workDay is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDayEqualTo(BigDecimal value) {
+            addCriterion("workDay =", value, "workDay");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDayNotEqualTo(BigDecimal value) {
+            addCriterion("workDay <>", value, "workDay");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDayGreaterThan(BigDecimal value) {
+            addCriterion("workDay >", value, "workDay");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDayGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("workDay >=", value, "workDay");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDayLessThan(BigDecimal value) {
+            addCriterion("workDay <", value, "workDay");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDayLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("workDay <=", value, "workDay");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDayIn(List<BigDecimal> values) {
+            addCriterion("workDay in", values, "workDay");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDayNotIn(List<BigDecimal> values) {
+            addCriterion("workDay not in", values, "workDay");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDayBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("workDay between", value1, value2, "workDay");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDayNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("workDay not between", value1, value2, "workDay");
+            return (Criteria) this;
+        }
+
         public Criteria andNightWorkIsNull() {
             addCriterion("nightWork is null");
             return (Criteria) this;
@@ -1796,6 +1856,66 @@ public class SummarySalaryMonthlyExample {
             return (Criteria) this;
         }
 
+        public Criteria andBasicSalaryIsNull() {
+            addCriterion("basicSalary is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicSalaryIsNotNull() {
+            addCriterion("basicSalary is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicSalaryEqualTo(BigDecimal value) {
+            addCriterion("basicSalary =", value, "basicSalary");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicSalaryNotEqualTo(BigDecimal value) {
+            addCriterion("basicSalary <>", value, "basicSalary");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicSalaryGreaterThan(BigDecimal value) {
+            addCriterion("basicSalary >", value, "basicSalary");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicSalaryGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("basicSalary >=", value, "basicSalary");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicSalaryLessThan(BigDecimal value) {
+            addCriterion("basicSalary <", value, "basicSalary");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicSalaryLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("basicSalary <=", value, "basicSalary");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicSalaryIn(List<BigDecimal> values) {
+            addCriterion("basicSalary in", values, "basicSalary");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicSalaryNotIn(List<BigDecimal> values) {
+            addCriterion("basicSalary not in", values, "basicSalary");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicSalaryBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("basicSalary between", value1, value2, "basicSalary");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicSalaryNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("basicSalary not between", value1, value2, "basicSalary");
+            return (Criteria) this;
+        }
+
         public Criteria andYlbxIsNull() {
             addCriterion("ylbx is null");
             return (Criteria) this;
@@ -2576,123 +2696,303 @@ public class SummarySalaryMonthlyExample {
             return (Criteria) this;
         }
 
-        public Criteria andWorkDayIsNull() {
-            addCriterion("workDay is null");
+        public Criteria andWorkYearSubsidyIsNull() {
+            addCriterion("workYearSubsidy is null");
             return (Criteria) this;
         }
 
-        public Criteria andWorkDayIsNotNull() {
-            addCriterion("workDay is not null");
+        public Criteria andWorkYearSubsidyIsNotNull() {
+            addCriterion("workYearSubsidy is not null");
             return (Criteria) this;
         }
 
-        public Criteria andWorkDayEqualTo(BigDecimal value) {
-            addCriterion("workDay =", value, "workDay");
+        public Criteria andWorkYearSubsidyEqualTo(BigDecimal value) {
+            addCriterion("workYearSubsidy =", value, "workYearSubsidy");
             return (Criteria) this;
         }
 
-        public Criteria andWorkDayNotEqualTo(BigDecimal value) {
-            addCriterion("workDay <>", value, "workDay");
+        public Criteria andWorkYearSubsidyNotEqualTo(BigDecimal value) {
+            addCriterion("workYearSubsidy <>", value, "workYearSubsidy");
             return (Criteria) this;
         }
 
-        public Criteria andWorkDayGreaterThan(BigDecimal value) {
-            addCriterion("workDay >", value, "workDay");
+        public Criteria andWorkYearSubsidyGreaterThan(BigDecimal value) {
+            addCriterion("workYearSubsidy >", value, "workYearSubsidy");
             return (Criteria) this;
         }
 
-        public Criteria andWorkDayGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("workDay >=", value, "workDay");
+        public Criteria andWorkYearSubsidyGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("workYearSubsidy >=", value, "workYearSubsidy");
             return (Criteria) this;
         }
 
-        public Criteria andWorkDayLessThan(BigDecimal value) {
-            addCriterion("workDay <", value, "workDay");
+        public Criteria andWorkYearSubsidyLessThan(BigDecimal value) {
+            addCriterion("workYearSubsidy <", value, "workYearSubsidy");
             return (Criteria) this;
         }
 
-        public Criteria andWorkDayLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("workDay <=", value, "workDay");
+        public Criteria andWorkYearSubsidyLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("workYearSubsidy <=", value, "workYearSubsidy");
             return (Criteria) this;
         }
 
-        public Criteria andWorkDayIn(List<BigDecimal> values) {
-            addCriterion("workDay in", values, "workDay");
+        public Criteria andWorkYearSubsidyIn(List<BigDecimal> values) {
+            addCriterion("workYearSubsidy in", values, "workYearSubsidy");
             return (Criteria) this;
         }
 
-        public Criteria andWorkDayNotIn(List<BigDecimal> values) {
-            addCriterion("workDay not in", values, "workDay");
+        public Criteria andWorkYearSubsidyNotIn(List<BigDecimal> values) {
+            addCriterion("workYearSubsidy not in", values, "workYearSubsidy");
             return (Criteria) this;
         }
 
-        public Criteria andWorkDayBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("workDay between", value1, value2, "workDay");
+        public Criteria andWorkYearSubsidyBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("workYearSubsidy between", value1, value2, "workYearSubsidy");
             return (Criteria) this;
         }
 
-        public Criteria andWorkDayNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("workDay not between", value1, value2, "workDay");
+        public Criteria andWorkYearSubsidyNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("workYearSubsidy not between", value1, value2, "workYearSubsidy");
             return (Criteria) this;
         }
 
-        public Criteria andBasicSalaryIsNull() {
-            addCriterion("basicSalary is null");
+        public Criteria andPercentSubsidyIsNull() {
+            addCriterion("percentSubsidy is null");
             return (Criteria) this;
         }
 
-        public Criteria andBasicSalaryIsNotNull() {
-            addCriterion("basicSalary is not null");
+        public Criteria andPercentSubsidyIsNotNull() {
+            addCriterion("percentSubsidy is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBasicSalaryEqualTo(BigDecimal value) {
-            addCriterion("basicSalary =", value, "basicSalary");
+        public Criteria andPercentSubsidyEqualTo(BigDecimal value) {
+            addCriterion("percentSubsidy =", value, "percentSubsidy");
             return (Criteria) this;
         }
 
-        public Criteria andBasicSalaryNotEqualTo(BigDecimal value) {
-            addCriterion("basicSalary <>", value, "basicSalary");
+        public Criteria andPercentSubsidyNotEqualTo(BigDecimal value) {
+            addCriterion("percentSubsidy <>", value, "percentSubsidy");
             return (Criteria) this;
         }
 
-        public Criteria andBasicSalaryGreaterThan(BigDecimal value) {
-            addCriterion("basicSalary >", value, "basicSalary");
+        public Criteria andPercentSubsidyGreaterThan(BigDecimal value) {
+            addCriterion("percentSubsidy >", value, "percentSubsidy");
             return (Criteria) this;
         }
 
-        public Criteria andBasicSalaryGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("basicSalary >=", value, "basicSalary");
+        public Criteria andPercentSubsidyGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("percentSubsidy >=", value, "percentSubsidy");
             return (Criteria) this;
         }
 
-        public Criteria andBasicSalaryLessThan(BigDecimal value) {
-            addCriterion("basicSalary <", value, "basicSalary");
+        public Criteria andPercentSubsidyLessThan(BigDecimal value) {
+            addCriterion("percentSubsidy <", value, "percentSubsidy");
             return (Criteria) this;
         }
 
-        public Criteria andBasicSalaryLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("basicSalary <=", value, "basicSalary");
+        public Criteria andPercentSubsidyLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("percentSubsidy <=", value, "percentSubsidy");
             return (Criteria) this;
         }
 
-        public Criteria andBasicSalaryIn(List<BigDecimal> values) {
-            addCriterion("basicSalary in", values, "basicSalary");
+        public Criteria andPercentSubsidyIn(List<BigDecimal> values) {
+            addCriterion("percentSubsidy in", values, "percentSubsidy");
             return (Criteria) this;
         }
 
-        public Criteria andBasicSalaryNotIn(List<BigDecimal> values) {
-            addCriterion("basicSalary not in", values, "basicSalary");
+        public Criteria andPercentSubsidyNotIn(List<BigDecimal> values) {
+            addCriterion("percentSubsidy not in", values, "percentSubsidy");
             return (Criteria) this;
         }
 
-        public Criteria andBasicSalaryBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("basicSalary between", value1, value2, "basicSalary");
+        public Criteria andPercentSubsidyBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("percentSubsidy between", value1, value2, "percentSubsidy");
             return (Criteria) this;
         }
 
-        public Criteria andBasicSalaryNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("basicSalary not between", value1, value2, "basicSalary");
+        public Criteria andPercentSubsidyNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("percentSubsidy not between", value1, value2, "percentSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andLatheWorkerSubsidyIsNull() {
+            addCriterion("latheWorkerSubsidy is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLatheWorkerSubsidyIsNotNull() {
+            addCriterion("latheWorkerSubsidy is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLatheWorkerSubsidyEqualTo(BigDecimal value) {
+            addCriterion("latheWorkerSubsidy =", value, "latheWorkerSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andLatheWorkerSubsidyNotEqualTo(BigDecimal value) {
+            addCriterion("latheWorkerSubsidy <>", value, "latheWorkerSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andLatheWorkerSubsidyGreaterThan(BigDecimal value) {
+            addCriterion("latheWorkerSubsidy >", value, "latheWorkerSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andLatheWorkerSubsidyGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("latheWorkerSubsidy >=", value, "latheWorkerSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andLatheWorkerSubsidyLessThan(BigDecimal value) {
+            addCriterion("latheWorkerSubsidy <", value, "latheWorkerSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andLatheWorkerSubsidyLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("latheWorkerSubsidy <=", value, "latheWorkerSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andLatheWorkerSubsidyIn(List<BigDecimal> values) {
+            addCriterion("latheWorkerSubsidy in", values, "latheWorkerSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andLatheWorkerSubsidyNotIn(List<BigDecimal> values) {
+            addCriterion("latheWorkerSubsidy not in", values, "latheWorkerSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andLatheWorkerSubsidyBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("latheWorkerSubsidy between", value1, value2, "latheWorkerSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andLatheWorkerSubsidyNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("latheWorkerSubsidy not between", value1, value2, "latheWorkerSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewLatheWorkerSubsidyIsNull() {
+            addCriterion("newLatheWorkerSubsidy is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewLatheWorkerSubsidyIsNotNull() {
+            addCriterion("newLatheWorkerSubsidy is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewLatheWorkerSubsidyEqualTo(BigDecimal value) {
+            addCriterion("newLatheWorkerSubsidy =", value, "newLatheWorkerSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewLatheWorkerSubsidyNotEqualTo(BigDecimal value) {
+            addCriterion("newLatheWorkerSubsidy <>", value, "newLatheWorkerSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewLatheWorkerSubsidyGreaterThan(BigDecimal value) {
+            addCriterion("newLatheWorkerSubsidy >", value, "newLatheWorkerSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewLatheWorkerSubsidyGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("newLatheWorkerSubsidy >=", value, "newLatheWorkerSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewLatheWorkerSubsidyLessThan(BigDecimal value) {
+            addCriterion("newLatheWorkerSubsidy <", value, "newLatheWorkerSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewLatheWorkerSubsidyLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("newLatheWorkerSubsidy <=", value, "newLatheWorkerSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewLatheWorkerSubsidyIn(List<BigDecimal> values) {
+            addCriterion("newLatheWorkerSubsidy in", values, "newLatheWorkerSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewLatheWorkerSubsidyNotIn(List<BigDecimal> values) {
+            addCriterion("newLatheWorkerSubsidy not in", values, "newLatheWorkerSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewLatheWorkerSubsidyBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("newLatheWorkerSubsidy between", value1, value2, "newLatheWorkerSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewLatheWorkerSubsidyNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("newLatheWorkerSubsidy not between", value1, value2, "newLatheWorkerSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andTwoSideSubsidyIsNull() {
+            addCriterion("twoSideSubsidy is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTwoSideSubsidyIsNotNull() {
+            addCriterion("twoSideSubsidy is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTwoSideSubsidyEqualTo(BigDecimal value) {
+            addCriterion("twoSideSubsidy =", value, "twoSideSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andTwoSideSubsidyNotEqualTo(BigDecimal value) {
+            addCriterion("twoSideSubsidy <>", value, "twoSideSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andTwoSideSubsidyGreaterThan(BigDecimal value) {
+            addCriterion("twoSideSubsidy >", value, "twoSideSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andTwoSideSubsidyGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("twoSideSubsidy >=", value, "twoSideSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andTwoSideSubsidyLessThan(BigDecimal value) {
+            addCriterion("twoSideSubsidy <", value, "twoSideSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andTwoSideSubsidyLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("twoSideSubsidy <=", value, "twoSideSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andTwoSideSubsidyIn(List<BigDecimal> values) {
+            addCriterion("twoSideSubsidy in", values, "twoSideSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andTwoSideSubsidyNotIn(List<BigDecimal> values) {
+            addCriterion("twoSideSubsidy not in", values, "twoSideSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andTwoSideSubsidyBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("twoSideSubsidy between", value1, value2, "twoSideSubsidy");
+            return (Criteria) this;
+        }
+
+        public Criteria andTwoSideSubsidyNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("twoSideSubsidy not between", value1, value2, "twoSideSubsidy");
             return (Criteria) this;
         }
 

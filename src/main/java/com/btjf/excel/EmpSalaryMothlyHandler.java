@@ -244,7 +244,11 @@ public class EmpSalaryMothlyHandler extends BaseExcelHandler {
                 }
 
                 //取固定工资/总天数，保留2位小数，四舍五入
-                monthly.setDaySalary(BigDecimal.valueOf(BigDecimalUtil.div(monthly.getSalary().doubleValue(), sumWorkDay)));
+                if (monthly.getSalary() == null) {
+                    monthly.setDaySalary(BigDecimal.ZERO);
+                } else {
+                    monthly.setDaySalary(BigDecimal.valueOf(BigDecimalUtil.div(monthly.getSalary().doubleValue(), sumWorkDay)));
+                }
                 monthly.setRealSalary(BigDecimal.ZERO);
                 monthly.setCreateTime(new Date());
                 monthly.setLastModifyTime(new Date());

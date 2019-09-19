@@ -61,6 +61,7 @@ public class EmpSalaryMonthlyService {
         return Optional.ofNullable(id).map(t -> {
             return empSalaryMonthlyMapper.selectByPrimaryKey(t);
         }).orElse(null);
+
     }
 
     public Page<EmpSalaryMonthly> getPage(String yearMonth, String empName, String deptName, Page page) {
@@ -100,17 +101,16 @@ public class EmpSalaryMonthlyService {
                         //todo 计件工
                         //获取计件工资
                         List<ProductionProcedureConfirm> list = productionProcedureConfirmService.getUnSettlement(
-                                empSalaryMonthly.getYearMonth(),empSalaryMonthly.getEmpId());
+                                empSalaryMonthly.getYearMonth(), empSalaryMonthly.getEmpId());
                         BigDecimal sum = BigDecimal.valueOf(0.0);
-                        if(CollectionUtils.isNotEmpty(list)){
+                        if (CollectionUtils.isNotEmpty(list)) {
                             sum = list.stream().map(ProductionProcedureConfirm::getMoney).reduce(BigDecimal.ZERO, BigDecimal::add);
                         }
 
 
-
                         //将记录改为已结算
-                        if(CollectionUtils.isNotEmpty(list)){
-                            List<Integer> ids=list.stream().map(ProductionProcedureConfirm::getId).collect(Collectors.toList());
+                        if (CollectionUtils.isNotEmpty(list)) {
+                            List<Integer> ids = list.stream().map(ProductionProcedureConfirm::getId).collect(Collectors.toList());
                             productionProcedureConfirmService.updateSettlement(ids);
                         }
                     } else if (2 == empSalaryMonthly.getType()) {
@@ -127,6 +127,7 @@ public class EmpSalaryMonthlyService {
 
     /**
      * 固定工工资计算
+     *
      * @param empSalaryMonthly
      */
     public void calculationFixed(EmpSalaryMonthly empSalaryMonthly) {
@@ -139,10 +140,11 @@ public class EmpSalaryMonthlyService {
         summarySalaryMonthly.setScore(empSalaryMonthly.getScore());
         summarySalaryMonthly.setWorkName(empSalaryMonthly.getWorkName());
         summarySalaryMonthly.setEmpId(empSalaryMonthly.getEmpId());
+        summarySalaryMonthly.setYearMonth(empSalaryMonthly.getYearMonth());
         Emp emp = empService.getByID(empSalaryMonthly.getEmpId());
         if (emp != null) {
             //月工资
-            summarySalaryMonthly.setDhbt(emp.getDhbt());
+            summarySalaryMonthly.setDhbt(emp.getSalary());
         }
         //工作日
         summarySalaryMonthly.setWorkDay(empSalaryMonthly.getWorkDay());
@@ -165,9 +167,14 @@ public class EmpSalaryMonthlyService {
         //总天数
         summarySalaryMonthly.setSumDay(empSalaryMonthly.getSumDay());
         //日工资  取固定工资/总天数，保留2位小数，四舍五入
-        summarySalaryMonthly.setDaySalary(BigDecimal.valueOf(BigDecimalUtil.div(emp.getDhbt().doubleValue(), summarySalaryMonthly.getSumDay().doubleValue(), 2)));
+        if (emp.getSalary() == null) {
+            summarySalaryMonthly.setDaySalary(BigDecimal.valueOf(0));
+            summarySalaryMonthly.setBasicSalary(BigDecimal.ZERO);
+        } else {
+            summarySalaryMonthly.setBasicSalary(BigDecimal.valueOf(BigDecimalUtil.mul(BigDecimalUtil.div(emp.getSalary().doubleValue(), summarySalaryMonthly.getWorkDay().doubleValue()), summarySalaryMonthly.getSumDay().doubleValue())));
+            summarySalaryMonthly.setDaySalary(BigDecimal.valueOf(BigDecimalUtil.div(emp.getSalary().doubleValue(), summarySalaryMonthly.getSumDay().doubleValue(), 2)));
+        }
         //基本工资  月工资/工作日*总天数
-        summarySalaryMonthly.setBasicSalary(BigDecimal.valueOf(BigDecimalUtil.mul(BigDecimalUtil.div(emp.getDhbt().doubleValue(), summarySalaryMonthly.getWorkDay().doubleValue()), summarySalaryMonthly.getSumDay().doubleValue())));
         //计时工资
         summarySalaryMonthly.setTimeSalary(empTimeSalaryService.getTimeSalary(empSalaryMonthly.getYearMonth(), emp.getId()));
         summarySalaryMonthly.setNigthSnack(empSalaryMonthly.getNightWork() == null ? BigDecimal.ZERO : empSalaryMonthly.getNightWork());
@@ -197,13 +204,20 @@ public class EmpSalaryMonthlyService {
         summarySalaryMonthly.setSybx(emp.getSybx() == null ? BigDecimal.ZERO : emp.getSybx());
         summarySalaryMonthly.setGjj(emp.getGjj() == null ? BigDecimal.ZERO : emp.getGjj());
         summarySalaryMonthly.setOtherDeduction(empSubsibyMonthlyService.getSumSubsiby(empSalaryMonthly.getYearMonth(), emp.getId(), SubsidyTypeEnum.OTHER.getValue()));
-        summarySalaryMonthly.setSumDeduction(summarySalaryMonthly.getOtherDeduction().add(summarySalaryMonthly.getMealSubsidy()));
+        summarySalaryMonthly.setSumDeduction(summarySalaryMonthly.getOtherDeduction().add(summarySalaryMonthly.getMealSubsidy().
+                add(summarySalaryMonthly.getGjj().add(summarySalaryMonthly.getYiliaobx().add(summarySalaryMonthly.getYlbx().add(summarySalaryMonthly.getSybx()))))));
 
         //应发工资-养老金-医疗险-失业金-公积金-用餐扣款-其他扣款
         summarySalaryMonthly.setTrueSalary(BigDecimal.valueOf(BigDecimalUtil.sub(summarySalaryMonthly.getRealSalary().doubleValue(),
                 summarySalaryMonthly.getYlbx().doubleValue(), summarySalaryMonthly.getYiliaobx().doubleValue(),
                 summarySalaryMonthly.getSybx().doubleValue(), summarySalaryMonthly.getGjj().doubleValue(),
                 summarySalaryMonthly.getMealSubsidy().doubleValue(), summarySalaryMonthly.getOtherDeduction().doubleValue())));
+        //时薪  = 应发工资/总工时
+        if (summarySalaryMonthly.getSumWorkHour() == null || summarySalaryMonthly.getSumWorkHour().equals(BigDecimal.ZERO)) {
+            summarySalaryMonthly.setHourSalary(BigDecimal.ZERO);
+        } else {
+            summarySalaryMonthly.setHourSalary(BigDecimal.valueOf(BigDecimalUtil.div(summarySalaryMonthly.getTrueSalary() == null ? 0 : summarySalaryMonthly.getTrueSalary().doubleValue(), summarySalaryMonthly.getSumWorkHour().doubleValue(), 2)));
+        }
 
         //汇总表里面要用  正常加班工时  假日加班工时  法假加班工时
         summarySalaryMonthly.setNormalOvertime(BigDecimal.valueOf(BigDecimalUtil.mul(empSalaryMonthly.getNightWork().doubleValue(), 3.0)));
