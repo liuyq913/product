@@ -37,5 +37,5 @@ public class EmpSalaryControler extends ProductBaseController {
         return XaResult.success(row);
     }
 
-    public XaResult<>
+   // public XaResult<>
 }

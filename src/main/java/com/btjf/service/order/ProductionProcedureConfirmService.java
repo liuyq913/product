@@ -214,4 +214,16 @@ public class ProductionProcedureConfirmService {
         pageInfo.setList(pmList);
         return new Page<>(pageInfo);
     }
+
+
+    public List<ProductionProcedureConfirm> getUnSettlement(String yearMonth, Integer empId) {
+        if(StringUtils.isEmpty(yearMonth) || empId ==null){
+            return null;
+        }
+        return productionProcedureConfirmMapper.getUnSettlement(yearMonth, empId);
+    }
+
+    public void updateSettlement(List<Integer> ids) {
+        productionProcedureConfirmMapper.updateSettlement(ids);
+    }
 }
