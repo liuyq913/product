@@ -102,7 +102,13 @@ public class LaborBasicController extends ProductBaseController{
             return XaResult.error("时薪必须大于0");
         }
         if(id == null){
-            SalaryMonthly salaryMonthly = new SalaryMonthly();
+            SalaryMonthly salaryMonthly = salaryMonthlyService.getByYearMonth(yearMonth);
+            if (salaryMonthly == null){
+                salaryMonthly = new SalaryMonthly();
+            }else{
+                return XaResult.error("该月份已经设置工资，请勿重复提交");
+            }
+
             salaryMonthly.setBasicSalary(BigDecimal.valueOf(basicSalary));
             salaryMonthly.setExpectWorkDay(expectWorkDay);
             salaryMonthly.setRealityWorkDay(realityWorkDay);
@@ -123,6 +129,34 @@ public class LaborBasicController extends ProductBaseController{
             salaryMonthlyService.update(salaryMonthly);
         }
 
+
+        return XaResult.success();
+    }
+
+    /**
+     * 工资月度 结算
+     *
+     * @return
+     */
+    @RequestMapping(value = "/salary/setValue", method = RequestMethod.POST)
+    public XaResult<String> setValue(String yearMonth, Integer isMore) {
+        if(StringUtils.isEmpty(yearMonth)){
+            return XaResult.error("年月不能为空");
+        }
+        if(!BaseExcelHandler.isRightDateStr(yearMonth,"yyyy-MM")){
+            return XaResult.error("年月格式不符，请更正为yyyy-MM");
+        }
+        if(isMore == null){
+            return XaResult.error("产值不能为空");
+        }
+        SalaryMonthly salaryMonthly = salaryMonthlyService.getByYearMonth(yearMonth);
+        if (salaryMonthly == null){
+            return XaResult.error("请先设置该月工资");
+        }else{
+            salaryMonthly.setIsMore(isMore);
+            salaryMonthly.setLastModifyTime(new Date());
+            salaryMonthlyService.update(salaryMonthly);
+        }
 
         return XaResult.success();
     }
