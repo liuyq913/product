@@ -2,9 +2,8 @@ package com.btjf.mapper.salary;
 
 import com.btjf.model.salary.SalaryMonthly;
 import com.btjf.model.salary.SalaryMonthlyExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface SalaryMonthlyMapper {
     /**

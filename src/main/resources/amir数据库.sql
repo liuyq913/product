@@ -532,6 +532,7 @@ CREATE TABLE t_Salary_Monthly(
 	realityWorkDay int comment '正常上班天数',
 	basicSalary decimal(8,2) comment '基本工资',
   hourlyWage decimal(4,2) comment '时薪',
+  isMore int(11) comment '1大于500万  2 小于500万',
 	createTime datetime,
 	lastModifyTime datetime,
 	isDelete int NOT NULL

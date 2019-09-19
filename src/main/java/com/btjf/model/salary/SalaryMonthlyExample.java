@@ -566,6 +566,66 @@ public class SalaryMonthlyExample {
             return (Criteria) this;
         }
 
+        public Criteria andIsMoreIsNull() {
+            addCriterion("isMore is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsMoreIsNotNull() {
+            addCriterion("isMore is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsMoreEqualTo(Integer value) {
+            addCriterion("isMore =", value, "isMore");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsMoreNotEqualTo(Integer value) {
+            addCriterion("isMore <>", value, "isMore");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsMoreGreaterThan(Integer value) {
+            addCriterion("isMore >", value, "isMore");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsMoreGreaterThanOrEqualTo(Integer value) {
+            addCriterion("isMore >=", value, "isMore");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsMoreLessThan(Integer value) {
+            addCriterion("isMore <", value, "isMore");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsMoreLessThanOrEqualTo(Integer value) {
+            addCriterion("isMore <=", value, "isMore");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsMoreIn(List<Integer> values) {
+            addCriterion("isMore in", values, "isMore");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsMoreNotIn(List<Integer> values) {
+            addCriterion("isMore not in", values, "isMore");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsMoreBetween(Integer value1, Integer value2) {
+            addCriterion("isMore between", value1, value2, "isMore");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsMoreNotBetween(Integer value1, Integer value2) {
+            addCriterion("isMore not between", value1, value2, "isMore");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateTimeIsNull() {
             addCriterion("createTime is null");
             return (Criteria) this;
