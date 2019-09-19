@@ -126,6 +126,8 @@ public class SystemController {
             return "O";
         }else if(type == 4){
             return "P";
+        }else if(type == 5){
+            return "S";
         }else{
             return null;
         }

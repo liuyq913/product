@@ -1,11 +1,15 @@
 package com.btjf.service.emp;
 
+import com.btjf.common.page.Page;
 import com.btjf.mapper.emp.SummarySalaryMonthlyMapper;
 import com.btjf.model.emp.SummarySalaryMonthly;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -31,5 +35,21 @@ public class SummarySalaryMonthlyService {
                 return summarySalaryMonthly1.getId();
             }
         }).orElse(0);
+    }
+
+    public List<SummarySalaryMonthly> getList(String yearMonth, String deptName, String empName,
+                                              Integer type) {
+        List<SummarySalaryMonthly> summarySalaryMonthlies = summarySalaryMonthlyMapper.getList(yearMonth, deptName, empName, type);
+        return summarySalaryMonthlies;
+    }
+
+
+    public Page<SummarySalaryMonthly> getPage(String yearMonth, String deptName, String empName,
+                                              Integer type, Page page) {
+        PageHelper.startPage(page.getPage(), page.getRp());
+        List<SummarySalaryMonthly> summarySalaryMonthlies = this.getList(yearMonth, deptName, empName, type);
+        PageInfo pageInfo = new PageInfo(summarySalaryMonthlies);
+        pageInfo.setList(summarySalaryMonthlies);
+        return new Page<>(pageInfo);
     }
 }
