@@ -9,6 +9,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,5 +69,15 @@ public class EmpSubsibyMonthlyService {
 
     public Integer confirm(List<String> ids) {
         return empSubsibyMonthlyMapper.confirm(ids);
+    }
+
+
+    /**
+     * 根据月份 名称 类型 获取补贴金额
+     * @return
+     */
+    public BigDecimal getSumSubsiby(String yearMonth,Integer empID, Integer type){
+        Double sumTimeSalary = empSubsibyMonthlyMapper.getSumSubsiby(yearMonth, empID, type);
+        return BigDecimal.valueOf(sumTimeSalary != null ? sumTimeSalary : 0);
     }
 }

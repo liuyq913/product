@@ -2,8 +2,9 @@ package com.btjf.mapper.emp;
 
 import com.btjf.model.emp.EmpTimesalaryMonthly;
 import com.btjf.model.emp.EmpTimesalaryMonthlyExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface EmpTimesalaryMonthlyMapper {
     /**
@@ -94,11 +95,13 @@ public interface EmpTimesalaryMonthlyMapper {
      */
     int updateByPrimaryKey(EmpTimesalaryMonthly record);
 
-    List<EmpTimesalaryMonthly> findByBillNo(@Param("billNo")String billNo);
+    List<EmpTimesalaryMonthly> findByBillNo(@Param("billNo") String billNo);
 
-    void confirm(@Param("list")List<Integer> list);
+    void confirm(@Param("list") List<Integer> list);
 
-    List<EmpTimesalaryMonthly> findList(@Param("yearMonth")String yearMonth, @Param("empName")String empName,
-                                        @Param("deptName")String deptName, @Param("billNo")String billNo,
-                                        @Param("isConfirm")Integer isConfirm);
+    List<EmpTimesalaryMonthly> findList(@Param("yearMonth") String yearMonth, @Param("empName") String empName,
+                                        @Param("deptName") String deptName, @Param("billNo") String billNo,
+                                        @Param("isConfirm") Integer isConfirm);
+
+    Double getTimeSalary(@Param("yearMonth") String yearMonth, @Param("empId") Integer empId);
 }

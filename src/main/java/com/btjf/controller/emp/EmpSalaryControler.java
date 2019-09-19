@@ -36,4 +36,6 @@ public class EmpSalaryControler extends ProductBaseController {
         Integer row = empSalaryMothlyService.calculation(yearMonth, deptName, empName);
         return XaResult.success(row);
     }
+
+   // public XaResult<>
 }
