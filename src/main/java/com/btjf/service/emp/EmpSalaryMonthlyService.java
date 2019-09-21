@@ -6,7 +6,6 @@ import com.btjf.constant.SubsidyTypeEnum;
 import com.btjf.mapper.emp.EmpSalaryMonthlyMapper;
 import com.btjf.model.emp.Emp;
 import com.btjf.model.emp.EmpSalaryMonthly;
-import com.btjf.model.emp.EmpWork;
 import com.btjf.model.emp.SummarySalaryMonthly;
 import com.btjf.model.order.ProductionProcedureConfirm;
 import com.btjf.model.salary.SalaryMonthly;
@@ -107,8 +106,6 @@ public class EmpSalaryMonthlyService {
 
     public Integer calculation(String yearMonth, String deptName, String empName) {
         List<EmpSalaryMonthly> empSalaryMonthlies = this.getList(yearMonth, deptName, empName);
-        //先删除上次的结算结果
-        summarySalaryMonthlyService.delete(yearMonth);
         ThreadPoolExecutor executor = ThreadPoolExecutorUtil.getPool();
         executor.execute(() -> {
             if (!CollectionUtils.isEmpty(empSalaryMonthlies)) {
