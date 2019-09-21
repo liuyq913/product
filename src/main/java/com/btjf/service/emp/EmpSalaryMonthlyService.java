@@ -214,7 +214,7 @@ public class EmpSalaryMonthlyService {
         summarySalaryMonthly.setWorkYearSubsidy(BigDecimal.valueOf(SalaryHandler.getWorkYearSubsidy(months, salaryMonthly.getIsMore())));
         if(empSalaryMonthly.getWorkName().equals(WORK_CHEGONG)){
             if (DEPT_LIST.contains(empSalaryMonthly.getDeptName())){
-                summarySalaryMonthly.setNewLatheWorkerSubsidy(BigDecimal.valueOf(SalaryHandler.getNewLatheWorkerSubsidy(months)));
+                summarySalaryMonthly.setNewLatheWorkerSubsidy(summarySalaryMonthly.getDayWork().multiply(BigDecimal.valueOf(SalaryHandler.getNewLatheWorkerSubsidy(months))));
             }
             BigDecimal latheWorkerSubsidy = summarySalaryMonthly.getDayWork().multiply(BigDecimal.valueOf(10))
                     .add(summarySalaryMonthly.getNightWork().multiply(BigDecimal.valueOf(5)));
