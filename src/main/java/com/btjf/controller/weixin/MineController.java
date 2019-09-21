@@ -6,10 +6,12 @@ import com.btjf.controller.base.ProductBaseController;
 import com.btjf.controller.weixin.vo.WxEmpVo;
 import com.btjf.model.emp.Emp;
 import com.btjf.model.emp.EmpSalaryMonthly;
+import com.btjf.model.emp.SummarySalaryMonthly;
 import com.btjf.model.order.Order;
 import com.btjf.model.sys.Sysdept;
 import com.btjf.service.emp.EmpSalaryMonthlyService;
 import com.btjf.service.emp.EmpService;
+import com.btjf.service.emp.SummarySalaryMonthlyService;
 import com.btjf.service.order.ProductionProcedureConfirmService;
 import com.btjf.service.sys.SysDeptService;
 import com.btjf.util.BigDecimalUtil;
@@ -37,7 +39,7 @@ public class MineController  extends ProductBaseController {
     @Resource
     private ProductionProcedureConfirmService productionProcedureConfirmService;
     @Resource
-    private EmpSalaryMonthlyService empSalaryMonthlyService;
+    private SummarySalaryMonthlyService summarySalaryMonthlyService;
 
 
     /**
@@ -252,12 +254,12 @@ public class MineController  extends ProductBaseController {
             return XaResult.error("月份不能为空");
         }
         WxEmpVo vo = getWxLoginUser();
-        EmpSalaryMonthly empSalaryMonthly = empSalaryMonthlyService.getByYearMonthAndName(yearMonth, vo.getName());
-        if (empSalaryMonthly == null){
+        SummarySalaryMonthly summarySalaryMonthly = summarySalaryMonthlyService.getByYearMonthAndName(yearMonth, vo.getName());
+        if (summarySalaryMonthly == null){
             return XaResult.error("未结算");
         }
-        //TODO 实体未转
-        return XaResult.success();
+        SalaryVo salaryVo = new SalaryVo(summarySalaryMonthly);
+        return XaResult.success(salaryVo);
     }
 
 

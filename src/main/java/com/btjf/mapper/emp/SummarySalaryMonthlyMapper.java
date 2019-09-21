@@ -98,4 +98,6 @@ public interface SummarySalaryMonthlyMapper {
     SummarySalaryMonthly getByEmpIDAndYearMonth(@Param("empId") Integer empId, @Param("yearMonth") String yearMonth);
 
     List<SummarySalaryMonthly> getList(@Param("yearMonth") String yearMonth, @Param("deptName") String deptName, @Param("empName") String empName, @Param("type") Integer type);
+
+    void delete(@Param("yearMonth")String yearMonth);
 }

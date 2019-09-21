@@ -181,6 +181,7 @@
             <include refid="Example_Where_Clause"/>
         </if>
     </delete>
+
     <insert id="insert" parameterType="com.btjf.model.emp.SummarySalaryMonthly">
         <!--
           WARNING - @mbg.generated
@@ -948,4 +949,9 @@
         </if>
         order by createTime desc
     </select>
+
+    <update id="delete">
+        update t_Summary_Salary_Monthly set isDelete = 1
+        where yearMonth = #{yearMonth}
+    </update>
 </mapper>

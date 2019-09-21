@@ -5,6 +5,7 @@ import com.btjf.mapper.emp.SummarySalaryMonthlyMapper;
 import com.btjf.model.emp.SummarySalaryMonthly;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -51,5 +52,17 @@ public class SummarySalaryMonthlyService {
         PageInfo pageInfo = new PageInfo(summarySalaryMonthlies);
         pageInfo.setList(summarySalaryMonthlies);
         return new Page<>(pageInfo);
+    }
+
+    public SummarySalaryMonthly getByYearMonthAndName(String yearMonth, String name) {
+        List<SummarySalaryMonthly> summarySalaryMonthlies = this.getList(yearMonth, null, name, null);
+        if(CollectionUtils.isNotEmpty(summarySalaryMonthlies)){
+            return summarySalaryMonthlies.get(0);
+        }
+        return null;
+    }
+
+    public void delete(String yearMonth){
+        summarySalaryMonthlyMapper.delete(yearMonth);
     }
 }

@@ -65,6 +65,66 @@ public class PmInController extends ProductBaseController {
         return result;
     }
 
+    @RequestMapping(value = "create", method = RequestMethod.POST)
+    public XaResult<Integer> create(@ApiParam("编号") String pmNo, @ApiParam("名称")String name,
+                                    @ApiParam("入库数量") Double num,
+                                    @ApiParam("单位") String unit, @ApiParam("类型") String type,
+                                    @ApiParam("入库日期") String date,@ApiParam("备注") String remark) {
+        LOGGER.info(getRequestParamsAndUrl());
+        if(StringUtils.isEmpty(pmNo)){
+            return XaResult.error("材料编号不可为空");
+        }
+        if(num == null){
+            return XaResult.error("材料数量不可为空");
+        }
+        SysUser sysUser = getLoginUser();
+
+
+        Pm pm = pmService.getByNo(pmNo);
+        if (pm == null){
+            pm.setPmNo(pmNo);
+            pm.setName(name);
+            pm.setType(type);
+            pm.setUnit(unit);
+            pm.setRemark(remark);
+            pm.setCreateTime(new Date());
+            pm.setOperator(sysUser.getUserName());
+            pm.setNum(BigDecimal.ZERO);
+            pm.setIsDelete(0);
+            pmService.insert(pm);
+        }else{
+            Pm pm1 = new Pm();
+            pm1.setId(pm.getId());
+            pm1.setNum(BigDecimal.valueOf(BigDecimalUtil.add(pm.getNum().doubleValue(), num)));
+            pm.setLastModifyTime(new Date());
+            pmService.updateByID(pm1);
+        }
+        PmIn pmIn = new PmIn();
+        pmIn.setPmId(pm.getId());
+        pmIn.setPmNo(pm.getPmNo());
+        pmIn.setPmName(pm.getName());
+        pmIn.setType(pm.getType());
+        pmIn.setUnit(pm.getUnit());
+        pmIn.setRemark(remark);
+        pmIn.setSupplier("");
+        if(StringUtils.isEmpty(date)){
+            pmIn.setInDate(new Date());
+        }else {
+            pmIn.setInDate(DateUtil.string2Date(date, DateUtil.ymdFormat));
+        }
+        pmIn.setNum(BigDecimal.valueOf(num));
+        pmIn.setPerNum(pm.getNum());
+        pmIn.setBackNum(BigDecimal.valueOf(BigDecimalUtil.add(pm.getNum().doubleValue(), num)));
+        pmIn.setOperator(sysUser.getUserName());
+        pmIn.setCreateTime(new Date());
+        pmIn.setIsDelete(0);
+        pmInService.create(pmIn);
+
+        return XaResult.success();
+
+    }
+
+
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public XaResult<Integer> add(@ApiParam("id") Integer id, @ApiParam("入库数量") Double num, @ApiParam("供应单位")
             String supplier, @ApiParam("入库日期") String date,@ApiParam("备注") String remark) {

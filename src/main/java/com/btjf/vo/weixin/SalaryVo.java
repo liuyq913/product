@@ -1,5 +1,8 @@
 package com.btjf.vo.weixin;
 
+import com.btjf.model.emp.EmpSalaryMonthly;
+import com.btjf.model.emp.SummarySalaryMonthly;
+
 import java.math.BigDecimal;
 
 public class SalaryVo {
@@ -31,6 +34,39 @@ public class SalaryVo {
     private BigDecimal otherDeduction;
 
     private BigDecimal sumCompany;//公司缴纳
+
+    public SalaryVo() {
+    }
+
+    public SalaryVo(SummarySalaryMonthly summarySalaryMonthly) {
+        basicSalary = summarySalaryMonthly.getBasicSalary();
+        trueSalary = summarySalaryMonthly.getTrueSalary();
+        timeSalary = summarySalaryMonthly.getTimeSalary();
+        score = summarySalaryMonthly.getScore();
+
+        realSalary = summarySalaryMonthly.getRealSalary();
+        mealSubsidy = summarySalaryMonthly.getMealSubsidy();
+        nigthSnack = summarySalaryMonthly.getNigthSnack();
+        socialSubsidy = summarySalaryMonthly.getSocialSubsidy();
+        workYearSubsidy = summarySalaryMonthly.getWorkYearSubsidy();
+        hourSubsidy = summarySalaryMonthly.getHourSubsidy();
+        percentSubsidy = summarySalaryMonthly.getPercentSubsidy();
+        latheWorkerSubsidy = summarySalaryMonthly.getLatheWorkerSubsidy();
+        newLatheWorkerSubsidy = summarySalaryMonthly.getNewLatheWorkerSubsidy();
+        twoSideSubsidy = summarySalaryMonthly.getTwoSideSubsidy();
+        otherSubsidy = summarySalaryMonthly.getOtherSubsidy();
+
+        ylbx = summarySalaryMonthly.getYlbx();
+        yiliaobx = summarySalaryMonthly.getYiliaobx();
+        sybx = summarySalaryMonthly.getSybx();
+        mealDeduction = summarySalaryMonthly.getMealSubsidy();
+        otherDeduction = summarySalaryMonthly.getOtherDeduction();
+
+        sumIncome = realSalary.add(mealSubsidy).add(nigthSnack).add(socialSubsidy).add(workYearSubsidy).add(hourSubsidy)
+        .add(percentSubsidy).add(latheWorkerSubsidy).add(newLatheWorkerSubsidy).add(twoSideSubsidy).add(otherSubsidy);
+        sumDeduction = summarySalaryMonthly.getSumDeduction();
+        sumCompany = ylbx.add(yiliaobx).add(sybx);
+    }
 
 
     public BigDecimal getTrueSalary() {
