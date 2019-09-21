@@ -91,9 +91,10 @@ public class PmInController extends ProductBaseController {
         }
         SysUser sysUser = getLoginUser();
 
-
+        PmIn pmIn = new PmIn();
         Pm pm = pmService.getByNo(pmNo);
         if (pm == null){
+            pm = new Pm();
             pm.setPmNo(pmNo);
             pm.setName(name);
             pm.setType(type);
@@ -101,17 +102,21 @@ public class PmInController extends ProductBaseController {
             pm.setRemark(remark);
             pm.setCreateTime(new Date());
             pm.setOperator(sysUser.getUserName());
-            pm.setNum(BigDecimal.ZERO);
+            pm.setNum(BigDecimal.valueOf(num));
             pm.setIsDelete(0);
             pmService.insert(pm);
+            pmIn.setPerNum(BigDecimal.ZERO);
+            pmIn.setBackNum(BigDecimal.valueOf(num));
         }else{
             Pm pm1 = new Pm();
             pm1.setId(pm.getId());
             pm1.setNum(BigDecimal.valueOf(BigDecimalUtil.add(pm.getNum().doubleValue(), num)));
             pm.setLastModifyTime(new Date());
             pmService.updateByID(pm1);
+            pmIn.setPerNum(pm.getNum());
+            pmIn.setBackNum(BigDecimal.valueOf(BigDecimalUtil.add(pm.getNum().doubleValue(), num)));
         }
-        PmIn pmIn = new PmIn();
+
         pmIn.setPmId(pm.getId());
         pmIn.setPmNo(pm.getPmNo());
         pmIn.setPmName(pm.getName());
@@ -125,8 +130,6 @@ public class PmInController extends ProductBaseController {
             pmIn.setInDate(DateUtil.string2Date(date, DateUtil.ymdFormat));
         }
         pmIn.setNum(BigDecimal.valueOf(num));
-        pmIn.setPerNum(pm.getNum());
-        pmIn.setBackNum(BigDecimal.valueOf(BigDecimalUtil.add(pm.getNum().doubleValue(), num)));
         pmIn.setOperator(sysUser.getUserName());
         pmIn.setCreateTime(new Date());
         pmIn.setIsDelete(0);
