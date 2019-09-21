@@ -583,7 +583,7 @@ CREATE TABLE t_Score(
   score decimal(8,2) comment '考核分',
   checkworkScore decimal(8,2) comment '考勤分',
   isDelete int NOT NULL
-	)
+	);
 
 
 ## 员工 月度各种补贴、扣款表
