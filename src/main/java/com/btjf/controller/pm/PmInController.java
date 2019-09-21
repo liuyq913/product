@@ -74,6 +74,18 @@ public class PmInController extends ProductBaseController {
         if(StringUtils.isEmpty(pmNo)){
             return XaResult.error("材料编号不可为空");
         }
+        if(StringUtils.isEmpty(name)){
+            return XaResult.error("材料名称不可为空");
+        }
+        if(StringUtils.isEmpty(unit)){
+            return XaResult.error("材料单位不可为空");
+        }
+        if(StringUtils.isEmpty(type)){
+            return XaResult.error("材料类型不可为空");
+        }
+        if(StringUtils.isEmpty(date)){
+            return XaResult.error("入库日期不可为空");
+        }
         if(num == null){
             return XaResult.error("材料数量不可为空");
         }
