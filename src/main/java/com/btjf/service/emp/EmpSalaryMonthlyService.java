@@ -208,11 +208,32 @@ public class EmpSalaryMonthlyService {
         summarySalaryMonthly.setOtherSubsidy(empSubsibyMonthlyService.getSumSubsiby(empSalaryMonthly.getYearMonth(), emp.getId(), SubsidyTypeEnum.SALARY.getValue()));
         //用餐补贴
         summarySalaryMonthly.setMealSubsidy(BigDecimal.valueOf(BigDecimalUtil.mul(empSalaryMonthly.getDayWork().doubleValue(), 6.0)));
+
+
+        //入职时间
+        Integer months = SalaryHandler.getMonths(emp.getEntryDate());
+        SalaryMonthly salaryMonthly = salaryMonthlyService.getByYearMonth(empSalaryMonthly.getYearMonth());
+        //5个补贴
+        summarySalaryMonthly.setWorkYearSubsidy(BigDecimal.valueOf(SalaryHandler.getWorkYearSubsidy(months, salaryMonthly.getIsMore())));
+        if(empSalaryMonthly.getWorkName().equals(WORK_CHEGONG)){
+            if (DEPT_LIST.contains(empSalaryMonthly.getDeptName())){
+                summarySalaryMonthly.setNewLatheWorkerSubsidy(BigDecimal.valueOf(SalaryHandler.getNewLatheWorkerSubsidy(months)));
+            }
+            BigDecimal latheWorkerSubsidy = summarySalaryMonthly.getDayWork().multiply(BigDecimal.valueOf(10))
+                    .add(summarySalaryMonthly.getNightWork().multiply(BigDecimal.valueOf(5)));
+            summarySalaryMonthly.setLatheWorkerSubsidy(latheWorkerSubsidy);
+            summarySalaryMonthly.setPercentSubsidy(emp.getWorkId().equals(3)? sum.multiply(BigDecimal.valueOf(0.1)):BigDecimal.ZERO);
+        }
+        summarySalaryMonthly.setTwoSideSubsidy(twoSide.multiply(BigDecimal.valueOf(SalaryHandler.getTwoSideSubsidy(months))));
+
+
         //补贴合计 夜餐+电话补贴+用餐补贴+社保补贴+住房补贴+其他补贴
         summarySalaryMonthly.setSumSusbsidy(BigDecimal.valueOf(BigDecimalUtil.add(summarySalaryMonthly.getNigthSnack().doubleValue(),
-                summarySalaryMonthly.getPhoneSubsidy().doubleValue(), summarySalaryMonthly.getMealSubsidy().doubleValue(),
+                summarySalaryMonthly.getMealSubsidy().doubleValue(),
                 summarySalaryMonthly.getSocialSubsidy().doubleValue(), summarySalaryMonthly.getHourSubsidy().doubleValue(),
-                summarySalaryMonthly.getOtherSubsidy().doubleValue())));
+                summarySalaryMonthly.getWorkYearSubsidy().doubleValue(),summarySalaryMonthly.getNewLatheWorkerSubsidy().doubleValue(),
+                summarySalaryMonthly.getLatheWorkerSubsidy().doubleValue(),summarySalaryMonthly.getPercentSubsidy().doubleValue(),
+                summarySalaryMonthly.getTwoSideSubsidy().doubleValue(),summarySalaryMonthly.getOtherSubsidy().doubleValue())));
         //基本工资+计时工资+补贴合计
         summarySalaryMonthly.setRealSalary(BigDecimal.valueOf(BigDecimalUtil.add(summarySalaryMonthly.getBasicSalary().doubleValue(), summarySalaryMonthly.getTimeSalary().doubleValue(),
                 summarySalaryMonthly.getSumSusbsidy().doubleValue())));
@@ -242,22 +263,7 @@ public class EmpSalaryMonthlyService {
                 BigDecimalUtil.mul(empSalaryMonthly.getDayWorkHoliday().doubleValue(), 8.0))));
         summarySalaryMonthly.setLegalOvertime(BigDecimal.valueOf(BigDecimalUtil.add(BigDecimalUtil.mul(empSalaryMonthly.getNigthWorkLegal().doubleValue(), 3.0),
                 BigDecimalUtil.mul(empSalaryMonthly.getDayWorkLegal().doubleValue(), 8.0))));
-        //入职时间
-        Integer months = SalaryHandler.getMonths(emp.getEntryDate());
-        SalaryMonthly salaryMonthly = salaryMonthlyService.getByYearMonth(empSalaryMonthly.getYearMonth());
-        //5个补贴
-        summarySalaryMonthly.setWorkYearSubsidy(BigDecimal.valueOf(SalaryHandler.getWorkYearSubsidy(months, salaryMonthly.getIsMore())));
-        if(empSalaryMonthly.getWorkName().equals(WORK_CHEGONG)){
-            if (DEPT_LIST.contains(empSalaryMonthly.getDeptName())){
-                summarySalaryMonthly.setNewLatheWorkerSubsidy(BigDecimal.valueOf(SalaryHandler.getNewLatheWorkerSubsidy(months)));
-            }
-            BigDecimal latheWorkerSubsidy = summarySalaryMonthly.getDayWork().multiply(BigDecimal.valueOf(10))
-                    .add(summarySalaryMonthly.getNightWork().multiply(BigDecimal.valueOf(5)));
-            summarySalaryMonthly.setLatheWorkerSubsidy(latheWorkerSubsidy);
-            summarySalaryMonthly.setPercentSubsidy(emp.getWorkId().equals(3)? sum.multiply(BigDecimal.valueOf(0.1)):BigDecimal.ZERO);
-        }
 
-        summarySalaryMonthly.setTwoSideSubsidy(twoSide.multiply(BigDecimal.valueOf(SalaryHandler.getTwoSideSubsidy(months))));
         return summarySalaryMonthly;
     }
 
