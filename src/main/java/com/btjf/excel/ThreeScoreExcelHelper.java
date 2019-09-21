@@ -43,12 +43,15 @@ public class ThreeScoreExcelHelper extends BaseExcelHandler {
     public List<String> execute(MultipartFile file, Boolean isCover, String operator) throws Exception {
         String yearMonth = null;
         String fileName = file.getOriginalFilename();
-        //todo
-        yearMonth = fileName.split("3个分导入")[0];
-        if (yearMonth.contains("-")) {
-            yearMonthCash.set(yearMonth);
-        } else {
-            throw new BusinessException("文件格式错误");
+        try {
+            yearMonth = fileName.split("3个分导入")[0];
+            if (yearMonth.contains("-")) {
+                yearMonthCash.set(yearMonth);
+            } else {
+                throw new BusinessException("文件格式错误");
+            }
+        } catch (Exception e) {
+            throw new BusinessException("文件名称格式不正确，请以 （yyyy-MM3个分导入） 命名");
         }
 
         return checkLayout(file, fields, operator);

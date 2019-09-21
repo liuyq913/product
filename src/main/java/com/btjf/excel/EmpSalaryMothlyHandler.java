@@ -91,7 +91,7 @@ public class EmpSalaryMothlyHandler extends BaseExcelHandler {
                 throw new BusinessException("文件格式错误");
             }
         } catch (Exception e) {
-            errResponse.add("文件名称格式不正确，请以 （yyyy-MM 考勤数据） 命名");
+            errResponse.add("文件名称格式不正确，请以 （yyyy-MM考勤数据） 命名");
         }
 
         // 日期
