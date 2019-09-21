@@ -10,16 +10,12 @@ import com.btjf.common.utils.MD5Utils;
 import com.btjf.controller.base.ProductBaseController;
 import com.btjf.excel.BaseExcelHandler;
 import com.btjf.interceptor.LoginInfoCache;
-import com.btjf.model.emp.Emp;
-import com.btjf.model.emp.EmpTimesalaryMonthly;
-import com.btjf.model.emp.EmpWork;
+import com.btjf.model.emp.*;
 import com.btjf.model.salary.SalaryMonthly;
 import com.btjf.model.sys.SysRole;
 import com.btjf.model.sys.SysUser;
 import com.btjf.model.sys.Sysdept;
-import com.btjf.service.emp.EmpService;
-import com.btjf.service.emp.EmpTimeSalaryService;
-import com.btjf.service.emp.EmpWorkService;
+import com.btjf.service.emp.*;
 import com.btjf.service.order.ProductionProcedureConfirmService;
 import com.btjf.service.salary.SalaryMonthlyService;
 import com.btjf.service.sys.SysDeptService;
@@ -45,6 +41,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -74,7 +71,10 @@ public class LaborBasicController extends ProductBaseController{
     private SysDeptService sysDeptService;
     @Resource
     private EmpWorkService empWorkService;
-
+    @Resource
+    private EmpSalaryMonthlyService empSalaryMothlyService;
+    @Resource
+    private ScoreService scoreService;
     /**
      * 工资月度 新增 修改
      *
@@ -157,7 +157,6 @@ public class LaborBasicController extends ProductBaseController{
             salaryMonthly.setLastModifyTime(new Date());
             salaryMonthlyService.update(salaryMonthly);
         }
-
         return XaResult.success();
     }
 
@@ -190,19 +189,28 @@ public class LaborBasicController extends ProductBaseController{
     @RequestMapping(value = "/salary/settlement", method = RequestMethod.POST)
     public XaResult<String> settlement(Integer id) {
         if(id == null || id <= 0){
-            return XaResult.error("基本工资必须大于0");
+            return XaResult.error("id 不能为空");
         }
         SalaryMonthly salaryMonthly = salaryMonthlyService.get(id);
         if(salaryMonthly == null){
             return XaResult.error("记录不存在");
         }
+        if(salaryMonthly.getIsMore() == null){
+            return XaResult.error("该月份产值未设置");
+        }
         if(!DateUtil.isAfter(DateUtil.string2Date(salaryMonthly.getYearMonth(),DateUtil.ymFormat),
                 DateUtil.dateBefore(new Date(), 5,3))){
             return XaResult.error("三个月前的信息不允许再度结算");
         }
-
-        //TODO 判断salaryMonthly.getYearMonth()  这个月份 是否结算  如果已经结算  也不允许再改
-
+        List<Score> scoreList = scoreService.getList(salaryMonthly.getYearMonth(), null, null);
+        if(scoreList == null || scoreList.size() <1){
+            return XaResult.error("该月份考勤分或3个分未导入");
+        }
+        List<EmpSalaryMonthly> empSalaryMonthlyList = empSalaryMothlyService.getList(salaryMonthly.getYearMonth(), null, null);
+        if(empSalaryMonthlyList == null || empSalaryMonthlyList.size() <1){
+            return XaResult.error("该月份考勤信息未导入");
+        }
+        empSalaryMothlyService.calculation(salaryMonthly.getYearMonth(), null, null);
         return XaResult.success();
     }
 

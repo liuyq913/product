@@ -5,17 +5,22 @@ import com.btjf.application.components.xaresult.AppXaResultHelper;
 import com.btjf.application.util.XaResult;
 import com.btjf.common.page.Page;
 import com.btjf.common.utils.BeanUtil;
+import com.btjf.common.utils.DateUtil;
 import com.btjf.controller.base.ProductBaseController;
 import com.btjf.controller.emp.vo.EmpSalaryVo;
 import com.btjf.excel.BaseExcelHandler;
+import com.btjf.model.emp.EmpSalaryMonthly;
+import com.btjf.model.emp.Score;
 import com.btjf.model.emp.SummarySalaryMonthly;
 import com.btjf.model.salary.SalaryMonthly;
 import com.btjf.service.emp.EmpSalaryMonthlyService;
 import com.btjf.service.emp.EmpService;
+import com.btjf.service.emp.ScoreService;
 import com.btjf.service.emp.SummarySalaryMonthlyService;
 import com.btjf.service.salary.SalaryMonthlyService;
 import com.btjf.util.BigDecimalUtil;
 import com.wordnik.swagger.annotations.Api;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,13 +53,37 @@ public class EmpSalaryController extends ProductBaseController {
 
     @Resource
     private SalaryMonthlyService salaryMonthlyService;
+    @Resource
+    private ScoreService scoreService;
 
     @RequestMapping(value = "/calculation", method = RequestMethod.POST)
     public XaResult<Integer> calculation(String yearMonth, String deptName, String empName) {
-
+        if(StringUtils.isEmpty(yearMonth)){
+            return XaResult.error("年月不能为空，格式为yyyy-MM");
+        }
         if (yearMonth != null && !BaseExcelHandler.isRightDateStr(yearMonth, "yyyy-MM")) {
             return XaResult.error("年月格式不符，请更正为yyyy-MM");
         }
+        SalaryMonthly salaryMonthly = salaryMonthlyService.getByYearMonth(yearMonth);
+        if(salaryMonthly == null){
+            return XaResult.error("记录不存在");
+        }
+        if(salaryMonthly.getIsMore() == null){
+            return XaResult.error("该月份产值未设置");
+        }
+        if(!DateUtil.isAfter(DateUtil.string2Date(salaryMonthly.getYearMonth(),DateUtil.ymFormat),
+                DateUtil.dateBefore(new Date(), 5,3))){
+            return XaResult.error("三个月前的信息不允许再度结算");
+        }
+        List<Score> scoreList = scoreService.getList(salaryMonthly.getYearMonth(), null, null);
+        if(scoreList == null || scoreList.size() <1){
+            return XaResult.error("该月份考勤分或3个分未导入");
+        }
+        List<EmpSalaryMonthly> empSalaryMonthlyList = empSalaryMothlyService.getList(salaryMonthly.getYearMonth(), null, null);
+        if(empSalaryMonthlyList == null || empSalaryMonthlyList.size() <1){
+            return XaResult.error("该月份考勤信息未导入");
+        }
+
         Integer row = empSalaryMothlyService.calculation(yearMonth, deptName, empName);
         return XaResult.success(row);
     }
