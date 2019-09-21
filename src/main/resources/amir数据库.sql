@@ -35,6 +35,7 @@ INSERT INTO `product`.`t_Dictionary` (`type`, `value`) VALUES ('2', '付');
 INSERT INTO `product`.`t_Dictionary` (`type`, `value`) VALUES ('2', '顶');
 INSERT INTO `product`.`t_Dictionary` (`type`, `value`) VALUES ('2', '条');
 INSERT INTO `product`.`t_Dictionary` (`type`, `value`) VALUES ('2', '块');
+INSERT INTO `product`.`t_Dictionary` (`type`, `value`) VALUES ('2', '包');
 INSERT INTO `product`.`t_Dictionary` (`type`, `value`) VALUES ('3', '小手套');
 INSERT INTO `product`.`t_Dictionary` (`type`, `value`) VALUES ('3', '大手套');
 INSERT INTO `product`.`t_Dictionary` (`type`, `value`) VALUES ('3', '格斗手套');
