@@ -35,7 +35,7 @@ public class PmService {
     }
 
     public Integer deleteByID(List<Integer> integers) {
-        if(CollectionUtils.isEmpty(integers)){
+        if(!CollectionUtils.isEmpty(integers)){
             integers.stream().forEach(t -> {
                 Pm pm = this.getByID(t);
                 //删除耗料

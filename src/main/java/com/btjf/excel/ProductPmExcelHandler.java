@@ -87,7 +87,7 @@ public class ProductPmExcelHandler extends BaseExcelHandler {
                     productPm.setPmId(pm.getId());
                     productPm.setPmNo(pm.getPmNo());
                     break;
-                case 2:
+                case 3:
                     String num = getCellValue(row.getCell(i), i);
                     if (!StringUtils.isNumber(num)) {
                         throw new BusinessException("数量填写错误");
@@ -95,7 +95,7 @@ public class ProductPmExcelHandler extends BaseExcelHandler {
                     productPm.setNum(BigDecimalUtil.getBigDecimal(num));
                     productPm.setUnitNum(BigDecimal.valueOf(BigDecimalUtil.div(1d, productPm.getNum().doubleValue())));
                     break;
-                case 3:
+                case 4:
                     String unit = getCellValue(row.getCell(i), i);
                     if (null == dictionaryService.getListByNameAndType(unit, 2)) {
                         throw new BusinessException("单位填写错误");
@@ -103,7 +103,7 @@ public class ProductPmExcelHandler extends BaseExcelHandler {
                         productPm.setUnit(unit);
                     }
                     break;
-                case 4:
+                case 5:
                     String type = getCellValue(row.getCell(i), i);
                     if (CollectionUtils.isEmpty(dictionaryService.getListByNameAndType(type, 1))) {
                         throw new BusinessException("类别填写错误");
@@ -111,7 +111,7 @@ public class ProductPmExcelHandler extends BaseExcelHandler {
                         productPm.setType(type);
                     }
                     break;
-                case 5:
+                case 6:
                     String sequence = getCellValue(row.getCell(i), i);
                     if (StringUtils.isEmpty(sequence) || !StringUtils.isNumber(sequence)) {
                         throw new BusinessException("序号填写错误");
@@ -120,7 +120,7 @@ public class ProductPmExcelHandler extends BaseExcelHandler {
                     }
                     break;
 
-                case 6:
+                case 7:
                     String remark = getCellValue(row.getCell(i), i);
                     productPm.setRemark(remark);
                     productPm.setIsDelete(0);
@@ -142,7 +142,7 @@ public class ProductPmExcelHandler extends BaseExcelHandler {
 
     private String getCellValue(XSSFCell cell, int i) {
         String value = null;
-        if(cell == null && i == 6){
+        if(cell == null && (i == 7 || i == 2)){
             //备注列 允许为空
             return null;
         }
