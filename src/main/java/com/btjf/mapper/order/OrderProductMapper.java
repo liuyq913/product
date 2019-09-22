@@ -1,5 +1,6 @@
 package com.btjf.mapper.order;
 
+import com.btjf.controller.emp.vo.MapVo;
 import com.btjf.controller.order.vo.OrderVo;
 import com.btjf.model.order.OrderProduct;
 import com.btjf.model.order.OrderProductExample;
@@ -106,4 +107,9 @@ public interface OrderProductMapper {
     Integer deleteById(@Param("id") Integer id);
 
     List<OrderProduct> findByOrderID(@Param("orderId") Integer orderId);
+
+    List<MapVo> getCount(@Param("customerId") Integer customerId, @Param("orderNo") String orderNo, @Param("pmNo")
+            String pmNo, @Param("type") String type, @Param("completeStartDate") String completeStartDate,
+                         @Param("completeStartEnd") String completeStartEnd,
+                         @Param("createStartDate") String createStartDate, @Param("createEndDate") String createEndDate);
 }

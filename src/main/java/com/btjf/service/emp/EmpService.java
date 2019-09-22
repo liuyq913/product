@@ -93,4 +93,16 @@ public class EmpService {
         pageInfo.setList(pmList);
         return new Page<>(pageInfo);
     }
+
+    public Page<com.btjf.controller.emp.vo.EmpSubsidyVo> getByNameAndDeptNamePage(String empName, String deptName, Integer type, Page page){
+        PageHelper.startPage(page.getPage(), page.getRp());
+        List<com.btjf.controller.emp.vo.EmpSubsidyVo>  empSubsidyVos = this.getByNameAndDeptNameList(empName, deptName, type);
+        PageInfo pageInfo = new PageInfo(empSubsidyVos);
+        pageInfo.setList(empSubsidyVos);
+        return new Page<>(pageInfo);
+    }
+
+    public List<com.btjf.controller.emp.vo.EmpSubsidyVo> getByNameAndDeptNameList(String empName, String deptName, Integer type){
+        return empMapper.getByNameAndDeptNameList(empName, deptName, type);
+    }
 }

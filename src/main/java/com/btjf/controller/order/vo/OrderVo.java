@@ -32,6 +32,8 @@ public class OrderVo implements Serializable {
 
     private String completeDate;
 
+    private String remark;
+
     public Integer getId() {
         return id;
     }
@@ -114,6 +116,14 @@ public class OrderVo implements Serializable {
 
     public String getCompleteDate() {
         return completeDate;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     public void setCompleteDate(String completeDate) {

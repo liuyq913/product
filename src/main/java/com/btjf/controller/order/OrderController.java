@@ -17,8 +17,10 @@ import com.btjf.service.order.OrderProductService;
 import com.btjf.service.order.OrderService;
 import com.btjf.service.productpm.ProductWorkshopService;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.heige.aikajinrong.base.exception.BusinessException;
 import com.wordnik.swagger.annotations.Api;
+import org.apache.commons.collections.MapUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -32,9 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URLEncoder;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by liuyq on 2019/8/4.
@@ -138,6 +138,19 @@ public class OrderController extends ProductBaseController {
 
         Page<OrderVo> listPage = orderProductService.listPage(customerId, orderNo, pmNo, type, completeStartDate, completeStartEnd, createStartDate, createEndDate, page);
         XaResult<List<OrderVo>> result = AppXaResultHelper.success(listPage, listPage.getRows());
+        Map<String, Integer> cuntMap = orderProductService.getCount(customerId, orderNo, pmNo, type, completeStartDate, completeStartEnd, createStartDate, createEndDate);
+        Map map = Maps.newHashMap();
+        map.put("orderNum", (int) listPage.getTotal());
+        if (!MapUtils.isEmpty(cuntMap)) {
+            map.put("bNum", Optional.ofNullable(cuntMap.get("靶类")).orElse(0));
+            map.put("dstNum", Optional.ofNullable(cuntMap.get("大手套类")).orElse(0));
+            map.put("xstNum", Optional.ofNullable(cuntMap.get("小手套类")).orElse(0));
+            map.put("otherNum", Optional.ofNullable(cuntMap.get("其他类")).orElse(0));
+            map.put("hjnNum", Optional.ofNullable(cuntMap.get("护具类")).orElse(0));
+            map.put("gdstNum", Optional.ofNullable(cuntMap.get("格斗手套")).orElse(0));
+            map.put("productNum", Optional.ofNullable(cuntMap.get("生产数")).orElse(0));
+        }
+        result.setMap(map);
         return result;
     }
 

@@ -116,4 +116,6 @@ public interface EmpMapper {
     List<EmpSubsidyVo> phoneSubsidyList(@Param("name")String name, @Param("deptId")Integer deptId);
 
     List<EmpSubsidyVo> socialSubsidyList(@Param("name")String name, @Param("deptId")Integer deptId);
+
+    List<com.btjf.controller.emp.vo.EmpSubsidyVo> getByNameAndDeptNameList(@Param("empName") String empName, @Param("deptName") String deptName, @Param("type") Integer type);
 }
