@@ -2,6 +2,7 @@ package com.btjf.mapper.emp;
 
 import com.btjf.model.emp.SummarySalaryMonthly;
 import com.btjf.model.emp.SummarySalaryMonthlyExample;
+import com.btjf.vo.SubsidyVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -100,4 +101,10 @@ public interface SummarySalaryMonthlyMapper {
     List<SummarySalaryMonthly> getList(@Param("yearMonth") String yearMonth, @Param("deptName") String deptName, @Param("empName") String empName, @Param("type") Integer type);
 
     void delete(@Param("yearMonth")String yearMonth);
+
+    List<SubsidyVo> findLatheWorkerSubsidyList(@Param("yearMonth")String yearMonth, @Param("deptName")String deptName, @Param("empName")String empName);
+
+    List<SubsidyVo> findNewLatheWorkerSubsidyList(@Param("yearMonth")String yearMonth, @Param("deptName")String deptName, @Param("empName")String empName);
+
+    List<SubsidyVo> findPercentSubsidyList(@Param("yearMonth")String yearMonth, @Param("deptName")String deptName, @Param("empName")String empName);
 }

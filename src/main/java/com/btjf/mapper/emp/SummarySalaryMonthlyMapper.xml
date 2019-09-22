@@ -949,6 +949,82 @@
         </if>
         order by createTime desc
     </select>
+    <select id="findLatheWorkerSubsidyList" resultType="com.btjf.vo.SubsidyVo">
+        select a.id id,
+        a.yearMonth yearMonth,
+        a.empName empName,
+        a.deptName deptName,
+        a.workName workName,
+        b.dayWork + b.dayWorkHoliday + b.dayWorkLegal as normalDays,
+        10 as normalPrice,
+        (b.dayWork + b.dayWorkHoliday + b.dayWorkLegal) * 10 as normalMoney,
+        b.nightWork + b.nightWorkHoliay + b.nigthWorkLegal as overtimeDays,
+        5 as overtimePrice,
+        (b.nightWork + b.nightWorkHoliay + b.nigthWorkLegal) * 5 as overtimeMoney,
+        a.latheWorkerSubsidy as sum
+        from t_Summary_Salary_Monthly a LEFT JOIN t_Emp_Salary_Monthly b
+        on a.yearMonth = b.yearMonth and a.empName = b.empName
+        where a.isDelete = 0
+        and a.latheWorkerSubsidy is not null
+        <if test="empName != null">
+            and a.empName like '%${empName}%'
+        </if>
+        <if test="deptName != null">
+            and a.deptName = #{deptName}
+        </if>
+        <if test="yearMonth != null">
+            and a.yearMonth = #{yearMonth}
+        </if>
+        order by a.createTime desc
+
+    </select>
+    <select id="findNewLatheWorkerSubsidyList" resultType="com.btjf.vo.SubsidyVo">
+        select a.id id,
+        a.yearMonth yearMonth,
+        a.empName empName,
+        a.deptName deptName,
+        a.workName workName,
+        b.dayWork + b.dayWorkHoliday + b.dayWorkLegal as normalDays,
+        a.newLatheWorkerSubsidy as newLatheWorkerSubsidy
+        from t_Summary_Salary_Monthly a LEFT JOIN t_Emp_Salary_Monthly b
+        on a.yearMonth = b.yearMonth and a.empName = b.empName
+        where a.isDelete = 0
+        and a.newLatheWorkerSubsidy is not null
+        <if test="empName != null">
+            and a.empName like '%${empName}%'
+        </if>
+        <if test="deptName != null">
+            and a.deptName = #{deptName}
+        </if>
+        <if test="yearMonth != null">
+            and a.yearMonth = #{yearMonth}
+        </if>
+        order by a.createTime desc
+    </select>
+    <select id="findPercentSubsidyList" resultType="com.btjf.vo.SubsidyVo">
+        select a.id id,
+        a.yearMonth yearMonth,
+        a.empName empName,
+        a.deptName deptName,
+        a.workName workName,
+        b.dayWork + b.dayWorkHoliday + b.dayWorkLegal as normalDays,
+        a.basicSalary as basicSalary,
+        a.percentSubsidy as percentSubsidy
+        from t_Summary_Salary_Monthly a LEFT JOIN t_Emp_Salary_Monthly b
+        on a.yearMonth = b.yearMonth and a.empName = b.empName
+        where a.isDelete = 0
+        and a.percentSubsidy is not null
+        <if test="empName != null">
+            and a.empName like '%${empName}%'
+        </if>
+        <if test="deptName != null">
+            and a.deptName = #{deptName}
+        </if>
+        <if test="yearMonth != null">
+            and a.yearMonth = #{yearMonth}
+        </if>
+        order by a.createTime desc
+    </select>
 
     <update id="delete">
         update t_Summary_Salary_Monthly set isDelete = 1

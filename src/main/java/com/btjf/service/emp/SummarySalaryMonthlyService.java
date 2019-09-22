@@ -3,6 +3,7 @@ package com.btjf.service.emp;
 import com.btjf.common.page.Page;
 import com.btjf.mapper.emp.SummarySalaryMonthlyMapper;
 import com.btjf.model.emp.SummarySalaryMonthly;
+import com.btjf.vo.SubsidyVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
@@ -64,5 +65,29 @@ public class SummarySalaryMonthlyService {
 
     public void delete(String yearMonth){
         summarySalaryMonthlyMapper.delete(yearMonth);
+    }
+
+    public Page<SubsidyVo> findLatheWorkerSubsidyList(String yearMonth, String empName, String deptName, Page page) {
+        PageHelper.startPage(page.getPage(), page.getRp());
+        List<SubsidyVo> list = summarySalaryMonthlyMapper.findLatheWorkerSubsidyList(yearMonth, deptName, empName);
+        PageInfo pageInfo = new PageInfo(list);
+        pageInfo.setList(list);
+        return new Page<>(pageInfo);
+    }
+
+    public Page<SubsidyVo> findNewLatheWorkerSubsidyList(String yearMonth, String empName, String deptName, Page page) {
+        PageHelper.startPage(page.getPage(), page.getRp());
+        List<SubsidyVo> list = summarySalaryMonthlyMapper.findNewLatheWorkerSubsidyList(yearMonth, deptName, empName);
+        PageInfo pageInfo = new PageInfo(list);
+        pageInfo.setList(list);
+        return new Page<>(pageInfo);
+    }
+
+    public Page<SubsidyVo> findPercentSubsidyList(String yearMonth, String empName, String deptName, Page page) {
+        PageHelper.startPage(page.getPage(), page.getRp());
+        List<SubsidyVo> list = summarySalaryMonthlyMapper.findPercentSubsidyList(yearMonth, deptName, empName);
+        PageInfo pageInfo = new PageInfo(list);
+        pageInfo.setList(list);
+        return new Page<>(pageInfo);
     }
 }

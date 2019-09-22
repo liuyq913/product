@@ -21,10 +21,7 @@ import com.btjf.service.salary.SalaryMonthlyService;
 import com.btjf.service.sys.SysDeptService;
 import com.btjf.service.sys.SysRoleService;
 import com.btjf.service.sys.SysUserService;
-import com.btjf.vo.EmpSubsidyVo;
-import com.btjf.vo.EmpTimesalaryMonthlyVo;
-import com.btjf.vo.ProcedureYieldVo;
-import com.btjf.vo.UserInfoVo;
+import com.btjf.vo.*;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
@@ -75,6 +72,8 @@ public class LaborBasicController extends ProductBaseController{
     private EmpSalaryMonthlyService empSalaryMothlyService;
     @Resource
     private ScoreService scoreService;
+    @Resource
+    private SummarySalaryMonthlyService summarySalaryMonthlyService;
     /**
      * 工资月度 新增 修改
      *
@@ -468,5 +467,72 @@ public class LaborBasicController extends ProductBaseController{
             LOGGER.error("计时工资导出excel异常");
         }
 
+    }
+
+
+    /**
+     * 车工出勤补贴 列表
+     * @return
+     */
+    @RequestMapping(value = "/latheWorkerSubsidy/list", method = RequestMethod.GET)
+    public XaResult<List<SubsidyVo>> latheWorkerSubsidyList(String yearMonth,String empName, String deptName,
+                                                                 Integer pageSize, Integer currentPage) {
+        if(yearMonth!= null && !BaseExcelHandler.isRightDateStr(yearMonth,"yyyy-MM")){
+            return XaResult.error("年月格式不符，请更正为yyyy-MM");
+        }
+        if(currentPage == null || currentPage < 1){
+            currentPage =1;
+        }
+        if(pageSize == null || pageSize < 1){
+            pageSize = 25;
+        }
+        Page page = new Page(pageSize, currentPage);
+        Page<SubsidyVo> listPage = summarySalaryMonthlyService.findLatheWorkerSubsidyList(yearMonth,empName,deptName,page);
+        XaResult<List<SubsidyVo>> result = AppXaResultHelper.success(listPage, listPage.getRows());
+        return result;
+    }
+
+    /**
+     * 新车工出勤补贴 列表
+     * @return
+     */
+    @RequestMapping(value = "/newLatheWorkerSubsidy/list", method = RequestMethod.GET)
+    public XaResult<List<SubsidyVo>> newLatheWorkerSubsidyList(String yearMonth,String empName, String deptName,
+                                                    Integer pageSize, Integer currentPage) {
+        if(yearMonth!= null && !BaseExcelHandler.isRightDateStr(yearMonth,"yyyy-MM")){
+            return XaResult.error("年月格式不符，请更正为yyyy-MM");
+        }
+        if(currentPage == null || currentPage < 1){
+            currentPage =1;
+        }
+        if(pageSize == null || pageSize < 1){
+            pageSize = 25;
+        }
+        Page page = new Page(pageSize, currentPage);
+        Page<SubsidyVo> listPage = summarySalaryMonthlyService.findNewLatheWorkerSubsidyList(yearMonth,empName,deptName,page);
+        XaResult<List<SubsidyVo>> result = AppXaResultHelper.success(listPage, listPage.getRows());
+        return result;
+    }
+
+    /**
+     * 计件补贴 列表
+     * @return
+     */
+    @RequestMapping(value = "/percentSubsidy/list", method = RequestMethod.GET)
+    public XaResult<List<SubsidyVo>> percentSubsidyList(String yearMonth,String empName, String deptName,
+                                                               Integer pageSize, Integer currentPage) {
+        if(yearMonth!= null && !BaseExcelHandler.isRightDateStr(yearMonth,"yyyy-MM")){
+            return XaResult.error("年月格式不符，请更正为yyyy-MM");
+        }
+        if(currentPage == null || currentPage < 1){
+            currentPage =1;
+        }
+        if(pageSize == null || pageSize < 1){
+            pageSize = 25;
+        }
+        Page page = new Page(pageSize, currentPage);
+        Page<SubsidyVo> listPage = summarySalaryMonthlyService.findPercentSubsidyList(yearMonth,empName,deptName,page);
+        XaResult<List<SubsidyVo>> result = AppXaResultHelper.success(listPage, listPage.getRows());
+        return result;
     }
 }
