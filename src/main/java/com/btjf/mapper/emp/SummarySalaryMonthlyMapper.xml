@@ -965,7 +965,7 @@
         from t_Summary_Salary_Monthly a LEFT JOIN t_Emp_Salary_Monthly b
         on a.yearMonth = b.yearMonth and a.empName = b.empName
         where a.isDelete = 0
-        and a.latheWorkerSubsidy is not null
+        and a.latheWorkerSubsidy  > 0
         <if test="empName != null">
             and a.empName like '%${empName}%'
         </if>
@@ -989,7 +989,7 @@
         from t_Summary_Salary_Monthly a LEFT JOIN t_Emp_Salary_Monthly b
         on a.yearMonth = b.yearMonth and a.empName = b.empName
         where a.isDelete = 0
-        and a.newLatheWorkerSubsidy is not null
+        and a.newLatheWorkerSubsidy  > 0
         <if test="empName != null">
             and a.empName like '%${empName}%'
         </if>
@@ -1013,7 +1013,7 @@
         from t_Summary_Salary_Monthly a LEFT JOIN t_Emp_Salary_Monthly b
         on a.yearMonth = b.yearMonth and a.empName = b.empName
         where a.isDelete = 0
-        and a.percentSubsidy is not null
+        and a.percentSubsidy > 0
         <if test="empName != null">
             and a.empName like '%${empName}%'
         </if>
