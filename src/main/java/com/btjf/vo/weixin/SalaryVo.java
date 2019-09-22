@@ -39,32 +39,32 @@ public class SalaryVo {
     }
 
     public SalaryVo(SummarySalaryMonthly summarySalaryMonthly) {
-        basicSalary = summarySalaryMonthly.getBasicSalary();
-        trueSalary = summarySalaryMonthly.getTrueSalary();
-        timeSalary = summarySalaryMonthly.getTimeSalary();
-        score = summarySalaryMonthly.getScore();
+        basicSalary = summarySalaryMonthly.getBasicSalary()== null? BigDecimal.ZERO :summarySalaryMonthly.getBasicSalary();
+        trueSalary = summarySalaryMonthly.getTrueSalary()== null? BigDecimal.ZERO :summarySalaryMonthly.getTrueSalary();
+        timeSalary = summarySalaryMonthly.getTimeSalary()== null? BigDecimal.ZERO :summarySalaryMonthly.getTimeSalary();
+        score = summarySalaryMonthly.getScore()== null? BigDecimal.ZERO :summarySalaryMonthly.getScore();
 
-        realSalary = summarySalaryMonthly.getRealSalary();
-        mealSubsidy = summarySalaryMonthly.getMealSubsidy();
-        nigthSnack = summarySalaryMonthly.getNigthSnack();
-        socialSubsidy = summarySalaryMonthly.getSocialSubsidy();
-        workYearSubsidy = summarySalaryMonthly.getWorkYearSubsidy();
-        hourSubsidy = summarySalaryMonthly.getHourSubsidy();
-        percentSubsidy = summarySalaryMonthly.getPercentSubsidy();
-        latheWorkerSubsidy = summarySalaryMonthly.getLatheWorkerSubsidy();
-        newLatheWorkerSubsidy = summarySalaryMonthly.getNewLatheWorkerSubsidy();
-        twoSideSubsidy = summarySalaryMonthly.getTwoSideSubsidy();
-        otherSubsidy = summarySalaryMonthly.getOtherSubsidy();
+        realSalary = summarySalaryMonthly.getRealSalary()== null? BigDecimal.ZERO :summarySalaryMonthly.getRealSalary();
+        mealSubsidy = summarySalaryMonthly.getMealSubsidy()== null? BigDecimal.ZERO :summarySalaryMonthly.getMealSubsidy();
+        nigthSnack = summarySalaryMonthly.getNigthSnack()== null? BigDecimal.ZERO :summarySalaryMonthly.getNigthSnack();
+        socialSubsidy = summarySalaryMonthly.getSocialSubsidy()== null? BigDecimal.ZERO :summarySalaryMonthly.getSocialSubsidy();
+        workYearSubsidy = summarySalaryMonthly.getWorkYearSubsidy()== null? BigDecimal.ZERO :summarySalaryMonthly.getWorkYearSubsidy();
+        hourSubsidy = summarySalaryMonthly.getHourSubsidy()== null? BigDecimal.ZERO :summarySalaryMonthly.getHourSubsidy();
+        percentSubsidy = summarySalaryMonthly.getPercentSubsidy()== null? BigDecimal.ZERO :summarySalaryMonthly.getPercentSubsidy();
+        latheWorkerSubsidy = summarySalaryMonthly.getLatheWorkerSubsidy()== null? BigDecimal.ZERO :summarySalaryMonthly.getLatheWorkerSubsidy();
+        newLatheWorkerSubsidy = summarySalaryMonthly.getNewLatheWorkerSubsidy()== null? BigDecimal.ZERO :summarySalaryMonthly.getNewLatheWorkerSubsidy();
+        twoSideSubsidy = summarySalaryMonthly.getTwoSideSubsidy()== null? BigDecimal.ZERO :summarySalaryMonthly.getTwoSideSubsidy();
+        otherSubsidy = summarySalaryMonthly.getOtherSubsidy()== null? BigDecimal.ZERO :summarySalaryMonthly.getOtherSubsidy();
 
-        ylbx = summarySalaryMonthly.getYlbx();
-        yiliaobx = summarySalaryMonthly.getYiliaobx();
-        sybx = summarySalaryMonthly.getSybx();
-        mealDeduction = summarySalaryMonthly.getMealSubsidy();
-        otherDeduction = summarySalaryMonthly.getOtherDeduction();
+        ylbx = summarySalaryMonthly.getYlbx()== null? BigDecimal.ZERO :summarySalaryMonthly.getYlbx();
+        yiliaobx = summarySalaryMonthly.getYiliaobx()== null? BigDecimal.ZERO :summarySalaryMonthly.getYiliaobx();
+        sybx = summarySalaryMonthly.getSybx()== null? BigDecimal.ZERO :summarySalaryMonthly.getSybx();
+        mealDeduction = summarySalaryMonthly.getMealSubsidy()== null? BigDecimal.ZERO :summarySalaryMonthly.getMealSubsidy();
+        otherDeduction = summarySalaryMonthly.getOtherDeduction()== null? BigDecimal.ZERO :summarySalaryMonthly.getOtherDeduction();
 
         sumIncome = realSalary.add(mealSubsidy).add(nigthSnack).add(socialSubsidy).add(workYearSubsidy).add(hourSubsidy)
         .add(percentSubsidy).add(latheWorkerSubsidy).add(newLatheWorkerSubsidy).add(twoSideSubsidy).add(otherSubsidy);
-        sumDeduction = summarySalaryMonthly.getSumDeduction();
+        sumDeduction = summarySalaryMonthly.getSumDeduction()== null? BigDecimal.ZERO :summarySalaryMonthly.getSumDeduction();
         sumCompany = ylbx.add(yiliaobx).add(sybx);
     }
 
