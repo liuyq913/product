@@ -1,15 +1,19 @@
 package com.btjf.controller.emp;
 
 
+import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.btjf.application.components.xaresult.AppXaResultHelper;
 import com.btjf.application.util.XaResult;
 import com.btjf.common.page.Page;
 import com.btjf.common.utils.MD5Utils;
-import com.btjf.interceptor.LoginInfoCache;
+import com.btjf.controller.emp.vo.EmpSubsidyVo;
+import com.btjf.excel.BaseExcelHandler;
 import com.btjf.model.emp.Emp;
+import com.btjf.model.salary.SalaryMonthly;
 import com.btjf.service.emp.EmpService;
-import com.btjf.service.sys.SysDeptService;
-import com.btjf.service.sys.SysRoleService;
+import com.btjf.service.salary.SalaryMonthlyService;
+import com.btjf.util.BigDecimalUtil;
+import com.btjf.util.SalaryHandler;
 import com.btjf.vo.weixin.EmpVo;
 import com.heige.aikajinrong.base.exception.BusinessException;
 import com.wordnik.swagger.annotations.Api;
@@ -41,6 +45,9 @@ public class EmpController {
     @Resource
     private EmpService empService;
 
+    @Resource
+    private SalaryMonthlyService salaryMonthlyService;
+
 
     /**
      * 详情
@@ -48,12 +55,12 @@ public class EmpController {
      * @return
      */
     @RequestMapping(value = "/detail", method = RequestMethod.GET)
-    public XaResult<Emp> detail(Integer id){
-        if(id == null){
+    public XaResult<Emp> detail(Integer id) {
+        if (id == null) {
             return XaResult.error("id不能为空");
         }
         Emp emp = empService.getByID(id);
-        if (emp == null){
+        if (emp == null) {
             return XaResult.error("该员工不存在");
         }
         emp.setPassword(null);
@@ -96,7 +103,7 @@ public class EmpController {
         if (StringUtils.isEmpty(entryDate)) {
             return XaResult.error("进场日期不能为空");
         }
-        if(id == null) {
+        if (id == null) {
             Emp emp1 = empService.getByName(name);
             if (emp1 != null) {
                 return XaResult.error("系统中该姓名：" + name + " 已存在");
@@ -165,8 +172,8 @@ public class EmpController {
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
     public XaResult<List<EmpVo>> list(String name, Integer deptId, String nativeSource,
-                                    String startEntryDate, String endEntryDate,
-                                    Integer pageSize, Integer currentPage) throws BusinessException {
+                                      String startEntryDate, String endEntryDate,
+                                      Integer pageSize, Integer currentPage) throws BusinessException {
 
         if (currentPage == null || currentPage < 1) {
             currentPage = 1;
@@ -184,7 +191,7 @@ public class EmpController {
 
     @RequestMapping(value = "export", method = RequestMethod.GET)
     public void export(String name, Integer deptId, String nativeSource,
-                       String startEntryDate, String endEntryDate, HttpServletResponse response) throws BusinessException{
+                       String startEntryDate, String endEntryDate, HttpServletResponse response) throws BusinessException {
 
 
         List<EmpVo> empVos = empService.getList(name, deptId, nativeSource, startEntryDate, endEntryDate);
@@ -246,5 +253,75 @@ public class EmpController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 社保扣款 || 工龄补贴
+     *
+     * @param empName
+     * @param deptName
+     * @param pageSize
+     * @param currentPage
+     * @param type
+     * @param yearMonth
+     * @return
+     * @throws BusinessException
+     */
+    @RequestMapping(value = "/socialOrWorkAgeSubsidyList", method = RequestMethod.GET)
+    public XaResult<List<EmpSubsidyVo>> socialOrWorkAgeSubsidy(String empName, String deptName, Integer pageSize, Integer currentPage,
+                                                               Integer type, String yearMonth) throws BusinessException {
+
+        if (type == null) {
+            return XaResult.error("type不为null");
+        }
+
+        if (type != null && (type != 1 && type != 2)) {
+            return XaResult.error("类型错误");
+        }
+
+        SalaryMonthly salaryMonthly = null;
+        if (type == 2) {
+            if (StringUtils.isEmpty(yearMonth)) {
+                return XaResult.error("年月不能为空，格式为yyyy-MM");
+            }
+            if (yearMonth != null && !BaseExcelHandler.isRightDateStr(yearMonth, "yyyy-MM")) {
+                return XaResult.error("年月格式不符，请更正为yyyy-MM");
+            }
+
+            salaryMonthly = salaryMonthlyService.getByYearMonth(yearMonth);
+            if (salaryMonthly == null) {
+                return XaResult.error("记录不存在");
+            }
+            if (salaryMonthly.getIsMore() == null) {
+                return XaResult.error("该月份产值未设置");
+            }
+        }
+        if (currentPage == null || currentPage < 1) {
+            currentPage = 1;
+        }
+        if (pageSize == null || pageSize < 1) {
+            pageSize = 25;
+        }
+        Page page = new Page(pageSize, currentPage);
+
+        Page<EmpSubsidyVo> empSubsidyVoPage = empService.getByNameAndDeptNamePage(empName, deptName, type, page);
+        List<EmpSubsidyVo> empSubsidyVos = empSubsidyVoPage.getRows();
+        if (!CollectionUtils.isEmpty(empSubsidyVos)) {
+            for (EmpSubsidyVo empSubsidyVo : empSubsidyVos) {
+                if (type == 1) { //社保补贴
+                    empSubsidyVo.setSumDeduction(BigDecimal.valueOf(
+                            BigDecimalUtil.add(empSubsidyVo.getGjj() != null ? empSubsidyVo.getGjj().doubleValue() : 0.0,
+                                    empSubsidyVo.getSybx() != null ? empSubsidyVo.getSybx().doubleValue() : 0.0,
+                                    empSubsidyVo.getYiliaobx() != null ? empSubsidyVo.getYiliaobx().doubleValue() : 0.0,
+                                    empSubsidyVo.getYlbx() != null ? empSubsidyVo.getYlbx().doubleValue() : 0.0)));
+                } else { //工龄补贴
+                    Integer months = SalaryHandler.getMonths(empSubsidyVo.getEntryDate());
+                    empSubsidyVo.setWorkAge(BigDecimalUtil.div(months, 12.0, 2) + "年");
+                    empSubsidyVo.setAgeSubsidy(BigDecimal.valueOf(SalaryHandler.getWorkYearSubsidy(months, salaryMonthly.getIsMore())));
+                }
+            }
+        }
+        XaResult<List<EmpSubsidyVo>> result = AppXaResultHelper.success(empSubsidyVoPage, empSubsidyVoPage.getRows());
+        return result;
     }
 }
