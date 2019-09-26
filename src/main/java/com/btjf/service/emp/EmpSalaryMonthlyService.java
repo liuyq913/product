@@ -78,9 +78,9 @@ public class EmpSalaryMonthlyService {
 
     }
 
-    public Page<EmpSalaryMonthly> getPage(String yearMonth, String empName, String deptName, Page page) {
+    public Page<EmpSalaryMonthly> getPage(String yearMonth, String empName, String deptName, Integer type, Page page) {
         PageHelper.startPage(page.getPage(), page.getRp());
-        List<EmpSalaryMonthly> empSalaryMonthlies = this.getList(yearMonth, empName, deptName);
+        List<EmpSalaryMonthly> empSalaryMonthlies = this.getList(yearMonth, empName, deptName, type);
         PageInfo pageInfo = new PageInfo(empSalaryMonthlies);
         pageInfo.setList(empSalaryMonthlies);
         return new Page<>(pageInfo);
@@ -90,8 +90,8 @@ public class EmpSalaryMonthlyService {
         return empSalaryMonthlyMapper.getByYearMonthAndName(yearMonth, name);
     }
 
-    public List<EmpSalaryMonthly> getList(String yearMonth, String empName, String deptName) {
-        return empSalaryMonthlyMapper.getList(yearMonth, empName, deptName);
+    public List<EmpSalaryMonthly> getList(String yearMonth, String empName, String deptName, Integer type) {
+        return empSalaryMonthlyMapper.getList(yearMonth, empName, deptName, type);
     }
 
     public List<String> getYearMonth() {
@@ -104,8 +104,8 @@ public class EmpSalaryMonthlyService {
         return empSalaryMonthlyMapper.updateByPrimaryKeySelective(empSalaryMonthly);
     }
 
-    public Integer calculation(String yearMonth, String deptName, String empName) {
-        List<EmpSalaryMonthly> empSalaryMonthlies = this.getList(yearMonth, deptName, empName);
+    public Integer calculation(String yearMonth, String deptName, String empName, Integer type) {
+        List<EmpSalaryMonthly> empSalaryMonthlies = this.getList(yearMonth, deptName, empName, type);
         ThreadPoolExecutor executor = ThreadPoolExecutorUtil.getPool();
         executor.execute(() -> {
             if (!CollectionUtils.isEmpty(empSalaryMonthlies)) {

@@ -5,25 +5,20 @@ import com.btjf.application.components.xaresult.AppXaResultHelper;
 import com.btjf.application.util.XaResult;
 import com.btjf.common.page.Page;
 import com.btjf.common.utils.DateUtil;
-import com.btjf.common.utils.JSONUtils;
-import com.btjf.common.utils.MD5Utils;
 import com.btjf.controller.base.ProductBaseController;
 import com.btjf.excel.BaseExcelHandler;
-import com.btjf.interceptor.LoginInfoCache;
 import com.btjf.model.emp.*;
 import com.btjf.model.salary.SalaryMonthly;
-import com.btjf.model.sys.SysRole;
-import com.btjf.model.sys.SysUser;
 import com.btjf.model.sys.Sysdept;
 import com.btjf.service.emp.*;
 import com.btjf.service.order.ProductionProcedureConfirmService;
 import com.btjf.service.salary.SalaryMonthlyService;
 import com.btjf.service.sys.SysDeptService;
-import com.btjf.service.sys.SysRoleService;
-import com.btjf.service.sys.SysUserService;
-import com.btjf.vo.*;
+import com.btjf.vo.EmpSubsidyVo;
+import com.btjf.vo.EmpTimesalaryMonthlyVo;
+import com.btjf.vo.ProcedureYieldVo;
+import com.btjf.vo.SubsidyVo;
 import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
@@ -38,7 +33,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -205,11 +199,11 @@ public class LaborBasicController extends ProductBaseController{
         if(scoreList == null || scoreList.size() <1){
             return XaResult.error("该月份考勤分或3个分未导入");
         }
-        List<EmpSalaryMonthly> empSalaryMonthlyList = empSalaryMothlyService.getList(salaryMonthly.getYearMonth(), null, null);
+        List<EmpSalaryMonthly> empSalaryMonthlyList = empSalaryMothlyService.getList(salaryMonthly.getYearMonth(), null, null, null);
         if(empSalaryMonthlyList == null || empSalaryMonthlyList.size() <1){
             return XaResult.error("该月份考勤信息未导入");
         }
-        empSalaryMothlyService.calculation(salaryMonthly.getYearMonth(), null, null);
+        empSalaryMothlyService.calculation(salaryMonthly.getYearMonth(), null, null, null);
         return XaResult.success();
     }
 

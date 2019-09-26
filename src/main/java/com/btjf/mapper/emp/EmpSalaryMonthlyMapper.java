@@ -97,7 +97,7 @@ public interface EmpSalaryMonthlyMapper {
 
     Integer deleteByYearMonthAndName(@Param("yearMonth") String yearMonth, @Param("name") String empName);
 
-    List<EmpSalaryMonthly> getList(@Param("yearMonth") String yearMonth, @Param("empName") String empName, @Param("deptName") String deptName);
+    List<EmpSalaryMonthly> getList(@Param("yearMonth") String yearMonth, @Param("empName") String empName, @Param("deptName") String deptName, @Param("type") Integer type);
 
     List<String> getYearMonth();
 

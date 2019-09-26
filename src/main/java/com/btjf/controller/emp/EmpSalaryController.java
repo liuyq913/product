@@ -57,34 +57,34 @@ public class EmpSalaryController extends ProductBaseController {
     private ScoreService scoreService;
 
     @RequestMapping(value = "/calculation", method = RequestMethod.POST)
-    public XaResult<Integer> calculation(String yearMonth, String deptName, String empName) {
-        if(StringUtils.isEmpty(yearMonth)){
+    public XaResult<Integer> calculation(String yearMonth, String deptName, String empName, Integer type) {
+        if (StringUtils.isEmpty(yearMonth)) {
             return XaResult.error("年月不能为空，格式为yyyy-MM");
         }
         if (yearMonth != null && !BaseExcelHandler.isRightDateStr(yearMonth, "yyyy-MM")) {
             return XaResult.error("年月格式不符，请更正为yyyy-MM");
         }
         SalaryMonthly salaryMonthly = salaryMonthlyService.getByYearMonth(yearMonth);
-        if(salaryMonthly == null){
+        if (salaryMonthly == null) {
             return XaResult.error("记录不存在");
         }
-        if(salaryMonthly.getIsMore() == null){
+        if (salaryMonthly.getIsMore() == null) {
             return XaResult.error("该月份产值未设置");
         }
-        if(!DateUtil.isAfter(DateUtil.string2Date(salaryMonthly.getYearMonth(),DateUtil.ymFormat),
-                DateUtil.dateBefore(new Date(), 5,3))){
+        if (!DateUtil.isAfter(DateUtil.string2Date(salaryMonthly.getYearMonth(), DateUtil.ymFormat),
+                DateUtil.dateBefore(new Date(), 5, 3))) {
             return XaResult.error("三个月前的信息不允许再度结算");
         }
         List<Score> scoreList = scoreService.getList(salaryMonthly.getYearMonth(), null, null);
-        if(scoreList == null || scoreList.size() <1){
+        if (scoreList == null || scoreList.size() < 1) {
             return XaResult.error("该月份考勤分或3个分未导入");
         }
-        List<EmpSalaryMonthly> empSalaryMonthlyList = empSalaryMothlyService.getList(salaryMonthly.getYearMonth(), null, null);
-        if(empSalaryMonthlyList == null || empSalaryMonthlyList.size() <1){
+        List<EmpSalaryMonthly> empSalaryMonthlyList = empSalaryMothlyService.getList(salaryMonthly.getYearMonth(), null, null, null);
+        if (empSalaryMonthlyList == null || empSalaryMonthlyList.size() < 1) {
             return XaResult.error("该月份考勤信息未导入");
         }
 
-        Integer row = empSalaryMothlyService.calculation(yearMonth, deptName, empName);
+        Integer row = empSalaryMothlyService.calculation(yearMonth, deptName, empName, type);
         return XaResult.success(row);
     }
 
@@ -118,11 +118,11 @@ public class EmpSalaryController extends ProductBaseController {
                 if (empSalaryVo == null) continue;
                 if (type == null) {
                     //基本工资工时
-                    empSalaryVo.setBaseWorkHour(BigDecimal.valueOf(BigDecimalUtil.mul(empSalaryVo.getDayWork().doubleValue(), 8.0)));
+                    empSalaryVo.setBaseWorkHour(BigDecimal.valueOf(BigDecimalUtil.mul(empSalaryVo.getDayWork() == null ? 0 : empSalaryVo.getDayWork().doubleValue(), 8.0)));
                     SalaryMonthly salaryMonthly = salaryMonthlyService.getByYearMonth(empSalaryVo.getYearMonth());
                     if (salaryMonthly == null) continue;
                     //基本工资/(正常上班天数*8)*(白天上班天数*8)
-                    empSalaryVo.setBaseWorkHourSalary(BigDecimal.valueOf(BigDecimalUtil.mul(empSalaryVo.getWorkDay().doubleValue() * 8, BigDecimalUtil.div(empSalaryVo.getDhbt().doubleValue(), BigDecimalUtil.mul(salaryMonthly.getExpectWorkDay(), 8)))));
+                    empSalaryVo.setBaseWorkHourSalary(BigDecimal.valueOf(BigDecimalUtil.mul(empSalaryVo.getWorkDay() == null ? 0 : empSalaryVo.getWorkDay().doubleValue() * 8, BigDecimalUtil.div(empSalaryVo.getDhbt().doubleValue(), BigDecimalUtil.mul(salaryMonthly.getExpectWorkDay(), 8)))));
                     empSalaryVo.setHourSalary(salaryMonthly.getHourlyWage());
                     //正常加班工时金额
                     empSalaryVo.setNormalOvertimeSalary(BigDecimal.valueOf(BigDecimalUtil.mul(empSalaryVo.getNormalOvertime() == null ? 0 : empSalaryVo.getNormalOvertime().doubleValue(), 17.325)));
@@ -130,7 +130,7 @@ public class EmpSalaryController extends ProductBaseController {
                     //假日白班天数*8+假日晚班天数*3 * 23.1= 金额
                     empSalaryVo.setHoliayOvertimeSalary(BigDecimal.valueOf(BigDecimalUtil.mul(empSalaryVo.getHoliayOvertime() == null ? 0 : empSalaryVo.getHoliayOvertime().doubleValue(), 23.1)));
                     //法定假日（白班天数*8+晚班*3） * 3 * 11.55
-                    empSalaryVo.setLegalOvertimeSalary(BigDecimal.valueOf(BigDecimalUtil.mul(empSalaryVo.getLegalOvertime().doubleValue(), 3 * 11.55)));
+                    empSalaryVo.setLegalOvertimeSalary(BigDecimal.valueOf(BigDecimalUtil.mul(empSalaryVo.getLegalOvertime() == null ? 0 : empSalaryVo.getLegalOvertime().doubleValue(), BigDecimalUtil.mul(3, 11.55))));
                     //汇总表覆盖计时工资
                     empSalaryVo.setTimeSalary(BigDecimal.valueOf(BigDecimalUtil.add(empSalaryVo.getBaseWorkHourSalary() == null ? 0 : empSalaryVo.getBaseWorkHourSalary().doubleValue(),
                             empSalaryVo.getNormalOvertimeSalary() == null ? 0 : empSalaryVo.getNormalOvertimeSalary().doubleValue(),

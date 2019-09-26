@@ -606,6 +606,9 @@
         <if test="yearMonth != null">
             AND tesm.yearMonth = #{yearMonth}
         </if>
+        <if test="type != null">
+            AND tesm.type = #{type}
+        </if>
         and tesm.isDelete = 0 order by tesm.createTime desc
     </select>
 
