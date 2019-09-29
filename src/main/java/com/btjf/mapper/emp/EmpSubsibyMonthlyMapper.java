@@ -100,7 +100,7 @@ public interface EmpSubsibyMonthlyMapper {
 
     public List<EmpSubsibyMonthlyVo> list(@Param("yearMonth") String yearMonth, @Param("empName") String empName,
                                    @Param("billNo") String billNo, @Param("deptName") String deptName,
-                                   @Param("isComfig") Integer isConfirm, @Param("type") Integer type);
+                                   @Param("isConfirm") Integer isConfirm, @Param("type") Integer type);
 
     public Integer confirm(@Param("ids") List<String> ids);
 

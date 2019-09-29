@@ -324,4 +324,10 @@ public class EmpController {
         XaResult<List<EmpSubsidyVo>> result = AppXaResultHelper.success(empSubsidyVoPage, empSubsidyVoPage.getRows());
         return result;
     }
+
+    @RequestMapping(value = "/empList", method = RequestMethod.GET)
+    public XaResult<List<EmpVo>> getEmpList(String empName) {
+        List<EmpVo> empVos = empService.getList(empName, null, null, null, null);
+        return XaResult.success(empVos);
+    }
 }
