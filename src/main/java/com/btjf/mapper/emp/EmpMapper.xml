@@ -793,7 +793,8 @@
         te.idCard as idCard,
         te.birthday as birthday,
         te.entryDate as entryDate,
-        tew.name as workName
+        tew.name as workName,
+        te.deptId as deptId
         FROM t_Emp te LEFT JOIN t_SysDept ts ON te.deptId = ts.id
         LEFT JOIN t_Emp_work tew ON te.workId = tew.id AND tew.isDelete = 0
         WHERE 1=1

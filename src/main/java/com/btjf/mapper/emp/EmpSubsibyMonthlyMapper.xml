@@ -517,7 +517,7 @@
         <if test="empName != null">
             and empName like '%${empName}%'
         </if>
-        <if test="isComfig != null">
+        <if test="isConfirm != null">
             and isConfirm = #{isConfirm}
         </if>
         <if test="type != null">

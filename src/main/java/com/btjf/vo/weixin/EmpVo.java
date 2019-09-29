@@ -27,6 +27,8 @@ public class EmpVo {
 
     private String workName;
 
+    private Integer deptId;
+
     public Integer getId() {
         return id;
     }
@@ -109,6 +111,14 @@ public class EmpVo {
 
     public void setWorkName(String workName) {
         this.workName = workName;
+    }
+
+    public Integer getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Integer deptId) {
+        this.deptId = deptId;
     }
 
     public void setEntryDate(String entryDate) {
