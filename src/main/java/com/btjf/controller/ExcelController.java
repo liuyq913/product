@@ -86,6 +86,9 @@ public class ExcelController extends ProductBaseController {
             case 10:
                 filename = "YYYY-MM考勤分导入.xlsx";
                 break;
+            case 11:
+                filename = "计时工资批量导入.xlsx";
+                break;
             case 12:
                 filename = "批量导入其他扣款.xlsx";
                 break;
