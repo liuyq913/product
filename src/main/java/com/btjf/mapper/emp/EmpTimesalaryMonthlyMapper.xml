@@ -528,25 +528,25 @@
         select * from t_Emp_TimeSalary_Monthly
         where isDelete = 0
         <if test="yearMonth != null">
-            AND yearMonth = #{yearMonth,jdbcType=VARCHAR},
+            AND yearMonth = #{yearMonth,jdbcType=VARCHAR}
         </if>
         <if test="empName != null">
-            AND empName = #{empName,jdbcType=VARCHAR},
+            AND empName = #{empName,jdbcType=VARCHAR}
         </if>
         <if test="deptName != null">
-            AND deptName = #{deptName,jdbcType=VARCHAR},
+            AND deptName = #{deptName,jdbcType=VARCHAR}
         </if>
         <if test="billNo != null">
-            and billNo = #{billNo,jdbcType=VARCHAR},
+            and billNo = #{billNo,jdbcType=VARCHAR}
         </if>
         <if test="isConfirm != null">
-            isConfirm = #{isConfirm,jdbcType=INTEGER},
+            isConfirm = #{isConfirm,jdbcType=INTEGER}
         </if>
         order by id DESC
     </select>
 
     <select id="getTimeSalary" resultType="double">
       SELECT sum(money) FROM t_Emp_TimeSalary_Monthly where isDelete = 0 and isConfirm = 1 and yearMonth = #{yearMonth}
-      and empId = #{empId};
+      and empId = #{empId}
   </select>
 </mapper>
