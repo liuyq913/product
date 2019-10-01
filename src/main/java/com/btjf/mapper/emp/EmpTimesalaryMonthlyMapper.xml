@@ -540,7 +540,7 @@
             and billNo = #{billNo,jdbcType=VARCHAR}
         </if>
         <if test="isConfirm != null">
-            isConfirm = #{isConfirm,jdbcType=INTEGER}
+            and isConfirm = #{isConfirm,jdbcType=INTEGER}
         </if>
         order by id DESC
     </select>
