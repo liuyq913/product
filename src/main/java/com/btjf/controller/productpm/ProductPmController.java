@@ -1,7 +1,6 @@
 package com.btjf.controller.productpm;
 
 import com.alibaba.druid.util.StringUtils;
-import com.btjf.application.components.page.AppPageHelper;
 import com.btjf.application.components.xaresult.AppXaResultHelper;
 import com.btjf.application.util.XaResult;
 import com.btjf.common.page.Page;
@@ -9,12 +8,14 @@ import com.btjf.controller.base.ProductBaseController;
 import com.btjf.model.pm.Pm;
 import com.btjf.model.product.ProductPm;
 import com.btjf.model.sys.SysUser;
+import com.btjf.service.dictionary.DictionaryService;
 import com.btjf.service.pm.PmService;
 import com.btjf.service.productpm.ProductPmService;
 import com.btjf.util.BigDecimalUtil;
 import com.google.common.collect.Lists;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -49,13 +50,23 @@ public class ProductPmController extends ProductBaseController {
     @Resource
     private PmService pmService;
 
+    @Resource
+    private DictionaryService dictionaryService;
+
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public XaResult<List<ProductPm>> findList(@ApiParam("编号") String productNo, @ApiParam("物料编号") String pmNo
             , @ApiParam("1已确认  0 未确认") Integer status, Integer pageSize, Integer currentPage) {
         getLoginUser();
         LOGGER.info(getRequestParamsAndUrl());
 
-        Page<ProductPm> listPage = productPmService.findListPage(productNo, pmNo, status, AppPageHelper.appInit(currentPage, pageSize));
+        if (currentPage == null || currentPage < 1) {
+            currentPage = 1;
+        }
+        if (pageSize == null || pageSize < 1) {
+            pageSize = 25;
+        }
+        Page page = new Page(pageSize, currentPage);
+        Page<ProductPm> listPage = productPmService.findListPage(productNo, pmNo, status, page);
         XaResult<List<ProductPm>> result = AppXaResultHelper.success(listPage, listPage.getRows());
         return result;
     }
@@ -69,7 +80,7 @@ public class ProductPmController extends ProductBaseController {
             return XaResult.error("请选择要确认的记录");
         }
         List<Integer> integers = Lists.newArrayList();
-        Arrays.asList(ids).stream().forEach( t -> {
+        Arrays.asList(ids).stream().forEach(t -> {
             integers.add(new Integer(t));
         });
         Integer row = productPmService.updateStatue(integers);
@@ -85,7 +96,7 @@ public class ProductPmController extends ProductBaseController {
             return XaResult.error("请选择要删除的记录");
         }
         List<Integer> integers = Lists.newArrayList();
-        Arrays.asList(ids).stream().forEach( t -> {
+        Arrays.asList(ids).stream().forEach(t -> {
             integers.add(new Integer(t));
         });
         Integer row = productPmService.delete(integers);
@@ -110,7 +121,7 @@ public class ProductPmController extends ProductBaseController {
 
     @RequestMapping(value = "/addOrUpdate", method = RequestMethod.POST)
     public XaResult<Integer> updateOrAdd(Integer id, String productNo, String pmNo, String num,
-                                         String unit, String type, String remark, Integer status, Integer sequence) {
+                                         String unit, String type, String remark, Integer status, String sequence) {
         SysUser sysUser = getLoginUser();
         LOGGER.info(getRequestParamsAndUrl());
 
@@ -123,6 +134,9 @@ public class ProductPmController extends ProductBaseController {
             return XaResult.error("数量填写有误！");
         }
 
+        if(!NumberUtils.isDigits(sequence)){
+            return XaResult.error("序号填写有误！");
+        }
         ProductPm productPm = new ProductPm();
         productPm.setIsDelete(0);
         productPm.setLastModifyTime(new Date());
@@ -133,23 +147,30 @@ public class ProductPmController extends ProductBaseController {
         productPm.setPmId(pm.getId());
         productPm.setPmNo(pm.getPmNo());
         productPm.setCreateTime(new Date());
+        if(null == dictionaryService.getListByNameAndType(unit,2)){
+            return XaResult.error("单位填写错误");
+        }
         productPm.setUnit(unit);
         productPm.setType(type);
         productPm.setRemark(remark);
         productPm.setNum(BigDecimalUtil.getBigDecimal(num));
         productPm.setUnitNum(BigDecimal.valueOf(BigDecimalUtil.div(1d, productPm.getNum().doubleValue())));
-        productPm.setSequence(sequence);
+        productPm.setSequence(new Integer(sequence));
 
-        if (status != 0 && status != 1) {
-            return XaResult.error("是否确认类型错误");
+        if(null != status) {
+            if (status != 0 && status != 1) {
+                return XaResult.error("是否确认类型错误");
+            }
+        }else{
+            productPm.setStatus(0);
         }
 
         if (id != null) {
             productPm.setId(id);
             productPmService.update(productPm);
         } else {
-            if (null != productPmService.getByNo(productNo)) {
-                return XaResult.error("物料编号已经存在");
+            if(null != productPmService.getByNoAndPmNo(productNo, pmNo)){
+                return XaResult.error("该型号已经存在该物料");
             }
             id = productPmService.add(productPm);
         }
@@ -171,7 +192,7 @@ public class ProductPmController extends ProductBaseController {
 
     @RequestMapping(value = "/export", method = RequestMethod.GET)
     public void exportPm(@ApiParam("编号") String productNo, @ApiParam("名称") String pmNo
-            , @ApiParam("1已确认  0 未确认") int status, HttpServletResponse response) {
+            , @ApiParam("1已确认  0 未确认") Integer status, HttpServletResponse response) {
         getLoginUser();
         LOGGER.info(getRequestParamsAndUrl());
 
@@ -218,6 +239,7 @@ public class ProductPmController extends ProductBaseController {
                 row.createCell(j++).setCellValue(pm.getNum().toString());
                 row.createCell(j++).setCellValue(pm.getUnit());
                 row.createCell(j++).setCellValue(pm.getUnitNum().toString());
+                row.createCell(j++).setCellValue(pm.getUnit());
                 row.createCell(j++).setCellValue(pm.getType());
                 row.createCell(j++).setCellValue(pm.getRemark());
                 row.createCell(j++).setCellValue(pm.getStatus() == 1 ? "已确认" : "未确认");
@@ -238,5 +260,4 @@ public class ProductPmController extends ProductBaseController {
             LOGGER.error("型号耗料管理导出excel异常");
         }
     }
-
 }

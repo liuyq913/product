@@ -567,4 +567,29 @@
       isDelete = #{isDelete,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="findList" resultMap="BaseResultMap">
+    SELECT  <include refid="Base_Column_List"/>
+    FROM t_Customer
+    WHERE 1=1
+    <if test="name != null">
+     AND name LIKE '%${name}%'
+    </if>
+    <if test="startDate != null">
+      AND  date_format(createTime,'%Y-%m-%d') &gt;= #{startDate}
+    </if>
+    <if test="endDate != null">
+      AND date_format(createTime,'%Y-%m-%d') &lt;= #{endDate}
+    </if>
+    AND isDelete = 0
+  </select>
+
+
+  <select id="getByName" resultMap="BaseResultMap">
+    SELECT  <include refid="Base_Column_List"/>
+    FROM t_Customer
+    WHERE 1=1
+    and name = #{name}
+    AND isDelete = 0 limit 1
+  </select>
 </mapper>

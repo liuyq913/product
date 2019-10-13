@@ -2,6 +2,7 @@ package com.btjf.controller.base;
 
 import com.btjf.application.util.XaResult;
 import com.btjf.business.common.exception.BusinessException;
+import com.btjf.controller.weixin.vo.WxEmpVo;
 import com.btjf.interceptor.LoginInfoCache;
 import com.btjf.interceptor.LoginInterceptor;
 import com.btjf.model.sys.SysUser;
@@ -40,17 +41,31 @@ public abstract class ProductBaseController {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
                 .getRequestAttributes()).getRequest();
         String secretKey = request.getHeader(LoginInterceptor.SECRETKEY);
-        SysUser sysUser = new SysUser();
-        sysUser.setLoginName("liuyq");
-        sysUser.setUserName("liuyq");
-        return sysUser;
-        /*SysUser sysUser = (SysUser) loginInfoCache.get(secretKey);
+        SysUser sysUser = (SysUser) loginInfoCache.get(secretKey);
         if (null == sysUser) {
             throw new BusinessException("请登录之后重试");
         } else {
             return sysUser;
-        }*/
+        }
     }
+
+    /**
+     * 获取小程序登入用户信息
+     *
+     * @return
+     */
+    public WxEmpVo getWxLoginUser() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
+                .getRequestAttributes()).getRequest();
+        String secretKey = request.getHeader(LoginInterceptor.SECRETKEY);
+        WxEmpVo wxEmpVo = (WxEmpVo) loginInfoCache.getForever(secretKey);
+        if (null == wxEmpVo) {
+            throw new BusinessException("请登录之后重试");
+        } else {
+            return wxEmpVo;
+        }
+    }
+
 
     public HttpServletRequest getRequest() {
         return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -80,7 +95,8 @@ public abstract class ProductBaseController {
     }
 
     @ExceptionHandler(Exception.class)
-    public @ResponseBody
+    public
+    @ResponseBody
     XaResult<?> handleUncaughtException(Exception exception) { // 系统异常
         LOGGER.error(exception.getMessage(), exception);
         exception.printStackTrace();
@@ -88,7 +104,9 @@ public abstract class ProductBaseController {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public @ResponseBody XaResult<?> handleValidationException(
+    public
+    @ResponseBody
+    XaResult<?> handleValidationException(
             ConstraintViolationException constraintViolationException) { // 数据校验异常
         Set<ConstraintViolation<?>> set = constraintViolationException.getConstraintViolations();
         Iterator<ConstraintViolation<?>> iterable = set.iterator();
@@ -104,21 +122,27 @@ public abstract class ProductBaseController {
     }
 
     @ExceptionHandler(BusinessException.class)
-    public @ResponseBody XaResult<?> handleBusinessException(BusinessException businessException) { // 业务逻辑异常
+    public
+    @ResponseBody
+    XaResult<?> handleBusinessException(BusinessException businessException) { // 业务逻辑异常
         LOGGER.error(businessException.getMessage(), businessException);
         businessException.printStackTrace();
         return new XaResult<Object>(businessException.getMessage() == null ? "请检查网络" : businessException.getMessage());
     }
 
     @ExceptionHandler(BindException.class)
-    public @ResponseBody XaResult<?> handleBindException(BindException bindException) { // 业务逻辑异常
+    public
+    @ResponseBody
+    XaResult<?> handleBindException(BindException bindException) { // 业务逻辑异常
         LOGGER.error(bindException.getMessage(), bindException);
         System.out.println(bindException.getLocalizedMessage());
         return new XaResult<Object>(bindException.getMessage() == null ? "请检查网络" : bindException.getMessage());
     }
 
     @ExceptionHandler(HttpMessageNotWritableException.class)
-    public @ResponseBody XaResult<?> handleJSONConvertException(
+    public
+    @ResponseBody
+    XaResult<?> handleJSONConvertException(
             HttpMessageNotWritableException httpMessageNotWritableException) { // JSON格式转换异常
         LOGGER.error(httpMessageNotWritableException.getMessage(), httpMessageNotWritableException);
         return new XaResult<Object>("JSON格式转换异常");

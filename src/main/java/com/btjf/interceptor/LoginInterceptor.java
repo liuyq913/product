@@ -1,9 +1,9 @@
 package com.btjf.interceptor;
 
+import com.alibaba.druid.util.StringUtils;
 import com.btjf.application.util.XaResult;
 import com.btjf.common.utils.JSONUtils;
 import com.btjf.model.sys.SysUser;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

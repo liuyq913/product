@@ -20,7 +20,7 @@ import java.util.List;
 @Api(value = "ExcelController", description = "Excel文件导入", position = 1)
 @RequestMapping(value = "/excel")
 @RestController("excelController")
-public class ExcelController extends ProductBaseController{
+public class ExcelController extends ProductBaseController {
 
     @Resource
     private ExcelHandlerHelper excelHandlerHelper;
@@ -33,7 +33,7 @@ public class ExcelController extends ProductBaseController{
      */
     @RequestMapping(value = "/import", method = RequestMethod.POST)
     public XaResult<List<String>> importExcel(MultipartFile file, Integer fileType, Boolean isCover) throws Exception {
-        if(fileType == null){
+        if (fileType == null) {
             return XaResult.error("数据类型为空");
         }
         if (file == null || file.isEmpty()) {
@@ -51,11 +51,11 @@ public class ExcelController extends ProductBaseController{
      */
     @RequestMapping(value = "/download", method = RequestMethod.POST)
     public XaResult<String> importExcel(Integer fileType) throws Exception {
-        if(fileType == null){
+        if (fileType == null) {
             return XaResult.error("数据类型为空");
         }
         String filename = null;
-        switch (fileType){
+        switch (fileType) {
             case 1:
                 filename = "批量新增仓库材料.xlsx";
                 break;
@@ -65,8 +65,38 @@ public class ExcelController extends ProductBaseController{
             case 3:
                 filename = "批量新增型号耗料.xlsx";
                 break;
+            case 4:
+                filename = "计划外出库批量导入.xlsx";
+                break;
+            case 5:
+                filename = "批量导入工序模板.xlsx";
+                break;
+            case 6:
+                filename = "员工批量导入.xlsx";
+                break;
+            case 7:
+                filename = "批量新增订单模板.xlsx";
+                break;
+            case 8:
+                filename = "YYYY-MM考勤数据导入模板.xlsx";
+                break;
+            case 9:
+                filename = "YYYY-MM3个分导入模板.xlsx";
+                break;
+            case 10:
+                filename = "YYYY-MM考勤分导入.xlsx";
+                break;
+            case 11:
+                filename = "计时工资批量导入.xlsx";
+                break;
+            case 12:
+                filename = "批量导入其他扣款.xlsx";
+                break;
+            case 13:
+                filename = "批量新增工资补贴.xlsx";
+                break;
         }
-        if (StringUtils.isEmpty(filename)){
+        if (StringUtils.isEmpty(filename)) {
             return XaResult.error("模板不存在");
         }
         String url = "/download/" + filename;

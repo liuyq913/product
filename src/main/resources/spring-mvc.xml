@@ -24,7 +24,7 @@
 	<aop:aspectj-autoproxy/>
 	<!-- Scans within the base package of the application for @Components to configure as beans -->
 	<!-- @Controller, @Service, @Configuration, etc. -->
-	<context:component-scan base-package="com.btjf.service,com.btjf.controller,com.btjf.mapper,com.btjf.interceptor,com.btjf.excel" >
+	<context:component-scan base-package="com.btjf.service,com.btjf.controller,com.btjf.mapper,com.btjf.interceptor,com.btjf.excel,com.btjf.factory" >
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
 
@@ -89,11 +89,16 @@
 			<mvc:exclude-mapping path="/system/data"/>
 			<mvc:exclude-mapping path="/user/login"/>
 			<mvc:exclude-mapping path="/download/**"/>
+            <mvc:exclude-mapping path="/wx/**"/>
 			<bean class="com.btjf.interceptor.LoginInterceptor">
-				<!--<property name="loginInfoCache" ref="loginInfoCache"/>-->
-				<!--<property name="accessTokenMemberCache" ref="accessTokenMemberCache"/>-->
-				<!--<property name="tMemberRemoteService" ref="tMemberRemoteService"/>-->
-				<!--<property name="carSellerAuthRemoteService" ref="carSellerAuthRemoteService"/>-->
+			</bean>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/wx/**"/>
+			<mvc:exclude-mapping path="/wx/login"/>
+			<mvc:exclude-mapping path="/wx/checkPhoneAndIdCar"/>
+			<mvc:exclude-mapping path="/wx/resetPassWord"/>
+			<bean class="com.btjf.interceptor.WxLoginInterceptor">
 			</bean>
 		</mvc:interceptor>
 	</mvc:interceptors>

@@ -111,7 +111,7 @@
         select
         <include refid="Base_Column_List" />
         from t_Order
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER} AND isDelete = 0
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         <!--
@@ -268,4 +268,33 @@
         isDelete = #{isDelete,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
+
+    <select id="getByNo" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_Order
+        WHERE orderNo = #{orderNo} and isDelete = 0
+    </select>
+
+    <update id="deletByID">
+        UPDATE t_Order
+        SET isDelete = 1
+        WHERE id = #{orderId}
+    </update>
+    
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_Order
+        WHERE isDelete = 0
+    </select>
+
+    <select id="notAssignOrder" resultType="com.btjf.model.order.Order">
+        select tor.id as id,
+               tor.orderNo as orderNo
+        from  t_Order tor LEFT JOIN t_Order_Product top ON tor.orderNo = top.orderNo
+        WHERE top.notAssignNum &gt; 0 and tor.isDelete = 0
+        <if test="orderNo != null">
+           and tor.orderNo LIKE '%${orderNo}%'
+        </if>
+        group by tor.orderNo, tor.id
+    </select>
 </mapper>

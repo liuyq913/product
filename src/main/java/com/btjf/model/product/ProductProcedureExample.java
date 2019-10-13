@@ -826,6 +826,66 @@ public class ProductProcedureExample {
             return (Criteria) this;
         }
 
+        public Criteria andIsConfirmIsNull() {
+            addCriterion("isConfirm is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsConfirmIsNotNull() {
+            addCriterion("isConfirm is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsConfirmEqualTo(Integer value) {
+            addCriterion("isConfirm =", value, "isConfirm");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsConfirmNotEqualTo(Integer value) {
+            addCriterion("isConfirm <>", value, "isConfirm");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsConfirmGreaterThan(Integer value) {
+            addCriterion("isConfirm >", value, "isConfirm");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsConfirmGreaterThanOrEqualTo(Integer value) {
+            addCriterion("isConfirm >=", value, "isConfirm");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsConfirmLessThan(Integer value) {
+            addCriterion("isConfirm <", value, "isConfirm");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsConfirmLessThanOrEqualTo(Integer value) {
+            addCriterion("isConfirm <=", value, "isConfirm");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsConfirmIn(List<Integer> values) {
+            addCriterion("isConfirm in", values, "isConfirm");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsConfirmNotIn(List<Integer> values) {
+            addCriterion("isConfirm not in", values, "isConfirm");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsConfirmBetween(Integer value1, Integer value2) {
+            addCriterion("isConfirm between", value1, value2, "isConfirm");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsConfirmNotBetween(Integer value1, Integer value2) {
+            addCriterion("isConfirm not between", value1, value2, "isConfirm");
+            return (Criteria) this;
+        }
+
         public Criteria andProcedureNameLikeInsensitive(String value) {
             addCriterion("upper(procedureName) like", value.toUpperCase(), "procedureName");
             return (Criteria) this;

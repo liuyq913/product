@@ -10,7 +10,7 @@
         <result column="pmNo" jdbcType="VARCHAR" property="pmNo"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="type" jdbcType="VARCHAR" property="type"/>
-        <result column="num" jdbcType="INTEGER" property="num"/>
+        <result column="num" jdbcType="DECIMAL" property="num"/>
         <result column="unit" jdbcType="VARCHAR" property="unit"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="operator" jdbcType="VARCHAR" property="operator"/>
@@ -158,7 +158,7 @@
         isDelete, colour, norms,
         material, callStr)
         values (#{pmNo,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
-        #{num,jdbcType=INTEGER}, #{unit,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
+        #{num,jdbcType=DECIMAL}, #{unit,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
         #{operator,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastModifyTime,jdbcType=TIMESTAMP},
         #{isDelete,jdbcType=INTEGER}, #{colour,jdbcType=VARCHAR}, #{norms,jdbcType=VARCHAR},
         #{material,jdbcType=VARCHAR}, #{callStr,jdbcType=VARCHAR})
@@ -227,7 +227,7 @@
                 #{type,jdbcType=VARCHAR},
             </if>
             <if test="num != null">
-                #{num,jdbcType=INTEGER},
+                #{num,jdbcType=DECIMAL},
             </if>
             <if test="unit != null">
                 #{unit,jdbcType=VARCHAR},
@@ -291,7 +291,7 @@
                 type = #{record.type,jdbcType=VARCHAR},
             </if>
             <if test="record.num != null">
-                num = #{record.num,jdbcType=INTEGER},
+                num = #{record.num,jdbcType=DECIMAL},
             </if>
             <if test="record.unit != null">
                 unit = #{record.unit,jdbcType=VARCHAR},
@@ -338,7 +338,7 @@
         pmNo = #{record.pmNo,jdbcType=VARCHAR},
         name = #{record.name,jdbcType=VARCHAR},
         type = #{record.type,jdbcType=VARCHAR},
-        num = #{record.num,jdbcType=INTEGER},
+        num = #{record.num,jdbcType=DECIMAL},
         unit = #{record.unit,jdbcType=VARCHAR},
         remark = #{record.remark,jdbcType=VARCHAR},
         operator = #{record.operator,jdbcType=VARCHAR},
@@ -370,7 +370,7 @@
                 type = #{type,jdbcType=VARCHAR},
             </if>
             <if test="num != null">
-                num = #{num,jdbcType=INTEGER},
+                num = #{num,jdbcType=DECIMAL},
             </if>
             <if test="unit != null">
                 unit = #{unit,jdbcType=VARCHAR},
@@ -414,7 +414,7 @@
         set pmNo = #{pmNo,jdbcType=VARCHAR},
         name = #{name,jdbcType=VARCHAR},
         type = #{type,jdbcType=VARCHAR},
-        num = #{num,jdbcType=INTEGER},
+        num = #{num,jdbcType=DECIMAL},
         unit = #{unit,jdbcType=VARCHAR},
         remark = #{remark,jdbcType=VARCHAR},
         operator = #{operator,jdbcType=VARCHAR},
@@ -441,7 +441,7 @@
             AND name LIKE '%${name}%'
         </if>
         <if test="colour != null">
-            AND colour = #{name,jdbcType=VARCHAR}
+            AND colour = #{colour,jdbcType=VARCHAR}
         </if>
         <if test="norms != null">
             AND norms = #{norms,jdbcType=VARCHAR}
@@ -479,7 +479,7 @@
         VALUES
         <foreach collection="pmList" index="index" item="item" separator=",">
             (#{item.pmNo,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR},
-            #{item.type,jdbcType=VARCHAR}, #{item.num,jdbcType=INTEGER}, #{item.unit,jdbcType=VARCHAR},
+            #{item.type,jdbcType=VARCHAR}, #{item.num,jdbcType=DECIMAL}, #{item.unit,jdbcType=VARCHAR},
             #{item.remark,jdbcType=VARCHAR},
             #{item.operator,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP},
             #{item.lastModifyTime,jdbcType=TIMESTAMP},
@@ -493,7 +493,7 @@
         <include refid="Base_Column_List"/>
         FROM t_PM
         WHERE
-        pmNo = #{no} and isDelete = 0
+        pmNo = #{no} and isDelete = 0 order by id desc limit 1
     </select>
 
     <update id="deleteByNo" parameterType="java.lang.Integer">
@@ -504,8 +504,7 @@
         (
         <foreach collection="nos" index="index" item="no" separator=",">
             #{no, jdbcType=VARCHAR}
-        </foreach
-        >
+        </foreach>
         )
     </update>
 </mapper>

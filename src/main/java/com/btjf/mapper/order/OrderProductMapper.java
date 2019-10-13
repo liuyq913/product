@@ -1,9 +1,12 @@
 package com.btjf.mapper.order;
 
+import com.btjf.controller.emp.vo.MapVo;
+import com.btjf.controller.order.vo.OrderVo;
 import com.btjf.model.order.OrderProduct;
 import com.btjf.model.order.OrderProductExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface OrderProductMapper {
     /**
@@ -93,4 +96,20 @@ public interface OrderProductMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(OrderProduct record);
+
+    OrderProduct getByOrderNoAndProductNo(@Param("orderNo") String orderNo, @Param("productNo") String productNo);
+
+    List<OrderVo> findList(@Param("customerId") Integer customerId, @Param("orderNo") String orderNo, @Param("pmNo")
+            String pmNo, @Param("type") String type, @Param("completeStartDate") String completeStartDate,
+                           @Param("completeStartEnd") String completeStartEnd,
+                           @Param("createStartDate") String createStartDate, @Param("createEndDate") String createEndDate);
+
+    Integer deleteById(@Param("id") Integer id);
+
+    List<OrderProduct> findByOrderID(@Param("orderId") Integer orderId);
+
+    List<MapVo> getCount(@Param("customerId") Integer customerId, @Param("orderNo") String orderNo, @Param("pmNo")
+            String pmNo, @Param("type") String type, @Param("completeStartDate") String completeStartDate,
+                         @Param("completeStartEnd") String completeStartEnd,
+                         @Param("createStartDate") String createStartDate, @Param("createEndDate") String createEndDate);
 }

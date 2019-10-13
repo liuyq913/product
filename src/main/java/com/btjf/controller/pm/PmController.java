@@ -1,7 +1,6 @@
 package com.btjf.controller.pm;
 
 import com.alibaba.dubbo.common.utils.StringUtils;
-import com.btjf.application.components.page.AppPageHelper;
 import com.btjf.application.components.xaresult.AppXaResultHelper;
 import com.btjf.application.util.XaResult;
 import com.btjf.common.page.Page;
@@ -27,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Date;
@@ -48,20 +48,27 @@ public class PmController extends ProductBaseController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public XaResult<List<Pm>> findList(@ApiParam("编号") String pmNo, @Param("name") String name ,@ApiParam("颜色") String colour, @ApiParam("规格")
-                                      String norms, @Param("材质") String material, @Param("称呼") String call
+                                      String norms, @Param("材质") String material, @Param("称呼")  String callStr
             , @ApiParam("类型") String type, Integer pageSize, Integer currentPage) {
          getLoginUser();
         LOGGER.info(getRequestParamsAndUrl());
 
+        if(currentPage == null || currentPage < 1){
+            currentPage =1;
+        }
+        if(pageSize == null || pageSize < 1){
+            pageSize = 25;
+        }
+        Page page = new Page(pageSize, currentPage);
         PmRequstPojo pmRequstPojo = new PmRequstPojo();
         pmRequstPojo.setPmNo(pmNo);
         pmRequstPojo.setName(name);
         pmRequstPojo.setType(type);
-        pmRequstPojo.setCallStr(call);
+        pmRequstPojo.setCallStr(callStr);
         pmRequstPojo.setColour(colour);
         pmRequstPojo.setMaterial(material);
         pmRequstPojo.setNorms(norms);
-        Page<Pm> listPage = pmService.findListPage(pmRequstPojo, AppPageHelper.appInit(currentPage, pageSize));
+        Page<Pm> listPage = pmService.findListPage(pmRequstPojo, page);
         List<Pm> pms = listPage.getRows();
         pms.stream().filter(t -> t!=null).forEach(t -> {
             if(t.getCreateTime()!= null){
@@ -145,7 +152,7 @@ public class PmController extends ProductBaseController {
             pm.setRemark(remark);
             pm.setCreateTime(new Date());
             pm.setOperator(sysUser.getUserName());
-            pm.setNum(0);
+            pm.setNum(BigDecimal.ZERO);
             pm.setIsDelete(0);
             id = pmService.insert(pm);
         }
@@ -204,7 +211,7 @@ public class PmController extends ProductBaseController {
         header.createCell(j++).setCellValue("物料编号");
         header.createCell(j++).setCellValue("物料名称");
         header.createCell(j++).setCellValue("类别");
-        header.createCell(j++).setCellValue("单位");
+        header.createCell(j++).setCellValue("物料单位");
         header.createCell(j++).setCellValue("备注");
         header.createCell(j++).setCellValue("添加人");
         header.createCell(j++).setCellValue("添加日期");

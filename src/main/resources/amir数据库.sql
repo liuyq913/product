@@ -35,6 +35,7 @@ INSERT INTO `product`.`t_Dictionary` (`type`, `value`) VALUES ('2', '付');
 INSERT INTO `product`.`t_Dictionary` (`type`, `value`) VALUES ('2', '顶');
 INSERT INTO `product`.`t_Dictionary` (`type`, `value`) VALUES ('2', '条');
 INSERT INTO `product`.`t_Dictionary` (`type`, `value`) VALUES ('2', '块');
+INSERT INTO `product`.`t_Dictionary` (`type`, `value`) VALUES ('2', '包');
 INSERT INTO `product`.`t_Dictionary` (`type`, `value`) VALUES ('3', '小手套');
 INSERT INTO `product`.`t_Dictionary` (`type`, `value`) VALUES ('3', '大手套');
 INSERT INTO `product`.`t_Dictionary` (`type`, `value`) VALUES ('3', '格斗手套');
@@ -47,36 +48,60 @@ INSERT INTO `product`.`t_Dictionary` (`type`, `value`) VALUES ('3', '其他类')
 CREATE TABLE t_SysDept(
 	id int primary key auto_increment,
 	deptName varchar(50),
-	deptOrder int
+	deptOrder int,
+	isWorkShop int NOT NULL comment '0 不是车间   1 是车间',
 	);
 
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('经理室', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('人事部', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('劳资部', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('出货部', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('后勤部', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('验货部', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('外加工部', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('质检部-成品检验', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('外协质检', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('行政部', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('技术部', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('生产部', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('采购部', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('下料车间', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('一车间', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('二车间', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('信息中心', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('后道车间-车工', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('后道车间-中辅工', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('后道车间-大辅工', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('包装车间', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('财务部', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('仓库', NULL);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`) VALUES ('样品间', NULL);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('经理室', NULL ,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('人事部', NULL, 0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('劳资部', NULL, 0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('出货部', NULL,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('后勤部', NULL,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('验货部', NULL,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('外加工部', NULL,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('质检部-成品质检', NULL,1);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('外协质检', NULL,1);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('行政部', NULL,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('技术部', NULL,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('生产部', NULL,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('采购部', NULL,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('下料车间', NULL,1);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('一车间', NULL,1);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('二车间', NULL,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('信息中心', NULL,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('后道车间-车工', NULL,1);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('后道车间-中辅工', NULL,1);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('后道车间-大辅工', NULL,1);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('包装车间', NULL,1);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('财务部', NULL,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('仓库', NULL,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('样品间', NULL,0);
 
 update t_SysDept set deptOrder = id;
 
+
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('车间主任',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('组长',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('车工',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('辅工',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('大辅工',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('检验',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('杂工',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('下料工',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('印刷',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('剪辅料',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('切包边条',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('分料',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('电脑车工',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('包装工',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('新学徒车工',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('新熟练车工',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('机修工',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('小辅工',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('整形，打包',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('门卫',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('食堂',NOW(),NOW(),0);
+INSERT  into t_Emp_work  (name,createTime, lastModifyTime, isDelete)  VALUES('中辅工',NOW(),NOW(),0);
 
 ##后台登录账号
 CREATE TABLE t_SysUser(
@@ -87,7 +112,7 @@ CREATE TABLE t_SysUser(
 	loginPwd varchar(100) NULL,
 	userName varchar(50) NULL
 	);
-INSERT INTO `product`.`t_SysUser` (`deptId`, `roleId`, `loginName`, `loginPwd`, `userName`) VALUES ('1', '1', 'admin', '123456', '我说了算');
+INSERT INTO `product`.`t_SysUser` (`deptId`, `roleId`, `loginName`, `loginPwd`, `userName`) VALUES ('1', '1', 'admin', '123456', '系统管理员');
 
 
 ##角色
@@ -128,7 +153,7 @@ CREATE TABLE t_PM(
 	pmNo varchar(100) NOT NULL comment '物料编号',
 	name varchar(100) NOT NULL comment '物料名称',
 	type varchar(100) NOT NULL comment '类别 泡棉类、主要面料类、标类、辅料类、包装材料类',
-	num int DEFAULT '0' comment '数量',
+	num decimal(12,4)  comment '数量',
 	unit varchar(30) NOT NULL comment '单位 双、套、箱、只、件、米、SF、并、张、KG、个、卷、跟、片、m2、颗、付、顶、条、块',
 	remark varchar(200) comment '备注',
 	operator varchar(100) NOT NULL comment '添加人',
@@ -140,7 +165,7 @@ CREATE TABLE t_PM(
   material varchar(100)  DEFAULT '' COMMENT '材质',
   callStr varchar(100)  DEFAULT '' COMMENT '称呼'
 );
-INSERT INTO `product`.`t_PM` (`pmNo`, `name`, `type`, `num`, `unit`, `remark`, `operator`, `createTime`, `lastModifyTime`, `isDelete`) VALUES ('TEST1', '测试1', '辅料', '20', '双', 'SSS', '1', '2019-07-30 21:41:53', NULL, '0');
+INSERT INTO `product`.`t_PM` (`pmNo`, `name`, `type`, `num`, `unit`, `remark`, `operator`, `createTime`, `lastModifyTime`, `isDelete`) VALUES ('TEST1', '测试1', '辅料类', '20', '双', 'SSS', '1', '2019-07-30 21:41:53', NULL, '0');
 INSERT INTO `product`.`t_PM` (`pmNo`, `name`, `type`, `num`, `unit`, `remark`, `operator`, `createTime`, `lastModifyTime`, `isDelete`) VALUES ('DDD0', '002', '包装材料类', '0', '个', NULL, '1', '2019-07-30 21:57:22', NULL, '0');
 
 
@@ -170,8 +195,8 @@ CREATE TABLE t_ProductPM(
 	unit varchar(30) NOT NULL comment '单位 双、套、箱、只、件、米、SF、并、张、KG、个、卷、跟、片、m2、颗、付、顶、条、块',
 	remark varchar(200) comment '备注',
 	status int(11) comment '0未确认  1确认',
-	num decimal(5,2) comment '数量(耗料/双)',
-	unitNum decimal(5,2) comment '数量(双/单位)',
+	num decimal(12,4) comment '数量(耗料/双)',
+	unitNum decimal(12,4) comment '数量(双/单位)',
 	operator varchar(100) NOT NULL comment '添加人',
 	createTime datetime,
 	lastModifyTime datetime,
@@ -189,34 +214,36 @@ CREATE TABLE t_PMIn(
 	remark varchar(200) comment '备注',
 	supplier varchar(200) comment '供应商',
   inDate  date NULL COMMENT '入库时间',
-	num int comment '入库数量',
-	perNum int comment '入库前数量',
-	backNum int comment '入库后数量',
+	num decimal(12,4) comment '入库数量',
+	perNum decimal(12,4) comment '入库前数量',
+	backNum decimal(12,4) comment '入库后数量',
 	operator varchar(100) NOT NULL comment '添加人',
 	createTime datetime,
 	lastModifyTime datetime,
 	isDelete int NOT NULL
 );
 
-INSERT INTO `product`.`t_PMIn` (`pmId`, `pmNo`, `pmName`, `type`, `unit`, `remark`, `supplier`, `inDate`, `num`, `perNum`, `backNum`, `operator`, `createTime`, `lastModifyTime`, `isDelete`) VALUES ('1', 'TEST1', '测试1', '辅料', '10', 'AAA', '！！！！', '2019-07-30', '10', '0', '10', '1', '2019-07-30 21:43:13', NULL, '0');
-INSERT INTO `product`.`t_PMIn` (`pmId`, `pmNo`, `pmName`, `type`, `unit`, `remark`, `supplier`, `inDate`, `num`, `perNum`, `backNum`, `operator`, `createTime`, `lastModifyTime`, `isDelete`) VALUES ('1', 'TEST1', '测试1', '辅料', '10', 'AAA', '！！！！', '2019-07-31', '10', '10', '20', '1', '2019-07-30 21:43:13', NULL, '0');
+INSERT INTO `product`.`t_PMIn` (`pmId`, `pmNo`, `pmName`, `type`, `unit`, `remark`, `supplier`, `inDate`, `num`, `perNum`, `backNum`, `operator`, `createTime`, `lastModifyTime`, `isDelete`) VALUES ('1', 'TEST1', '测试1', '辅料类', '10', 'AAA', '！！！！', '2019-07-30', '10', '0', '10', '1', '2019-07-30 21:43:13', NULL, '0');
+INSERT INTO `product`.`t_PMIn` (`pmId`, `pmNo`, `pmName`, `type`, `unit`, `remark`, `supplier`, `inDate`, `num`, `perNum`, `backNum`, `operator`, `createTime`, `lastModifyTime`, `isDelete`) VALUES ('1', 'TEST1', '测试1', '辅料类', '10', 'AAA', '！！！！', '2019-07-31', '10', '10', '20', '1', '2019-07-30 21:43:13', NULL, '0');
 
 
 ##领料单  耗料上限出库  好像可以直接用订单做主表
 CREATE TABLE t_PMout_Bill(
 	id int(11) primary key AUTO_INCREMENT,
 	orderId int(11) comment '订单ID',
-	orderNo varchar(100) NOT NULL comment '订单编号',
+	orderNo varchar(100) comment '订单编号',
 	productId int(11),
-	productNo varchar(100) NOT NULL comment '产品型号',
+	productNo varchar(100) comment '产品型号',
 	billNo varchar(30) NOT NULL comment '编号',
 	type int NOT NULL comment '1 开领料单 2 订单号开单 3 计划外出库',
-	workshop int comment '车间',
+	workshop varchar(100) comment '车间',
 	distributionNum int comment '分配数量',
 	groupNmae varchar(30) comment '领用组',
 	leader varchar(30) comment '负责人',
 	pmType varchar(50) comment '材料类别',
 	pmCheckItem varchar(50) comment '材料检测',
+  stamp varchar(50) comment '电子章',
+	operator varchar(100) NOT NULL comment '添加人',
 	createTime datetime,
 	lastModifyTime datetime,
 	isDelete int NOT NULL
@@ -228,16 +255,17 @@ CREATE TABLE t_PMout_Bill_Detail(
 	pmId int(11),
 	pmNo varchar(100) NOT NULL comment '物料编号',
 	pmName varchar(100) NOT NULL comment '物料名称',
-	pmBatchNo varchar(100) NOT NULL comment '物料批次编号',
-	num int comment '数量',
-	perNum int comment '出库前数量',
-	backNum int comment '出库后数量',
+	pmBatchNo varchar(100) comment '物料批次编号',
+	num decimal(12,4) comment '数量',
+	perNum decimal(12,4) comment '出库前数量',
+	backNum decimal(12,4) comment '出库后数量',
 	unit varchar(30) NOT NULL comment '单位 双、套、箱、只、件、米、SF、并、张、KG、个、卷、跟、片、m2、颗、付、顶、条、块',
 	remark varchar(200) comment '备注',
 	outInfo varchar(200) comment '出库说明',
-	receiver varchar(100) NOT NULL comment '领用人',
-	sender varchar(100) NOT NULL comment '发料人',
+	receiver varchar(100) comment '领用人',
+	sender varchar(100)comment '发料人',
 	operator varchar(100) NOT NULL comment '添加人',
+  outDate  date NULL COMMENT '出库时间',
 	createTime datetime,
 	lastModifyTime datetime,
 	isDelete int NOT NULL
@@ -287,6 +315,8 @@ CREATE TABLE t_Order_Product(
 	productNo varchar(100) NOT NULL comment '产品型号',
 	productType varchar(30) NOT NULL comment '类别 小手套 大手套 格斗手套 靶类 护具类 其他类',
 	num int comment '数量',
+	assignedNum int comment '已分配数额',
+	notAssignNum int comment '未分配数额 （已分配数量+未分配数量 = 总数量）',
 	maxNum int comment '上限数量',
 	unit varchar(30) NOT NULL comment '单位 双、套、箱、只、件、米、SF、并、张、KG、个、卷、跟、片、m2、颗、付、顶、条、块',
 	completeDate date comment '出货日期',
@@ -300,7 +330,108 @@ CREATE TABLE t_Order_Product(
 	createTime datetime,
 	lastModifyTime datetime,
 	isDelete int NOT NULL
-);	
+);
+
+##生产单表
+CREATE TABLE t_Production_Order(
+   id int(11) primary key AUTO_INCREMENT,
+   productionNo varchar(100) NOT NULL COMMENT '生产单编号',
+   orderId int(11) NOT NULL comment '订单ID',
+   orderNo varchar(100) NOT NULL comment '订单编号',
+   productNo varchar(100) NOT NULL comment '产品型号',
+   orderProductId  int(11) NOT NULL comment '订单 型号表ID',
+   maxNum int comment '上限数量',
+   assignNum int comment '分配数额',
+   workshop varchar(30) comment '车间',
+   workshopDirector varchar(100) comment '车间主任',
+   isLuo int NOT NULL COMMENT '是否按罗分 0否 1 是',
+   luoNum int(11) COMMENT '一罗的数量',
+   printer varchar(100) COMMENT '打印人',
+   printTime DATE COMMENT '打印时间',
+  `printCount` int(11) DEFAULT '0' COMMENT '打印次数',
+   codeUrl varchar(255) comment '二维码地址',
+   createTime datetime,
+	 lastModifyTime datetime,
+	 isDelete int NOT NULL
+);
+
+
+##生产单-工序表
+CREATE TABLE t_Production_Procedure(
+   id int(11) primary key AUTO_INCREMENT,
+   productionNo varchar(100) NOT NULL COMMENT '生产单编号',
+   orderId int(11) NOT NULL comment '订单ID',
+   orderNo varchar(100) NOT NULL comment '订单编号',
+   productNo varchar(100) NOT NULL comment '产品型号',
+   procedureId int(11) comment '工序ID',
+   procedureName varchar(50) comment '工序名称',
+   createTime datetime,
+   sort int(11) NOT NULL comment '工序序号',
+	 isDelete int NOT NULL
+);
+
+##生产单-工序-人员 多对多表 员工自己扫码的结果
+CREATE TABLE t_Production_Procedure_Scan(
+  id int(11) primary key AUTO_INCREMENT,
+  orderNo varchar(100) NOT NULL comment '订单编号',
+  productNo varchar(100) NOT NULL comment '产品型号',
+  productionNo varchar(50) COMMENT '生产单编号',
+  luoId int(11) comment '生产单罗ID',
+  pmOutBillNo varchar(50) comment '领料单编号',
+  procedureId int(11) comment '工序ID',
+  procedureName varchar(50) comment '工序名称',
+  empId int(11) comment '员工ID',
+  num int(11) comment '员工计件数目',
+  price decimal(8,2) comment '价格',
+  money decimal(10,2) comment '工资',
+  createTime datetime,
+  isDelete int NOT NULL,
+  status int comment '0 未质检 1 已质检'
+);
+##生产单-工序-人员 多对多表 质检之后的结果 车间主任上报结果
+CREATE TABLE t_Production_Procedure_Confirm(
+  id int(11) primary key AUTO_INCREMENT,
+  orderNo varchar(100) NOT NULL comment '订单编号',
+  productNo varchar(100) NOT NULL comment '产品型号',
+  procedureId int(11) comment '工序ID',
+  procedureName varchar(50) comment '工序名称',
+  empId int(11) comment '员工ID',
+  num decimal(8,2) comment '员工计件数目',
+  price decimal(8,2) comment '价格',
+  money decimal(10,2) comment '工资',
+  completeTime datetime comment '员工扫码时间',
+  createTime datetime comment '质检时间',
+  lastModifyTime datetime,
+  type int(11) comment '1 员工质检  2 车间主任上报',
+  operator varchar(100) NOT NULL comment '添加人',
+  productionNo varchar(50) COMMENT '生产单编号',
+  luoId int(11) comment '生产单罗ID',
+  pmOutBillNo varchar(50) comment '领料单编号',
+  isDelete int NOT NULL,
+  isChange int NOT NULL comment '0未调整 1主任调整  2已结算',
+  workshop  varchar(30) comment '车间',
+  inspectionor varchar(255) DEFAULT NULL comment '质检员'
+);
+
+
+
+##生产单-罗表
+CREATE TABLE t_Production_Luo(
+  id int(11) primary key AUTO_INCREMENT,
+  productionNo varchar(100) NOT NULL COMMENT '生产单编号',
+  orderId int(11) NOT NULL comment '订单ID',
+  orderNo varchar(100) NOT NULL comment '订单编号',
+  productNo varchar(100) NOT NULL comment '产品型号',
+  num int(11) NOT NULL comment '数量',
+  maxNum int comment '上限数量',
+  codeUrl varchar(255) DEFAULT NULL comment '二维码地址',
+  createTime datetime,
+	isDelete int NOT NULL,
+	sort int NOT NULL
+);
+
+
+-- 暂时不用
 ##订单型号 车间
 CREATE TABLE t_Order_Product_Workshop(
 	id int(11) primary key AUTO_INCREMENT,
@@ -312,8 +443,9 @@ CREATE TABLE t_Order_Product_Workshop(
 	isDelete int NOT NULL
 );	
 
+## 工序单价管理列表
 ##产品 工序 车间
-CREATE TABLE t_Product_Procedure_workshop(
+CREATE TABLE t_Product_Procedure_Workshop(
 	id int(11) primary key AUTO_INCREMENT,
 	productId int(11),
 	productNo varchar(100) NOT NULL comment '产品型号',
@@ -326,7 +458,8 @@ CREATE TABLE t_Product_Procedure_workshop(
 	operator varchar(100) NOT NULL comment '添加人',
 	createTime datetime,
 	lastModifyTime datetime,
-	isDelete int NOT NULL
+	isDelete int NOT NULL,
+	KEY `index_workName` (`workshop`) USING HASH
 );	
 
 ##产品 工序 价格
@@ -336,11 +469,12 @@ CREATE TABLE t_Product_Procedure(
 	productId int(11),
 	productNo varchar(100) NOT NULL comment '产品型号',
 	sort int(11) comment '排序',
-	price decimal(5,2) comment '价格',
+	price decimal(8,2) comment '价格',
 	operator varchar(100) NOT NULL comment '添加人',
 	createTime datetime,
 	lastModifyTime datetime,
-	isDelete int NOT NULL
+	isDelete int NOT NULL,
+	isConfirm int(11) DEFAULT 0 comment '是否确认'
 );	
 
 
@@ -364,7 +498,7 @@ CREATE TABLE t_Emp(
 	linkMan varchar(50) comment '联系人',
 	phone varchar(30) comment '手机号',
 	tel varchar(30) comment '联系电话',
-	address varchar(100) comment '地址',
+	address varchar(255) comment '地址',
 	salary decimal(8,2) comment '工资',
 	ylbx decimal(8,2) comment '养老保险',
 	sybx decimal(8,2) comment '失业保险',
@@ -372,12 +506,14 @@ CREATE TABLE t_Emp(
 	gjj decimal(8,2) comment '住房公积金',
 	dhbt decimal(8,2) comment '工资',
 	phoneSubsidy decimal(8,2) comment '电话费补贴',
+  waterSubsidy decimal(8,2) comment '开水费',
 	foodSubsidy decimal(8,2) comment '夜餐费',
 	socialSubsidy decimal(8,2) comment '社保补贴',
 	remark varchar(200) comment '备注',
 	createTime datetime,
 	lastModifyTime datetime,
-	isDelete int NOT NULL
+	isDelete int NOT NULL,
+	password varchar(255) DEFAULT NULL COMMENT '登入密码'
 );	
 
 ##员工 工种
@@ -396,6 +532,8 @@ CREATE TABLE t_Salary_Monthly(
 	expectWorkDay int comment '规定上班天数',
 	realityWorkDay int comment '正常上班天数',
 	basicSalary decimal(8,2) comment '基本工资',
+  hourlyWage decimal(4,2) comment '时薪',
+  isMore int(11) comment '1大于500万  2 小于500万',
 	createTime datetime,
 	lastModifyTime datetime,
 	isDelete int NOT NULL
@@ -411,18 +549,41 @@ CREATE TABLE t_Emp_Salary_Monthly(
 	deptName varchar(30) comment '部门名字',
 	workName varchar(30) comment '工种',
 	salary decimal(8,2) comment '工资',
-	workDay int comment '上班天数',
-	dayWork int comment '白班',
-	nightWork int comment '晚班',
-	score decimal(8,2) comment '分数',
-	restDay int comment '公休',
-	sumDay int comment '总天数',
+	workDay decimal(4,1) comment '上班天数',
+	dayWork decimal(4,1) comment '正常白班',
+	nightWork decimal(4,1) comment '正常晚班',
+	score decimal(8,2) comment '考核分',
+	restDay decimal(4,1) comment '公休',
+	sumDay decimal(4,1) comment '总天数',
 	daySalary decimal(8,2) comment '日工资',
 	realSalary decimal(8,2) comment '应发工资',
 	createTime datetime,
 	lastModifyTime datetime,
-	isDelete int NOT NULL
-);	
+	dayWorkHoliday decimal(4,1) comment '节假日白班',
+	nightWorkHoliay decimal(4,1) comment '节假日晚班',
+	dayWorkLegal decimal(4,1) comment '法假日白班',
+	nigthWorkLegal decimal(4,1) comment '法假日晚班',
+	isDelete int NOT NULL,
+	type int comment '类别 1计件工 2固定工',
+	nigthSnack decimal(4,1) DEFAULT NULL COMMENT '夜餐',
+	isCalculation int  comment '是否结算 0  未结算 1 已结算'
+);
+
+-- 考勤分明细
+CREATE TABLE t_Score(
+  id int(11) primary key AUTO_INCREMENT,
+	yearMonth varchar(30) NOT NULL comment '年月',
+	empId int NOT NULL comment '员工ID',
+	empName varchar(30) NOT NULL comment '名字',
+	deptId int comment '部门ID',
+	deptName varchar(30) comment '部门名字',
+  fiveScore decimal(8,2)  comment '5s分',
+  coordinationScore decimal(8,2) comment '配合分',
+  qualityScore decimal(8,2) comment '质量分',
+  score decimal(8,2) comment '考核分',
+  checkworkScore decimal(8,2) comment '考勤分',
+  isDelete int NOT NULL
+	);
 
 
 ## 员工 月度各种补贴、扣款表
@@ -458,18 +619,69 @@ CREATE TABLE t_Emp_TimeSalary_Monthly(
 	workName varchar(30) comment '工种',
 	num decimal(8,3) comment '计算数量',
 	price decimal(8,3) comment '单价',
-	money decimal(8,2) comment '金额',
+	money decimal(10,2) comment '金额',
 	billNo varchar(30) comment '票据编号',
 	content varchar(300) comment '工作内容',
 	drawer varchar(300) comment '开票人',
 	drawTime datetime comment '开票时间',
 	remark varchar(200) comment '备注',
+  unit varchar(50) comment '单位',
 	isConfirm int comment '是否确认 1确认 2未确认',
 	createTime datetime,
 	lastModifyTime datetime,
 	isDelete int NOT NULL
 );	
 
+
+## 工资月度数据汇总
+CREATE TABLE t_Summary_Salary_Monthly(
+  id int(11) primary key AUTO_INCREMENT,
+	yearMonth varchar(30) comment '年月',
+	empId int comment '员工ID',
+	empName varchar(30) comment '名字',
+	deptId int comment '部门ID',
+	deptName varchar(30) comment '部门名字',
+	workName varchar(30) comment '工种',
+	dayWork decimal(4,1) comment '正常白班',
+	workDay decimal(4,1) comment '上班天数',
+	nightWork decimal(4,1) comment '正常晚班',
+	score decimal(8,2) comment '考核分',
+  sumWorkHour decimal(8,2) comment '总工时',
+  hourSalary  decimal(8,2)  comment '时薪=应发工资/总工时',
+  restDay decimal(4,1) comment '公休',
+  sumDay decimal(4,1) comment '总天数',
+  daySalary  decimal(8,2)  comment '日工资 = 固定工资/总天数',
+	dhbt decimal(8,2) comment '工资',
+	type int comment '类别 1计件工 2固定工',
+	timeSalary decimal(8,2) comment '计时工资',
+	nigthSnack decimal(4,1) DEFAULT NULL comment '夜餐',
+  phoneSubsidy decimal(8,2) comment '电话补贴',
+  mealSubsidy decimal(8,2) comment '餐补',
+  socialSubsidy decimal(8,2) comment '社保补贴',
+  hourSubsidy decimal(8,2) comment '住房补贴',
+  otherSubsidy decimal(8,2) comment '其他补贴',
+  sumSusbsidy decimal(12,2) comment '补贴合计',
+  realSalary decimal(8,2) comment '应发工资',
+  basicSalary decimal(8,2) comment '基本工资',
+  ylbx decimal(8,2) comment '养老保险',
+	sybx decimal(8,2) comment '失业保险',
+	yiliaobx decimal(8,2) comment '医疗保险',
+	gjj decimal(8,2) comment '住房公积金',
+	otherDeduction decimal(8,2) comment '其他扣款',
+	sumDeduction decimal(8,2) comment '扣款合计',
+	trueSalary decimal(8,2) comment '实发工资',
+	normalOvertime decimal(4,2) comment '正常加班工时',
+	holiayOvertime decimal(4,2) comment '假日加班工时',
+	legalOvertime decimal(4,2) comment '法假加班工时',
+	createTime datetime,
+	lastModifyTime datetime,
+	isDelete int NOT NULL,
+	workYearSubsidy decimal(4,2) comment '工龄补贴',
+	percentSubsidy decimal(4,2) comment '计件10% 补贴',
+	latheWorkerSubsidy decimal(4,2) comment '车工 补贴',
+	newLatheWorkerSubsidy decimal(4,2) comment '新车工 补贴',
+	twoSideSubsidy decimal(4,2) comment '覆面 补贴'
+);
 
 ## 文件
 CREATE TABLE t_File(
@@ -481,6 +693,13 @@ CREATE TABLE t_File(
 	createTime datetime,
 	lastModifyTime datetime,
 	isDelete int NOT NULL
-);	
+);
 
 
+## 单号生成器
+CREATE TABLE t_BillNo(
+  id int(11) primary key AUTO_INCREMENT,
+  type int comment '单据类型 1 领料单  2订单号开单 3 订单 4 生产单',
+  date varchar(30) comment '日期 20190819',
+  num int comment '编号'
+);

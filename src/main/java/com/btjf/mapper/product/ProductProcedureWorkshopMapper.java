@@ -2,8 +2,9 @@ package com.btjf.mapper.product;
 
 import com.btjf.model.product.ProductProcedureWorkshop;
 import com.btjf.model.product.ProductProcedureWorkshopExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface ProductProcedureWorkshopMapper {
     /**
@@ -93,4 +94,21 @@ public interface ProductProcedureWorkshopMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(ProductProcedureWorkshop record);
+
+    Integer getNumByWorkShopNameAndPID(@Param("name") String name, @Param("productNo") String productNo);
+
+    List<ProductProcedureWorkshop> findByWorkshopName(@Param("name") String name);
+
+    List<ProductProcedureWorkshop> getWorkShop(@Param("productNo") String productNo, @Param("procedureId") Integer procedureId, @Param("isConfirm") Integer isConfirm);
+
+    Integer deleteByProcedureId(@Param("procedureId") Integer procedureId);
+
+    List<ProductProcedureWorkshop> getByWorkShopAndProductNo(@Param("workShop") String workShop, @Param("productNo") String productNo);
+
+    ProductProcedureWorkshop getByWorkShopAndProductNoAndName(@Param("workShop") String workShop, @Param("productNo") String productNo, @Param("name") String name);
+
+
+    List<ProductProcedureWorkshop> getBySort(@Param("productNo") String productNo, @Param("integers") List<Integer> integers);
+
+    ProductProcedureWorkshop getInspactPriceByWorkShapAndProductNo(@Param("deptName") String deptName, @Param("productNo") String productNo);
 }

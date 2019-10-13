@@ -2,8 +2,9 @@ package com.btjf.mapper.sys;
 
 import com.btjf.model.sys.Sysdept;
 import com.btjf.model.sys.SysdeptExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface SysdeptMapper {
     /**
@@ -93,4 +94,10 @@ public interface SysdeptMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(Sysdept record);
+
+    List<Sysdept> getList();
+
+    List<Sysdept> getWorkshopList();
+
+    Sysdept getByName(@Param("name") String name);
 }

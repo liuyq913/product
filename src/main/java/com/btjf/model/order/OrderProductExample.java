@@ -1502,6 +1502,126 @@ public class OrderProductExample {
             return (Criteria) this;
         }
 
+        public Criteria andAssignedNumIsNull() {
+            addCriterion("assignedNum is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignedNumIsNotNull() {
+            addCriterion("assignedNum is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignedNumEqualTo(Integer value) {
+            addCriterion("assignedNum =", value, "assignedNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignedNumNotEqualTo(Integer value) {
+            addCriterion("assignedNum <>", value, "assignedNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignedNumGreaterThan(Integer value) {
+            addCriterion("assignedNum >", value, "assignedNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignedNumGreaterThanOrEqualTo(Integer value) {
+            addCriterion("assignedNum >=", value, "assignedNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignedNumLessThan(Integer value) {
+            addCriterion("assignedNum <", value, "assignedNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignedNumLessThanOrEqualTo(Integer value) {
+            addCriterion("assignedNum <=", value, "assignedNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignedNumIn(List<Integer> values) {
+            addCriterion("assignedNum in", values, "assignedNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignedNumNotIn(List<Integer> values) {
+            addCriterion("assignedNum not in", values, "assignedNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignedNumBetween(Integer value1, Integer value2) {
+            addCriterion("assignedNum between", value1, value2, "assignedNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignedNumNotBetween(Integer value1, Integer value2) {
+            addCriterion("assignedNum not between", value1, value2, "assignedNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotAssignNumIsNull() {
+            addCriterion("notAssignNum is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotAssignNumIsNotNull() {
+            addCriterion("notAssignNum is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotAssignNumEqualTo(Integer value) {
+            addCriterion("notAssignNum =", value, "notAssignNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotAssignNumNotEqualTo(Integer value) {
+            addCriterion("notAssignNum <>", value, "notAssignNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotAssignNumGreaterThan(Integer value) {
+            addCriterion("notAssignNum >", value, "notAssignNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotAssignNumGreaterThanOrEqualTo(Integer value) {
+            addCriterion("notAssignNum >=", value, "notAssignNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotAssignNumLessThan(Integer value) {
+            addCriterion("notAssignNum <", value, "notAssignNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotAssignNumLessThanOrEqualTo(Integer value) {
+            addCriterion("notAssignNum <=", value, "notAssignNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotAssignNumIn(List<Integer> values) {
+            addCriterion("notAssignNum in", values, "notAssignNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotAssignNumNotIn(List<Integer> values) {
+            addCriterion("notAssignNum not in", values, "notAssignNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotAssignNumBetween(Integer value1, Integer value2) {
+            addCriterion("notAssignNum between", value1, value2, "notAssignNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotAssignNumNotBetween(Integer value1, Integer value2) {
+            addCriterion("notAssignNum not between", value1, value2, "notAssignNum");
+            return (Criteria) this;
+        }
+
         public Criteria andOrderNoLikeInsensitive(String value) {
             addCriterion("upper(orderNo) like", value.toUpperCase(), "orderNo");
             return (Criteria) this;

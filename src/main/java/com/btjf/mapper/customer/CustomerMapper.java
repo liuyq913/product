@@ -2,8 +2,9 @@ package com.btjf.mapper.customer;
 
 import com.btjf.model.customer.Customer;
 import com.btjf.model.customer.CustomerExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface CustomerMapper {
     /**
@@ -93,4 +94,9 @@ public interface CustomerMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(Customer record);
+
+
+    List<Customer> findList(@Param("name") String name, @Param("startDate") String startDate, @Param("endDate") String endDate);
+
+    Customer getByName(@Param("name") String name);
 }

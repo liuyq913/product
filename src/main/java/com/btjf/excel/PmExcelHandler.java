@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -85,7 +86,7 @@ public class PmExcelHandler extends BaseExcelHandler {
                             //去空格
                             stringCellValue = cell.getStringCellValue().replaceAll("\u00A0", "").trim();
                             if (StringUtils.isEmpty(stringCellValue)) {
-                                error.add("第" + k + "行的材料编号为空");
+                                error.add("第" + k  + "行的材料编号为空");
                             } else if (null != pmService.getByNo(stringCellValue) && !Boolean.TRUE.equals(isCover)) {
                                 error.add("第" + k + "行的材料编号已经存在");
                             } else {
@@ -98,79 +99,99 @@ public class PmExcelHandler extends BaseExcelHandler {
                         break;
                     //颜色
                     case 1:
-                        cell.setCellType(CellType.STRING);
-                        //去空格
-                        stringCellValue = cell.getStringCellValue().replaceAll("\u00A0", "").trim();
-                        name.append(stringCellValue).append("-");
-                        pm.setColour(stringCellValue);
+                        if(cell != null) {
+                            cell.setCellType(CellType.STRING);
+                            //去空格
+                            stringCellValue = cell.getStringCellValue().replaceAll("\u00A0", "").trim();
+                            name.append(stringCellValue).append("-");
+                            pm.setColour(stringCellValue);
+                        }
                         break;
                     //规格
                     case 2:
-                        cell.setCellType(CellType.STRING);
-                        //去空格
-                        stringCellValue = cell.getStringCellValue().replaceAll("\u00A0", "").trim();
-                        name.append(stringCellValue);
-                        if (!stringCellValue.endsWith("-")) {
-                            name.append("-");
+                        if(cell != null) {
+                            cell.setCellType(CellType.STRING);
+                            //去空格
+                            stringCellValue = cell.getStringCellValue().replaceAll("\u00A0", "").trim();
+                            name.append(stringCellValue);
+                            if (!stringCellValue.endsWith("-")) {
+                                name.append("-");
+                            }
+                            pm.setNorms(stringCellValue);
                         }
-                        pm.setNorms(stringCellValue);
                         break;
                     //材质
                     case 3:
-                        cell.setCellType(CellType.STRING);
-                        //去空格
-                        stringCellValue = cell.getStringCellValue().replaceAll("\u00A0", "").trim();
-                        name.append(stringCellValue);
-                        if (!stringCellValue.endsWith("-")) {
-                            name.append("-");
+                        if(cell != null) {
+                            cell.setCellType(CellType.STRING);
+                            //去空格
+                            stringCellValue = cell.getStringCellValue().replaceAll("\u00A0", "").trim();
+                            name.append(stringCellValue);
+                            if (!stringCellValue.endsWith("-")) {
+                                name.append("-");
+                            }
+                            pm.setMaterial(stringCellValue);
                         }
-                        pm.setMaterial(stringCellValue);
                         break;
                     //称呼
                     case 4:
-                        cell.setCellType(CellType.STRING);
-                        //去空格
-                        stringCellValue = cell.getStringCellValue().replaceAll("\u00A0", "").trim();
-                        name.append(stringCellValue);
-                        if (StringUtils.isEmpty(name.toString())) {
-                            error.add("第" + k + "行的材料名称为空");
+                        if(cell != null) {
+                            cell.setCellType(CellType.STRING);
+                            //去空格
+                            stringCellValue = cell.getStringCellValue().replaceAll("\u00A0", "").trim();
+                            name.append(stringCellValue);
+                            if (StringUtils.isEmpty(name.toString())) {
+                                error.add("第" + k + "行的材料名称为空");
+                            }
+                            pm.setCallStr(stringCellValue);
+                            pm.setName(name.toString());
                         }
-                        pm.setCallStr(stringCellValue);
-                        pm.setName(name.toString());
                         break;
 
                     //类别
                     case 5:
-                        cell.setCellType(CellType.STRING);
-                        //去空格
-                        stringCellValue = cell.getStringCellValue().replaceAll("\u00A0", "").trim();
-                        if (CollectionUtils.isEmpty(dictionaryService.getListByNameAndType(stringCellValue, 1))) {
-                            error.add("第" + k + "行的材料类别有误为空");
-                        } else {
-                            pm.setType(stringCellValue);
+                        if(cell != null) {
+                            cell.setCellType(CellType.STRING);
+                            //去空格
+                            stringCellValue = cell.getStringCellValue().replaceAll("\u00A0", "").trim();
+                            if (CollectionUtils.isEmpty(dictionaryService.getListByNameAndType(stringCellValue, 1))) {
+                                error.add("第" + k + "行的材料类别不存在");
+                            } else {
+                                pm.setType(stringCellValue);
+                            }
+                        }else{
+                            error.add("第" + k + "行的材料类别未填写");
                         }
                         break;
                     //单位
                     case 6:
-                        cell.setCellType(CellType.STRING);
-                        //去空格
-                        stringCellValue = cell.getStringCellValue().replaceAll("\u00A0", "").trim();
-                        if (CollectionUtils.isEmpty(dictionaryService.getListByNameAndType(stringCellValue, 2))) {
-                            error.add("第" + k + "行的材料单位有误");
-                        } else {
-                            pm.setUnit(stringCellValue);
+                        if(cell != null) {
+                            cell.setCellType(CellType.STRING);
+                            //去空格
+                            stringCellValue = cell.getStringCellValue().replaceAll("\u00A0", "").trim();
+                            if (CollectionUtils.isEmpty(dictionaryService.getListByNameAndType(stringCellValue, 2))) {
+                                error.add("第" + k + "行的材料单位有误");
+                            } else {
+                                pm.setUnit(stringCellValue);
+                            }
+                        }else{
+                            error.add("第" + k + "行的材料单位未填写");
                         }
                         break;
                     //备注
                     case 7:
-                        cell.setCellType(CellType.STRING);
-                        //去空格
-                        stringCellValue = cell.getStringCellValue().replaceAll("\u00A0", "").trim();
-                        pm.setRemark(stringCellValue);
+                        if(cell != null) {
+                            cell.setCellType(CellType.STRING);
+                            //去空格
+                            stringCellValue = cell.getStringCellValue().replaceAll("\u00A0", "").trim();
+                            pm.setRemark(stringCellValue);
+                        }
                         break;
 
                 }
                 pm.setIsDelete(0);
+                pm.setName(name.toString());
+                pm.setNum(BigDecimal.ZERO);
             }
             pmList.add(pm);
         }
@@ -180,18 +201,19 @@ public class PmExcelHandler extends BaseExcelHandler {
         } else {
             //insert
             excelImportFactory.savePm(pmList, isCover);
+            error.add("提交成功！新增导入" + sheet.getLastRowNum() + "条数据！");
+            return error;
         }
+    }
+
+    @Override
+    protected void insert(List list, String operator) {
+
+    }
+
+    @Override
+    protected List create(XSSFRow row) throws Exception {
         return null;
-    }
-
-    @Override
-    protected void insert() {
-
-    }
-
-    @Override
-    protected void create(XSSFRow row) throws Exception {
-
     }
 
     /**

@@ -53,9 +53,9 @@ public class LoginController {
         if(StringUtils.isEmpty(loginPwd)){
             return XaResult.error("密码不能为空");
         }
-        SysUser sysUser = sysUserService.login(loginName,loginPwd);
+        SysUser sysUser = sysUserService.login(loginName,MD5Utils.ecodeByMD5(loginPwd));
         if(sysUser == null){
-            XaResult.error("用户名或密码错误");
+            return XaResult.error("用户名或密码错误");
         }
         UserInfoVo userInfoVo = new UserInfoVo(sysUser);
         if(sysUser.getDeptId() !=null){
@@ -66,7 +66,6 @@ public class LoginController {
             SysRole sysRole = sysRoleService.get(sysUser.getRoleId());
             userInfoVo.setRoleName(sysRole!= null?sysRole.getName():null);
         }
-        //TODO 缺一个 用户信息加密
         String json = JSONUtils.toJSON(sysUser);
         String key = MD5Utils.ecodeByMD5(json);
         loginInfoCache.add(key, sysUser);

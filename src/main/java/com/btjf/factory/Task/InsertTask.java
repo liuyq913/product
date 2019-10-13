@@ -1,7 +1,11 @@
 package com.btjf.factory.Task;
 
 import com.btjf.model.pm.Pm;
+import com.btjf.model.product.ProductPm;
+import com.btjf.model.product.ProductProcedureWorkshop;
 import com.btjf.service.pm.PmService;
+import com.btjf.service.productpm.ProductPmService;
+import com.btjf.service.productpm.ProductWorkshopService;
 import com.btjf.util.SpringBeanUtil;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.math.NumberUtils;
@@ -27,6 +31,7 @@ public class InsertTask<T> extends RecursiveTask<Integer> {
 
     private Boolean isCover = false;
 
+    public InsertTask(){}
 
     public InsertTask(List<T> list, Class clazz) {
         this.entryList = list;
@@ -41,6 +46,22 @@ public class InsertTask<T> extends RecursiveTask<Integer> {
         isCover = cover;
     }
 
+    public List<T> getEntryList() {
+        return entryList;
+    }
+
+    public void setEntryList(List<T> entryList) {
+        this.entryList = entryList;
+    }
+
+    public Class getClazz() {
+        return clazz;
+    }
+
+    public void setClazz(Class clazz) {
+        this.clazz = clazz;
+    }
+
     /**
      * 拆分insert   不用事务，导入
      *
@@ -48,13 +69,13 @@ public class InsertTask<T> extends RecursiveTask<Integer> {
      */
     @Override
     protected Integer compute() {
-        if (CollectionUtils.isEmpty(entryList)) {
+        if (CollectionUtils.isEmpty(this.entryList)) {
             return NumberUtils.INTEGER_ZERO;
         }
 
         if (entryList.size() <= MAX_INSTER_LENGTH) {
             try {
-                insert(entryList);
+                insert(this.entryList);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -93,6 +114,10 @@ public class InsertTask<T> extends RecursiveTask<Integer> {
     private void insert(List<T> list) {
         if (this.clazz == PmService.class) {
             SpringBeanUtil.getBean(PmService.class).saveList((List<Pm>) list, isCover);
+        }else if(this.clazz == ProductPmService.class){
+            SpringBeanUtil.getBean(ProductPmService.class).saveList((List<ProductPm>) list);
+        }else if(this.clazz == ProductWorkshopService.class){
+            SpringBeanUtil.getBean(ProductWorkshopService.class).saveList((List<ProductProcedureWorkshop>) list);
         }
     }
 }

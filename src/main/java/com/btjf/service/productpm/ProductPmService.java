@@ -1,7 +1,10 @@
 package com.btjf.service.productpm;
 
+import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.btjf.common.page.Page;
+import com.btjf.mapper.product.ProductMapper;
 import com.btjf.mapper.product.ProductPmMapper;
+import com.btjf.model.product.Product;
 import com.btjf.model.product.ProductPm;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -21,6 +24,9 @@ public class ProductPmService {
     @Resource
     private ProductPmMapper productpmMapper;
 
+    @Resource
+    private ProductMapper productMapper;
+
 
     public Page<ProductPm> findListPage(String productNo, String pmNo, Integer status, Page page) {
         PageHelper.startPage(page.getPage(), page.getRp());
@@ -30,7 +36,7 @@ public class ProductPmService {
         return new Page<>(pageInfo);
     }
 
-    public List<ProductPm> findList(String productNo, String pmNo, int status) {
+    public List<ProductPm> findList(String productNo, String pmNo, Integer status) {
         List<ProductPm> productpms = productpmMapper.findList(productNo, pmNo, status);
         return productpms;
     }
@@ -78,11 +84,16 @@ public class ProductPmService {
         return productpmMapper.selectByNo(productNo);
     }
 
+    public ProductPm getByNoAndPmNo(String productNo, String pmNo) {
+        return productpmMapper.selectByNoAndPmNo(productNo, pmNo);
+    }
+
     public Integer update(ProductPm productPm) {
         return productpmMapper.updateByPrimaryKeySelective(productPm);
     }
 
     public Integer add(ProductPm productPm) {
+        productPm.setProductId(insertProduct(productPm));
         productpmMapper.insertSelective(productPm);
         return productPm.getId();
     }
@@ -101,5 +112,47 @@ public class ProductPmService {
             row = productPms.size();
         }
         return row;
+    }
+
+    public Integer saveList(List<ProductPm> productPms) {
+        //初始化产品表
+        if (!CollectionUtils.isEmpty(productPms)) {
+            for (ProductPm productPm : productPms) {
+                productPm.setProductId(insertProduct(productPm));
+            }
+        }
+
+        return productpmMapper.saveList(productPms);
+    }
+
+    public Integer insertProduct(ProductPm productPm) {
+        if (null == productMapper.getByNo(productPm.getProductNo())) {
+            Product product = new Product();
+            product.setCreateTime(new Date());
+            product.setOperator("系统");
+            product.setProductNo(productPm.getProductNo());
+            product.setType(productPm.getType());
+            product.setLastModifyTime(new Date());
+            product.setIsDelete(0);
+            product.setName(productPm.getProductNo());
+            product.setUnit(productPm.getUnit());
+            productMapper.insertSelective(product);
+            return product.getId();
+        } else {
+            return 0;
+        }
+    }
+
+    public List<ProductPm> findListByProductNoAndType(String productNo, String type) {
+        return productpmMapper.findListByProductNoAndType(productNo, type);
+    }
+
+    public Integer deleteByPmNo(String pmNo) {
+        return productpmMapper.deleteByPmNo(pmNo);
+    }
+
+
+    public Integer count(String productNo) {
+        return productpmMapper.count(productNo);
     }
 }

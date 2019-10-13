@@ -2,8 +2,9 @@ package com.btjf.mapper.product;
 
 import com.btjf.model.product.ProductProcedure;
 import com.btjf.model.product.ProductProcedureExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface ProductProcedureMapper {
     /**
@@ -93,4 +94,17 @@ public interface ProductProcedureMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(ProductProcedure record);
+
+    List<ProductProcedure> getByWorkShopAndProductNo(@Param("workShop") String workShop, @Param("productNo") String productNo);
+
+    Integer getMaxSort();
+
+    List<ProductProcedure> findList(@Param("procedureName")
+                                            String procedureName, @Param("price") String price, @Param("productNo") String productNo, @Param("isConfirm") Integer isConfirm);
+
+    Integer sameProductNoAdd(@Param("oldProductNo") String oldProductNo, @Param("newProduct") String newProduct, @Param("userName") String userName);
+
+
+    List<ProductProcedure> getByProductNo(@Param("productNo") String productNo);
+
 }

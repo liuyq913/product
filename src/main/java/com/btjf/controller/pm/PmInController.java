@@ -1,6 +1,5 @@
 package com.btjf.controller.pm;
 
-import com.btjf.application.components.page.AppPageHelper;
 import com.btjf.application.components.xaresult.AppXaResultHelper;
 import com.btjf.application.util.XaResult;
 import com.btjf.common.page.Page;
@@ -12,6 +11,7 @@ import com.btjf.model.pm.PmIn;
 import com.btjf.model.sys.SysUser;
 import com.btjf.service.pm.PmInService;
 import com.btjf.service.pm.PmService;
+import com.btjf.util.BigDecimalUtil;
 import com.btjf.vo.PmInVo;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
@@ -52,14 +53,95 @@ public class PmInController extends ProductBaseController {
             , @ApiParam("类型") String type, @ApiParam("起始时间") String startDate, @ApiParam("截止时间") String endDate,
                                            Integer pageSize, Integer currentPage) {
         LOGGER.info(getRequestParamsAndUrl());
-
-        Page<PmInVo> listPage = pmInService.findListPage(pmNo, name, type,startDate,endDate, AppPageHelper.appInit(currentPage, pageSize));
+        if(currentPage == null || currentPage < 1){
+            currentPage =1;
+        }
+        if(pageSize == null || pageSize < 1){
+            pageSize = 25;
+        }
+        Page page = new Page(pageSize, currentPage);
+        Page<PmInVo> listPage = pmInService.findListPage(pmNo, name, type,startDate,endDate, page);
         XaResult<List<PmInVo>> result = AppXaResultHelper.success(listPage, listPage.getRows());
         return result;
     }
 
+    @RequestMapping(value = "create", method = RequestMethod.POST)
+    public XaResult<Integer> create(@ApiParam("编号") String pmNo, @ApiParam("名称")String name,
+                                    @ApiParam("入库数量") Double num,
+                                    @ApiParam("单位") String unit, @ApiParam("类型") String type,
+                                    @ApiParam("入库日期") String date,@ApiParam("备注") String remark) {
+        LOGGER.info(getRequestParamsAndUrl());
+        if(StringUtils.isEmpty(pmNo)){
+            return XaResult.error("材料编号不可为空");
+        }
+        if(StringUtils.isEmpty(name)){
+            return XaResult.error("材料名称不可为空");
+        }
+        if(StringUtils.isEmpty(unit)){
+            return XaResult.error("材料单位不可为空");
+        }
+        if(StringUtils.isEmpty(type)){
+            return XaResult.error("材料类型不可为空");
+        }
+        if(StringUtils.isEmpty(date)){
+            return XaResult.error("入库日期不可为空");
+        }
+        if(num == null){
+            return XaResult.error("材料数量不可为空");
+        }
+        SysUser sysUser = getLoginUser();
+
+        PmIn pmIn = new PmIn();
+        Pm pm = pmService.getByNo(pmNo);
+        if (pm == null){
+            pm = new Pm();
+            pm.setPmNo(pmNo);
+            pm.setName(name);
+            pm.setType(type);
+            pm.setUnit(unit);
+            pm.setRemark(remark);
+            pm.setCreateTime(new Date());
+            pm.setOperator(sysUser.getUserName());
+            pm.setNum(BigDecimal.valueOf(num));
+            pm.setIsDelete(0);
+            pmService.insert(pm);
+            pmIn.setPerNum(BigDecimal.ZERO);
+            pmIn.setBackNum(BigDecimal.valueOf(num));
+        }else{
+            Pm pm1 = new Pm();
+            pm1.setId(pm.getId());
+            pm1.setNum(BigDecimal.valueOf(BigDecimalUtil.add(pm.getNum().doubleValue(), num)));
+            pm.setLastModifyTime(new Date());
+            pmService.updateByID(pm1);
+            pmIn.setPerNum(pm.getNum());
+            pmIn.setBackNum(BigDecimal.valueOf(BigDecimalUtil.add(pm.getNum().doubleValue(), num)));
+        }
+
+        pmIn.setPmId(pm.getId());
+        pmIn.setPmNo(pm.getPmNo());
+        pmIn.setPmName(pm.getName());
+        pmIn.setType(pm.getType());
+        pmIn.setUnit(pm.getUnit());
+        pmIn.setRemark(remark);
+        pmIn.setSupplier("");
+        if(StringUtils.isEmpty(date)){
+            pmIn.setInDate(new Date());
+        }else {
+            pmIn.setInDate(DateUtil.string2Date(date, DateUtil.ymdFormat));
+        }
+        pmIn.setNum(BigDecimal.valueOf(num));
+        pmIn.setOperator(sysUser.getUserName());
+        pmIn.setCreateTime(new Date());
+        pmIn.setIsDelete(0);
+        pmInService.create(pmIn);
+
+        return XaResult.success();
+
+    }
+
+
     @RequestMapping(value = "add", method = RequestMethod.POST)
-    public XaResult<Integer> add(@ApiParam("id") Integer id, @ApiParam("入库数量") Integer num, @ApiParam("供应单位")
+    public XaResult<Integer> add(@ApiParam("id") Integer id, @ApiParam("入库数量") Double num, @ApiParam("供应单位")
             String supplier, @ApiParam("入库日期") String date,@ApiParam("备注") String remark) {
         LOGGER.info(getRequestParamsAndUrl());
         if(id == null){
@@ -86,16 +168,16 @@ public class PmInController extends ProductBaseController {
         }else {
             pmIn.setInDate(DateUtil.string2Date(date, DateUtil.ymdFormat));
         }
-        pmIn.setNum(num);
+        pmIn.setNum(BigDecimal.valueOf(num));
         pmIn.setPerNum(pm.getNum());
-        pmIn.setBackNum(pm.getNum() + num);
-        pmIn.setOperator(sysUser.getLoginName());
+        pmIn.setBackNum(BigDecimal.valueOf(BigDecimalUtil.add(pm.getNum().doubleValue(), num)));
+        pmIn.setOperator(sysUser.getUserName());
         pmIn.setCreateTime(new Date());
         pmIn.setIsDelete(0);
         pmInService.create(pmIn);
         Pm pm1 = new Pm();
         pm1.setId(pm.getId());
-        pm1.setNum(pm.getNum() + num);
+        pm1.setNum(BigDecimal.valueOf(BigDecimalUtil.add(pm.getNum().doubleValue(), num)));
         pm.setLastModifyTime(new Date());
         pmService.updateByID(pm1);
         return XaResult.success();
@@ -106,8 +188,11 @@ public class PmInController extends ProductBaseController {
     public XaResult<Pm> detail(@ApiParam("材料编号") String pmNo) {
         LOGGER.info(getRequestParamsAndUrl());
         Pm pm = pmService.getByNo(pmNo);
-        return XaResult.success(pm);
-
+        if(pm != null) {
+            return XaResult.success(pm);
+        }else{
+            return XaResult.error(pmNo +",该材料不存在");
+        }
     }
 
     @RequestMapping(value = "export", method = RequestMethod.GET)
@@ -143,7 +228,7 @@ public class PmInController extends ProductBaseController {
                 row.createCell(j++).setCellValue(pm.getName());
                 row.createCell(j++).setCellValue(pm.getType());
                 row.createCell(j++).setCellValue(pm.getSupplier());
-                row.createCell(j++).setCellValue(pm.getNum());
+                row.createCell(j++).setCellValue(String.valueOf(pm.getNum()));
                 row.createCell(j++).setCellValue(pm.getUnit());
                 row.createCell(j++).setCellValue(pm.getRemark());
             }
