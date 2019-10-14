@@ -554,7 +554,7 @@
     <select id="getEmpNum" resultType="com.btjf.vo.weixin.EmpProcedureDetailVo">
          SELECT DISTINCT
         p.empId,
-        p.num,
+        sum(p.num) num,
         e.name AS empName
         from t_Production_Procedure_Confirm p  LEFT JOIN t_Emp e ON e.id = p.empId
         where  p.productNo = #{productNo,jdbcType=VARCHAR}
@@ -563,6 +563,7 @@
         and ((p.type = 2 and p.isChange=0) or (p.type =1 and p.isChange=0))
          and p.isDelete = 0
          and p.workshop = #{deptName,jdbcType=VARCHAR}
+         group by p.empId,e.name
     </select>
 
     <select id="getChangeNum" resultType="java.lang.Double">
