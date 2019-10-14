@@ -532,6 +532,8 @@
 ;
     </select>
     <select id="getOrderProductByMouth" resultType="com.btjf.vo.weixin.OrderProductVo">
+      select a.productNo,a.unit, max(a.num) num from
+      (
         select DISTINCT p.productNo, sum(p.num) AS num, pp.unit
         from t_Production_Procedure_Confirm p
         LEFT JOIN t_Product pp ON p.productNo = pp.productNo
@@ -540,6 +542,7 @@
         and p.orderNo = #{orderNo,jdbcType=VARCHAR}
         and p.workshop = #{deptName,jdbcType=VARCHAR}
         group by p.productNo,p.procedureId, pp.unit
+        ) a group by a.productNo,a.unit
     </select>
     <select id="getByOrderAndProduct" resultType="com.btjf.model.product.ProductProcedure">
         SELECT DISTINCT
