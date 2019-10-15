@@ -68,6 +68,8 @@ public class WorkController extends ProductBaseController {
     @Resource
     private OrderProductService orderProductService;
 
+    private static final List<String> NOTCONFIRM_DEPT = Arrays.asList("后道车间-中辅工");
+
     @RequestMapping(value = "getConfirmList", method = RequestMethod.GET)
     public XaResult<WorkListVo> getConfigList(@ApiParam("订单id") Integer orderId, @ApiParam("订单编号") String orderNo,
                                               @ApiParam("产品编号") String productNo, @ApiParam("生产单编号") String productionNo,
@@ -119,7 +121,7 @@ public class WorkController extends ProductBaseController {
                 return XaResult.error("没有您所需处理的工序。(如有疑问，请咨询客服)");
             }
             assignNum = bill.getDistributionNum();
-            List<WorkShopVo.Procedure> list = productWorkshopService.getBySort(productNo,Arrays.asList(0, 1, 2, 3));
+            List<WorkShopVo.Procedure> list = productWorkshopService.getBySort(productNo, Arrays.asList(0, 1, 2, 3));
             workListVo.setProcedures(list);
             workListVo.setBillNo(billNo);
         } else {
@@ -127,6 +129,9 @@ public class WorkController extends ProductBaseController {
         }
         XaResult result = XaResult.success(workListVo);
         if (wxEmpVo.getWorkName().equals("检验")) {
+            if (NOTCONFIRM_DEPT.contains(wxEmpVo.getDeptName())){
+                return XaResult.error(wxEmpVo.getDeptName()+"默认无需质检");
+            }
             Map map = Maps.newHashMap();
             map.put("assignNum", assignNum);
             map.put("unit", unit);
@@ -174,7 +179,7 @@ public class WorkController extends ProductBaseController {
         List<WorkShopVo.Procedure> procedures = JSONObject.parseArray(proceduresJosn, WorkShopVo.Procedure.class);
 
         WxEmpVo wxEmpVo = getWxLoginUser();
-        if(wxEmpVo.getWorkName().equals("检验")){
+        if (wxEmpVo.getWorkName().equals("检验")) {
             return XaResult.error("您无权限确认工序");
         }
         //生产单
@@ -193,7 +198,7 @@ public class WorkController extends ProductBaseController {
                 throw new BusinessException("领料单：" + billOutNo + "中的" + e.getMessage());
             }
         }
-        Integer num = productionProcedureScanService.deleteAndInsert(orderNo, productNo, productionNo, louId, billOutNo, procedures, wxEmpVo);
+        Integer num = productionProcedureScanService.deleteAndInsert(orderNo, productNo, productionNo, louId, billOutNo, procedures, wxEmpVo, NOTCONFIRM_DEPT);
 
         return XaResult.success(num);
     }
@@ -250,16 +255,16 @@ public class WorkController extends ProductBaseController {
         if (productionNo == null && billOutNo == null) return XaResult.error("生产单号和领料单号不能同时为空");
         if (productionNo != null && billOutNo != null) return XaResult.error("生产单号和领料单号不能同时存在");
 
-        if(productionNo != null){
-            ProductionOrder productionOrder =  productionOrderService.getByNo(productionNo);
-            if(productionOrder == null) return XaResult.error("生产单号不存在");
-            if(!wxEmpVo.getDeptName().equals(productionOrder.getWorkshop())) return XaResult.error("您无法质检不属于自己部门的单子");
+        if (productionNo != null) {
+            ProductionOrder productionOrder = productionOrderService.getByNo(productionNo);
+            if (productionOrder == null) return XaResult.error("生产单号不存在");
+            if (!wxEmpVo.getDeptName().equals(productionOrder.getWorkshop())) return XaResult.error("您无法质检不属于自己部门的单子");
         }
 
-        if(billOutNo != null){
-            PmOutBill pmOutBill =  pmOutService.getByBillNo(billOutNo);
-            if(pmOutBill == null) return XaResult.error("生产单不存在");
-            if(!wxEmpVo.getDeptName().equals(pmOutBill.getWorkshop())) return XaResult.error("您无法质检不属于自己部门的单子");
+        if (billOutNo != null) {
+            PmOutBill pmOutBill = pmOutService.getByBillNo(billOutNo);
+            if (pmOutBill == null) return XaResult.error("生产单不存在");
+            if (!wxEmpVo.getDeptName().equals(pmOutBill.getWorkshop())) return XaResult.error("您无法质检不属于自己部门的单子");
         }
 
 

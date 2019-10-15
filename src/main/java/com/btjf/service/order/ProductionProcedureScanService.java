@@ -56,7 +56,7 @@ public class ProductionProcedureScanService {
 
     public Integer deleteAndInsert(String orderNo, String productNo, String productionNo,
                                    Integer louId, String billOutNo, List<WorkShopVo.Procedure> procedures,
-                                   WxEmpVo wxEmpVo) {
+                                   WxEmpVo wxEmpVo, List<String> NOTCONFIRM_DEPT) {
         if ((StringUtils.isEmpty(productionNo) && StringUtils.isEmpty(billOutNo)) || (!StringUtils.isEmpty(productionNo) && !StringUtils.isEmpty(billOutNo)))
             throw new BusinessException("生成单和领料单不能存在，且不能同时未空");
         Integer num = 0;
@@ -104,7 +104,12 @@ public class ProductionProcedureScanService {
             productionProcedureScan.setProductNo(productNo);
             productionProcedureScan.setProductionNo(productionNo);
             productionProcedureScan.setMoney(BigDecimal.valueOf(BigDecimalUtil.mul(Double.valueOf(num), productProcedure.getPrice().doubleValue())));
-            productionProcedureScan.setStatus(0);
+            if(NOTCONFIRM_DEPT.contains(wxEmpVo.getDeptName())){
+                //默认已质检
+                productionProcedureScan.setStatus(1);
+            }else {
+                productionProcedureScan.setStatus(0);
+            }
             productionProcedureScanMapper.insert(productionProcedureScan);
         }
         LOGGER.info("订单号：" + orderNo + "，型号：" + productNo + "确认入库完成！！！新增" + row + "条记录");
