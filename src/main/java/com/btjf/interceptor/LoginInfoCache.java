@@ -25,8 +25,8 @@ public class LoginInfoCache implements ApplicationListener<ContextRefreshedEvent
             .initialCapacity(10)
             //设置并发数为5，即同一时间最多只能有5个线程往cache执行写入操作
             .concurrencyLevel(5)
-            //设置cache中的数据在写入之后的存活时间为3600秒
-            .expireAfterWrite(3600, TimeUnit.SECONDS)
+            //设置cache中的数据在写入之后的存活时间为30天
+            .expireAfterWrite(30, TimeUnit.DAYS)
             //构建cache实例
             .build();
 

@@ -6,6 +6,7 @@ import com.btjf.mapper.emp.EmpMapper;
 import com.btjf.model.emp.Emp;
 import com.btjf.vo.EmpSubsidyVo;
 import com.btjf.vo.weixin.EmpVo;
+import com.btjf.vo.weixin.MineIndexVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -104,5 +105,9 @@ public class EmpService {
 
     public List<com.btjf.controller.emp.vo.EmpSubsidyVo> getByNameAndDeptNameList(String empName, String deptName, Integer type){
         return empMapper.getByNameAndDeptNameList(empName, deptName, type);
+    }
+
+    public List<MineIndexVo> getByDeptId(Integer deptId) {
+        return empMapper.getByDeptId(deptId);
     }
 }

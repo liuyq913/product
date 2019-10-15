@@ -5,6 +5,7 @@ import com.btjf.model.emp.Emp;
 import com.btjf.model.emp.EmpExample;
 import com.btjf.vo.EmpSubsidyVo;
 import com.btjf.vo.weixin.EmpVo;
+import com.btjf.vo.weixin.MineIndexVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -118,4 +119,6 @@ public interface EmpMapper {
     List<EmpSubsidyVo> socialSubsidyList(@Param("name")String name, @Param("deptId")Integer deptId);
 
     List<com.btjf.controller.emp.vo.EmpSubsidyVo> getByNameAndDeptNameList(@Param("empName") String empName, @Param("deptName") String deptName, @Param("type") Integer type);
+
+    List<MineIndexVo> getByDeptId(@Param("deptId")Integer deptId);
 }

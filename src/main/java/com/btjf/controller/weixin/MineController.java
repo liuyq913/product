@@ -145,6 +145,19 @@ public class MineController  extends ProductBaseController {
     }
 
     /**
+     * 计件上报-获取部门所有人员
+     * @return
+     */
+    @RequestMapping(value = "/emp/list", method = RequestMethod.GET)
+    public XaResult<List<MineIndexVo>> empList(Integer deptId){
+        if (deptId == null){
+            return XaResult.error("部门ID不能为空");
+        }
+        List<MineIndexVo> empList =  empService.getByDeptId(deptId);
+        return XaResult.success(empList);
+    }
+
+    /**
      * 计件上报-订单产品详情-上传工序计件
      *获取当月 质检通过的订单
      * @return

@@ -881,5 +881,12 @@
         and e.isDelete = 0
         order by e.id desc
     </select>
+    <select id="getByDeptId" resultType="com.btjf.vo.weixin.MineIndexVo">
+        select e.id empId,
+         e.name empName,
+         d.name deptName
+        from t_Emp e JOIN t_SysDept d ON e.deptId = d.id
+        where e.deptId = #{deptId}
+    </select>
 
 </mapper>
