@@ -100,15 +100,15 @@ public class ProductionProcedureConfirmService {
             productionProcedureConfirm.setEmpId(t.getEmpId());
             productionProcedureConfirm.setIsChange(0);
             productionProcedureConfirm.setMoney(t.getMoney());
-            productionProcedureConfirm.setOperator(wxEmpVo == null ? "系统生成" : wxEmpVo.getName());
+            productionProcedureConfirm.setOperator(wxEmpVo.getName());
             productionProcedureConfirm.setLastModifyTime(new Date());
             productionProcedureConfirm.setCreateTime(new Date());
             productionProcedureConfirm.setCompleteTime(t.getCreateTime());
             productionProcedureConfirm.setPrice(t.getPrice());
-            productionProcedureConfirm.setWorkshop(wxEmpVo == null ? null : wxEmpVo.getDeptName());
+            productionProcedureConfirm.setWorkshop(wxEmpVo.getDeptName());
             productionProcedureConfirm.setProcedureId(t.getProcedureId());
             productionProcedureConfirm.setProcedureName(t.getProcedureName());
-            productionProcedureConfirm.setInspectionor(wxEmpVo == null ? null : wxEmpVo.getName()); //质检员
+            productionProcedureConfirm.setInspectionor(wxEmpVo.getName()); //质检员
             productionProcedureConfirmMapper.insertSelective(productionProcedureConfirm);
             t.setStatus(1);
             //扫码记录改成已质检
