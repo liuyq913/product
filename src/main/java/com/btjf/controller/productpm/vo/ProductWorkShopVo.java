@@ -31,6 +31,8 @@ public class ProductWorkShopVo implements Serializable {
 
     private Integer packing ;//包装
 
+    private Integer backSmallAssist;// 后道小辅工
+
     public ProductWorkShopVo(Product t) {
         this.productNo = t.getProductNo();
         this.type = t.getType();
@@ -110,6 +112,14 @@ public class ProductWorkShopVo implements Serializable {
 
     public void setPacking(Integer packing) {
         this.packing = packing;
+    }
+
+    public Integer getBackSmallAssist() {
+        return backSmallAssist;
+    }
+
+    public void setBackSmallAssist(Integer backSmallAssist) {
+        this.backSmallAssist = backSmallAssist;
     }
 
     public void setInspection(Integer inspection) {
