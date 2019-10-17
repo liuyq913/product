@@ -286,7 +286,7 @@ public class WorkController extends ProductBaseController {
         if (!CollectionUtils.isEmpty(productionProcedureConfirmService.select(productionProcedureConfirm))) {
             return XaResult.error("车间主任已经调整过了，无法再质检");
         }
-        Integer row = productionProcedureConfirmService.add(orderId, orderNo, louId, billOutNo, productNo, productionNo, wxEmpVo);
+        Integer row = productionProcedureConfirmService.add(orderId, orderNo, louId, billOutNo, productNo, productionNo, wxEmpVo, true);
         return XaResult.success(row);
     }
 }

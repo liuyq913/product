@@ -53,6 +53,9 @@ public class ProductionProcedureScanService {
     @Resource
     private PmOutService pmOutService;
 
+    @Resource
+    private ProductionProcedureConfirmService productionProcedureConfirmService;
+
 
     public Integer deleteAndInsert(String orderNo, String productNo, String productionNo,
                                    Integer louId, String billOutNo, List<WorkShopVo.Procedure> procedures,
@@ -104,14 +107,13 @@ public class ProductionProcedureScanService {
             productionProcedureScan.setProductNo(productNo);
             productionProcedureScan.setProductionNo(productionNo);
             productionProcedureScan.setMoney(BigDecimal.valueOf(BigDecimalUtil.mul(Double.valueOf(num), productProcedure.getPrice().doubleValue())));
-            if(NOTCONFIRM_DEPT.contains(wxEmpVo.getDeptName())){
-                //默认已质检
-                productionProcedureScan.setStatus(1);
-            }else {
-                productionProcedureScan.setStatus(0);
-            }
+            productionProcedureScan.setStatus(0);
+
             productionProcedureScanMapper.insert(productionProcedureScan);
         }
+        //无需质检的生成质检信息
+        productionProcedureConfirmService.add(null, orderNo, louId, billOutNo, productNo, productionNo, null, !NOTCONFIRM_DEPT.contains(wxEmpVo.getDeptName()));
+
         LOGGER.info("订单号：" + orderNo + "，型号：" + productNo + "确认入库完成！！！新增" + row + "条记录");
         return row;
     }
