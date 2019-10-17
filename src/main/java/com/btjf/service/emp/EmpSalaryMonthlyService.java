@@ -105,7 +105,7 @@ public class EmpSalaryMonthlyService {
     }
 
     public Integer calculation(String yearMonth, String deptName, String empName, Integer type) {
-        List<EmpSalaryMonthly> empSalaryMonthlies = this.getList(yearMonth, deptName, empName, type);
+        List<EmpSalaryMonthly> empSalaryMonthlies = this.getList(yearMonth, empName, deptName, type);
         ThreadPoolExecutor executor = ThreadPoolExecutorUtil.getPool();
         executor.execute(() -> {
             if (!CollectionUtils.isEmpty(empSalaryMonthlies)) {
