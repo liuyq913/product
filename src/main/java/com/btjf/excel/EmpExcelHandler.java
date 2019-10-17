@@ -64,17 +64,13 @@ public class EmpExcelHandler extends BaseExcelHandler{
             for(int i=0; i< emps.size(); i++){
                 Emp emp = (Emp) emps.get(i);
                 Emp emp1 = empService.getByName(emp.getName());
-                Emp emp2 = null;
-                if(StringUtils.isNotEmpty(emp.getIdCard())){
-                    emp2 = empService.getByIdCard(emp.getIdCard());
-                }
 
-                if (emp1 != null || emp2 != null){
-                    continue;
+                if (emp1 != null){
+                    emp.setId(emp1.getId());
+                    empService.update(emp);
                 }else{
                     empService.create(emp);
                 }
-
             }
         }
     }
@@ -87,10 +83,10 @@ public class EmpExcelHandler extends BaseExcelHandler{
         for(int i=0; i< fields.size(); i++){
             switch (i){
                 case 0:
-                    Emp emp1 = empService.getByName(getCellValue(row.getCell(i), i));
-                    if(emp1 != null){
-                        errMsg = errMsg + "第" + 1 +"列" + fields.get(0) + " 填写错误,";
-                    }
+//                    Emp emp1 = empService.getByName(getCellValue(row.getCell(i), i));
+//                    if(emp1 != null){
+//                        errMsg = errMsg + "第" + 1 +"列" + fields.get(0) + " 填写错误,";
+//                    }
                     emp.setName(getCellValue(row.getCell(i), i));
                     break;
                 case 1:
@@ -202,13 +198,13 @@ public class EmpExcelHandler extends BaseExcelHandler{
                     }
                     break;
                 case 15:
-                    String idCard = getCellValue(row.getCell(i), i);
-                    if(StringUtils.isNotEmpty(idCard)) {
-                        Emp emp2 = empService.getByIdCard(idCard);
-                        if (emp2 != null) {
-                            errMsg = errMsg + "第" + 16 + "列" + fields.get(15) + " 填写错误,";
-                        }
-                    }
+//                    String idCard = getCellValue(row.getCell(i), i);
+//                    if(StringUtils.isNotEmpty(idCard)) {
+//                        Emp emp2 = empService.getByIdCard(idCard);
+//                        if (emp2 != null) {
+//                            errMsg = errMsg + "第" + 16 + "列" + fields.get(15) + " 填写错误,";
+//                        }
+//                    }
                     emp.setIdCard(getCellValue(row.getCell(i), i));
                     break;
                 case 16:
