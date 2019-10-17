@@ -79,6 +79,7 @@ public class ProductWorkshopService {
                 productWorkShopVo.setBackBigAssist(productProcedureWorkshopMapper.getNumByWorkShopNameAndPID("后道车间-大辅工", t.getProductNo()));
                 productWorkShopVo.setInspection(productProcedureWorkshopMapper.getNumByWorkShopNameAndPID("质检部-成品质检", t.getProductNo()));
                 productWorkShopVo.setPacking(productProcedureWorkshopMapper.getNumByWorkShopNameAndPID("包装车间", t.getProductNo()));
+                productWorkShopVo.setBackSmallAssist(productProcedureWorkshopMapper.getNumByWorkShopNameAndPID("后道车间-小辅工", t.getProductNo()));
                 productWorkShopVo.setProductNo(t.getProductNo());
                 productWorkShopVo.setType(t.getType());
                 productWorkShopVos.add(productWorkShopVo);
