@@ -2,6 +2,7 @@ package com.btjf.service.order;
 
 import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.alibaba.dubbo.common.utils.StringUtils;
+import com.btjf.business.common.exception.BusinessException;
 import com.btjf.common.page.Page;
 import com.btjf.controller.order.vo.WorkShopVo;
 import com.btjf.controller.productionorder.vo.ProductionOrderVo;
@@ -179,5 +180,17 @@ public class ProductionOrderService {
 
     public Integer update(ProductionOrder productionOrder) {
         return productionOrderMapper.updateByPrimaryKeySelective(productionOrder);
+    }
+
+    public Integer delete(String productionNo, String orderNo) {
+        ProductionOrder productionOrder = productionOrderMapper.getByNo(productionNo);
+        if (productionOrder == null) throw new BusinessException("生成单不存在");
+
+        //删除生成单
+        productionOrder.setIsDelete(1);
+        productionOrderMapper.updateByPrimaryKeySelective(productionOrder);
+
+        //分配数据返回
+        return 0;
     }
 }

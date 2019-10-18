@@ -11,15 +11,9 @@ import com.btjf.controller.base.ProductBaseController;
 import com.btjf.controller.order.vo.WorkShopVo;
 import com.btjf.controller.productionorder.vo.ProductionOrderDetailVo;
 import com.btjf.controller.productionorder.vo.ProductionOrderVo;
-import com.btjf.model.order.OrderProduct;
-import com.btjf.model.order.ProductionLuo;
-import com.btjf.model.order.ProductionOrder;
-import com.btjf.model.order.ProductionProcedure;
+import com.btjf.model.order.*;
 import com.btjf.model.sys.SysUser;
-import com.btjf.service.order.OrderProductService;
-import com.btjf.service.order.ProductionLuoService;
-import com.btjf.service.order.ProductionOrderService;
-import com.btjf.service.order.ProductionProcedureService;
+import com.btjf.service.order.*;
 import com.google.common.collect.Lists;
 import com.heige.aikajinrong.base.exception.BusinessException;
 import com.wordnik.swagger.annotations.Api;
@@ -60,6 +54,9 @@ public class ProductionOrderController extends ProductBaseController {
 
     @Resource
     private ProductionLuoService productionLuoService;
+
+    @Resource
+    private ProductionProcedureConfirmService productionProcedureConfirmService;
 
     private static final Logger LOGGER = Logger
             .getLogger(ProductionOrderController.class);
@@ -272,6 +269,19 @@ public class ProductionOrderController extends ProductBaseController {
             e.printStackTrace();
             LOGGER.error("生产单导出excel异常");
         }
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public XaResult<Integer> delete(String productionNo, String orderNo) throws BusinessException {
+        ProductionProcedureConfirm productionProcedureConfirm = new ProductionProcedureConfirm();
+        productionProcedureConfirm.setProductionNo(productionNo);
+        productionProcedureConfirm.setOrderNo(orderNo);
+        if(null != productionProcedureConfirmService.select(productionProcedureConfirm)){
+            return XaResult.error("该生成单已经有员工扫描操作，无法删除！！！");
+        }
+
+       Integer row = productionOrderService.delete(productionNo, orderNo);
+        return XaResult.success(row);
     }
 }
 
