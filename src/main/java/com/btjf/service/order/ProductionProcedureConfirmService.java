@@ -49,7 +49,7 @@ public class ProductionProcedureConfirmService {
     @Resource
     private ProductWorkshopService productWorkshopService;
 
-    public List<Order> getOrderByMouth(String date,String deptName) {
+    public List<Order> getOrderByMouth(String date, String deptName) {
         return productionProcedureConfirmMapper.getOrderByMouth(date, deptName);
     }
 
@@ -82,10 +82,10 @@ public class ProductionProcedureConfirmService {
         return productionProcedureConfirmMapper.select(productionProcedureConfirm);
     }
 
-    public Integer add(Integer orderId, String orderNo, Integer louId, String billOutNo, String productNo, String productionNo, WxEmpVo wxEmpVo) {
+    public Integer add(Integer orderId, String orderNo, Integer louId, String billOutNo, String productNo, String productionNo, WxEmpVo wxEmpVo, Boolean isCreateInspectionorSalary) {
 
         List<ProductionProcedureScan> productionProcedureScans = productionProcedureScanService.select(orderNo, productNo, productionNo, louId, billOutNo, null);
-        if(CollectionUtils.isEmpty(productionProcedureScans)) throw new BusinessException("该订单工序还没有员工处理");
+        if (CollectionUtils.isEmpty(productionProcedureScans)) throw new BusinessException("该订单工序还没有员工处理");
         productionProcedureScans.stream().filter(t -> t != null).forEach(t -> {
             ProductionProcedureConfirm productionProcedureConfirm = new ProductionProcedureConfirm();
             productionProcedureConfirm.setOrderNo(t.getOrderNo());
@@ -115,38 +115,40 @@ public class ProductionProcedureConfirmService {
             productionProcedureScanService.updateStatue(t);
         });
 
-        //新增质检工资记录
-        ProductionProcedureScan productionProcedureScan = productionProcedureScans.get(0);
-        //获取质检    //获取负责车间质检工序的价格
-        ProductProcedureWorkshop productProcedureWorkshop = productWorkshopService.getInspactPriceByWorkShapAndProductNo(wxEmpVo.getDeptName(), productNo);
-        if(productProcedureWorkshop == null) throw new BusinessException("请再您所在车间设置好质检工序之后重试");
-        ProductionProcedureConfirm productionProcedureConfirm = new ProductionProcedureConfirm();
-        productionProcedureConfirm.setOrderNo(productionProcedureScan.getOrderNo());
-        productionProcedureConfirm.setType(3);
-        productionProcedureConfirm.setIsDelete(0);
-        productionProcedureConfirm.setEmpId(wxEmpVo.getId());
-        productionProcedureConfirm.setNum(BigDecimal.valueOf(productionProcedureScan.getNum()));
-        productionProcedureConfirm.setPrice(productProcedureWorkshop.getPrice());
-        productionProcedureConfirm.setOperator(wxEmpVo.getName());
-        productionProcedureConfirm.setIsChange(0);
-        productionProcedureConfirm.setMoney(BigDecimal.valueOf(BigDecimalUtil.mul(Double.valueOf(productionProcedureScan.getNum()), productProcedureWorkshop.getPrice().doubleValue())));
-        productionProcedureConfirm.setLastModifyTime(new Date());
-        productionProcedureConfirm.setCreateTime(new Date());
-        productionProcedureConfirm.setCompleteTime(productionProcedureScan.getCreateTime());
-        productionProcedureConfirm.setProductNo(productNo);
-        productionProcedureConfirm.setProcedureId(productProcedureWorkshop.getProcedureId());
-        productionProcedureConfirm.setProcedureName(productProcedureWorkshop.getProcedureName());
-        productionProcedureConfirm.setPmOutBillNo(billOutNo);
-        productionProcedureConfirm.setLuoId(louId);
-        productionProcedureConfirm.setProductionNo(productionNo);
-        productionProcedureConfirm.setInspectionor(wxEmpVo.getName()); //质检员
+        if (isCreateInspectionorSalary) {
+            //新增质检工资记录
+            ProductionProcedureScan productionProcedureScan = productionProcedureScans.get(0);
+            //获取质检    //获取负责车间质检工序的价格
+            ProductProcedureWorkshop productProcedureWorkshop = productWorkshopService.getInspactPriceByWorkShapAndProductNo(wxEmpVo.getDeptName(), productNo);
+            if (productProcedureWorkshop == null) throw new BusinessException("请再您所在车间设置好质检工序之后重试");
+            ProductionProcedureConfirm productionProcedureConfirm = new ProductionProcedureConfirm();
+            productionProcedureConfirm.setOrderNo(productionProcedureScan.getOrderNo());
+            productionProcedureConfirm.setType(3);
+            productionProcedureConfirm.setIsDelete(0);
+            productionProcedureConfirm.setEmpId(wxEmpVo.getId());
+            productionProcedureConfirm.setNum(BigDecimal.valueOf(productionProcedureScan.getNum()));
+            productionProcedureConfirm.setPrice(productProcedureWorkshop.getPrice());
+            productionProcedureConfirm.setOperator(wxEmpVo.getName());
+            productionProcedureConfirm.setIsChange(0);
+            productionProcedureConfirm.setMoney(BigDecimal.valueOf(BigDecimalUtil.mul(Double.valueOf(productionProcedureScan.getNum()), productProcedureWorkshop.getPrice().doubleValue())));
+            productionProcedureConfirm.setLastModifyTime(new Date());
+            productionProcedureConfirm.setCreateTime(new Date());
+            productionProcedureConfirm.setCompleteTime(productionProcedureScan.getCreateTime());
+            productionProcedureConfirm.setProductNo(productNo);
+            productionProcedureConfirm.setProcedureId(productProcedureWorkshop.getProcedureId());
+            productionProcedureConfirm.setProcedureName(productProcedureWorkshop.getProcedureName());
+            productionProcedureConfirm.setPmOutBillNo(billOutNo);
+            productionProcedureConfirm.setLuoId(louId);
+            productionProcedureConfirm.setProductionNo(productionNo);
+            productionProcedureConfirm.setInspectionor(wxEmpVo.getName()); //质检员
 
-        productionProcedureConfirmMapper.insertSelective(productionProcedureConfirm);
+            productionProcedureConfirmMapper.insertSelective(productionProcedureConfirm);
+        }
 
         return productionProcedureScans.size();
     }
 
-    public void change(String orderNo, String productNo, Integer procedureId, List<EmpProcedureDetailVo> list, WxEmpVo vo){
+    public void change(String orderNo, String productNo, Integer procedureId, List<EmpProcedureDetailVo> list, WxEmpVo vo) {
         //把之前可能存在的 调整数据 删除
         productionProcedureConfirmMapper.deleteType2(orderNo, productNo, procedureId, vo.getDeptName());
         //把之前的质检数据  置为 已调整
@@ -155,16 +157,16 @@ public class ProductionProcedureConfirmService {
         //插入 调整后的数据
         ProductionProcedureConfirm t = clist.get(0);
         String inspectionor = null;
-        for (int i = 0; i < clist.size(); i++){
-            if(inspectionor == null) {
+        for (int i = 0; i < clist.size(); i++) {
+            if (inspectionor == null) {
                 inspectionor = clist.get(i).getInspectionor();
                 continue;
             }
-            if(StringUtils.isNotEmpty(clist.get(i).getInspectionor()) && !inspectionor.contains(clist.get(i).getInspectionor())){
+            if (StringUtils.isNotEmpty(clist.get(i).getInspectionor()) && !inspectionor.contains(clist.get(i).getInspectionor())) {
                 inspectionor = inspectionor + "," + clist.get(i).getInspectionor();
             }
         }
-        for (int i = 0; i < list.size(); i++){
+        for (int i = 0; i < list.size(); i++) {
             ProductionProcedureConfirm productionProcedureConfirm = new ProductionProcedureConfirm();
             productionProcedureConfirm.setOrderNo(t.getOrderNo());
             productionProcedureConfirm.setType(2);
@@ -193,7 +195,7 @@ public class ProductionProcedureConfirmService {
     }
 
     public List<EmpDayWorkVo> analyseForDay(String date, Integer empId) {
-        return productionProcedureConfirmMapper.analyseForDay(date,empId);
+        return productionProcedureConfirmMapper.analyseForDay(date, empId);
     }
 
     public List<EmpDayWorkDetailVo> getWorkForDay(String date, Integer empId) {
@@ -202,11 +204,11 @@ public class ProductionProcedureConfirmService {
 
     public List<ProcedureInfoVo> getWorkProcedureInfo(String date, Integer empId, String orderNo, String productNo,
                                                       String billNo, Integer luoId, Integer type) {
-        return productionProcedureConfirmMapper.getWorkProcedureInfo(date,empId,orderNo,productNo,billNo,luoId,type);
+        return productionProcedureConfirmMapper.getWorkProcedureInfo(date, empId, orderNo, productNo, billNo, luoId, type);
     }
 
     public Page<ProcedureYieldVo> yieldList(String name, Integer deptId, Integer workId, String orderNo,
-          String productNo, String procedureName, String yearMonth, String startDate, String endDate, Page page) {
+                                            String productNo, String procedureName, String yearMonth, String startDate, String endDate, Page page) {
         PageHelper.startPage(page.getPage(), page.getRp());
         List<ProcedureYieldVo> pmList = productionProcedureConfirmMapper.yieldList(name, deptId, workId,
                 orderNo, productNo, procedureName, yearMonth, startDate, endDate);
@@ -217,7 +219,7 @@ public class ProductionProcedureConfirmService {
 
 
     public List<ProductionProcedureConfirm> getUnSettlement(String yearMonth, Integer empId) {
-        if(StringUtils.isEmpty(yearMonth) || empId ==null){
+        if (StringUtils.isEmpty(yearMonth) || empId == null) {
             return null;
         }
         return productionProcedureConfirmMapper.getUnSettlement(yearMonth, empId);
