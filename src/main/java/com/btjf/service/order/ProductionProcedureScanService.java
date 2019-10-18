@@ -125,8 +125,10 @@ public class ProductionProcedureScanService {
         }
         wxEmpVo.setDeptName(deptName);
         wxEmpVo.setName("系统生成");
-        //无需质检的生成质检信息
-        productionProcedureConfirmService.add(null, orderNo, louId, billOutNo, productNo, productionNo, wxEmpVo, !NOTCONFIRM_DEPT.contains(wxEmpVo.getDeptName()));
+        if (NOTCONFIRM_DEPT.contains(wxEmpVo.getDeptName())) {
+            //无需质检的生成质检信息
+            productionProcedureConfirmService.add(null, orderNo, louId, billOutNo, productNo, productionNo, wxEmpVo, false);
+        }
 
         LOGGER.info("订单号：" + orderNo + "，型号：" + productNo + "确认入库完成！！！新增" + row + "条记录");
         return row;
