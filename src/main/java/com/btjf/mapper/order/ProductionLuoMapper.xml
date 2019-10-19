@@ -370,4 +370,10 @@
     WHERE  productionNo = #{productionNo}
     and isDelete = 0 order by sort
   </select>
+
+  <update id="deleteByProductionNo">
+    UPDATE t_Production_Luo
+    SET isDelete = 1
+    WHERE productionNo = #{productionNo}
+  </update>
 </mapper>

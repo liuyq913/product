@@ -56,7 +56,7 @@ public class ProductionOrderController extends ProductBaseController {
     private ProductionLuoService productionLuoService;
 
     @Resource
-    private ProductionProcedureConfirmService productionProcedureConfirmService;
+    private ProductionProcedureScanService productionProcedureScanService;
 
     private static final Logger LOGGER = Logger
             .getLogger(ProductionOrderController.class);
@@ -273,10 +273,10 @@ public class ProductionOrderController extends ProductBaseController {
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public XaResult<Integer> delete(String productionNo, String orderNo) throws BusinessException {
-        ProductionProcedureConfirm productionProcedureConfirm = new ProductionProcedureConfirm();
-        productionProcedureConfirm.setProductionNo(productionNo);
-        productionProcedureConfirm.setOrderNo(orderNo);
-        if(null != productionProcedureConfirmService.select(productionProcedureConfirm)){
+        if(StringUtils.isEmpty(productionNo) || StringUtils.isEmpty(orderNo)){
+            return XaResult.error("请选择要删除的生产单");
+        }
+        if(!CollectionUtils.isEmpty(productionProcedureScanService.select(orderNo, null,productionNo,null,null,null))){
             return XaResult.error("该生成单已经有员工扫描操作，无法删除！！！");
         }
 

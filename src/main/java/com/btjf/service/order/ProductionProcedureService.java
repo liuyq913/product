@@ -43,4 +43,9 @@ public class ProductionProcedureService {
         List<ProductionProcedure> productionProcedures = productionProcedureMapper.getConfigProcedure(deptName, productionNo);
         return BeanUtil.convertList(productionProcedures, WorkShopVo.Procedure.class);
     }
+
+    public Integer deleteByProductionNo(String productionNo) {
+        if(StringUtils.isEmpty(productionNo)) return 0;
+        return productionProcedureMapper.deleteByProductionNo(productionNo);
+    }
 }

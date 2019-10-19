@@ -124,8 +124,7 @@ public class ProductionProcedureScanService {
 
         }
         wxEmpVo.setDeptName(deptName);
-        wxEmpVo.setName("系统生成");
-        if (NOTCONFIRM_DEPT.contains(wxEmpVo.getDeptName())) {
+        if (NOTCONFIRM_DEPT.contains(deptName)) {
             //无需质检的生成质检信息
             productionProcedureConfirmService.add(null, orderNo, louId, billOutNo, productNo, productionNo, wxEmpVo, false);
         }
