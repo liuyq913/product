@@ -56,7 +56,7 @@ public abstract class BaseExcelHandler {
         List<T> result = new ArrayList<>();
         for (int j = 1; j <= sheet.getLastRowNum(); j++) {
             XSSFRow row = (XSSFRow) sheet.getRow(j);
-
+            if (row == null) continue;
             try {
                 result.addAll(create(row));
             } catch (Exception e) {
