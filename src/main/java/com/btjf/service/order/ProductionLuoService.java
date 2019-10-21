@@ -1,5 +1,6 @@
 package com.btjf.service.order;
 
+import com.alibaba.druid.util.StringUtils;
 import com.btjf.mapper.order.ProductionLuoMapper;
 import com.btjf.model.order.ProductionLuo;
 import org.springframework.stereotype.Service;
@@ -41,5 +42,10 @@ public class ProductionLuoService {
 
     public Integer update(ProductionLuo productionLuo){
         return productionLuoMapper.updateByPrimaryKeySelective(productionLuo);
+    }
+
+    public Integer deleteByProductionNo(String productionNo){
+        if(StringUtils.isEmpty(productionNo)) return null;
+        return productionLuoMapper.deleteByProductionNo(productionNo);
     }
 }

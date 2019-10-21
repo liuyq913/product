@@ -382,4 +382,10 @@
         </if>
         and isDelete = 0 and procedureName &lt;&gt;'质检'-->
     </select>
+
+    <update id="deleteByProductionNo">
+        UPDATE t_Production_Procedure
+        SET isDelete = 1
+        WHERE productionNo = #{productionNo}
+    </update>
 </mapper>

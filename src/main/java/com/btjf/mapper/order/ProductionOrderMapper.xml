@@ -543,6 +543,8 @@
         <if test="createStartTime != null">
             and tpo.createStartTime &gt;= #{createStartTime,jdbcType=VARCHAR)
         </if>
+        and tpo.isDelete = 0
+        and top.isDelete = 0
         order by tpo.createTime desc
     </select>
 

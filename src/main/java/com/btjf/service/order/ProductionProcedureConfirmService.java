@@ -108,7 +108,7 @@ public class ProductionProcedureConfirmService {
             productionProcedureConfirm.setWorkshop(wxEmpVo.getDeptName());
             productionProcedureConfirm.setProcedureId(t.getProcedureId());
             productionProcedureConfirm.setProcedureName(t.getProcedureName());
-            productionProcedureConfirm.setInspectionor(wxEmpVo.getName()); //质检员
+            productionProcedureConfirm.setInspectionor(isCreateInspectionorSalary.equals(false)?"系统生成":wxEmpVo.getName()); //质检员
             productionProcedureConfirmMapper.insertSelective(productionProcedureConfirm);
             t.setStatus(1);
             //扫码记录改成已质检

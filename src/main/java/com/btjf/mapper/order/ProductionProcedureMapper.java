@@ -98,4 +98,6 @@ public interface ProductionProcedureMapper {
     List<ProductionProcedure> findByProductionNo(@Param("productionNo") String productionNo);
 
     List<ProductionProcedure> getConfigProcedure(@Param("deptName") String deptName, @Param("productionNo") String productionNo);
+
+    Integer deleteByProductionNo(@Param("productionNo") String productionNo);
 }

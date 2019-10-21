@@ -148,7 +148,11 @@ public class OrderProductService {
                     map.put(t.getType(), t.getNum());
                 }
         );
-        map.put("生产数",vos.stream().map(MapVo::getNum).reduce((i,j)->i+j).get());
+        if(CollectionUtils.isEmpty(vos)){
+            map.put("生产数", 0);
+        }else {
+            map.put("生产数", vos.stream().map(MapVo::getNum).reduce((i, j) -> i + j).get());
+        }
         return map;
     }
 }

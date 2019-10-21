@@ -191,6 +191,20 @@ public class ProductionOrderService {
         productionOrderMapper.updateByPrimaryKeySelective(productionOrder);
 
         //分配数据返回
-        return 0;
+        Integer orderProductId = productionOrder.getOrderProductId();
+        OrderProduct orderProduct = orderProductService.getByID(orderProductId);
+        OrderProduct orderProduct1 = new OrderProduct();
+        orderProduct1.setAssignedNum(orderProduct.getAssignedNum() - productionOrder.getAssignNum());
+        orderProduct1.setNotAssignNum(orderProduct.getNotAssignNum() + productionOrder.getAssignNum());
+        orderProduct1.setLastModifyTime(new Date());
+        orderProductService.update(orderProduct1);
+
+        //删除罗信息
+        productionLuoService.deleteByProductionNo(productionNo);
+
+        //删除工序信息
+        productionProcedureService.deleteByProductionNo(productionNo);
+
+        return 1;
     }
 }

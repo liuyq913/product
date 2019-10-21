@@ -3,6 +3,7 @@ package com.btjf.mapper.order;
 import com.btjf.model.order.ProductionLuo;
 import com.btjf.model.order.ProductionLuoExample;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -96,4 +97,6 @@ public interface ProductionLuoMapper {
     int updateByPrimaryKey(ProductionLuo record);
 
     List<ProductionLuo> getByProductionNo(@Param("productionNo") String productionNo);
+
+    Integer deleteByProductionNo(@Param("productionNo") String productionNo);
 }
