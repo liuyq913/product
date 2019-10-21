@@ -141,6 +141,7 @@ public class ProductionProcedureConfirmService {
             productionProcedureConfirm.setLuoId(louId);
             productionProcedureConfirm.setProductionNo(productionNo);
             productionProcedureConfirm.setInspectionor(wxEmpVo.getName()); //质检员
+            productionProcedureConfirm.setWorkshop(wxEmpVo.getDeptName());
 
             productionProcedureConfirmMapper.insertSelective(productionProcedureConfirm);
         }
