@@ -108,8 +108,8 @@ public class ProductionOrderService {
         Integer assignNum = productionOrder.getAssignNum();
         Integer sort = 0;
         if (null != productionOrder && productionOrder.getIsLuo() == 1) {
+            if (assignNum % productionOrder.getLuoNum() > 1) throw new BusinessException("分萝错误，请修改");
             do {
-                if (assignNum % productionOrder.getLuoNum() > 1) throw new BusinessException("分萝错误，请修改");
                 ProductionLuo productionLuo = new ProductionLuo();
                 productionLuo.setIsDelete(0);
                 productionLuo.setOrderNo(productionOrder.getOrderNo());
