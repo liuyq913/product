@@ -122,20 +122,21 @@ public class ProductionOrderService {
                 productionLuo.setSort(++sort);
                 productionLuos.add(productionLuo);
                 assignNum -= productionOrder.getLuoNum();
-            } while (assignNum > productionOrder.getLuoNum() * 1.5);
+            } while (assignNum > productionOrder.getLuoNum() +1 );
 
-            //最后不足1.5倍的方一框
-            ProductionLuo productionLuo = new ProductionLuo();
-            productionLuo.setIsDelete(0);
-            productionLuo.setOrderNo(productionOrder.getOrderNo());
-            productionLuo.setMaxNum(productionOrder.getMaxNum());
-            productionLuo.setNum(assignNum);
-            productionLuo.setProductionNo(productionOrder.getProductionNo());
-            productionLuo.setCreateTime(new Date());
-            productionLuo.setProductNo(productionOrder.getProductNo());
-            productionLuo.setOrderId(productionOrder.getOrderId());
-            productionLuo.setSort(++sort);
-            productionLuos.add(productionLuo);
+            if(assignNum > 0) {
+                ProductionLuo productionLuo = new ProductionLuo();
+                productionLuo.setIsDelete(0);
+                productionLuo.setOrderNo(productionOrder.getOrderNo());
+                productionLuo.setMaxNum(productionOrder.getMaxNum());
+                productionLuo.setNum(assignNum);
+                productionLuo.setProductionNo(productionOrder.getProductionNo());
+                productionLuo.setCreateTime(new Date());
+                productionLuo.setProductNo(productionOrder.getProductNo());
+                productionLuo.setOrderId(productionOrder.getOrderId());
+                productionLuo.setSort(++sort);
+                productionLuos.add(productionLuo);
+            }
 
             return productionLuos;
         } else {
