@@ -127,7 +127,7 @@ public class EmpExcelHandler extends BaseExcelHandler{
                     String type = getCellValue(row.getCell(i), i);
                     if("计件工".equals(type)){
                         emp.setType(1);
-                    }else if("合同工".equals(type)){
+                    }else if("合同工".equals(type) || "固定工".equals(type)){
                         emp.setType(2);
                     }else{
                         errMsg = errMsg + "第" + 7 +"列" + fields.get(6) + " 填写错误,";
