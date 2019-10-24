@@ -1,6 +1,7 @@
 package com.btjf.excel;
 
 
+import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.btjf.common.utils.DateUtil;
 import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.Cell;
@@ -67,13 +68,17 @@ public abstract class BaseExcelHandler {
         }
         //检验要导入的数据重复问题
 
+        if (this.getClass().equals(ProductWorkshopExcelHandler.class)) {
+            if (CollectionUtils.isNotEmpty(result)) {
+                insert(result, operator);
+                response.add("提交成功！新增导入" + result.size() + "条数据！");
+            }
+        }
+
         if (errResponse.size() > 0) {
             int sum = sheet.getLastRowNum() - errResponse.size();
-            response.add("导入失败，以下数据请修改后再重新上传");
+            response.add("导入失败！以下数据请修改后再重新上传");
             response.addAll(errResponse);
-        } else {
-            insert(result, operator);
-            response.add("提交成功！新增导入" + result.size() + "条数据！");
         }
         yearMonthCash.remove();
         wb.close();
