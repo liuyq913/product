@@ -63,13 +63,13 @@ public class ProductionOrderService {
                 + "&productNo=" + productionOrder.getProductNo() + "&productionNo=" + productionOrder.getProductionNo());
         productionOrderMapper.insertSelective(productionOrder);
         //更新  订单 型号表 分配数量信息
-        OrderProduct orderProduct = orderProductService.getByID(productionOrder.getOrderProductId());
+        /*OrderProduct orderProduct = orderProductService.getByID(productionOrder.getOrderProductId());
         OrderProduct orderProduct1 = new OrderProduct();
         orderProduct1.setId(productionOrder.getOrderProductId());
         orderProduct1.setAssignedNum(orderProduct.getAssignedNum() + productionOrder.getAssignNum());
         orderProduct1.setNotAssignNum(orderProduct.getNotAssignNum() - productionOrder.getAssignNum());
         orderProduct1.setLastModifyTime(new Date());
-        orderProductService.update(orderProduct1);
+        orderProductService.update(orderProduct1);*/
 
         //工序
         if (!CollectionUtils.isEmpty(procedures)) {
