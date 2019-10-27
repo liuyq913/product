@@ -52,10 +52,10 @@ public class ProductWorkshopService {
     }
 
 
-    public List<ProductProcedureWorkshop> findByWorkshopName(String name) {
+    public List<ProductProcedureWorkshop> findByWorkshopNameAndProductNo(String name, String productNo) {
         if (StringUtils.isEmpty(name)) return null;
 
-        return productProcedureWorkshopMapper.findByWorkshopName(name);
+        return productProcedureWorkshopMapper.findByWorkshopNameAndProductNo(name, productNo);
     }
 
     public List<ProductProcedureWorkshop> getWorkShop(String productNo, Integer isConfirm) {

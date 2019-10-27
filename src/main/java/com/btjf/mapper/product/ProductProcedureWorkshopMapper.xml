@@ -407,11 +407,19 @@
   </select>
 
 
-    <select id="findByWorkshopName" resultMap="BaseResultMap">
+    <select id="findByWorkshopNameAndProductNo" resultMap="BaseResultMap">
         select
         tppw.*
         from t_Product_Procedure_Workshop tppw LEFT JOIN t_Product_Procedure tpp ON tppw.procedureId = tpp.id
-        WHERE tppw.workshop = #{name} and tppw.isDelete = 0 and tpp.isConfirm = 1;
+        WHERE
+        1=1
+        <if test="name != null">
+            AND tppw.workshop = #{name}
+        </if>
+        <if test="productNo != null">
+            and tppw.productNo = #{productNo}
+        </if>
+        and tppw.isDelete = 0 and tpp.isConfirm = 1 and tpp.procedureName not like '%质检%';
     </select>
 
     <select id="getWorkShop" resultMap="BaseResultMap">

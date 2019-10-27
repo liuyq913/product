@@ -73,7 +73,7 @@ public class ProductionOrderService {
 
         //工序
         if (!CollectionUtils.isEmpty(procedures)) {
-            procedures.stream().filter(t -> t != null).forEach(t -> {
+            for (WorkShopVo.Procedure t : procedures) {
                 ProductionProcedure productionProcedure = new ProductionProcedure();
                 productionProcedure.setProductionNo(productionOrder.getProductionNo());
                 productionProcedure.setOrderId(productionOrder.getOrderId());
@@ -84,8 +84,12 @@ public class ProductionOrderService {
                 productionProcedure.setProcedureName(t.getProcedureName());
                 productionProcedure.setOrderNo(productionOrder.getOrderNo());
                 productionProcedure.setSort(t.getSort());
+                if (productionOrder.getAssignNum() > productionProcedureService.procedureCanAssignNum(productionOrder.getOrderNo(), productionOrder.getProductNo(), t.getProcedureId())) {
+                    throw new BusinessException("工序:" + t.getProcedureName() + "可分配数量不足");
+                }
+                productionProcedure.setAssignNum(productionOrder.getAssignNum()); //工序数量
                 productionProcedureService.insert(productionProcedure);
-            });
+            }
         }
 
         //分萝
@@ -114,7 +118,7 @@ public class ProductionOrderService {
                 productionLuo.setIsDelete(0);
                 productionLuo.setOrderNo(productionOrder.getOrderNo());
                 productionLuo.setMaxNum(productionOrder.getMaxNum());
-                productionLuo.setNum(productionOrder.getLuoNum());
+                productionLuo.setNum(productionOrder.getLuoNum()); //生产单对应工序的num 罗的工序和 生产单的工序一致
                 productionLuo.setCreateTime(new Date());
                 productionLuo.setProductNo(productionOrder.getProductNo());
                 productionLuo.setOrderId(productionOrder.getOrderId());
@@ -122,9 +126,9 @@ public class ProductionOrderService {
                 productionLuo.setSort(++sort);
                 productionLuos.add(productionLuo);
                 assignNum -= productionOrder.getLuoNum();
-            } while (assignNum > productionOrder.getLuoNum() +1 );
+            } while (assignNum > productionOrder.getLuoNum() + 1);
 
-            if(assignNum > 0) {
+            if (assignNum > 0) {
                 ProductionLuo productionLuo = new ProductionLuo();
                 productionLuo.setIsDelete(0);
                 productionLuo.setOrderNo(productionOrder.getOrderNo());
@@ -136,12 +140,13 @@ public class ProductionOrderService {
                 productionLuo.setOrderId(productionOrder.getOrderId());
                 productionLuo.setSort(++sort);
                 productionLuos.add(productionLuo);
-            }
 
+            }
             return productionLuos;
         } else {
             return null;
         }
+
     }
 
     public Page<ProductionOrderVo> getPage(ProductionOrderVo productionOrderVo, Page page) {
@@ -193,13 +198,13 @@ public class ProductionOrderService {
         productionOrderMapper.updateByPrimaryKeySelective(productionOrder);
 
         //分配数据返回
-        Integer orderProductId = productionOrder.getOrderProductId();
+       /* Integer orderProductId = productionOrder.getOrderProductId();
         OrderProduct orderProduct = orderProductService.getByID(orderProductId);
         OrderProduct orderProduct1 = new OrderProduct();
         orderProduct1.setAssignedNum(orderProduct.getAssignedNum() - productionOrder.getAssignNum());
         orderProduct1.setNotAssignNum(orderProduct.getNotAssignNum() + productionOrder.getAssignNum());
         orderProduct1.setLastModifyTime(new Date());
-        orderProductService.update(orderProduct1);
+        orderProductService.update(orderProduct1);*/
 
         //删除罗信息
         productionLuoService.deleteByProductionNo(productionNo);
@@ -208,5 +213,17 @@ public class ProductionOrderService {
         productionProcedureService.deleteByProductionNo(productionNo);
 
         return 1;
+    }
+
+    public static void main(String[] ars) {
+        Integer num = 41;
+        Integer luoNum = 4;
+        if (num % luoNum > 1) throw new BusinessException("分萝错误，请修改");
+        do {
+            System.out.println(luoNum);
+            num -= luoNum;
+        } while (num > luoNum + 1);
+        System.out.println(num);
+
     }
 }

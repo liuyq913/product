@@ -49,7 +49,7 @@ public class OrderService {
                 throw new BusinessException("订单编号为：" + orderProduct.getOrderNo() + ",型号为：" + orderProduct.getProductNo()
                         + "已经生成了生产单，无法删除！！！");
             }
-            if (null != pmOutService.findList(null, orderProduct.getOrderNo(), orderProduct.getProductNo())) {
+            if (CollectionUtils.isNotEmpty(pmOutService.findList(null, orderProduct.getOrderNo(), orderProduct.getProductNo()))) {
                 throw new BusinessException("订单编号为：" + orderProduct.getOrderNo() + ",型号为：" + orderProduct.getProductNo()
                         + "已经生成耗料单，无法删除！！！");
             }
