@@ -419,7 +419,7 @@
         <if test="productNo != null">
             and tppw.productNo = #{productNo}
         </if>
-        and tppw.isDelete = 0 and tpp.isConfirm = 1;
+        and tppw.isDelete = 0 and tpp.isConfirm = 1 and tpp.procedureName not like '%质检%';
     </select>
 
     <select id="getWorkShop" resultMap="BaseResultMap">
