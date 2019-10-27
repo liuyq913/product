@@ -63,10 +63,10 @@ public class ProductWorkshopController extends ProductBaseController {
     }
 
     @RequestMapping(value = "/getByWorkshopName", method = RequestMethod.GET)
-    public XaResult<List<WorkShopVo.Procedure>> getByWorkshopName(String workshopName) throws BusinessException {
+    public XaResult<List<WorkShopVo.Procedure>> getByWorkshopName(String workshopName, String productNo) throws BusinessException {
         if (StringUtils.isEmpty(workshopName)) return XaResult.success();
         List<WorkShopVo.Procedure> result = Lists.newArrayList();
-        List<ProductProcedureWorkshop> productProcedureWorkshops = productWorkshopService.findByWorkshopName(workshopName);
+        List<ProductProcedureWorkshop> productProcedureWorkshops = productWorkshopService.findByWorkshopNameAndProductNo(workshopName, productNo);
         if (!CollectionUtils.isEmpty(productProcedureWorkshops)) {
             for (ProductProcedureWorkshop productProcedureWorkshop : productProcedureWorkshops) {
                 result.add(new WorkShopVo.Procedure(productProcedureWorkshop));

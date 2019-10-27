@@ -97,7 +97,7 @@ public interface ProductProcedureWorkshopMapper {
 
     Integer getNumByWorkShopNameAndPID(@Param("name") String name, @Param("productNo") String productNo);
 
-    List<ProductProcedureWorkshop> findByWorkshopName(@Param("name") String name);
+    List<ProductProcedureWorkshop> findByWorkshopNameAndProductNo(@Param("name") String name, @Param("productNo") String productNo);
 
     List<ProductProcedureWorkshop> getWorkShop(@Param("productNo") String productNo, @Param("procedureId") Integer procedureId, @Param("isConfirm") Integer isConfirm);
 

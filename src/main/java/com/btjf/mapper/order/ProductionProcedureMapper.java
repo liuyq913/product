@@ -2,9 +2,8 @@ package com.btjf.mapper.order;
 
 import com.btjf.model.order.ProductionProcedure;
 import com.btjf.model.order.ProductionProcedureExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface ProductionProcedureMapper {
     /**
@@ -100,4 +99,6 @@ public interface ProductionProcedureMapper {
     List<ProductionProcedure> getConfigProcedure(@Param("deptName") String deptName, @Param("productionNo") String productionNo);
 
     Integer deleteByProductionNo(@Param("productionNo") String productionNo);
+
+    Integer procedureCanAssignNum(@Param("orderNo") String orderNo, @Param("productNo") String productNo, @Param("procedureId") Integer procedureId);
 }

@@ -835,6 +835,126 @@ public class ProductionProcedureExample {
             return (Criteria) this;
         }
 
+        public Criteria andAssignNumIsNull() {
+            addCriterion("assignNum is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignNumIsNotNull() {
+            addCriterion("assignNum is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignNumEqualTo(Integer value) {
+            addCriterion("assignNum =", value, "assignNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignNumNotEqualTo(Integer value) {
+            addCriterion("assignNum <>", value, "assignNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignNumGreaterThan(Integer value) {
+            addCriterion("assignNum >", value, "assignNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignNumGreaterThanOrEqualTo(Integer value) {
+            addCriterion("assignNum >=", value, "assignNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignNumLessThan(Integer value) {
+            addCriterion("assignNum <", value, "assignNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignNumLessThanOrEqualTo(Integer value) {
+            addCriterion("assignNum <=", value, "assignNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignNumIn(List<Integer> values) {
+            addCriterion("assignNum in", values, "assignNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignNumNotIn(List<Integer> values) {
+            addCriterion("assignNum not in", values, "assignNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignNumBetween(Integer value1, Integer value2) {
+            addCriterion("assignNum between", value1, value2, "assignNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignNumNotBetween(Integer value1, Integer value2) {
+            addCriterion("assignNum not between", value1, value2, "assignNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andLuoIdIsNull() {
+            addCriterion("luoId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLuoIdIsNotNull() {
+            addCriterion("luoId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLuoIdEqualTo(Integer value) {
+            addCriterion("luoId =", value, "luoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLuoIdNotEqualTo(Integer value) {
+            addCriterion("luoId <>", value, "luoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLuoIdGreaterThan(Integer value) {
+            addCriterion("luoId >", value, "luoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLuoIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("luoId >=", value, "luoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLuoIdLessThan(Integer value) {
+            addCriterion("luoId <", value, "luoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLuoIdLessThanOrEqualTo(Integer value) {
+            addCriterion("luoId <=", value, "luoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLuoIdIn(List<Integer> values) {
+            addCriterion("luoId in", values, "luoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLuoIdNotIn(List<Integer> values) {
+            addCriterion("luoId not in", values, "luoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLuoIdBetween(Integer value1, Integer value2) {
+            addCriterion("luoId between", value1, value2, "luoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLuoIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("luoId not between", value1, value2, "luoId");
+            return (Criteria) this;
+        }
+
         public Criteria andProductionNoLikeInsensitive(String value) {
             addCriterion("upper(productionNo) like", value.toUpperCase(), "productionNo");
             return (Criteria) this;

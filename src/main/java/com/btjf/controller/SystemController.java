@@ -99,7 +99,7 @@ public class SystemController {
     }
 
     /**
-     * 获取车间及车间负责人及车间工序
+     * 获取车间及车间负责人
      *
      * @return
      */
@@ -110,8 +110,8 @@ public class SystemController {
         for (Sysdept sysdept : list) {
             if (null == sysdept) continue;
             List<Emp> emps = empService.getLeaderByDeptID(sysdept.getId());
-            List<ProductProcedureWorkshop> productProcedureWorkshops = productWorkshopService.findByWorkshopName(sysdept.getDeptName());
-            workShopVos.add(new WorkShopVo(sysdept, emps, productProcedureWorkshops));
+            //List<ProductProcedureWorkshop> productProcedureWorkshops = productWorkshopService.findByWorkshopName(sysdept.getDeptName());
+            workShopVos.add(new WorkShopVo(sysdept, emps, null));
         }
         return XaResult.success(workShopVos);
     }

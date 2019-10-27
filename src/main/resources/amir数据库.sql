@@ -368,7 +368,9 @@ CREATE TABLE t_Production_Procedure(
    procedureName varchar(50) comment '工序名称',
    createTime datetime,
    sort int(11) NOT NULL comment '工序序号',
-	 isDelete int NOT NULL
+	 isDelete int NOT NULL,
+	 assignNum int(11) comment '分配数量',
+	 luoId int(11) DEFAULT NULL comment '生产单罗ID'
 );
 
 ##生产单-工序-人员 多对多表 员工自己扫码的结果
