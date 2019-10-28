@@ -431,6 +431,7 @@
       WHERE orderNo = #{orderNo,jdbcType=VARCHAR}
       and productNo = #{productNo,jdbcType=VARCHAR}
       and  procedureId = #{procedureId,jdbcType=INTEGER}
+      and isDelete = 0
       group by orderNo, productNo, procedureId
   </select>
 </mapper>
