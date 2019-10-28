@@ -369,7 +369,7 @@ CREATE TABLE t_Production_Procedure(
    createTime datetime,
    sort int(11) NOT NULL comment '工序序号',
 	 isDelete int NOT NULL,
-	 assignNum int(11) comment '分配数量',
+	 assignNum int(11) DEFAULT 0 comment '分配数量',
 	 luoId int(11) DEFAULT NULL comment '生产单罗ID'
 );
 
