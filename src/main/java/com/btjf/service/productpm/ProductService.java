@@ -5,6 +5,7 @@ import com.btjf.model.product.Product;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -32,5 +33,9 @@ public class ProductService {
              productMapper.updateByPrimaryKeySelective(product);
              return product.getId();
         }).orElse(0);
+    }
+
+    public List<Product> getAll(){
+     return productMapper.getList(null,null);
     }
 }

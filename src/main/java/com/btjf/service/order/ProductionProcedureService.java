@@ -66,12 +66,13 @@ public class ProductionProcedureService {
      * @return
      */
     public Integer procedureCanAssignNum(String orderNo, String productNo, Integer procedureId) {
-        if (StringUtils.isEmpty(orderNo) || StringUtils.isEmpty(productNo) || null == procedureId) throw new BusinessException("订单，型号.工序不能为空");
+        if (StringUtils.isEmpty(orderNo) || StringUtils.isEmpty(productNo) || null == procedureId)
+            throw new BusinessException("订单，型号.工序不能为空");
         Integer assignNum = productionProcedureMapper.procedureCanAssignNum(orderNo, productNo, procedureId);
 
         OrderProduct product = orderProductService.getByOrderNoAndProductNo(orderNo, productNo);
         return Optional.ofNullable(product).map(v -> {
-            return v.getMaxNum() - assignNum;
+            return v.getMaxNum() - (assignNum == null ? 0 : assignNum);
         }).orElse(0);
     }
 }
