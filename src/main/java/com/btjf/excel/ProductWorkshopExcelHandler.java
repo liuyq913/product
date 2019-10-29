@@ -6,6 +6,8 @@ import com.btjf.constant.WorkShopProductionMapEnum;
 import com.btjf.factory.ExcelImportFactory;
 import com.btjf.model.product.ProductProcedureWorkshop;
 import com.btjf.service.productpm.ProductService;
+import com.btjf.service.productpm.ProductWorkshopService;
+import com.btjf.util.ThreadPoolExecutorUtil;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -31,7 +33,7 @@ public class ProductWorkshopExcelHandler extends BaseExcelHandler {
     private ProductService productService;
 
     @Resource
-    private ExcelImportFactory excelImportFactory;
+    private ProductWorkshopService productWorkshopService;
 
     @Override
     public List<String> execute(MultipartFile file, Boolean isCover, String operator) throws Exception {
@@ -46,7 +48,8 @@ public class ProductWorkshopExcelHandler extends BaseExcelHandler {
                 productProcedureWorkshop.setOperator(operator);
             }
         }
-        excelImportFactory.saveProductWorkshop(list);
+
+        ThreadPoolExecutorUtil.getPool().execute(()->productWorkshopService.saveList(list));
     }
 
     @Override
@@ -58,7 +61,7 @@ public class ProductWorkshopExcelHandler extends BaseExcelHandler {
             switch (i) {
                 case 0:
                     String productNo = getCellValue(row.getCell(i), i);
-                    if (null == productService.getByNO(productNo)) throw new BusinessException("型号不存在");
+                    if (null == productService.getByNO(productNo)) throw new BusinessException(productNo+"型号不存在");
                     productProcedureWorkshop.setProductNo(productNo);
                     break;
                 case 1:
