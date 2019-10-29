@@ -117,7 +117,7 @@ public class EmpSalaryMothlyHandler extends BaseExcelHandler {
                 name = getCellValue(row.getCell(0));//名称
                 Emp emp = empService.getByName(name);
                 if (emp == null) {
-                    errResponse.add("第" + i + 1 + "行，名称为：" + name + "的员工不存在");
+                    errResponse.add("第" + (i + 1) + "行，名称为：" + name + "的员工不存在");
                 }
             }
 
