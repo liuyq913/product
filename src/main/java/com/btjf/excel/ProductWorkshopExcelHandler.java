@@ -33,7 +33,7 @@ public class ProductWorkshopExcelHandler extends BaseExcelHandler {
     private ProductService productService;
 
     @Resource
-    private ProductWorkshopService productWorkshopService;
+    private ExcelImportFactory excelImportFactory;
 
     @Override
     public List<String> execute(MultipartFile file, Boolean isCover, String operator) throws Exception {
@@ -42,14 +42,15 @@ public class ProductWorkshopExcelHandler extends BaseExcelHandler {
 
     @Override
     protected void insert(List list, String operator) {
-        if (list != null && list.size() > 0) {
-            for (int i = 0; i < list.size(); i++) {
-                ProductProcedureWorkshop productProcedureWorkshop = (ProductProcedureWorkshop) list.get(i);
-                productProcedureWorkshop.setOperator(operator);
+        ThreadPoolExecutorUtil.getPool().execute(() -> {
+            if (list != null && list.size() > 0) {
+                for (int i = 0; i < list.size(); i++) {
+                    ProductProcedureWorkshop productProcedureWorkshop = (ProductProcedureWorkshop) list.get(i);
+                    productProcedureWorkshop.setOperator(operator);
+                }
             }
-        }
-
-        ThreadPoolExecutorUtil.getPool().execute(()->productWorkshopService.saveList(list));
+            excelImportFactory.saveProductWorkshop(list);
+        });
     }
 
     @Override
@@ -61,7 +62,7 @@ public class ProductWorkshopExcelHandler extends BaseExcelHandler {
             switch (i) {
                 case 0:
                     String productNo = getCellValue(row.getCell(i), i);
-                    if (null == productService.getByNO(productNo)) throw new BusinessException(productNo+"型号不存在");
+                    if (null == productService.getByNO(productNo)) throw new BusinessException(productNo + "型号不存在");
                     productProcedureWorkshop.setProductNo(productNo);
                     break;
                 case 1:
@@ -78,7 +79,8 @@ public class ProductWorkshopExcelHandler extends BaseExcelHandler {
                 case 3:
                     String sort = getCellValue(row.getCell(i), i);
                     if (StringUtils.isEmpty(sort)) throw new BusinessException("工序序号未填写");
-                    if (null == WorkShopProductionMapEnum.get(new Integer(sort))) throw new BusinessException("请填写正确的序号(序号对应车间)");
+                    if (null == WorkShopProductionMapEnum.get(new Integer(sort)))
+                        throw new BusinessException("请填写正确的序号(序号对应车间)");
                     productProcedureWorkshop.setSort(Integer.valueOf(sort));
                     break;
 
