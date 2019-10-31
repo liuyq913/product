@@ -600,7 +600,7 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM t_Order_Product
-        where orderId = #{orderId} and isDelete = 0 and notAssignNum > 0
+        where orderId = #{orderId} and isDelete = 0
     </select>
 
     <select id="getCount" resultType="com.btjf.controller.emp.vo.MapVo">
