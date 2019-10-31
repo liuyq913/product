@@ -563,7 +563,7 @@
         where  p.productNo = #{productNo,jdbcType=VARCHAR}
         and p.orderNo = #{orderNo,jdbcType=VARCHAR}
         and p.procedureId = #{id,jdbcType=INTEGER}
-        and ((p.type = 2 and p.isChange=0) or (p.type =1 and p.isChange=0))
+        and p.isChange=0
          and p.isDelete = 0
          and p.workshop = #{deptName,jdbcType=VARCHAR}
          group by p.empId,e.name
