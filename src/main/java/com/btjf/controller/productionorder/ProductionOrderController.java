@@ -72,7 +72,7 @@ public class ProductionOrderController extends ProductBaseController {
         if (null == assignNum) return XaResult.error("请输入分配数额");
         if (null == isLuo || (isLuo != 1 && isLuo != 0)) return XaResult.error("请选择是否分萝");
         if (isLuo == 1 && (null == luoNum || luoNum < 0)) return XaResult.error("请输入一萝数量");
-        if (isLuo == 1 && (orderProduct.getNotAssignNum() < luoNum)) return XaResult.error("可分配数量小于一萝数量，无法分萝处理");
+        //if (isLuo == 1 && (orderProduct.getNotAssignNum() < luoNum)) return XaResult.error("可分配数量小于一萝数量，无法分萝处理");
         List<WorkShopVo.Procedure> procedures = Lists.newArrayList();
         if (!StringUtils.isEmpty(procedure)) {
             procedures = JSONObject.parseArray(procedure, WorkShopVo.Procedure.class);
