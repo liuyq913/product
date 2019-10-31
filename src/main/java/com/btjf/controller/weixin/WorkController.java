@@ -68,7 +68,7 @@ public class WorkController extends ProductBaseController {
     @Resource
     private OrderProductService orderProductService;
 
-    private static final List<String> NOTCONFIRM_DEPT = Arrays.asList("后道车间-中辅工","后道车间-车工","后道车间-小辅工","包装车间");
+    private static final List<String> NOTCONFIRM_DEPT = Arrays.asList("后道车间-中辅工","后道车间-车工","后道车间-小辅工","包装车间","外协质检");
 
     @RequestMapping(value = "getConfirmList", method = RequestMethod.GET)
     public XaResult<WorkListVo> getConfigList(@ApiParam("订单id") Integer orderId, @ApiParam("订单编号") String orderNo,

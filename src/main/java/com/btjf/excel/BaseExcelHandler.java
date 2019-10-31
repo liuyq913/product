@@ -73,6 +73,11 @@ public abstract class BaseExcelHandler {
                 insert(result, operator);
                 response.add("提交成功！新增导入" + result.size() + "条数据！");
             }
+            if (errResponse.size() > 0) {
+                int sum = sheet.getLastRowNum() - errResponse.size();
+                response.add("导入失败，以下数据请修改后再重新上传");
+                response.addAll(errResponse);
+            }
         }else{
             if (errResponse.size() > 0) {
                 int sum = sheet.getLastRowNum() - errResponse.size();
