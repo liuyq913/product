@@ -198,7 +198,7 @@ public class EmpSalaryMothlyHandler extends BaseExcelHandler {
                 for (EmpSalaryMothlyPojo empSalaryMothlyPojo : entry.getValue()) {
                     if (empSalaryMothlyPojo == null) continue;
                     //白班
-                    if (empSalaryMothlyPojo.getIsBlack() && !empSalaryMothlyPojo.getIsHoliday() && !empSalaryMothlyPojo.getIsLegal()) {
+                    if ((empSalaryMothlyPojo.getIsBlack() && !empSalaryMothlyPojo.getIsHoliday() && !empSalaryMothlyPojo.getIsLegal())) {
                         blackNum = BigDecimalUtil.add(blackNum, empSalaryMothlyPojo.getNum());
                     }
                     //晚班
@@ -228,8 +228,8 @@ public class EmpSalaryMothlyHandler extends BaseExcelHandler {
                 Double sumWorkDay = BigDecimalUtil.add(blackNum, BigDecimalUtil.mul(nightNum, 0.5), legalBlackNum);
                 //工作日   ① 工作日>总天数，工作日不调整；② 工作日<=总天数，工作日=总天数
                 monthly.setWorkDay(BigDecimal.valueOf(salaryMonthly != null ? salaryMonthly.getExpectWorkDay() > sumWorkDay ? salaryMonthly.getExpectWorkDay() : sumWorkDay : sumWorkDay));
-                monthly.setDayWork(BigDecimal.valueOf(blackNum));
-                monthly.setNightWork(BigDecimal.valueOf(nightNum));
+                monthly.setDayWork(BigDecimal.valueOf(BigDecimalUtil.add(blackNum, holidayBlackNum)));
+                monthly.setNightWork(BigDecimal.valueOf(BigDecimalUtil.add(nightNum, holidayNightNum)));
                 monthly.setRestDay(BigDecimal.valueOf(legalBlackNum));
                 monthly.setSumDay(BigDecimal.valueOf(sumWorkDay));
                 monthly.setDayWorkHoliday(BigDecimal.valueOf(holidayBlackNum));
