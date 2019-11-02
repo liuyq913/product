@@ -17,6 +17,7 @@ import com.btjf.model.pm.PmOutBill;
 import com.btjf.service.order.*;
 import com.btjf.service.pm.PmOutService;
 import com.btjf.service.productpm.ProductWorkshopService;
+import com.btjf.service.sys.ShortUrlService;
 import com.google.common.collect.Maps;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -67,6 +68,9 @@ public class WorkController extends ProductBaseController {
 
     @Resource
     private OrderProductService orderProductService;
+
+    @Resource
+    private ShortUrlService shortUrlService;
 
     private static final List<String> NOTCONFIRM_DEPT = Arrays.asList("后道车间-中辅工","后道车间-车工","后道车间-小辅工","包装车间","外协质检");
 
@@ -288,5 +292,11 @@ public class WorkController extends ProductBaseController {
         }
         Integer row = productionProcedureConfirmService.add(orderId, orderNo, louId, billOutNo, productNo, productionNo, wxEmpVo, true);
         return XaResult.success(row);
+    }
+
+    @RequestMapping(value = "/getUrl", method = RequestMethod.GET)
+    public XaResult<String> getUrl(@ApiParam("短链url") String shortUrl){
+        if(StringUtils.isEmpty(shortUrl)) return XaResult.error("短链必传");
+        return XaResult.success(shortUrlService.getByShort(shortUrl));
     }
 }

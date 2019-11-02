@@ -11,6 +11,7 @@ import com.btjf.model.order.OrderProduct;
 import com.btjf.model.order.ProductionLuo;
 import com.btjf.model.order.ProductionOrder;
 import com.btjf.model.order.ProductionProcedure;
+import com.btjf.service.sys.ShortUrlService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
@@ -48,6 +49,9 @@ public class ProductionOrderService {
     @Resource
     private BillNoService billNoService;
 
+    @Resource
+    private ShortUrlService shortUrlService;
+
 
     public ProductionOrder getByOrderProductID(Integer orderProductID) {
         if (orderProductID == null) return null;
@@ -59,8 +63,9 @@ public class ProductionOrderService {
         if (null == productionOrder) return 0;
 
         productionOrder.setProductionNo("P" + billNoService.getNo(4));
-        productionOrder.setCodeUrl("/wx/work/getConfirmList?orderId=" + productionOrder.getOrderProductId() + "&orderNo=" + productionOrder.getOrderNo()
-                + "&productNo=" + productionOrder.getProductNo() + "&productionNo=" + productionOrder.getProductionNo());
+        String longUrl = "/wx/work/getConfirmList?orderId=" + productionOrder.getOrderProductId() + "&orderNo=" + productionOrder.getOrderNo()
+                + "&productNo=" + productionOrder.getProductNo() + "&productionNo=" + productionOrder.getProductionNo();
+        productionOrder.setCodeUrl(shortUrlService.saveAndReturnShortUrl(longUrl));
         productionOrderMapper.insertSelective(productionOrder);
         //更新  订单 型号表 分配数量信息
         /*OrderProduct orderProduct = orderProductService.getByID(productionOrder.getOrderProductId());
@@ -99,7 +104,7 @@ public class ProductionOrderService {
                 Integer id = productionLuoService.insert(t);
                 ProductionLuo productionLuo = new ProductionLuo();
                 productionLuo.setId(id);
-                productionLuo.setCodeUrl(productionOrder.getCodeUrl() + "&louId=" + id);
+                productionLuo.setCodeUrl(shortUrlService.saveAndReturnShortUrl(longUrl + "&louId=" + id));
                 productionLuoService.update(productionLuo);
             });
         }

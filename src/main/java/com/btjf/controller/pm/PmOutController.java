@@ -11,6 +11,7 @@ import com.btjf.model.product.ProductPm;
 import com.btjf.service.order.OrderProductService;
 import com.btjf.service.pm.PmOutService;
 import com.btjf.service.productpm.ProductPmService;
+import com.btjf.service.sys.ShortUrlService;
 import com.btjf.vo.*;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -48,6 +49,8 @@ public class PmOutController extends ProductBaseController {
     private ProductPmService productPmService;
     @Resource
     private PmOutService pmOutService;
+    @Resource
+    private ShortUrlService shortUrlService;
 
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -198,7 +201,7 @@ public class PmOutController extends ProductBaseController {
         List<PmOutBillDetail> list = pmOutService.getListDetailByBillId(pmOutBill.getId());
         List<ProductPm> pplist = productPmService.findListByProductNoAndType(pmOutBill.getProductNo(), null);
         PmOutBillDetailVo vo = new PmOutBillDetailVo(pmOutBill, orderProduct, list, pplist);
-
+        vo.setUrl(shortUrlService.saveAndReturnShortUrl(vo.getUrl()));
         return XaResult.success(vo);
     }
 
