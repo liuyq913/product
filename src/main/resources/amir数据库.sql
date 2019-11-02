@@ -706,3 +706,14 @@ CREATE TABLE t_BillNo(
   date varchar(30) comment '日期 20190819',
   num int comment '编号'
 );
+
+CREATE TABLE `t_ShortUrlMapping` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `shortUrl` varchar(50) DEFAULT NULL COMMENT '短链',
+  `longUrl` varchar(255) DEFAULT NULL COMMENT '真实请求路径',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_short` (`shortUrl`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+

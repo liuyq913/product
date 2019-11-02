@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -71,8 +72,8 @@ public class EmpSalaryController extends ProductBaseController {
         if (salaryMonthly.getIsMore() == null) {
             return XaResult.error("该月份产值未设置");
         }
-        if (!DateUtil.isAfter(DateUtil.string2Date(salaryMonthly.getYearMonth(), DateUtil.ymFormat),
-                DateUtil.dateBefore(new Date(), 5, 3))) {
+       if (!DateUtil.isAfter(DateUtil.string2Date(salaryMonthly.getYearMonth(), DateUtil.ymFormat),
+                DateUtil.dateBefore(new Date(), Calendar.MONTH, 3))) {
             return XaResult.error("三个月前的信息不允许再度结算");
         }
         List<Score> scoreList = scoreService.getList(salaryMonthly.getYearMonth(), null, null);

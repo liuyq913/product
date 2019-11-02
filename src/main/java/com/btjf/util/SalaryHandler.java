@@ -11,7 +11,7 @@ import java.util.Date;
 public class SalaryHandler {
 
     public static void main(String[] args) {
-        Integer months = getMonths("2012-07-12");
+        Integer months = getMonths("20120712");
         getWorkYearSubsidy(months, 2);
         getNewLatheWorkerSubsidy(months);
         getTwoSideSubsidy(months);
@@ -107,7 +107,7 @@ public class SalaryHandler {
      * @return
      */
     public static Calendar getPerFirstDayOfMonth(String repeatDate) {
-        SimpleDateFormat dft = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dft = new SimpleDateFormat("yyyyMMdd");
         Calendar calendar = Calendar.getInstance();
         try {
             if(StringUtils.isNotBlank(repeatDate) && !"null".equals(repeatDate)){
