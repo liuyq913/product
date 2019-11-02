@@ -354,7 +354,7 @@ public class EmpSalaryMonthlyService {
         summarySalaryMonthly.setSumDeduction(summarySalaryMonthly.getOtherDeduction().add(summarySalaryMonthly.getMealSubsidy().
                 add(summarySalaryMonthly.getGjj().add(summarySalaryMonthly.getYiliaobx().add(summarySalaryMonthly.getYlbx().add(summarySalaryMonthly.getSybx()))))));
 
-        //应发工资-养老金-医疗险-失业金-公积金-用餐扣款-其他扣款
+        //实发工资 = 应发工资-养老金-医疗险-失业金-公积金-用餐扣款-其他扣款
         summarySalaryMonthly.setTrueSalary(BigDecimal.valueOf(BigDecimalUtil.sub(summarySalaryMonthly.getRealSalary().doubleValue(),
                 summarySalaryMonthly.getYlbx().doubleValue(), summarySalaryMonthly.getYiliaobx().doubleValue(),
                 summarySalaryMonthly.getSybx().doubleValue(), summarySalaryMonthly.getGjj().doubleValue(),
@@ -363,7 +363,7 @@ public class EmpSalaryMonthlyService {
         if (summarySalaryMonthly.getSumWorkHour() == null || summarySalaryMonthly.getSumWorkHour().equals(BigDecimal.ZERO)) {
             summarySalaryMonthly.setHourSalary(BigDecimal.ZERO);
         } else {
-            summarySalaryMonthly.setHourSalary(BigDecimal.valueOf(BigDecimalUtil.div(summarySalaryMonthly.getTrueSalary() == null ? 0 : summarySalaryMonthly.getTrueSalary().doubleValue(), summarySalaryMonthly.getSumWorkHour().doubleValue(), 2)));
+            summarySalaryMonthly.setHourSalary(BigDecimal.valueOf(BigDecimalUtil.div(summarySalaryMonthly.getRealSalary() == null ? 0 : summarySalaryMonthly.getRealSalary().doubleValue(), summarySalaryMonthly.getSumWorkHour().doubleValue(), 2)));
         }
 
         //汇总表里面要用  正常加班工时  假日加班工时  法假加班工时
