@@ -53,13 +53,13 @@ public class ProductionProcedureConfirmService {
         return productionProcedureConfirmMapper.getOrderByMouth(date, deptName);
     }
 
-    public List<OrderProductVo> getOrderProductByMouth(String orderNo, String deptName) {
-        return productionProcedureConfirmMapper.getOrderProductByMouth(orderNo, deptName);
+    public List<OrderProductVo> getOrderProductByMouth(String orderNo, String date, String deptName) {
+        return productionProcedureConfirmMapper.getOrderProductByMouth(orderNo, date, deptName);
     }
 
-    public List<EmpProcedureListVo> getEmpNum(String orderNo, String productNo, String deptName) {
+    public List<EmpProcedureListVo> getEmpNum(String orderNo, String productNo,String date, String deptName) {
         List<ProductProcedure> list =
-                productionProcedureConfirmMapper.getByOrderAndProduct(orderNo, productNo, deptName);
+                productionProcedureConfirmMapper.getByOrderAndProduct(orderNo, productNo, date, deptName);
         List<EmpProcedureListVo> volist = null;
         if (list != null && list.size() > 0) {
             volist = new ArrayList<>();
@@ -68,7 +68,7 @@ public class ProductionProcedureConfirmService {
                 vo.setId(list.get(i).getId());
                 vo.setName(list.get(i).getProcedureName());
                 vo.setSort(list.get(i).getSort());
-                List<EmpProcedureDetailVo> dlist = productionProcedureConfirmMapper.getEmpNum(orderNo, productNo, vo.getId(), deptName);
+                List<EmpProcedureDetailVo> dlist = productionProcedureConfirmMapper.getEmpNum(orderNo, productNo, vo.getId(), date, deptName);
                 vo.setList(dlist);
                 volist.add(vo);
             }
@@ -149,12 +149,13 @@ public class ProductionProcedureConfirmService {
         return productionProcedureScans.size();
     }
 
-    public void change(String orderNo, String productNo, Integer procedureId, List<EmpProcedureDetailVo> list, WxEmpVo vo) {
+    public void change(String orderNo, String productNo, Integer procedureId, List<EmpProcedureDetailVo> list, WxEmpVo vo, String date) {
         //把之前可能存在的 调整数据 删除
-        productionProcedureConfirmMapper.deleteType2(orderNo, productNo, procedureId, vo.getDeptName());
+        productionProcedureConfirmMapper.deleteType2(orderNo, productNo, procedureId, vo.getDeptName(), date);
         //把之前的质检数据  置为 已调整
-        List<ProductionProcedureConfirm> clist = productionProcedureConfirmMapper.getCheckList(orderNo, productNo, procedureId, vo.getDeptName());
-        productionProcedureConfirmMapper.updateChange(orderNo, productNo, procedureId, vo.getDeptName());
+        List<ProductionProcedureConfirm> clist = productionProcedureConfirmMapper.getCheckList(orderNo, productNo,
+                date, procedureId, vo.getDeptName());
+        productionProcedureConfirmMapper.updateChange(orderNo, productNo, date, procedureId, vo.getDeptName());
         //插入 调整后的数据
         ProductionProcedureConfirm t = clist.get(0);
         String inspectionor = null;
@@ -167,6 +168,8 @@ public class ProductionProcedureConfirmService {
                 inspectionor = inspectionor + "," + clist.get(i).getInspectionor();
             }
         }
+        //取最后工序完成时间
+        Date lastComplateTime = clist.get(0).getCompleteTime();
         for (int i = 0; i < list.size(); i++) {
             ProductionProcedureConfirm productionProcedureConfirm = new ProductionProcedureConfirm();
             productionProcedureConfirm.setOrderNo(t.getOrderNo());
@@ -181,7 +184,7 @@ public class ProductionProcedureConfirmService {
             productionProcedureConfirm.setOperator(vo.getName());
             productionProcedureConfirm.setLastModifyTime(new Date());
             productionProcedureConfirm.setCreateTime(new Date());
-            productionProcedureConfirm.setCompleteTime(new Date());
+            productionProcedureConfirm.setCompleteTime(lastComplateTime);
             productionProcedureConfirm.setPrice(t.getPrice());
             productionProcedureConfirm.setWorkshop(vo.getDeptName());
             productionProcedureConfirm.setProcedureId(procedureId);
@@ -189,10 +192,6 @@ public class ProductionProcedureConfirmService {
             productionProcedureConfirm.setInspectionor(inspectionor);
             productionProcedureConfirmMapper.insertSelective(productionProcedureConfirm);
         }
-    }
-
-    public Double getChangeNum(String orderNo, String productNo, Integer procedureId, String deptName) {
-        return productionProcedureConfirmMapper.getChangeNum(orderNo, productNo, procedureId, deptName);
     }
 
     public List<EmpDayWorkVo> analyseForDay(String date, Integer empId) {

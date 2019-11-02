@@ -101,11 +101,14 @@ public interface ProductionProcedureConfirmMapper {
 
     List<Order> getOrderByMouth(@Param("date") String date, @Param("deptName")String deptName);
 
-    List<OrderProductVo> getOrderProductByMouth(@Param("orderNo")String orderNo, @Param("deptName")String deptName);
+    List<OrderProductVo> getOrderProductByMouth(@Param("orderNo")String orderNo,
+                                                @Param("date") String date, @Param("deptName")String deptName);
 
-    List<ProductProcedure> getByOrderAndProduct(@Param("orderNo")String orderNo, @Param("productNo")String productNo, @Param("deptName")String deptName);
+    List<ProductProcedure> getByOrderAndProduct(@Param("orderNo")String orderNo, @Param("productNo")String productNo,
+                                                @Param("date") String date, @Param("deptName")String deptName);
 
-    List<EmpProcedureDetailVo> getEmpNum(@Param("orderNo")String orderNo, @Param("productNo")String productNo, @Param("id")Integer id, @Param("deptName")String deptName);
+    List<EmpProcedureDetailVo> getEmpNum(@Param("orderNo")String orderNo, @Param("productNo")String productNo, @Param("id")Integer id,
+                                         @Param("date") String date, @Param("deptName")String deptName);
 
     List<ProductionProcedureConfirm> select(ProductionProcedureConfirm productionProcedureConfirm);
 
@@ -113,13 +116,14 @@ public interface ProductionProcedureConfirmMapper {
                @Param("productNo") String productNo, @Param("productionNo") String productionNo,
                @Param("louId") Integer louId,@Param("billOutNo") String billOutNo, @Param("procedureId") Integer procedureId);
 
-    Double getChangeNum(@Param("orderNo")String orderNo, @Param("productNo")String productNo, @Param("id")Integer id, @Param("deptName")String deptName);
+    void deleteType2(@Param("orderNo")String orderNo, @Param("productNo")String productNo, @Param("id")Integer id,
+                     @Param("date") String date, @Param("deptName")String deptName);
 
-    void deleteType2(@Param("orderNo")String orderNo, @Param("productNo")String productNo, @Param("id")Integer id, @Param("deptName")String deptName);
+    List<ProductionProcedureConfirm> getCheckList(@Param("orderNo")String orderNo, @Param("productNo")String productNo,
+                                                  @Param("date") String date, @Param("id")Integer id, @Param("deptName")String deptName);
 
-    List<ProductionProcedureConfirm> getCheckList(@Param("orderNo")String orderNo, @Param("productNo")String productNo, @Param("id")Integer id, @Param("deptName")String deptName);
-
-    void updateChange(@Param("orderNo")String orderNo, @Param("productNo")String productNo, @Param("id")Integer id, @Param("deptName")String deptName);
+    void updateChange(@Param("orderNo")String orderNo, @Param("productNo")String productNo,
+                      @Param("date") String date, @Param("id")Integer id, @Param("deptName")String deptName);
 
     List<EmpDayWorkVo> analyseForDay(@Param("date")String date, @Param("empId")Integer empId);
 
