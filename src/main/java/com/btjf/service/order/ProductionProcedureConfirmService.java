@@ -172,7 +172,6 @@ public class ProductionProcedureConfirmService {
         Date lastComplateTime = clist.get(0).getCompleteTime();
         for (int i = 0; i < list.size(); i++) {
             ProductionProcedureConfirm productionProcedureConfirm = new ProductionProcedureConfirm();
-            productionProcedureConfirm.setOrderNo(t.getOrderNo());
             productionProcedureConfirm.setType(2);
             productionProcedureConfirm.setIsDelete(0);
             productionProcedureConfirm.setOrderNo(t.getOrderNo());
