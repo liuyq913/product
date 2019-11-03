@@ -148,7 +148,7 @@ public class ProductionOrderController extends ProductBaseController {
 
         List<ProductionOrderDetailVo> productionOrderDetailVos = Lists.newArrayList();
         ProductionOrder productionOrder = productionOrderService.getByNo(productionNo);
-        if (productionOrder == null) return XaResult.error("该生成单不存在");
+        if (productionOrder == null) return XaResult.error("该生产单不存在");
         //订单
         OrderProduct orderProduct = orderProductService.getByID(productionOrder.getOrderProductId());
         //工序

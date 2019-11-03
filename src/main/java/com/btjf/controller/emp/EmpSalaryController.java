@@ -156,6 +156,13 @@ public class EmpSalaryController extends ProductBaseController {
         return result;
     }
 
+    /**
+     * 汇总
+     * @param yearMonth
+     * @param deptName
+     * @param empName
+     * @param response
+     */
     @RequestMapping(value = "/export", method = RequestMethod.GET)
     public void export(String yearMonth, String deptName, String empName, HttpServletResponse response) {
 
