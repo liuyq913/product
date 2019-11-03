@@ -949,7 +949,7 @@
         <if test="procedureId != null">
           and procedureId = #{procedureId}
         </if>
-        and type in(1,3) <!--质检和工资记录都要删掉-->
+        and type in(1,3) and isChange = 0 <!--质检和工资记录都要删掉-->
     </update>
 
     <update id="deleteType2">
@@ -985,4 +985,6 @@
         </foreach>
         )
     </update>
+
+
 </mapper>

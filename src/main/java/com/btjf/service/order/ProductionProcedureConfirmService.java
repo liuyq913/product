@@ -84,6 +84,9 @@ public class ProductionProcedureConfirmService {
 
     public Integer add(Integer orderId, String orderNo, Integer louId, String billOutNo, String productNo, String productionNo, WxEmpVo wxEmpVo, Boolean isCreateInspectionorSalary) {
 
+        //删除重复质检数据 未调整数据 (type = 1 || type = 3)ischange = 0
+        productionProcedureConfirmMapper.delete(orderNo, productNo, productionNo, louId, billOutNo,null);
+
         List<ProductionProcedureScan> productionProcedureScans = productionProcedureScanService.select(orderNo, productNo, productionNo, louId, billOutNo, null);
         if (CollectionUtils.isEmpty(productionProcedureScans)) throw new BusinessException("该订单工序还没有员工处理");
         productionProcedureScans.stream().filter(t -> t != null).forEach(t -> {
@@ -118,6 +121,7 @@ public class ProductionProcedureConfirmService {
         if (isCreateInspectionorSalary) {
             //新增质检工资记录
             ProductionProcedureScan productionProcedureScan = productionProcedureScans.get(0);
+
             //获取质检    //获取负责车间质检工序的价格
             ProductProcedureWorkshop productProcedureWorkshop = productWorkshopService.getInspactPriceByWorkShapAndProductNo(wxEmpVo.getDeptName(), productNo);
             if (productProcedureWorkshop == null) throw new BusinessException("请再您所在车间设置好质检工序之后重试");
