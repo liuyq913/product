@@ -410,7 +410,7 @@ public class EmpSalaryController extends ProductBaseController {
             sheet.setForceFormulaRecalculation(true);
             response.setHeader("Pragma", "no-cache");
             response.setHeader("Cache-Control", "no-cache");
-            response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(yearMonth + "导出工资汇总表.xlsx", "UTF-8"));
+            response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(yearMonth + "导出计件工工资明细表.xlsx", "UTF-8"));
             response.setDateHeader("Expires", 0);
             response.setHeader("Connection", "close");
             response.setHeader("Content-Type", "application/vnd.ms-excel");
