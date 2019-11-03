@@ -258,7 +258,7 @@ public class EmpSalaryMonthlyService {
         if (summarySalaryMonthly.getSumWorkHour() == null || summarySalaryMonthly.getSumWorkHour().equals(BigDecimal.ZERO)) {
             summarySalaryMonthly.setHourSalary(BigDecimal.ZERO);
         } else {
-            summarySalaryMonthly.setHourSalary(BigDecimal.valueOf(BigDecimalUtil.div(summarySalaryMonthly.getTrueSalary() == null ? 0 : summarySalaryMonthly.getTrueSalary().doubleValue(), summarySalaryMonthly.getSumWorkHour().doubleValue(), 2)));
+            summarySalaryMonthly.setHourSalary(BigDecimal.valueOf(BigDecimalUtil.div(summarySalaryMonthly.getRealSalary() == null ? 0 : summarySalaryMonthly.getRealSalary().doubleValue(), summarySalaryMonthly.getSumWorkHour().doubleValue(), 2)));
         }
 
         //汇总表里面要用  正常加班工时  假日加班工时  法假加班工时

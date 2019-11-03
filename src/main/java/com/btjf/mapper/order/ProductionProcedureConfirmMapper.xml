@@ -526,7 +526,7 @@
         from t_Production_Procedure_Confirm p LEFT JOIN t_Order o ON p.orderNo = o.orderNo
          where ((p.type = 2 and p.isChange=0) or (p.type =1 and p.isChange=0))
          and p.isDelete = 0
-        and DATE_FORMAT(o.createTime, '%Y-%m' ) = #{date}
+        and DATE_FORMAT(p.completeTime, '%Y-%m' ) = #{date}
         and p.workshop = #{deptName,jdbcType=VARCHAR}
         ORDER BY o.createTime DESC
 ;
@@ -541,6 +541,7 @@
          and p.isDelete = 0
         and p.orderNo = #{orderNo,jdbcType=VARCHAR}
         and p.workshop = #{deptName,jdbcType=VARCHAR}
+        and DATE_FORMAT(p.completeTime, '%Y-%m' ) = #{date}
         group by p.productNo,p.procedureId, pp.unit
         ) a group by a.productNo,a.unit
     </select>
@@ -553,6 +554,7 @@
         and p.isChange=0
          and p.isDelete = 0
          and p.workshop = #{deptName,jdbcType=VARCHAR}
+         and DATE_FORMAT(p.completeTime, '%Y-%m' ) = #{date}
     </select>
     <select id="getEmpNum" resultType="com.btjf.vo.weixin.EmpProcedureDetailVo">
          SELECT DISTINCT
@@ -563,23 +565,11 @@
         where  p.productNo = #{productNo,jdbcType=VARCHAR}
         and p.orderNo = #{orderNo,jdbcType=VARCHAR}
         and p.procedureId = #{id,jdbcType=INTEGER}
+        and DATE_FORMAT(p.completeTime, '%Y-%m' ) = #{date}
         and p.isChange=0
          and p.isDelete = 0
          and p.workshop = #{deptName,jdbcType=VARCHAR}
          group by p.empId,e.name
-    </select>
-
-    <select id="getChangeNum" resultType="java.lang.Double">
-        SELECT
-        sum(p.num)
-        from t_Production_Procedure_Confirm p
-        where  p.productNo = #{productNo,jdbcType=VARCHAR}
-        and p.orderNo = #{orderNo,jdbcType=VARCHAR}
-        and p.procedureId = #{id,jdbcType=INTEGER}
-        and((p.type = 2 and p.isChange=0) or (p.type =1 and p.isChange=0))
-         and p.isDelete = 0
-         and p.workshop = #{deptName,jdbcType=VARCHAR}
-        group by p.orderNo,p.productNo,p.procedureId,p.workshop
     </select>
 
     <select id="select" resultMap="BaseResultMap">
@@ -632,6 +622,8 @@
         and p.type =1
          and p.isDelete = 0
          and p.workshop = #{deptName,jdbcType=VARCHAR}
+        and DATE_FORMAT(p.completeTime, '%Y-%m' ) = #{date}
+        order by p.completeTime desc
     </select>
     <select id="analyseForDay" resultType="com.btjf.vo.weixin.EmpDayWorkVo">
         SELECT
@@ -970,6 +962,7 @@
         and p.isChange=0
          and p.isDelete = 0
          and p.workshop = #{deptName,jdbcType=VARCHAR}
+         and DATE_FORMAT(p.completeTime, '%Y-%m' ) = #{date}
     </update>
     <update id="updateChange">
         update t_Production_Procedure_Confirm p
@@ -980,6 +973,7 @@
         and p.type =1
         and p.isDelete = 0
         and p.workshop = #{deptName,jdbcType=VARCHAR}
+        and DATE_FORMAT(p.completeTime, '%Y-%m' ) = #{date}
     </update>
     <update id="updateSettlement">
         update t_Production_Procedure_Confirm

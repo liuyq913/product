@@ -89,7 +89,8 @@ public class MineController  extends ProductBaseController {
                 OrderVo orderVo = new OrderVo();
                 orderVo.setDate(DateUtil.dateToString(o.getCreateTime(),new SimpleDateFormat("yyyy/MM/dd")));
                 orderVo.setOrderNo(o.getOrderNo());
-                List<OrderProductVo> ops = productionProcedureConfirmService.getOrderProductByMouth(o.getOrderNo(),vo.getDeptName());
+                List<OrderProductVo> ops = productionProcedureConfirmService.getOrderProductByMouth(
+                        o.getOrderNo(), date, vo.getDeptName());
                 orderVo.setList(ops);
                 voList.add(orderVo);
             }
@@ -105,18 +106,22 @@ public class MineController  extends ProductBaseController {
      * @return
      */
     @RequestMapping(value = "/order/detail", method = RequestMethod.GET)
-    public XaResult<List<EmpProcedureListVo>> detail(String orderNo, String productNo){
+    public XaResult<List<EmpProcedureListVo>> detail(String orderNo, String productNo, String date){
         if (StringUtils.isEmpty(orderNo)){
             return XaResult.error("订单号不能为空");
         }
         if (StringUtils.isEmpty(productNo)){
             return XaResult.error("产品型号不能为空");
         }
+        //2019-08
+        if (StringUtils.isEmpty(date)){
+            return XaResult.error("月份不能为空");
+        }
         WxEmpVo vo = getWxLoginUser();
         if(vo.getIsLeader() == null || vo.getIsLeader() != 1){
             return XaResult.error("当前人员没有权限进行该操作");
         }
-        List<EmpProcedureListVo> list = productionProcedureConfirmService.getEmpNum(orderNo, productNo, vo.getDeptName());
+        List<EmpProcedureListVo> list = productionProcedureConfirmService.getEmpNum(orderNo, productNo, date, vo.getDeptName());
 
         return XaResult.success(list);
     }
@@ -163,7 +168,7 @@ public class MineController  extends ProductBaseController {
      * @return
      */
     @RequestMapping(value = "/order/report", method = RequestMethod.POST)
-    public XaResult<String> report(String orderNo, String productNo, Integer procedureId,
+    public XaResult<String> report(String date, String orderNo, String productNo, Integer procedureId,
                                                      String[] content){
         if (StringUtils.isEmpty(orderNo)){
             return XaResult.error("订单号不能为空");
@@ -177,7 +182,10 @@ public class MineController  extends ProductBaseController {
         if (content == null || content.length <1){
             return XaResult.error("上报内容不能为空");
         }
-
+        //2019-08
+        if (StringUtils.isEmpty(date)){
+            return XaResult.error("月份不能为空");
+        }
         List<EmpProcedureDetailVo> list = new ArrayList<>();
         Double num = 0.0;//上报的总数
         for (int i=0; i<content.length; i++){
@@ -209,7 +217,7 @@ public class MineController  extends ProductBaseController {
 //            return xaResult;
 //        }
 
-        productionProcedureConfirmService.change(orderNo, productNo, procedureId, list, vo);
+        productionProcedureConfirmService.change(orderNo, productNo, procedureId, list, vo, date);
         return XaResult.success();
     }
 
