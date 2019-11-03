@@ -188,9 +188,21 @@ public class EmpSalaryMothlyController extends ProductBaseController {
         return result;
     }
 
+    /**
+     * 住房补贴
+     * @param yearMonth
+     * @param empName
+     * @param deptName
+     * @param type
+     * @param response
+     * @throws BusinessException
+     */
     @RequestMapping(value = "/houseSubsidy/export", method = RequestMethod.GET)
     public void houseSubsidyExport(String yearMonth, String empName, String deptName, Integer type, HttpServletResponse response) throws BusinessException {
 
+        if (yearMonth != null && !BaseExcelHandler.isRightDateStr(yearMonth, "yyyy-MM")) {
+            throw new BusinessException("年月格式不符，请更正为yyyy-MM");
+        }
         if (type == null) {
             throw new BusinessException("type 不能为null");
         }
@@ -248,6 +260,13 @@ public class EmpSalaryMothlyController extends ProductBaseController {
         }
     }
 
+    /**
+     * 固定工资导出
+     * @param yearMonth
+     * @param deptName
+     * @param empName
+     * @param response
+     */
     @RequestMapping(value = "/export", method = RequestMethod.GET)
     public void export(String yearMonth, String deptName, String empName, HttpServletResponse response) {
 
