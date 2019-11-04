@@ -66,6 +66,9 @@ public class ProductionOrderService {
         String longUrl = "/wx/work/getConfirmList?orderId=" + productionOrder.getOrderProductId() + "&orderNo=" + productionOrder.getOrderNo()
                 + "&productNo=" + productionOrder.getProductNo() + "&productionNo=" + productionOrder.getProductionNo();
         productionOrder.setCodeUrl(shortUrlService.saveAndReturnShortUrl(longUrl));
+        if(null != productionOrderMapper.getByNo(productionOrder.getProductionNo())){
+            throw new BusinessException("生产单编号重复，请稍后重试");
+        }
         productionOrderMapper.insertSelective(productionOrder);
         //更新  订单 型号表 分配数量信息
         /*OrderProduct orderProduct = orderProductService.getByID(productionOrder.getOrderProductId());
