@@ -151,7 +151,7 @@ public class ProductionProcedureConfirmService {
 
     public void change(String orderNo, String productNo, Integer procedureId, List<EmpProcedureDetailVo> list, WxEmpVo vo, String date) {
         //把之前可能存在的 调整数据 删除
-        productionProcedureConfirmMapper.deleteType2(orderNo, productNo, procedureId, vo.getDeptName(), date);
+        productionProcedureConfirmMapper.deleteType2(orderNo, productNo, procedureId,  date, vo.getDeptName());
         //把之前的质检数据  置为 已调整
         List<ProductionProcedureConfirm> clist = productionProcedureConfirmMapper.getCheckList(orderNo, productNo,
                 date, procedureId, vo.getDeptName());
