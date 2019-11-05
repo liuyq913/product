@@ -58,6 +58,9 @@ public class ProductionOrderController extends ProductBaseController {
     @Resource
     private ProductionProcedureScanService productionProcedureScanService;
 
+    @Resource
+    private BillNoService billNoService;
+
     private static final Logger LOGGER = Logger
             .getLogger(ProductionOrderController.class);
 
@@ -92,6 +95,7 @@ public class ProductionOrderController extends ProductBaseController {
         productionOrder.setMaxNum(orderProduct.getMaxNum());
         productionOrder.setWorkshop(workshop);
         productionOrder.setWorkshopDirector(workshopDirector);
+        productionOrder.setProductionNo("P" + billNoService.getNo(4));
 
         Integer id = productionOrderService.assign(productionOrder, procedures);
         return XaResult.success(productionOrder.getProductionNo());
