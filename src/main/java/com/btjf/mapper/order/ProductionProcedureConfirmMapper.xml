@@ -619,7 +619,6 @@
         where  p.productNo = #{productNo,jdbcType=VARCHAR}
         and p.orderNo = #{orderNo,jdbcType=VARCHAR}
         and p.procedureId = #{id,jdbcType=INTEGER}
-        and p.type =1
          and p.isDelete = 0
          and p.workshop = #{deptName,jdbcType=VARCHAR}
         and DATE_FORMAT(p.completeTime, '%Y-%m' ) = #{date}
@@ -970,7 +969,7 @@
         where  p.productNo = #{productNo,jdbcType=VARCHAR}
         and p.orderNo = #{orderNo,jdbcType=VARCHAR}
         and p.procedureId = #{id,jdbcType=INTEGER}
-        and p.type =1
+        and (p.type =1 or p.type=3)
         and p.isDelete = 0
         and p.workshop = #{deptName,jdbcType=VARCHAR}
         and DATE_FORMAT(p.completeTime, '%Y-%m' ) = #{date}

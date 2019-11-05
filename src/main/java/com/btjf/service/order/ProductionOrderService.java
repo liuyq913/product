@@ -62,7 +62,6 @@ public class ProductionOrderService {
     public Integer assign(ProductionOrder productionOrder, List<WorkShopVo.Procedure> procedures) {
         if (null == productionOrder) return 0;
 
-        productionOrder.setProductionNo("P" + billNoService.getNo(4));
         String longUrl = "/wx/work/getConfirmList?orderId=" + productionOrder.getOrderProductId() + "&orderNo=" + productionOrder.getOrderNo()
                 + "&productNo=" + productionOrder.getProductNo() + "&productionNo=" + productionOrder.getProductionNo();
         productionOrder.setCodeUrl(shortUrlService.saveAndReturnShortUrl(longUrl));
