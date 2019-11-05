@@ -101,4 +101,6 @@ public interface ProductionProcedureMapper {
     Integer deleteByProductionNo(@Param("productionNo") String productionNo);
 
     Integer procedureCanAssignNum(@Param("orderNo") String orderNo, @Param("productNo") String productNo, @Param("procedureId") Integer procedureId);
+
+    Integer isContainZj(@Param("procedureName") String procedureName, @Param("productionNo") String productionNo);
 }

@@ -49,6 +49,9 @@ public class ProductionProcedureConfirmService {
     @Resource
     private ProductWorkshopService productWorkshopService;
 
+    @Resource
+    private ProductionProcedureService productionProcedureService;
+
     public List<Order> getOrderByMouth(String date, String deptName) {
         return productionProcedureConfirmMapper.getOrderByMouth(date, deptName);
     }
@@ -118,7 +121,9 @@ public class ProductionProcedureConfirmService {
             productionProcedureScanService.updateStatue(t);
         });
 
-        if (isCreateInspectionorSalary) {
+        //生产单是否包含该质检员包含的质检工序  包含则增加质检员工资
+        Boolean isContain = productionProcedureService.isContainZj(wxEmpVo.getDeptName()+"质检", productionNo);
+        if (isCreateInspectionorSalary && isContain) {
             //新增质检工资记录
             ProductionProcedureScan productionProcedureScan = productionProcedureScans.get(0);
 
