@@ -37,7 +37,7 @@ public class WxLoginController extends ProductBaseController {
     public XaResult<WxEmpVo> login(String phone, String password, Integer type) {
         if (null == type || (type != 1 && type != 2)) return XaResult.error("请输入正确的类型");
 
-        if (phone == null) return XaResult.error("请输入手机号码");
+         if (phone == null) return XaResult.error("请输入手机号码");
 
         WxEmpVo wxEmpVo = null;
         //普通登入

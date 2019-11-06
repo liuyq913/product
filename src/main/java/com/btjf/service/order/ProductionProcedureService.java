@@ -75,4 +75,13 @@ public class ProductionProcedureService {
             return v.getMaxNum() - (assignNum == null ? 0 : assignNum);
         }).orElse(0);
     }
+
+    public Boolean isContainZj(String procedureName, String productionNo) {
+        Boolean flage = false;
+        Integer num = productionProcedureMapper.isContainZj(procedureName, productionNo);
+        if (num > 0) {
+            flage = true;
+        }
+        return flage;
+    }
 }

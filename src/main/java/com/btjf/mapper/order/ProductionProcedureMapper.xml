@@ -434,4 +434,8 @@
       and isDelete = 0
       group by orderNo, productNo, procedureId
   </select>
+    <select id="isContainZj" resultType="integer">
+        SELECT count(1) FROM t_Production_Procedure
+        WHERE procedureName = #{procedureName} and productionNo =#{productionNo} and isDelete = 0
+    </select>
 </mapper>
