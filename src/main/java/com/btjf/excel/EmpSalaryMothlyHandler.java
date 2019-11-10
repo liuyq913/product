@@ -237,7 +237,7 @@ public class EmpSalaryMothlyHandler extends BaseExcelHandler {
                 monthly.setNightWorkHoliay(BigDecimal.valueOf(holidayNightNum));
                 monthly.setDayWorkLegal(BigDecimal.valueOf(legalBlackNum));
                 monthly.setNigthWorkLegal(BigDecimal.valueOf(legalNightNum));
-                //考勤分 默认0
+                 //考勤分 默认0
                 //查询考勤分
                 Score score = scoreService.getByNameAndYearMonth(emp.getName(), monthly.getYearMonth());
                 if (score != null && score.getScore() != null) {
