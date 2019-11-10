@@ -224,13 +224,14 @@ public class EmpSalaryMothlyHandler extends BaseExcelHandler {
 
                 }
 
-                //真实总天数  白班+晚班*0.5+公休=总天数    公休 = 白班是“法假”的数字之和
-                Double sumWorkDay = BigDecimalUtil.add(blackNum, BigDecimalUtil.mul(nightNum, 0.5), legalBlackNum);
-                //工作日   ① 工作日>总天数，工作日不调整；② 工作日<=总天数，工作日=总天数
-                monthly.setWorkDay(BigDecimal.valueOf(salaryMonthly != null ? salaryMonthly.getExpectWorkDay() > sumWorkDay ? salaryMonthly.getExpectWorkDay() : sumWorkDay : sumWorkDay));
+
                 monthly.setDayWork(BigDecimal.valueOf(BigDecimalUtil.add(blackNum, holidayBlackNum)));
                 monthly.setNightWork(BigDecimal.valueOf(BigDecimalUtil.add(nightNum, holidayNightNum)));
                 monthly.setRestDay(BigDecimal.valueOf(legalBlackNum));
+                //真实总天数  白班+晚班*0.5+公休=总天数    公休 = 白班是“法假”的数字之和
+                Double sumWorkDay = BigDecimalUtil.add(monthly.getDayWork().doubleValue(), BigDecimalUtil.mul(nightNum, 0.5), legalBlackNum);
+                //工作日   ① 工作日>总天数，工作日不调整；② 工作日<=总天数，工作日=总天数
+                monthly.setWorkDay(BigDecimal.valueOf(salaryMonthly != null ? salaryMonthly.getExpectWorkDay() > sumWorkDay ? salaryMonthly.getExpectWorkDay() : sumWorkDay : sumWorkDay));
                 monthly.setSumDay(BigDecimal.valueOf(sumWorkDay));
                 monthly.setDayWorkHoliday(BigDecimal.valueOf(holidayBlackNum));
                 monthly.setNightWorkHoliay(BigDecimal.valueOf(holidayNightNum));
