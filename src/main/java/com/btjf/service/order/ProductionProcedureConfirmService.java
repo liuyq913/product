@@ -109,7 +109,7 @@ public class ProductionProcedureConfirmService {
             productionProcedureConfirm.setOperator(wxEmpVo.getName());
             productionProcedureConfirm.setLastModifyTime(new Date());
             productionProcedureConfirm.setCreateTime(new Date());
-            productionProcedureConfirm.setCompleteTime(t.getCreateTime());
+            productionProcedureConfirm.setCompleteTime(new Date());
             productionProcedureConfirm.setPrice(t.getPrice());
             productionProcedureConfirm.setWorkshop(wxEmpVo.getDeptName());
             productionProcedureConfirm.setProcedureId(t.getProcedureId());
@@ -142,7 +142,7 @@ public class ProductionProcedureConfirmService {
             productionProcedureConfirm.setMoney(BigDecimal.valueOf(BigDecimalUtil.mul(Double.valueOf(productionProcedureScan.getNum()), productProcedureWorkshop.getPrice().doubleValue())));
             productionProcedureConfirm.setLastModifyTime(new Date());
             productionProcedureConfirm.setCreateTime(new Date());
-            productionProcedureConfirm.setCompleteTime(productionProcedureScan.getCreateTime());
+            productionProcedureConfirm.setCompleteTime(new Date());
             productionProcedureConfirm.setProductNo(productNo);
             productionProcedureConfirm.setProcedureId(productProcedureWorkshop.getProcedureId());
             productionProcedureConfirm.setProcedureName(productProcedureWorkshop.getProcedureName());
