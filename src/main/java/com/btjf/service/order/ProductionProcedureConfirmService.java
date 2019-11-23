@@ -152,7 +152,7 @@ public class ProductionProcedureConfirmService {
             productionProcedureConfirm.setInspectionor(wxEmpVo.getName()); //质检员
             productionProcedureConfirm.setWorkshop(wxEmpVo.getDeptName());
 
-             productionProcedureConfirmMapper.insertSelective(productionProcedureConfirm);
+            productionProcedureConfirmMapper.insertSelective(productionProcedureConfirm);
         }
 
         return productionProcedureScans.size();
