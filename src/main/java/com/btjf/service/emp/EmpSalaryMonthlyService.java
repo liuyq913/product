@@ -34,7 +34,7 @@ import java.util.stream.Stream;
 public class EmpSalaryMonthlyService {
 
     private static final String WORK_CHEGONG = "车工";
-    private static final String PROCDUCENAME_FUMIAN = "复面";
+    private static final String PROCDUCENAME_FUMIAN = "复面A";
     private static final List<String> DEPT_LIST = Stream.of("一车间", "后道车间-车工", "后道车间-中辅工", "后道车间-大辅工").collect(Collectors.toList());
 
     @Resource
