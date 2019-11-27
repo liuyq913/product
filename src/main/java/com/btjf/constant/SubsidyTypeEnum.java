@@ -16,7 +16,7 @@ public enum SubsidyTypeEnum implements ContentEnum {
     WORK_AGE(6, "工龄补贴"),
     CAR_CHCK_WORK(7, "车工出勤补贴"),
     NEW_CAR_CHECK_WORK(8, "新车工出勤补贴"),
-    OTHER(9, "其他扣款");
+     OTHER(9, "其他扣款");
 
     private Integer value;
     private String content;

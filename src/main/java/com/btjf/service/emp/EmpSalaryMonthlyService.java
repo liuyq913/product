@@ -35,7 +35,7 @@ public class EmpSalaryMonthlyService {
 
     private static final String WORK_CHEGONG = "车工";
     private static final String PROCDUCENAME_FUMIAN = "复面";
-    private static final List<String> DEPT_LIST = Stream.of("一车间", "后道车间-车工","后道车间-中辅工","后道车间-大辅工").collect(Collectors.toList());
+    private static final List<String> DEPT_LIST = Stream.of("一车间", "后道车间-车工", "后道车间-中辅工", "后道车间-大辅工").collect(Collectors.toList());
 
     @Resource
     private EmpSalaryMonthlyMapper empSalaryMonthlyMapper;
@@ -171,9 +171,8 @@ public class EmpSalaryMonthlyService {
         summarySalaryMonthly.setScore(empSalaryMonthly.getScore());
         //总工时（固定汇总表里用）  白班天数*8，正常加班工时*1.5*3，假日加班工时*2，法定加班工时*3  假日 法定 晚班不计算
         summarySalaryMonthly.setSumWorkHour(BigDecimal.valueOf(BigDecimalUtil.add(
-                BigDecimalUtil.mul(BigDecimalUtil.add(empSalaryMonthly.getDayWork().doubleValue(),
-                        empSalaryMonthly.getDayWorkHoliday().doubleValue(), empSalaryMonthly.getDayWorkLegal().
-                                doubleValue()), 8),  //白班工时 包含正常+法假+节假 白班
+                BigDecimalUtil.mul(BigDecimalUtil.add(empSalaryMonthly.getDayWork().doubleValue(), empSalaryMonthly.getDayWorkLegal().
+                        doubleValue()), 8),  //白班工时 包含正常+法假+节假 白班
                 BigDecimalUtil.mul(empSalaryMonthly.getNightWork().doubleValue(), 1.5, 3))));//正常加班工时
         //BigDecimalUtil.mul(empSalaryMonthly.getNightWorkHoliay().doubleValue(), 2), //假日加班工时
         //BigDecimalUtil.mul(empSalaryMonthly.getNigthWorkLegal().doubleValue(), 2))));//法定加班工时
@@ -217,27 +216,27 @@ public class EmpSalaryMonthlyService {
         summarySalaryMonthly.setPercentSubsidy(BigDecimal.ZERO);
         summarySalaryMonthly.setTwoSideSubsidy(twoSide.multiply(BigDecimal.valueOf(SalaryHandler.getTwoSideSubsidy(months))));
 
-        if(empSalaryMonthly.getWorkName().equals(WORK_CHEGONG)){
+        if (empSalaryMonthly.getWorkName().equals(WORK_CHEGONG)) {
             BigDecimal dayWork = empSalaryMonthly.getDayWork().add(empSalaryMonthly.getDayWorkHoliday()).add(empSalaryMonthly.getDayWorkLegal());
             BigDecimal overWork = empSalaryMonthly.getNightWork().add(empSalaryMonthly.getNightWorkHoliay()).add(empSalaryMonthly.getNigthWorkLegal());
 
-            if (DEPT_LIST.contains(empSalaryMonthly.getDeptName())){
+            if (DEPT_LIST.contains(empSalaryMonthly.getDeptName())) {
                 summarySalaryMonthly.setNewLatheWorkerSubsidy(dayWork.multiply(BigDecimal.valueOf(SalaryHandler.getNewLatheWorkerSubsidy(months))));
             }
 
             BigDecimal latheWorkerSubsidy = dayWork.multiply(BigDecimal.valueOf(10))
                     .add(overWork.multiply(BigDecimal.valueOf(5)));
             summarySalaryMonthly.setLatheWorkerSubsidy(latheWorkerSubsidy);
-            summarySalaryMonthly.setPercentSubsidy(emp.getWorkId().equals(3)? sum.multiply(BigDecimal.valueOf(0.1)):BigDecimal.ZERO);
+            summarySalaryMonthly.setPercentSubsidy(emp.getWorkId().equals(3) ? sum.multiply(BigDecimal.valueOf(0.1)) : BigDecimal.ZERO);
         }
 
         //补贴合计 夜餐+电话补贴+用餐补贴+社保补贴+住房补贴+其他补贴
         summarySalaryMonthly.setSumSusbsidy(BigDecimal.valueOf(BigDecimalUtil.add(summarySalaryMonthly.getNigthSnack().doubleValue(),
                 summarySalaryMonthly.getMealSubsidy().doubleValue(),
                 summarySalaryMonthly.getSocialSubsidy().doubleValue(), summarySalaryMonthly.getHourSubsidy().doubleValue(),
-                summarySalaryMonthly.getWorkYearSubsidy().doubleValue(),summarySalaryMonthly.getNewLatheWorkerSubsidy().doubleValue(),
-                summarySalaryMonthly.getLatheWorkerSubsidy().doubleValue(),summarySalaryMonthly.getPercentSubsidy().doubleValue(),
-                summarySalaryMonthly.getTwoSideSubsidy().doubleValue(),summarySalaryMonthly.getOtherSubsidy().doubleValue())));
+                summarySalaryMonthly.getWorkYearSubsidy().doubleValue(), summarySalaryMonthly.getNewLatheWorkerSubsidy().doubleValue(),
+                summarySalaryMonthly.getLatheWorkerSubsidy().doubleValue(), summarySalaryMonthly.getPercentSubsidy().doubleValue(),
+                summarySalaryMonthly.getTwoSideSubsidy().doubleValue(), summarySalaryMonthly.getOtherSubsidy().doubleValue())));
         //基本工资+计时工资+补贴合计
         summarySalaryMonthly.setRealSalary(BigDecimal.valueOf(BigDecimalUtil.add(summarySalaryMonthly.getBasicSalary().doubleValue(), summarySalaryMonthly.getTimeSalary().doubleValue(),
                 summarySalaryMonthly.getSumSusbsidy().doubleValue())));
@@ -303,9 +302,8 @@ public class EmpSalaryMonthlyService {
         summarySalaryMonthly.setScore(empSalaryMonthly.getScore());
         //总工时（固定汇总表里用）  白班天数*8，正常加班工时*1.5*3，假日加班工时*2，法定加班工时*3  假日 法定 晚班不计算
         summarySalaryMonthly.setSumWorkHour(BigDecimal.valueOf(BigDecimalUtil.add(
-                BigDecimalUtil.mul(BigDecimalUtil.add(empSalaryMonthly.getDayWork().doubleValue(),
-                        empSalaryMonthly.getDayWorkHoliday().doubleValue(), empSalaryMonthly.getDayWorkLegal().
-                                doubleValue()), 8),  //白班工时 包含正常+法假+节假 白班
+                BigDecimalUtil.mul(BigDecimalUtil.add(empSalaryMonthly.getDayWork().doubleValue(), empSalaryMonthly.getDayWorkLegal().
+                        doubleValue()), 8),  //白班工时 包含正常+法假+节假 白班
                 BigDecimalUtil.mul(empSalaryMonthly.getNightWork().doubleValue(), 1.5, 3))));//正常加班工时
         //BigDecimalUtil.mul(empSalaryMonthly.getNightWorkHoliay().doubleValue(), 2), //假日加班工时
         //BigDecimalUtil.mul(empSalaryMonthly.getNigthWorkLegal().doubleValue(), 2))));//法定加班工时
