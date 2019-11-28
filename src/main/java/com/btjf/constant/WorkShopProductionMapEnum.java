@@ -9,7 +9,7 @@ public enum WorkShopProductionMapEnum implements ContentEnum {
     BLANK_ZERO(0, "下料车间"),
     BLANK_ONE(1, "下料车间"),
     BLANK_TWO(2, "下料车间"),
-    BLANK_THREE(3, "下料车间"),
+    BLANK_THREE(3, "仓库"),
     GROUNDFLOOR(4, "一车间"),
     BACKASSIST(7, "后道车间-车工"),
     BACKCENTERASSIST(5, "后道车间-中辅工"),

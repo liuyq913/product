@@ -200,7 +200,7 @@ public class PmExcelHandler extends BaseExcelHandler {
             return error;
         } else {
             //insert
-            excelImportFactory.savePm(pmList, isCover);
+            pmService.saveList(pmList, isCover);
             error.add("提交成功！新增导入" + sheet.getLastRowNum() + "条数据！");
             return error;
         }

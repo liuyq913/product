@@ -74,7 +74,7 @@ INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES
 INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('后道车间-大辅工', NULL,1);
 INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('包装车间', NULL,1);
 INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('财务部', NULL,0);
-INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('仓库', NULL,0);
+INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('仓库', NULL,1);
 INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('样品间', NULL,0);
 INSERT INTO `product`.`t_SysDept` (`deptName`, `deptOrder`, `isWorkShop`) VALUES ('后道车间-小辅工', NULL,1);
 
